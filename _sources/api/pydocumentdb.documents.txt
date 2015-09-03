@@ -1,0 +1,7 @@
+pydocumentdb.documents module
+=============================
+
+.. automodule:: pydocumentdb.documents
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,7 @@
+pydocumentdb.auth module
+========================
+
+.. automodule:: pydocumentdb.auth
+    :members:
+    :undoc-members:
+    :show-inheritance:

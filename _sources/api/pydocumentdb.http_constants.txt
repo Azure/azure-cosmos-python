@@ -1,0 +1,7 @@
+pydocumentdb.http_constants module
+==================================
+
+.. automodule:: pydocumentdb.http_constants
+    :members:
+    :undoc-members:
+    :show-inheritance:

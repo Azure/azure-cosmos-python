@@ -1,0 +1,7 @@
+pydocumentdb.synchronized_request module
+========================================
+
+.. automodule:: pydocumentdb.synchronized_request
+    :members:
+    :undoc-members:
+    :show-inheritance:

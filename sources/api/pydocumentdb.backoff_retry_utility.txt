@@ -1,0 +1,7 @@
+pydocumentdb.backoff_retry_utility module
+=========================================
+
+.. automodule:: pydocumentdb.backoff_retry_utility
+    :members:
+    :undoc-members:
+    :show-inheritance:

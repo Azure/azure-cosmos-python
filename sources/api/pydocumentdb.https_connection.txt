@@ -1,0 +1,7 @@
+pydocumentdb.https_connection module
+====================================
+
+.. automodule:: pydocumentdb.https_connection
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydocumentdb.https_connection module &mdash; pydocumentdb 1.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../static/sidebar.js"></script>
+    <link rel="top" title="pydocumentdb 1.4.2 documentation" href="../index.html" />
+    <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
+    <link rel="next" title="pydocumentdb.query_iterable module" href="pydocumentdb.query_iterable.html" />
+    <link rel="prev" title="pydocumentdb.http_constants module" href="pydocumentdb.http_constants.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pydocumentdb.query_iterable.html" title="pydocumentdb.query_iterable module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pydocumentdb.http_constants.html" title="pydocumentdb.http_constants module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.4.2 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydocumentdb.https_connection">
+<span id="pydocumentdb-https-connection-module"></span><h1>pydocumentdb.https_connection module<a class="headerlink" href="#module-pydocumentdb.https_connection" title="Permalink to this headline">¶</a></h1>
+<p>HTTPS Connection.</p>
+<dl class="class">
+<dt id="pydocumentdb.https_connection.HTTPSConnection">
+<em class="property">class </em><code class="descclassname">pydocumentdb.https_connection.</code><code class="descname">HTTPSConnection</code><span class="sig-paren">(</span><em>host</em>, <em>port=None</em>, <em>ssl_configuration=None</em>, <em>strict=None</em>, <em>timeout=&lt;object object at 0x00000000027D9140&gt;</em>, <em>source_address=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.https_connection.HTTPSConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">httplib.HTTPConnection</span></code></p>
+<p>This class allows communication via SSL.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><cite>host</cite>: str, the host address.</li>
+<li><cite>port</cite>: int, the port number.</li>
+<li><cite>ssl_configuration</cite>: documents.SSLConfiguration, where you specify certs files.</li>
+<li><cite>strict</cite>: bool, the strict.</li>
+<li><cite>timeout</cite>: int, the connection timeout in milliseconds.</li>
+<li><cite>source_address</cite>: str, the source address.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydocumentdb.https_connection.HTTPSConnection.connect">
+<code class="descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.https_connection.HTTPSConnection.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects to to host via HTTPS.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydocumentdb.https_connection.HTTPSConnection.default_port">
+<code class="descname">default_port</code><em class="property"> = 443</em><a class="headerlink" href="#pydocumentdb.https_connection.HTTPSConnection.default_port" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pydocumentdb.http_constants.html"
+                        title="previous chapter">pydocumentdb.http_constants module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pydocumentdb.query_iterable.html"
+                        title="next chapter">pydocumentdb.query_iterable module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/pydocumentdb.https_connection.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pydocumentdb.query_iterable.html" title="pydocumentdb.query_iterable module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pydocumentdb.http_constants.html" title="pydocumentdb.http_constants module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.4.2 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
@@ -6,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.base module &mdash; pydocumentdb 1.2.0 documentation</title>
+    <title>pydocumentdb.base module &mdash; pydocumentdb 1.6.0 documentation</title>
     
-    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.0',
+        VERSION:     '1.6.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,13 +24,13 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.2.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 1.6.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
-    <link rel="next" title="pydocumentdb.document_client module" href="pydocumentdb.document_client.html" />
+    <link rel="next" title="pydocumentdb.consistent_hash_ring module" href="pydocumentdb.consistent_hash_ring.html" />
     <link rel="prev" title="pydocumentdb.backoff_retry_utility module" href="pydocumentdb.backoff_retry_utility.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -40,28 +40,48 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.document_client.html" title="pydocumentdb.document_client module"
+          <a href="pydocumentdb.consistent_hash_ring.html" title="pydocumentdb.consistent_hash_ring module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pydocumentdb.backoff_retry_utility.html" title="pydocumentdb.backoff_retry_utility module"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">pydocumentdb 1.2.0 documentation</a> &raquo;</li>
-          <li><a href="modules.html" >pydocumentdb</a> &raquo;</li>
-          <li><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-pydocumentdb.base">
 <span id="pydocumentdb-base-module"></span><h1>pydocumentdb.base module<a class="headerlink" href="#module-pydocumentdb.base" title="Permalink to this headline">¶</a></h1>
 <p>Base functions.</p>
 <dl class="function">
+<dt id="pydocumentdb.base.DecodeBase64String">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">DecodeBase64String</code><span class="sig-paren">(</span><em>string_to_decode</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.DecodeBase64String" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a Base64 encoded string by replacing &#8216;-&#8216; with &#8216;/&#8217;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>string_to_decode</cite>: string to decode</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, path with beginning and ending slashes trimmed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pydocumentdb.base.GenerateGuidId">
-<tt class="descclassname">pydocumentdb.base.</tt><tt class="descname">GenerateGuidId</tt><big>(</big><big>)</big><a class="headerlink" href="#pydocumentdb.base.GenerateGuidId" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GenerateGuidId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.GenerateGuidId" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a random GUID.</p>
 <p>Note that here we use python&#8217;s UUID generation library. Basically UUID
 is the same as GUID when represented as a string.</p>
@@ -77,7 +97,7 @@ is the same as GUID when represented as a string.</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetAttachmentIdFromMediaId">
-<tt class="descclassname">pydocumentdb.base.</tt><tt class="descname">GetAttachmentIdFromMediaId</tt><big>(</big><em>media_id</em><big>)</big><a class="headerlink" href="#pydocumentdb.base.GetAttachmentIdFromMediaId" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetAttachmentIdFromMediaId</code><span class="sig-paren">(</span><em>media_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.GetAttachmentIdFromMediaId" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets attachment id from media id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -97,7 +117,7 @@ is the same as GUID when represented as a string.</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetHeaders">
-<tt class="descclassname">pydocumentdb.base.</tt><tt class="descname">GetHeaders</tt><big>(</big><em>document_client</em>, <em>default_headers</em>, <em>verb</em>, <em>path</em>, <em>resource_id</em>, <em>resource_type</em>, <em>options</em><big>)</big><a class="headerlink" href="#pydocumentdb.base.GetHeaders" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetHeaders</code><span class="sig-paren">(</span><em>document_client</em>, <em>default_headers</em>, <em>verb</em>, <em>path</em>, <em>resource_id</em>, <em>resource_type</em>, <em>options</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.GetHeaders" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets HTTP request headers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -122,9 +142,30 @@ is the same as GUID when represented as a string.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pydocumentdb.base.GetIdFromLink">
-<tt class="descclassname">pydocumentdb.base.</tt><tt class="descname">GetIdFromLink</tt><big>(</big><em>resource_link</em><big>)</big><a class="headerlink" href="#pydocumentdb.base.GetIdFromLink" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets resource id from resource link.</p>
+<dt id="pydocumentdb.base.GetPathFromLink">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetPathFromLink</code><span class="sig-paren">(</span><em>resource_link</em>, <em>resource_type=''</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.GetPathFromLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets path from resource link with optional resource type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>resource_link</cite>: str</li>
+<li><cite>resource_type</cite>: str</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, path from resource link with resource type appended(if provided).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydocumentdb.base.GetResourceIdOrFullNameFromLink">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetResourceIdOrFullNameFromLink</code><span class="sig-paren">(</span><em>resource_link</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.GetResourceIdOrFullNameFromLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets resource id or full name from resource link.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -134,7 +175,47 @@ is the same as GUID when represented as a string.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, the resource ID from the resource link.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, the resource id or full name from the resource link.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydocumentdb.base.IsNameBased">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsNameBased</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.IsNameBased" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds whether the link is name based or not</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>link</cite>: str</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">boolean, True if link is name based otherwise False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydocumentdb.base.TrimBeginningAndEndingSlashes">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">TrimBeginningAndEndingSlashes</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.TrimBeginningAndEndingSlashes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trims beginning and ending slashes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>path</cite>: str</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, path with beginning and ending slashes trimmed</p>
 </td>
 </tr>
 </tbody>
@@ -147,20 +228,22 @@ is the same as GUID when represented as a string.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="pydocumentdb.backoff_retry_utility.html"
                         title="previous chapter">pydocumentdb.backoff_retry_utility module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pydocumentdb.document_client.html"
-                        title="next chapter">pydocumentdb.document_client module</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/api/pydocumentdb.base.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <p class="topless"><a href="pydocumentdb.consistent_hash_ring.html"
+                        title="next chapter">pydocumentdb.consistent_hash_ring module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../sources/api/pydocumentdb.base.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -177,7 +260,7 @@ is the same as GUID when represented as a string.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -187,19 +270,19 @@ is the same as GUID when represented as a string.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.document_client.html" title="pydocumentdb.document_client module"
+          <a href="pydocumentdb.consistent_hash_ring.html" title="pydocumentdb.consistent_hash_ring module"
              >next</a> |</li>
         <li class="right" >
           <a href="pydocumentdb.backoff_retry_utility.html" title="pydocumentdb.backoff_retry_utility module"
              >previous</a> |</li>
-        <li><a href="../index.html">pydocumentdb 1.2.0 documentation</a> &raquo;</li>
-          <li><a href="modules.html" >pydocumentdb</a> &raquo;</li>
-          <li><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

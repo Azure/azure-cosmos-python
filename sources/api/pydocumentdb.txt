@@ -9,12 +9,18 @@ Submodules
    pydocumentdb.auth
    pydocumentdb.backoff_retry_utility
    pydocumentdb.base
+   pydocumentdb.consistent_hash_ring
    pydocumentdb.document_client
    pydocumentdb.documents
    pydocumentdb.errors
+   pydocumentdb.hash_partition_resolver
    pydocumentdb.http_constants
    pydocumentdb.https_connection
+   pydocumentdb.murmur_hash
+   pydocumentdb.partition
    pydocumentdb.query_iterable
+   pydocumentdb.range
+   pydocumentdb.range_partition_resolver
    pydocumentdb.runtime_constants
    pydocumentdb.synchronized_request
 

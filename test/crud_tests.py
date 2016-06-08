@@ -9,6 +9,13 @@ import json
 import os.path
 
 import pydocumentdb.documents as documents
+try:
+    # Python2.7
+    from __builtin__ import *
+except ImportError:
+    # Python3
+    import builtins
+
 import pydocumentdb.document_client as document_client
 import pydocumentdb.errors as errors
 import pydocumentdb.http_constants as http_constants

@@ -28,7 +28,6 @@ import test_partition_resolver as test_partition_resolver
 import pydocumentdb.base as base
 
 from struct import *
-from __builtin__ import *
 
 TEST_DB_NAME = 'sample database'
 

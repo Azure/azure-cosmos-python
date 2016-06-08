@@ -69,8 +69,13 @@ def __GetAuthorizationTokenUsingMasterKey(verb,
         resource_id_or_fullname=(resource_id_or_fullname or ''),
         x_date=headers.get(http_constants.HttpHeaders.XDate, '').lower(),
         http_date=headers.get(http_constants.HttpHeaders.HttpDate, '').lower())
-   
-    body = text.decode('utf8')
+
+    try:
+        # Python2.7 - decode from bytestring to unicode utf-8 string
+        body = text.decode('utf8')
+    except AttributeError:
+        # Python3 convert string to bytes array with utf-8 encoding
+        body = bytes(text, 'utf-8')
 
     hm = hmac.new(key, body, sha256)
     signature = hm.digest().encode('base64')

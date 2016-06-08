@@ -78,7 +78,14 @@ def __GetAuthorizationTokenUsingMasterKey(verb,
         body = bytes(text, 'utf-8')
 
     hm = hmac.new(key, body, sha256)
-    signature = base64.b64encode(hm.digest())
+    digest = hm.digest()
+    # Encode the digest for the signature
+    try:
+        # Python3 uses encodebytes, encodestring is deprecated
+        signature = base64.encodebytes(digest)
+    except AttributeError:
+        # Python2.7 uses encodestring
+        signature = base64.encodestring(digest)
 
     master_token = 'master'
     token_version = '1.0'

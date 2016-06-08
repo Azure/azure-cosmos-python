@@ -51,8 +51,10 @@ def _RequestBodyFromData(data):
     if isinstance(data, basestring) or _IsReadableStream(data):
         return data
     elif isinstance(data, (dict, list, tuple)):
-        return json.dumps(data, separators=(',',':')).decode('utf8')
-    return None
+        jsonstr = json.dumps(data, separators=(',', ':'))
+        if isinstance(jsonstr, bytes):
+            jsonstr = jsonstr.decode('utf8')
+    return jsonstr
 
 
 def _InternalRequest(connection_policy, request_options, request_body):

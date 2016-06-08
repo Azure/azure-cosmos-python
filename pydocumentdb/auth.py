@@ -2,9 +2,9 @@
 
 """Authorization helper functions.
 """
-
-from hashlib import sha256
+import base64
 import hmac
+from hashlib import sha256
 
 import pydocumentdb.http_constants as http_constants
 
@@ -58,7 +58,9 @@ def __GetAuthorizationTokenUsingMasterKey(verb,
         dict
 
     """
-    key = master_key.decode('base64')
+    # The master_key from Azure UI which the dev/user specifies is base64
+    # encoded.
+    key = base64.b64decode(master_key)
 
     # Skipping lower casing of resource_id_or_fullname since it may now contain "ID" of the resource as part of the fullname
     text = '{verb}\n{resource_type}\n{resource_id_or_fullname}\n{x_date}\n{http_date}\n'.format(

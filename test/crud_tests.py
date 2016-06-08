@@ -6,6 +6,7 @@
 import json
 import os.path
 import unittest
+import sys
 
 try:
     # Python2.7
@@ -15,7 +16,6 @@ except ImportError:
     import builtins
 
 from struct import *
-
 import pydocumentdb.base as base
 import pydocumentdb.consistent_hash_ring as consistent_hash_ring
 import pydocumentdb.document_client as document_client
@@ -26,7 +26,11 @@ import pydocumentdb.http_constants as http_constants
 import pydocumentdb.murmur_hash as murmur_hash
 import pydocumentdb.range as partition_range
 import pydocumentdb.range_partition_resolver as range_partition_resolver
-import test_partition_resolver as test_partition_resolver
+import test.test_partition_resolver as test_partition_resolver
+
+# If Python3, set long to int
+if sys.version_info > (3,):
+    long = int
 
 TEST_DB_NAME = 'sample database'
 
@@ -35,7 +39,6 @@ if masterKey == '[YOUR_KEY_HERE]' or host == '[YOUR_ENDPOINT_HERE]':
     raise Exception(
         "You must specify your Azure DocumentDB account values for "
         "'masterKey' and 'host' at the top of this file to run the tests.")
-
 
 #IMPORTANT NOTES:
   

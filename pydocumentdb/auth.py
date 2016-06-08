@@ -78,7 +78,7 @@ def __GetAuthorizationTokenUsingMasterKey(verb,
         body = bytes(text, 'utf-8')
 
     hm = hmac.new(key, body, sha256)
-    signature = hm.digest().encode('base64')
+    signature = base64.b64encode(hm.digest())
 
     master_token = 'master'
     token_version = '1.0'

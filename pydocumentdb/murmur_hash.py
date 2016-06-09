@@ -21,6 +21,13 @@
 
 from struct import *
 
+
+try:
+    xrange
+except NameError:
+    # In Python3 range is xrange
+    xrange = range
+
 '''
 pymmh3 was written by Fredrik Kihlander, and is placed in the public
 domain. The author hereby disclaims copyright to this source code.

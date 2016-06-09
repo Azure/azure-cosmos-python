@@ -160,8 +160,7 @@ def SynchronizedRequest(connection_policy,
         request_options['path'] += '?' + urllib.urlencode(query_params)
 
     request_options['headers'] = headers
-    if request_body and (type(request_body) is str or
-                         type(request_body) is unicode):
+    if request_body and (type(request_body) is str):
         request_options['headers'][http_constants.HttpHeaders.ContentLength] = (
             len(request_body))
     elif request_body == None:

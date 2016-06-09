@@ -25,6 +25,8 @@ from __builtin__ import *
 
 TEST_DB_NAME = 'sample database'
 
+masterKey = '[YOUR_KEY_HERE]'
+host = '[YOUR_ENDPOINT_HERE]'
 
 if masterKey == '[YOUR_KEY_HERE]' or host == '[YOUR_ENDPOINT_HERE]':
     raise Exception(

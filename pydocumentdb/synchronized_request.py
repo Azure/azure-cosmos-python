@@ -10,8 +10,6 @@ try:
 except ImportError:
     import urllib.parse as urlparse
 
-import urllib
-
 import pydocumentdb.documents as documents
 import pydocumentdb.errors as errors
 import pydocumentdb.http_constants as http_constants

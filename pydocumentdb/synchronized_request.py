@@ -49,6 +49,7 @@ def _RequestBodyFromData(data):
         str, unicode, file-like stream object, or None
 
     """
+    jsonstr = None
     if isinstance(data, basestring) or _IsReadableStream(data):
         return data
     elif isinstance(data, (dict, list, tuple)):
@@ -157,12 +158,12 @@ def SynchronizedRequest(connection_policy,
     request_options['path'] = path
     request_options['method'] = method
     if query_params:
-        request_options['path'] += '?' + urllib.urlencode(query_params)
+        request_options['path'] += '?' + urlparse.urlencode(query_params)
 
     request_options['headers'] = headers
     if request_body and (type(request_body) is str):
         request_options['headers'][http_constants.HttpHeaders.ContentLength] = (
             len(request_body))
-    elif request_body == None:
+    elif request_body is None:
         request_options['headers'][http_constants.HttpHeaders.ContentLength] = 0
     return _InternalRequest(connection_policy, request_options, request_body)

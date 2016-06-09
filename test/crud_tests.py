@@ -1744,14 +1744,14 @@ class CRUDTests(unittest.TestCase):
                     - `chunks`: list
 
                 """
-                self._chunks = []
                 if chunks is None:
                     chunks = ['first chunk ', 'second chunk']
-                    if sys.version_info > (3,):
-                        # Python3 httpclient ssl connection expects bytes data
-                        chunks = [c.encode('utf-8') for c in chunks]
 
-                    self._chunks = list(chunks)
+                if sys.version_info > (3,):
+                    # Python3 httpclient ssl connection expects bytes data
+                    chunks = [c.encode('utf-8') for c in chunks]
+
+                self._chunks = chunks
 
             def read(self, n=-1):
                 """Simulates the read method in a file stream.

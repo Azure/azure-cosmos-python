@@ -6,6 +6,7 @@
 import base64
 import datetime
 import json
+import sys
 
 try:
     from urllib.parse import quote as urllib_quote
@@ -189,13 +190,20 @@ def GetAttachmentIdFromMediaId(media_id):
 
     """
     altchars = '+-'
+    if sys.version_info > (3,):
+        # Python3 httpclient ssl connection expects bytes data
+        altchars = altchars.encode('utf-8')
     # altchars for '+' and '/'. We keep '+' but replace '/' with '-'
     buffer = base64.b64decode(str(media_id), altchars)
     resoure_id_length = 20
     attachment_id = ''
     if len(buffer) > resoure_id_length:
-        # We are cuting off the storage index.
+        # We are cutting off the storage index.
         attachment_id = base64.b64encode(buffer[0:resoure_id_length], altchars)
+        if sys.version_info > (3,):
+            # Python3: further code which uses the attachment_id expects it to
+            # be a string, not bytes.
+            attachment_id = attachment_id.decode('utf-8')
     else:
         attachment_id = media_id
 

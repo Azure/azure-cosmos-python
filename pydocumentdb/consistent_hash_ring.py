@@ -20,7 +20,16 @@
 #SOFTWARE.
 
 import pydocumentdb.partition as partition
+
 from struct import *
+
+
+try:
+    basestring
+except NameError:
+    # Python3 doesn't have basestring
+    basestring = (str, bytes)
+
 
 class _ConsistentHashRing(object):
     """The ConsistentHashRing class implements a consistent hash ring using the 

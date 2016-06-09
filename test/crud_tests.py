@@ -48,6 +48,48 @@ if masterKey == '[YOUR_KEY_HERE]' or host == '[YOUR_ENDPOINT_HERE]':
 #  	To Run the test, replace the two member fields (masterKey and host) with values 
 #   associated with your DocumentDB account.
 
+
+class ReadableStream(object):
+    """Customized file-like stream.
+    """
+
+    def __init__(self, chunks=None):
+        """Initialization.
+
+        :Parameters:
+            - `chunks`: list
+
+        """
+        if chunks is None:
+            chunks = ['first chunk ', 'second chunk']
+
+        if sys.version_info > (3,):
+            # Python3 httpclient ssl connection expects bytes data
+            chunks = [c.encode('utf-8') for c in chunks]
+
+        self._chunks = chunks
+
+    def read(self, n=-1):
+        """Simulates the read method in a file stream.
+
+        :Parameters:
+            - `n`: int
+
+        :Returns:
+            str
+
+        """
+        if self._chunks:
+            return self._chunks.pop(0)
+        else:
+            return ''
+
+    def __len__(self):
+        """To make len(ReadableStream) work.
+        """
+        return sum([len(chunk) for chunk in self._chunks])
+
+
 class CRUDTests(unittest.TestCase):
     """Python CRUD Tests.
     """
@@ -648,38 +690,7 @@ class CRUDTests(unittest.TestCase):
         client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
 
     def test_partitioned_collection_attachment_crud_and_query(self):
-        class ReadableStream(object):
-            """Customized file-like stream.
-            """
 
-            def __init__(self, chunks = ['first chunk ', 'second chunk']):
-                """Initialization.
-
-                :Parameters:
-                    - `chunks`: list
-
-                """
-                self._chunks = list(chunks)
-
-            def read(self, n=-1):
-                """Simulates the read method in a file stream.
-
-                :Parameters:
-                    - `n`: int
-
-                :Returns:
-                    str
-
-                """
-                if self._chunks:
-                    return self._chunks.pop(0)
-                else:
-                    return ''
-
-            def __len__(self):
-                """To make len(ReadableStream) work.
-                """
-                return sum([len(chunk) for chunk in self._chunks])
 
 
         client = document_client.DocumentClient(host, {'masterKey': masterKey})
@@ -1733,47 +1744,6 @@ class CRUDTests(unittest.TestCase):
         self._test_attachment_crud(True);
         
     def _test_attachment_crud(self, is_name_based):
-        class ReadableStream(object):
-            """Customized file-like stream.
-            """
-
-            def __init__(self, chunks=None):
-                """Initialization.
-
-                :Parameters:
-                    - `chunks`: list
-
-                """
-                if chunks is None:
-                    chunks = ['first chunk ', 'second chunk']
-
-                if sys.version_info > (3,):
-                    # Python3 httpclient ssl connection expects bytes data
-                    chunks = [c.encode('utf-8') for c in chunks]
-
-                self._chunks = chunks
-
-            def read(self, n=-1):
-                """Simulates the read method in a file stream.
-
-                :Parameters:
-                    - `n`: int
-
-                :Returns:
-                    str
-
-                """
-                if self._chunks:
-                    return self._chunks.pop(0)
-                else:
-                    return ''
-
-            def __len__(self):
-                """To make len(ReadableStream) work.
-                """
-                return sum([len(chunk) for chunk in self._chunks])
-
-
         # Should do attachment CRUD operations successfully
         client = document_client.DocumentClient(host,
                                                 {'masterKey': masterKey})
@@ -1906,39 +1876,6 @@ class CRUDTests(unittest.TestCase):
         self._test_attachment_upsert(True);
         
     def _test_attachment_upsert(self, is_name_based):
-        class ReadableStream(object):
-            """Customized file-like stream.
-            """
-
-            def __init__(self, chunks = ['first chunk ', 'second chunk']):
-                """Initialization.
-
-                :Parameters:
-                    - `chunks`: list
-
-                """
-                self._chunks = list(chunks)
-
-            def read(self, n=-1):
-                """Simulates the read method in a file stream.
-
-                :Parameters:
-                    - `n`: int
-
-                :Returns:
-                    str
-
-                """
-                if self._chunks:
-                    return self._chunks.pop(0)
-                else:
-                    return ''
-
-            def __len__(self):
-                """To make len(ReadableStream) work.
-                """
-                return sum([len(chunk) for chunk in self._chunks])
-
         client = document_client.DocumentClient(host,
                                                 {'masterKey': masterKey})
         

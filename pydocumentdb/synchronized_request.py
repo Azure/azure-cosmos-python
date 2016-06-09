@@ -147,9 +147,9 @@ def SynchronizedRequest(connection_policy,
     if request_data:
         request_body = _RequestBodyFromData(request_data)
         if not request_body:
-           raise errors.UnexpectedDataType(
-               'parameter data must be a JSON object, string or' +
-               ' readable stream.')
+            raise errors.UnexpectedDataType(
+                'parameter data must be a JSON object, string or' +
+                ' readable stream.')
 
     request_options = {}
     parse_result = urlparse.urlparse(base_url)

@@ -4,6 +4,7 @@
 """
 
 import json
+import sys
 try:
     import urlparse
 except ImportError:
@@ -36,7 +37,7 @@ except NameError:
 
 
 def _RequestBodyFromData(data):
-    """Gets requestion body from data.
+    """Gets request body from data.
 
     When `data` is dict and list into unicode string; otherwise return `data`
     without making any change.
@@ -109,10 +110,10 @@ def _InternalRequest(connection_policy, request_options, request_body):
         result = data
     else:
         if len(data) > 0:
-            try:
-                result = json.loads(data)
-            except:
-                raise errors.JSONParseFailure(data)
+            # In Python3 data is utf8 encoded bytes, decode to string for json
+            if sys.version_info > (3,):
+                data = data.decode('utf-8')
+            result = json.loads(data)
 
     return (result, headers)
 

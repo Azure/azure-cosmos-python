@@ -1737,14 +1737,21 @@ class CRUDTests(unittest.TestCase):
             """Customized file-like stream.
             """
 
-            def __init__(self, chunks = ['first chunk ', 'second chunk']):
+            def __init__(self, chunks=None):
                 """Initialization.
 
                 :Parameters:
                     - `chunks`: list
 
                 """
-                self._chunks = list(chunks)
+                self._chunks = []
+                if chunks is None:
+                    chunks = ['first chunk ', 'second chunk']
+                    if sys.version_info > (3,):
+                        # Python3 httpclient ssl connection expects bytes data
+                        chunks = [c.encode('utf-8') for c in chunks]
+
+                    self._chunks = list(chunks)
 
             def read(self, n=-1):
                 """Simulates the read method in a file stream.

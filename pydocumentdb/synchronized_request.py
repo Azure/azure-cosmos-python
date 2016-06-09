@@ -33,6 +33,12 @@ try:
 except NameError:
     basestring = (str, bytes)
 
+try:
+    unicode
+except NameError:
+    # Python3 doesn't have unicode as a keyword
+    unicode = None
+
 
 def _RequestBodyFromData(data):
     """Gets request body from data.
@@ -159,7 +165,9 @@ def SynchronizedRequest(connection_policy,
         request_options['path'] += '?' + urlparse.urlencode(query_params)
 
     request_options['headers'] = headers
-    if request_body and (type(request_body) is str):
+    if (request_body and
+            (type(request_body) in [str, bytes] or
+             (unicode is not None and type(request_body) is unicode))):
         request_options['headers'][http_constants.HttpHeaders.ContentLength] = (
             len(request_body))
     elif request_body is None:

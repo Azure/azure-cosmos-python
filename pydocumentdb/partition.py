@@ -38,7 +38,10 @@ class _Partition(object):
         if self == other:
             return 0
         return self.CompareTo(other.hash_value)
-    
+
+    def __lt__(self, other):
+        return self.__cmp__(other)
+
     def CompareTo(self, other_hash_value):
         """Compares the passed hash value with the hash value of this object
         """

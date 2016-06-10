@@ -1869,11 +1869,11 @@ class CRUDTests(unittest.TestCase):
 
     # Upsert test for Attachment resource - selflink version
     def test_attachment_upsert_self_link(self):
-        self._test_attachment_upsert(False);
+        self._test_attachment_upsert(False)
 
     # Upsert test for Attachment resource - name based routing version
     def test_attachment_upsert_name_based(self):
-        self._test_attachment_upsert(True);
+        self._test_attachment_upsert(True)
         
     def _test_attachment_upsert(self, is_name_based):
         client = document_client.DocumentClient(host,
@@ -3584,35 +3584,35 @@ class CRUDTests(unittest.TestCase):
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id ends with a space.', e.message)
+            self.assertEqual('Id ends with a space.', str(e))
         # Id shouldn't contain '/'.
         database_definition = { 'id': 'id_with_illegal/_char' }
         try:
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id contains illegal chars.', e.message)
+            self.assertEqual('Id contains illegal chars.', str(e))
         # Id shouldn't contain '\\'.
         database_definition = { 'id': 'id_with_illegal\\_char' }
         try:
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id contains illegal chars.', e.message)
+            self.assertEqual('Id contains illegal chars.', str(e))
         # Id shouldn't contain '?'.
         database_definition = { 'id': 'id_with_illegal?_char' }
         try:
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id contains illegal chars.', e.message)
+            self.assertEqual('Id contains illegal chars.', str(e))
         # Id shouldn't contain '#'.
         database_definition = { 'id': 'id_with_illegal#_char' }
         try:
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id contains illegal chars.', e.message)
+            self.assertEqual('Id contains illegal chars.', str(e))
 
         # Id can begin with space
         database_definition = { 'id': ' id_begin_space' }

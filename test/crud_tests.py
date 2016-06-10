@@ -1825,7 +1825,7 @@ class CRUDTests(unittest.TestCase):
         # read attachment media
         media_response = client.ReadMedia(valid_attachment['media'])
         self.assertEqual(media_response,
-                         'first chunk second chunk')
+                         b'first chunk second chunk')
         content_stream = ReadableStream(['modified first chunk ',
                                          'modified second chunk'])
         # update attachment media
@@ -1836,13 +1836,13 @@ class CRUDTests(unittest.TestCase):
         # read media buffered
         media_response = client.ReadMedia(valid_attachment['media'])
         self.assertEqual(media_response,
-                         'modified first chunk modified second chunk')
+                         b'modified first chunk modified second chunk')
         # read media streamed
         client.connection_policy.MediaReadMode = (
             documents.MediaReadMode.Streamed)
         media_response = client.ReadMedia(valid_attachment['media'])
         self.assertEqual(media_response.read(),
-                         'modified first chunk modified second chunk')
+                         b'modified first chunk modified second chunk')
         # share attachment with a second document
         document = client.CreateDocument(self.GetDocumentCollectionLink(db, collection, is_name_based),
                                          {'id': 'document 2'})

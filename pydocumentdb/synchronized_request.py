@@ -107,6 +107,7 @@ def _InternalRequest(connection_policy, request_options, request_body):
         return (response, headers)
 
     data = response.read()
+    connection.close()
     if response.status >= 400:
         raise errors.HTTPFailure(response.status, data, headers)
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.range module &mdash; pydocumentdb 1.6.0 documentation</title>
+    <title>pydocumentdb.range module &mdash; pydocumentdb 1.8.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.6.0',
+        VERSION:     '1.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.6.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 1.8.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.range_partition_resolver module" href="pydocumentdb.range_partition_resolver.html" />
     <link rel="prev" title="pydocumentdb.query_iterable module" href="pydocumentdb.query_iterable.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="pydocumentdb.query_iterable.html" title="pydocumentdb.query_iterable module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
       </ul>
@@ -56,8 +56,27 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pydocumentdb-range-module">
-<h1>pydocumentdb.range module<a class="headerlink" href="#pydocumentdb-range-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pydocumentdb.range">
+<span id="pydocumentdb-range-module"></span><h1>pydocumentdb.range module<a class="headerlink" href="#module-pydocumentdb.range" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pydocumentdb.range.Range">
+<em class="property">class </em><code class="descclassname">pydocumentdb.range.</code><code class="descname">Range</code><span class="sig-paren">(</span><em>low</em>, <em>high</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.range.Range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Represents the Range class used to map the partition key of the document to their associated collection.</p>
+<dl class="method">
+<dt id="pydocumentdb.range.Range.Contains">
+<code class="descname">Contains</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.range.Range.Contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the passed parameter is in the range of this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydocumentdb.range.Range.Intersect">
+<code class="descname">Intersect</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.range.Range.Intersect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the passed parameter intersects the range of this object.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -111,7 +130,7 @@
         <li class="right" >
           <a href="pydocumentdb.query_iterable.html" title="pydocumentdb.query_iterable module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
       </ul>

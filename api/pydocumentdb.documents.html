@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.documents module &mdash; pydocumentdb 1.6.0 documentation</title>
+    <title>pydocumentdb.documents module &mdash; pydocumentdb 1.8.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.6.0',
+        VERSION:     '1.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,9 +24,9 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.6.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 1.8.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
-    <link rel="next" title="pydocumentdb.errors module" href="pydocumentdb.errors.html" />
+    <link rel="next" title="pydocumentdb.endpoint_discovery_retry_policy module" href="pydocumentdb.endpoint_discovery_retry_policy.html" />
     <link rel="prev" title="pydocumentdb.document_client module" href="pydocumentdb.document_client.html" /> 
   </head>
   <body role="document">
@@ -40,12 +40,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.errors.html" title="pydocumentdb.errors module"
+          <a href="pydocumentdb.endpoint_discovery_retry_policy.html" title="pydocumentdb.endpoint_discovery_retry_policy module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pydocumentdb.document_client.html" title="pydocumentdb.document_client module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
       </ul>
@@ -92,17 +92,40 @@ gateway proxies requests to the right data partition.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>RequestTimeout</cite>: int, gets or sets the request timeout (time to wait
-for response from network peer)</li>
-<li><cite>MediaRequestTimeout</cite>: int, gets or sets Time to wait for response
-from network peer for attachment content (aka media) operations.</li>
-<li><cite>ConnectionMode</cite>: int (documents.ConnectionMode), gets or sets the
-connection mode used in the client. Currently only Gateway is supported.</li>
-<li><cite>MediaReadMode</cite>: str (MediaReadMode.Buffered), gets or sets the
-attachment content (aka media) download mode.</li>
-<li><cite>SSLConfiguration</cite>: documents.SSLConfiguration, gets or sets the SSL configuration.</li>
-<li><cite>ProxyConfiguration</cite>: documents.ProxyConfiguration, gets or sets the proxy configuration.</li>
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last">
+<li><p class="first"><cite>RequestTimeout</cite>: int, gets or sets the request timeout (time to wait
+for response from network peer)</p>
+</li>
+<li><p class="first"><cite>MediaRequestTimeout</cite>: int, gets or sets Time to wait for response
+from network peer for attachment content (aka media) operations.</p>
+</li>
+<li><p class="first"><cite>ConnectionMode</cite>: int (documents.ConnectionMode), gets or sets the
+connection mode used in the client. Currently only Gateway is supported.</p>
+</li>
+<li><p class="first"><cite>MediaReadMode</cite>: str (MediaReadMode.Buffered), gets or sets the
+attachment content (aka media) download mode.</p>
+</li>
+<li><p class="first"><cite>SSLConfiguration</cite>: documents.SSLConfiguration, gets or sets the SSL configuration.</p>
+</li>
+<li><p class="first"><cite>ProxyConfiguration</cite>: documents.ProxyConfiguration, gets or sets the proxy configuration.</p>
+</li>
+<li><dl class="first docutils">
+<dt><cite>EnableEndpointDiscovery</cite>: boolean, gets or sets endpoint discovery flag for geo-replicated database accounts.</dt>
+<dd><p class="first last">When EnableEndpointDiscovery is true, the client will automatically discover the
+current write and read locations and direct the requests to the correct location
+taking into consideration of the user&#8217;s preference(if provided) as PreferredLocations.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><cite>PreferredLocations</cite>: list, gets or sets the preferred locations for geo-replicated database accounts.</dt>
+<dd><p class="first last">When EnableEndpointDiscovery is true and PreferredLocations is non-empty, 
+the client will use this list to evaluate the final location, taking into consideration
+the order specified in PreferredLocations list. The locations in this list are specified as the names of
+the azure documentdb locations like, &#8216;West US&#8217;, &#8216;East US&#8217;, &#8216;Central India&#8217; and so on.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </td>
 </tr>
@@ -234,6 +257,18 @@ interval.</p>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pydocumentdb.documents.DatabaseAccount.ReadableLocations">
+<code class="descname">ReadableLocations</code><a class="headerlink" href="#pydocumentdb.documents.DatabaseAccount.ReadableLocations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of readable locations for a geo-replicated database account.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydocumentdb.documents.DatabaseAccount.WritableLocations">
+<code class="descname">WritableLocations</code><a class="headerlink" href="#pydocumentdb.documents.DatabaseAccount.WritableLocations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of writable locations for a geo-replicated database account.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -385,6 +420,29 @@ writing media files.</p>
 <dl class="attribute">
 <dt id="pydocumentdb.documents.MediaReadMode.Streamed">
 <code class="descname">Streamed</code><em class="property"> = 'Streamed'</em><a class="headerlink" href="#pydocumentdb.documents.MediaReadMode.Streamed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydocumentdb.documents.PartitionKind">
+<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">PartitionKind</code><a class="headerlink" href="#pydocumentdb.documents.PartitionKind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Specifies the kind of partitioning to be applied.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
+<li><cite>Hash</cite>: The partition key definition path is hashed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pydocumentdb.documents.PartitionKind.Hash">
+<code class="descname">Hash</code><em class="property"> = 'Hash'</em><a class="headerlink" href="#pydocumentdb.documents.PartitionKind.Hash" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -559,6 +617,13 @@ writing media files.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="pydocumentdb.documents.Undefined">
+<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">Undefined</code><a class="headerlink" href="#pydocumentdb.documents.Undefined" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Represents undefined value for partitionKey when it&#8217;s mising.</p>
+</dd></dl>
+
 </div>
 
 
@@ -571,8 +636,8 @@ writing media files.</p>
   <p class="topless"><a href="pydocumentdb.document_client.html"
                         title="previous chapter">pydocumentdb.document_client module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pydocumentdb.errors.html"
-                        title="next chapter">pydocumentdb.errors module</a></p>
+  <p class="topless"><a href="pydocumentdb.endpoint_discovery_retry_policy.html"
+                        title="next chapter">pydocumentdb.endpoint_discovery_retry_policy module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -607,12 +672,12 @@ writing media files.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.errors.html" title="pydocumentdb.errors module"
+          <a href="pydocumentdb.endpoint_discovery_retry_policy.html" title="pydocumentdb.endpoint_discovery_retry_policy module"
              >next</a> |</li>
         <li class="right" >
           <a href="pydocumentdb.document_client.html" title="pydocumentdb.document_client module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
       </ul>

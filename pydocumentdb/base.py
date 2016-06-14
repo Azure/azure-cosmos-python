@@ -6,7 +6,13 @@
 import base64
 import datetime
 import json
-import urllib
+import sys
+
+try:
+    from urllib.parse import quote as urllib_quote
+except ImportError:
+    from urllib import quote as urllib_quote
+
 import uuid
 
 import pydocumentdb.auth as auth
@@ -97,9 +103,13 @@ def GetHeaders(document_client,
         headers[http_constants.HttpHeaders.OfferThroughput] = options['offerThroughput']
 
     if 'partitionKey' in options:
-        # if partitionKey value is Undefined, serailize it as {} to be consistent with other SDKs
+        # if partitionKey value is Undefined, serialize it as {} to be consistent with other SDKs
         if options.get('partitionKey') is documents.Undefined:
-            headers[http_constants.HttpHeaders.PartitionKey] = [{}]
+            import sys
+            if sys.version_info > (3,):
+                headers[http_constants.HttpHeaders.PartitionKey] = '[{}]'.encode('utf-8')
+            else:
+                headers[http_constants.HttpHeaders.PartitionKey] = [{}]
         # else serialize using json dumps method which apart from regular values will serialize None into null
         else:
             headers[http_constants.HttpHeaders.PartitionKey] = json.dumps([options['partitionKey']])
@@ -113,7 +123,7 @@ def GetHeaders(document_client,
 
     if document_client.master_key or document_client.resource_tokens:
         # -_.!~*'() are valid characters in url, and shouldn't be quoted.
-        headers[http_constants.HttpHeaders.Authorization] = urllib.quote(
+        headers[http_constants.HttpHeaders.Authorization] = urllib_quote(
             auth.GetAuthorizationHeader(document_client,
                                         verb,
                                         path,
@@ -184,13 +194,20 @@ def GetAttachmentIdFromMediaId(media_id):
 
     """
     altchars = '+-'
+    if sys.version_info > (3,):
+        # Python3 httpclient ssl connection expects bytes data
+        altchars = altchars.encode('utf-8')
     # altchars for '+' and '/'. We keep '+' but replace '/' with '-'
     buffer = base64.b64decode(str(media_id), altchars)
     resoure_id_length = 20
     attachment_id = ''
     if len(buffer) > resoure_id_length:
-        # We are cuting off the storage index.
+        # We are cutting off the storage index.
         attachment_id = base64.b64encode(buffer[0:resoure_id_length], altchars)
+        if sys.version_info > (3,):
+            # Python3: further code which uses the attachment_id expects it to
+            # be a string, not bytes.
+            attachment_id = attachment_id.decode('utf-8')
     else:
         attachment_id = media_id
 
@@ -225,7 +242,7 @@ def GetPathFromLink(resource_link, resource_type=''):
     if IsNameBased(resource_link):
         # Replace special characters in string using the %xx escape. For example, space(' ') would be replaced by %20
         # This function is intended for quoting the path section of the URL and excludes '/' to be quoted as that's the default safe char
-        resource_link = urllib.quote(resource_link)
+        resource_link = urllib_quote(resource_link)
         
     # Padding leading and trailing slashes to the path returned both for name based and resource id based links
     if resource_type:

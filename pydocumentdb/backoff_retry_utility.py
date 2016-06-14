@@ -22,7 +22,7 @@ def Execute(callback_fn, resource_throttle_retry_policy):
         try:
             callback_fn()
             break  # Break from the while loop if no exception happened.
-        except Exception, e:
+        except Exception as e:
             should_retry = resource_throttle_retry_policy.ShouldRetry(e)
             if not should_retry:
                 raise

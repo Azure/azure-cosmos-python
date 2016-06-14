@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.errors module &mdash; pydocumentdb 1.6.0 documentation</title>
+    <title>pydocumentdb.errors module &mdash; pydocumentdb 1.8.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.6.0',
+        VERSION:     '1.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,10 +24,10 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.6.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 1.8.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
-    <link rel="next" title="pydocumentdb.hash_partition_resolver module" href="pydocumentdb.hash_partition_resolver.html" />
-    <link rel="prev" title="pydocumentdb.documents module" href="pydocumentdb.documents.html" /> 
+    <link rel="next" title="pydocumentdb.global_endpoint_manager module" href="pydocumentdb.global_endpoint_manager.html" />
+    <link rel="prev" title="pydocumentdb.endpoint_discovery_retry_policy module" href="pydocumentdb.endpoint_discovery_retry_policy.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -40,12 +40,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.hash_partition_resolver.html" title="pydocumentdb.hash_partition_resolver module"
+          <a href="pydocumentdb.global_endpoint_manager.html" title="pydocumentdb.global_endpoint_manager module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.documents.html" title="pydocumentdb.documents module"
+          <a href="pydocumentdb.endpoint_discovery_retry_policy.html" title="pydocumentdb.endpoint_discovery_retry_policy module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
       </ul>
@@ -68,7 +68,7 @@
 
 <dl class="exception">
 <dt id="pydocumentdb.errors.HTTPFailure">
-<em class="property">exception </em><code class="descclassname">pydocumentdb.errors.</code><code class="descname">HTTPFailure</code><span class="sig-paren">(</span><em>status_code</em>, <em>message=''</em>, <em>headers={}</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.errors.HTTPFailure" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><code class="descclassname">pydocumentdb.errors.</code><code class="descname">HTTPFailure</code><span class="sig-paren">(</span><em>status_code</em>, <em>message=''</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.errors.HTTPFailure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydocumentdb.errors.DocumentDBError" title="pydocumentdb.errors.DocumentDBError"><code class="xref py py-class docutils literal"><span class="pre">pydocumentdb.errors.DocumentDBError</span></code></a></p>
 <p>Raised when a HTTP request to the DocumentDB has failed.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -105,11 +105,11 @@ message: str</td>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pydocumentdb.documents.html"
-                        title="previous chapter">pydocumentdb.documents module</a></p>
+  <p class="topless"><a href="pydocumentdb.endpoint_discovery_retry_policy.html"
+                        title="previous chapter">pydocumentdb.endpoint_discovery_retry_policy module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pydocumentdb.hash_partition_resolver.html"
-                        title="next chapter">pydocumentdb.hash_partition_resolver module</a></p>
+  <p class="topless"><a href="pydocumentdb.global_endpoint_manager.html"
+                        title="next chapter">pydocumentdb.global_endpoint_manager module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -144,12 +144,12 @@ message: str</td>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.hash_partition_resolver.html" title="pydocumentdb.hash_partition_resolver module"
+          <a href="pydocumentdb.global_endpoint_manager.html" title="pydocumentdb.global_endpoint_manager module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.documents.html" title="pydocumentdb.documents module"
+          <a href="pydocumentdb.endpoint_discovery_retry_policy.html" title="pydocumentdb.endpoint_discovery_retry_policy module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
       </ul>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.synchronized_request module &mdash; pydocumentdb 1.6.0 documentation</title>
+    <title>pydocumentdb.synchronized_request module &mdash; pydocumentdb 1.8.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.6.0',
+        VERSION:     '1.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.6.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 1.8.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="prev" title="pydocumentdb.runtime_constants module" href="pydocumentdb.runtime_constants.html" /> 
   </head>
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="pydocumentdb.runtime_constants.html" title="pydocumentdb.runtime_constants module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
       </ul>
@@ -57,13 +57,14 @@
 <p>Synchronized request.</p>
 <dl class="function">
 <dt id="pydocumentdb.synchronized_request.SynchronizedRequest">
-<code class="descclassname">pydocumentdb.synchronized_request.</code><code class="descname">SynchronizedRequest</code><span class="sig-paren">(</span><em>connection_policy</em>, <em>method</em>, <em>base_url</em>, <em>path</em>, <em>request_data</em>, <em>query_params</em>, <em>headers</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.synchronized_request.SynchronizedRequest" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.synchronized_request.</code><code class="descname">SynchronizedRequest</code><span class="sig-paren">(</span><em>global_endpoint_manager</em>, <em>connection_policy</em>, <em>method</em>, <em>base_url</em>, <em>path</em>, <em>request_data</em>, <em>query_params</em>, <em>headers</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.synchronized_request.SynchronizedRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs one synchronized http request according to the parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>global_endpoint_manager</cite>: _GlobalEndpointManager</li>
 <li><cite>connection_policy</cite>: documents.ConnectionPolicy</li>
 <li><cite>method</cite>: str</li>
 <li><cite>base_url</cite>: str</li>
@@ -130,7 +131,7 @@ are dicts.</p>
         <li class="right" >
           <a href="pydocumentdb.runtime_constants.html" title="pydocumentdb.runtime_constants module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
       </ul>

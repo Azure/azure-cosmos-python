@@ -10,9 +10,12 @@ Submodules
    pydocumentdb.backoff_retry_utility
    pydocumentdb.base
    pydocumentdb.consistent_hash_ring
+   pydocumentdb.constants
    pydocumentdb.document_client
    pydocumentdb.documents
+   pydocumentdb.endpoint_discovery_retry_policy
    pydocumentdb.errors
+   pydocumentdb.global_endpoint_manager
    pydocumentdb.hash_partition_resolver
    pydocumentdb.http_constants
    pydocumentdb.https_connection

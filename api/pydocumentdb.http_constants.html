@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.http_constants module &mdash; pydocumentdb 1.6.0 documentation</title>
+    <title>pydocumentdb.http_constants module &mdash; pydocumentdb 1.8.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.6.0',
+        VERSION:     '1.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.6.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 1.8.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.https_connection module" href="pydocumentdb.https_connection.html" />
     <link rel="prev" title="pydocumentdb.hash_partition_resolver module" href="pydocumentdb.hash_partition_resolver.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="pydocumentdb.hash_partition_resolver.html" title="pydocumentdb.hash_partition_resolver module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
       </ul>
@@ -253,6 +253,11 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="pydocumentdb.http_constants.HttpHeaders.EnableCrossPartitionQuery">
+<code class="descname">EnableCrossPartitionQuery</code><em class="property"> = 'x-ms-documentdb-query-enablecrosspartition'</em><a class="headerlink" href="#pydocumentdb.http_constants.HttpHeaders.EnableCrossPartitionQuery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pydocumentdb.http_constants.HttpHeaders.EnableScanInQuery">
 <code class="descname">EnableScanInQuery</code><em class="property"> = 'x-ms-documentdb-query-enable-scan'</em><a class="headerlink" href="#pydocumentdb.http_constants.HttpHeaders.EnableScanInQuery" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -403,6 +408,11 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="pydocumentdb.http_constants.HttpHeaders.OfferThroughput">
+<code class="descname">OfferThroughput</code><em class="property"> = 'x-ms-offer-throughput'</em><a class="headerlink" href="#pydocumentdb.http_constants.HttpHeaders.OfferThroughput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pydocumentdb.http_constants.HttpHeaders.OfferType">
 <code class="descname">OfferType</code><em class="property"> = 'x-ms-offer-type'</em><a class="headerlink" href="#pydocumentdb.http_constants.HttpHeaders.OfferType" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -425,6 +435,11 @@
 <dl class="attribute">
 <dt id="pydocumentdb.http_constants.HttpHeaders.PageSize">
 <code class="descname">PageSize</code><em class="property"> = 'x-ms-max-item-count'</em><a class="headerlink" href="#pydocumentdb.http_constants.HttpHeaders.PageSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydocumentdb.http_constants.HttpHeaders.PartitionKey">
+<code class="descname">PartitionKey</code><em class="property"> = 'x-ms-documentdb-partitionkey'</em><a class="headerlink" href="#pydocumentdb.http_constants.HttpHeaders.PartitionKey" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -515,6 +530,11 @@
 <dl class="attribute">
 <dt id="pydocumentdb.http_constants.HttpHeaders.Slug">
 <code class="descname">Slug</code><em class="property"> = 'Slug'</em><a class="headerlink" href="#pydocumentdb.http_constants.HttpHeaders.Slug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydocumentdb.http_constants.HttpHeaders.SubStatus">
+<code class="descname">SubStatus</code><em class="property"> = 'x-ms-substatus'</em><a class="headerlink" href="#pydocumentdb.http_constants.HttpHeaders.SubStatus" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -814,12 +834,12 @@
 <dd><p>Constants of versions.</p>
 <dl class="attribute">
 <dt id="pydocumentdb.http_constants.Versions.CurrentVersion">
-<code class="descname">CurrentVersion</code><em class="property"> = '2015-08-06'</em><a class="headerlink" href="#pydocumentdb.http_constants.Versions.CurrentVersion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CurrentVersion</code><em class="property"> = '2016-05-30'</em><a class="headerlink" href="#pydocumentdb.http_constants.Versions.CurrentVersion" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pydocumentdb.http_constants.Versions.UserAgent">
-<code class="descname">UserAgent</code><em class="property"> = 'documentdb-python-sdk-1.2.0'</em><a class="headerlink" href="#pydocumentdb.http_constants.Versions.UserAgent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UserAgent</code><em class="property"> = 'documentdb-python-sdk-1.8.0'</em><a class="headerlink" href="#pydocumentdb.http_constants.Versions.UserAgent" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -877,7 +897,7 @@
         <li class="right" >
           <a href="pydocumentdb.hash_partition_resolver.html" title="pydocumentdb.hash_partition_resolver module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
       </ul>

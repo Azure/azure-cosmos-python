@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.query_iterable module &mdash; pydocumentdb 1.6.0 documentation</title>
+    <title>pydocumentdb.query_iterable module &mdash; pydocumentdb 1.8.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.6.0',
+        VERSION:     '1.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.6.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 1.8.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.range module" href="pydocumentdb.range.html" />
     <link rel="prev" title="pydocumentdb.partition module" href="pydocumentdb.partition.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="pydocumentdb.partition.html" title="pydocumentdb.partition module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
       </ul>
@@ -69,9 +69,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><cite>options</cite>: dict</li>
-<li><cite>retry_policy</cite>: documents.RetryPolicy</li>
-<li><cite>fetch_function</cite>: function</li>
+<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><cite>retry_policy</cite>: documents.RetryPolicy, retry policy to be used</li>
+<li><cite>fetch_function</cite>: function, for executing the feed query</li>
 </ul>
 </td>
 </tr>
@@ -93,10 +93,50 @@
 
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable">
+<em class="property">classmethod </em><code class="descclassname">QueryIterable.</code><code class="descname">PartitioningQueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>options</em>, <em>retry_policy</em>, <em>database_link</em>, <em>query</em>, <em>partition_key</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><cite>client</cite>: DocumentClient, instance of document client</li>
+<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><cite>retry_policy</cite>: documents.RetryPolicy, retry policy to be used</li>
+<li><cite>database_link</cite>: str, database self link or ID based link</li>
+<li><cite>query</cite>: str or dict</li>
+<li><cite>partition_key</cite>: str, partition key for the query</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example of <cite>fetch_function</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">result_fn</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;Databases&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydocumentdb.query_iterable.QueryIterable.fetch_items">
+<code class="descclassname">QueryIterable.</code><code class="descname">fetch_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.fetch_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches more items.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of fetched items.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydocumentdb.query_iterable.QueryIterable.fetch_next_block">
 <code class="descclassname">QueryIterable.</code><code class="descname">fetch_next_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.fetch_next_block" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetches more items.</p>
+<dd><p>Fetches the next block of query results.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -162,7 +202,7 @@
         <li class="right" >
           <a href="pydocumentdb.partition.html" title="pydocumentdb.partition module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
       </ul>

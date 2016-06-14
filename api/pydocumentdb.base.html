@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.base module &mdash; pydocumentdb 1.6.0 documentation</title>
+    <title>pydocumentdb.base module &mdash; pydocumentdb 1.8.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.6.0',
+        VERSION:     '1.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.6.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 1.8.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.consistent_hash_ring module" href="pydocumentdb.consistent_hash_ring.html" />
     <link rel="prev" title="pydocumentdb.backoff_retry_utility module" href="pydocumentdb.backoff_retry_utility.html" /> 
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="pydocumentdb.backoff_retry_utility.html" title="pydocumentdb.backoff_retry_utility module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
       </ul>
@@ -109,6 +109,26 @@ is the same as GUID when represented as a string.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, the attachment id from the media id.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydocumentdb.base.GetDocumentCollectionLink">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetDocumentCollectionLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.GetDocumentCollectionLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the document collection link</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>link</cite>: str, resource link</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, document collection link</p>
 </td>
 </tr>
 </tbody>
@@ -183,6 +203,68 @@ is the same as GUID when represented as a string.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="pydocumentdb.base.IndexOfNth">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IndexOfNth</code><span class="sig-paren">(</span><em>str</em>, <em>value</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.IndexOfNth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the index of Nth occurance of a given character in a string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>str</cite>: str, input string</li>
+<li><cite>value</cite>: char, input char to be searched</li>
+<li><cite>n</cite>: int, Nth occurance of char to be searched</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">int, index of the Nth occurance in the string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydocumentdb.base.IsDatabaseLink">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsDatabaseLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.IsDatabaseLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds whether the link is a database Self Link or a database ID based link</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>link</cite>: str, link to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">boolean, True or False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydocumentdb.base.IsDocumentCollectionLink">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsDocumentCollectionLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.IsDocumentCollectionLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds whether the link is a document colllection Self Link or a document colllection ID based link</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>link</cite>: str, link to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">boolean, True or False.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pydocumentdb.base.IsNameBased">
 <code class="descclassname">pydocumentdb.base.</code><code class="descname">IsNameBased</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.IsNameBased" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds whether the link is name based or not</p>
@@ -201,6 +283,11 @@ is the same as GUID when represented as a string.</p>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="function">
+<dt id="pydocumentdb.base.ParsePaths">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">ParsePaths</code><span class="sig-paren">(</span><em>paths</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.base.ParsePaths" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="pydocumentdb.base.TrimBeginningAndEndingSlashes">
@@ -275,7 +362,7 @@ is the same as GUID when represented as a string.</p>
         <li class="right" >
           <a href="pydocumentdb.backoff_retry_utility.html" title="pydocumentdb.backoff_retry_utility module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.6.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.8.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
       </ul>

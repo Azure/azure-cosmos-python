@@ -6,11 +6,11 @@
 
 import socket
 import ssl
-
+import sys
 
 try:
     from httplib import HTTPConnection, HTTPS_PORT
-except:
+except ImportError:
     from http.client import HTTPConnection, HTTPS_PORT
 
 
@@ -30,7 +30,13 @@ class HTTPSConnection(HTTPConnection):
             - `timeout`: int, the connection timeout in milliseconds.
             - `source_address`: str, the source address.
         """
-        HTTPConnection.__init__(self, host, port, strict, timeout, source_address)
+        if sys.version_info > (3,):
+            # Python3 doesn't expect the strict parameter.
+            HTTPConnection.__init__(self, host, port, timeout, source_address)
+        else:
+            HTTPConnection.__init__(self, host, port, strict,
+                                    timeout, source_address)
+
         self._ssl_configuration = ssl_configuration
 
     def connect(self):

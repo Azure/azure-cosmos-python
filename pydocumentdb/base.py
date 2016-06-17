@@ -128,10 +128,10 @@ def GetHeaders(document_client,
                                                     resource_id,
                                                     resource_type,
                                                     headers)
-        # urllib.quote throws when the input parameter is None
+        # urllib_quote throws when the input parameter is None
         if authorization:
             # -_.!~*'() are valid characters in url, and shouldn't be quoted.
-            authorization = urllib.quote(authorization, '-_.!~*\'()')
+            authorization = urllib_quote(authorization, '-_.!~*\'()')
         headers[http_constants.HttpHeaders.Authorization] = authorization
 
     if verb == 'post' or verb == 'put':

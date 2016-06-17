@@ -36,7 +36,7 @@ def _Execute(endpoint_discovery_retry_policy, function, *args, **kwargs):
     while True:
         try:
             return _ExecuteFunction(function, *args, **kwargs)
-        except Exception, e:
+        except Exception as e:
             should_retry = endpoint_discovery_retry_policy.ShouldRetry(e)
             if not should_retry:
                 raise

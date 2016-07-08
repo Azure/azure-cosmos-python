@@ -1,0 +1,7 @@
+pydocumentdb.retry_options module
+=================================
+
+.. automodule:: pydocumentdb.retry_options
+    :members:
+    :undoc-members:
+    :show-inheritance:

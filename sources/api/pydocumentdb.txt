@@ -7,7 +7,6 @@ Submodules
 .. toctree::
 
    pydocumentdb.auth
-   pydocumentdb.backoff_retry_utility
    pydocumentdb.base
    pydocumentdb.consistent_hash_ring
    pydocumentdb.constants
@@ -24,6 +23,9 @@ Submodules
    pydocumentdb.query_iterable
    pydocumentdb.range
    pydocumentdb.range_partition_resolver
+   pydocumentdb.resource_throttle_retry_policy
+   pydocumentdb.retry_options
+   pydocumentdb.retry_utility
    pydocumentdb.runtime_constants
    pydocumentdb.synchronized_request
 

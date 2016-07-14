@@ -38,7 +38,19 @@ class _Partition(object):
         if self == other:
             return 0
         return self.CompareTo(other.hash_value)
-    
+
+    def __lt__(self, other):
+        val = self.__cmp__(other)
+        # CompareTo (and therefore __cmp__) return a negative value for less
+        # than, and positive for greater than. __lt__ must return a boolean
+        # meaning 'is self less than other'.
+        # First change -1 to 0 which is False (-1 is True), then
+        # return the opposite of the return value from __cmp__ to align with
+        # expected response from __lt__.
+        if val == -1:
+            val = 0
+        return not bool(val)
+
     def CompareTo(self, other_hash_value):
         """Compares the passed hash value with the hash value of this object
         """

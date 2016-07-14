@@ -21,6 +21,7 @@
 
 import logging
 
+
 class _EndpointDiscoveryRetryPolicy(object):
     """The endpoint discovery retry policy class used for geo-replicated database accounts
        to handle the write forbidden exceptions due to writable/readable location changes

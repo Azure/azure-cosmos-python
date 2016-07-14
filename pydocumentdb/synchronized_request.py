@@ -4,8 +4,11 @@
 """
 
 import json
-import urlparse
-import urllib
+import sys
+try:
+    import urlparse
+except ImportError:
+    import urllib.parse as urlparse
 
 import pydocumentdb.documents as documents
 import pydocumentdb.errors as errors
@@ -31,9 +34,15 @@ try:
 except NameError:
     basestring = (str, bytes)
 
+try:
+    unicode
+except NameError:
+    # Python3 doesn't have unicode as a keyword
+    unicode = None
+
 
 def _RequestBodyFromData(data):
-    """Gets requestion body from data.
+    """Gets request body from data.
 
     When `data` is dict and list into unicode string; otherwise return `data`
     without making any change.
@@ -45,11 +54,14 @@ def _RequestBodyFromData(data):
         str, unicode, file-like stream object, or None
 
     """
+    jsonstr = None
     if isinstance(data, basestring) or _IsReadableStream(data):
         return data
     elif isinstance(data, (dict, list, tuple)):
-        return json.dumps(data, separators=(',',':')).decode('utf8')
-    return None
+        jsonstr = json.dumps(data, separators=(',', ':'))
+        if isinstance(jsonstr, bytes):
+            jsonstr = jsonstr.decode('utf8')
+    return jsonstr
 
 
 def _InternalRequest(connection_policy, request_options, request_body):
@@ -96,6 +108,7 @@ def _InternalRequest(connection_policy, request_options, request_body):
         return (response, headers)
 
     data = response.read()
+    connection.close()
     if response.status >= 400:
         raise errors.HTTPFailure(response.status, data, headers)
 
@@ -104,10 +117,10 @@ def _InternalRequest(connection_policy, request_options, request_body):
         result = data
     else:
         if len(data) > 0:
-            try:
-                result = json.loads(data)
-            except:
-                raise errors.JSONParseFailure(data)
+            # In Python3 data is utf8 encoded bytes, decode to string for json
+            if sys.version_info > (3,):
+                data = data.decode('utf-8')
+            result = json.loads(data)
 
     return (result, headers)
 
@@ -144,9 +157,9 @@ def SynchronizedRequest(client,
     if request_data:
         request_body = _RequestBodyFromData(request_data)
         if not request_body:
-           raise errors.UnexpectedDataType(
-               'parameter data must be a JSON object, string or' +
-               ' readable stream.')
+            raise errors.UnexpectedDataType(
+                'parameter data must be a JSON object, string or' +
+                ' readable stream.')
 
     request_options = {}
     parse_result = urlparse.urlparse(base_url)
@@ -155,14 +168,15 @@ def SynchronizedRequest(client,
     request_options['path'] = path
     request_options['method'] = method
     if query_params:
-        request_options['path'] += '?' + urllib.urlencode(query_params)
+        request_options['path'] += '?' + urlparse.urlencode(query_params)
 
     request_options['headers'] = headers
-    if request_body and (type(request_body) is str or
-                         type(request_body) is unicode):
+    if (request_body and
+            (type(request_body) in [str, bytes] or
+             (unicode is not None and type(request_body) is unicode))):
         request_options['headers'][http_constants.HttpHeaders.ContentLength] = (
             len(request_body))
-    elif request_body == None:
+    elif request_body is None:
         request_options['headers'][http_constants.HttpHeaders.ContentLength] = 0
     # Pass _InternalRequest function with it's parameters to retry_utility's Execute method that wraps the call with retries
     return retry_utility._Execute(client, global_endpoint_manager, _InternalRequest, connection_policy, request_options, request_body)

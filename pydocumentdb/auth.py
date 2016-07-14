@@ -2,9 +2,9 @@
 
 """Authorization helper functions.
 """
-
-from hashlib import sha256
+import base64
 import hmac
+from hashlib import sha256
 
 import pydocumentdb.http_constants as http_constants
 
@@ -58,7 +58,9 @@ def __GetAuthorizationTokenUsingMasterKey(verb,
         dict
 
     """
-    key = master_key.decode('base64')
+    # The master_key from Azure UI which the dev/user specifies is base64
+    # encoded.
+    key = base64.b64decode(master_key)
 
     # Skipping lower casing of resource_id_or_fullname since it may now contain "ID" of the resource as part of the fullname
     text = '{verb}\n{resource_type}\n{resource_id_or_fullname}\n{x_date}\n{http_date}\n'.format(
@@ -67,11 +69,25 @@ def __GetAuthorizationTokenUsingMasterKey(verb,
         resource_id_or_fullname=(resource_id_or_fullname or ''),
         x_date=headers.get(http_constants.HttpHeaders.XDate, '').lower(),
         http_date=headers.get(http_constants.HttpHeaders.HttpDate, '').lower())
-   
-    body = text.decode('utf8')
+
+    try:
+        # Python2.7 - decode from bytestring to unicode utf-8 string
+        body = text.decode('utf8')
+    except AttributeError:
+        # Python3 convert string to bytes array with utf-8 encoding
+        body = text.encode('utf-8')
 
     hm = hmac.new(key, body, sha256)
-    signature = hm.digest().encode('base64')
+    digest = hm.digest()
+    # Encode the digest for the signature
+    try:
+        # Python3 uses encodebytes, encodestring is deprecated.
+        # encodebytes returns bytes so decode to utf-8 string
+        signature = base64.encodebytes(digest).decode('utf-8')
+    except AttributeError:
+        # Python2.7 uses encodestring
+        # returns string
+        signature = base64.encodestring(digest)
 
     master_token = 'master'
     token_version = '1.0'

@@ -3,25 +3,34 @@
 """End to end test.
 """
 
-import logging
-import unittest
 import json
 import os.path
+import unittest
+import sys
 
-import pydocumentdb.documents as documents
-import pydocumentdb.document_client as document_client
-import pydocumentdb.errors as errors
-import pydocumentdb.http_constants as http_constants
-import pydocumentdb.hash_partition_resolver as hash_partition_resolver
-import pydocumentdb.range_partition_resolver as range_partition_resolver
-import pydocumentdb.murmur_hash as murmur_hash
-import pydocumentdb.consistent_hash_ring as consistent_hash_ring
-import pydocumentdb.range as partition_range
-import test_partition_resolver as test_partition_resolver
-import pydocumentdb.base as base
+try:
+    # Python2.7
+    from __builtin__ import *
+except ImportError:
+    # Python3
+    import builtins
 
 from struct import *
-from __builtin__ import *
+import pydocumentdb.base as base
+import pydocumentdb.consistent_hash_ring as consistent_hash_ring
+import pydocumentdb.document_client as document_client
+import pydocumentdb.documents as documents
+import pydocumentdb.errors as errors
+import pydocumentdb.hash_partition_resolver as hash_partition_resolver
+import pydocumentdb.http_constants as http_constants
+import pydocumentdb.murmur_hash as murmur_hash
+import pydocumentdb.range as partition_range
+import pydocumentdb.range_partition_resolver as range_partition_resolver
+import test.test_partition_resolver as test_partition_resolver
+
+# If Python3, set long to int
+if sys.version_info > (3,):
+    long = int
 
 #IMPORTANT NOTES:
   
@@ -30,6 +39,48 @@ from __builtin__ import *
   
 #  	To Run the test, replace the two member fields (masterKey and host) with values 
 #   associated with your DocumentDB account.
+
+
+class ReadableStream(object):
+    """Customized file-like stream.
+    """
+
+    def __init__(self, chunks=None):
+        """Initialization.
+
+        :Parameters:
+            - `chunks`: list
+
+        """
+        if chunks is None:
+            chunks = ['first chunk ', 'second chunk']
+
+        if sys.version_info > (3,):
+            # Python3 httpclient ssl connection expects bytes data
+            chunks = [c.encode('utf-8') for c in chunks]
+
+        self._chunks = chunks
+
+    def read(self, n=-1):
+        """Simulates the read method in a file stream.
+
+        :Parameters:
+            - `n`: int
+
+        :Returns:
+            str
+
+        """
+        if self._chunks:
+            return self._chunks.pop(0)
+        else:
+            return ''
+
+    def __len__(self):
+        """To make len(ReadableStream) work.
+        """
+        return sum([len(chunk) for chunk in self._chunks])
+
 
 class CRUDTests(unittest.TestCase):
     """Python CRUD Tests.
@@ -644,38 +695,7 @@ class CRUDTests(unittest.TestCase):
         client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
 
     def test_partitioned_collection_attachment_crud_and_query(self):
-        class ReadableStream(object):
-            """Customized file-like stream.
-            """
 
-            def __init__(self, chunks = ['first chunk ', 'second chunk']):
-                """Initialization.
-
-                :Parameters:
-                    - `chunks`: list
-
-                """
-                self._chunks = list(chunks)
-
-            def read(self, n=-1):
-                """Simulates the read method in a file stream.
-
-                :Parameters:
-                    - `n`: int
-
-                :Returns:
-                    str
-
-                """
-                if self._chunks:
-                    return self._chunks.pop(0)
-                else:
-                    return ''
-
-            def __len__(self):
-                """To make len(ReadableStream) work.
-                """
-                return sum([len(chunk) for chunk in self._chunks])
 
 
         client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
@@ -1401,16 +1421,16 @@ class CRUDTests(unittest.TestCase):
             collection_link = self.GetDocumentCollectionLink(created_db, collection, True)
             collection_links.append(collection_link)
 
-        expected_partition_list.append(('dbs/db/colls/coll0', 1076200484L))
-        expected_partition_list.append(('dbs/db/colls/coll0', 1302652881L))
-        expected_partition_list.append(('dbs/db/colls/coll0', 2210251988L))
-        expected_partition_list.append(('dbs/db/colls/coll1', 2341558382L))
-        expected_partition_list.append(('dbs/db/colls/coll0', 2348251587L))
-        expected_partition_list.append(('dbs/db/colls/coll0', 2887945459L))
-        expected_partition_list.append(('dbs/db/colls/coll1', 2894403633L))
-        expected_partition_list.append(('dbs/db/colls/coll1', 3031617259L))
-        expected_partition_list.append(('dbs/db/colls/coll1', 3090861424L))
-        expected_partition_list.append(('dbs/db/colls/coll1', 4222475028L))
+        expected_partition_list.append(('dbs/db/colls/coll0', long(1076200484)))
+        expected_partition_list.append(('dbs/db/colls/coll0', long(1302652881)))
+        expected_partition_list.append(('dbs/db/colls/coll0', long(2210251988)))
+        expected_partition_list.append(('dbs/db/colls/coll1', long(2341558382)))
+        expected_partition_list.append(('dbs/db/colls/coll0', long(2348251587)))
+        expected_partition_list.append(('dbs/db/colls/coll0', long(2887945459)))
+        expected_partition_list.append(('dbs/db/colls/coll1', long(2894403633)))
+        expected_partition_list.append(('dbs/db/colls/coll1', long(3031617259)))
+        expected_partition_list.append(('dbs/db/colls/coll1', long(3090861424)))
+        expected_partition_list.append(('dbs/db/colls/coll1', long(4222475028)))
 
         id_partition_key_extractor = lambda document: document['id']
         
@@ -1449,29 +1469,29 @@ class CRUDTests(unittest.TestCase):
         bytes = bytearray(str, encoding='utf-8')
 
         hash_value = murmur_hash._MurmurHash._ComputeHash(bytes)
-        self.assertEqual(1099701186L, hash_value)
+        self.assertEqual(long(1099701186), hash_value)
 
         num = 374.0
         bytes = bytearray(pack('d', num))
 
         hash_value = murmur_hash._MurmurHash._ComputeHash(bytes)
-        self.assertEqual(3717946798L, hash_value)
+        self.assertEqual(long(3717946798), hash_value)
 
-        self._validate_bytes("", 0x1B873593, bytearray(b'\xEE\xA8\xA2\x67'), 1738713326L);
-        self._validate_bytes("1", 0xE82562E4, bytearray(b'\xD0\x92\x24\xED'), 3978597072L);
-        self._validate_bytes("00", 0xB4C39035, bytearray(b'\xFA\x09\x64\x1B'), 459540986L);
-        self._validate_bytes("eyetooth", 0x8161BD86, bytearray(b'\x98\x62\x1C\x6F'), 1864131224L);
-        self._validate_bytes("acid", 0x4DFFEAD7, bytearray(b'\x36\x92\xC0\xB9'), 3116405302L);
-        self._validate_bytes("elevation", 0x1A9E1828, bytearray(b'\xA9\xB6\x40\xDF'), 3745560233L);
-        self._validate_bytes("dent", 0xE73C4579, bytearray(b'\xD4\x59\xE1\xD3'), 3554761172L);
-        self._validate_bytes("homeland", 0xB3DA72CA, bytearray(b'\x06\x4D\x72\xBB'), 3144830214L);
-        self._validate_bytes("glamor", 0x8078A01B, bytearray(b'\x89\x89\xA2\xA7'), 2812447113L);
-        self._validate_bytes("flags", 0x4D16CD6C, bytearray(b'\x52\x87\x66\x02'), 40273746L);
-        self._validate_bytes("democracy", 0x19B4FABD, bytearray(b'\xE4\x55\xD6\xB0'), 2966836708L);
-        self._validate_bytes("bumble", 0xE653280E, bytearray(b'\xFE\xD7\xC3\x0C'), 214161406L);
-        self._validate_bytes("catch", 0xB2F1555F, bytearray(b'\x98\x4B\xB6\xCD'), 3451276184L);
-        self._validate_bytes("omnomnomnivore", 0x7F8F82B0, bytearray(b'\x38\xC4\xCD\xFF'), 4291675192L);
-        self._validate_bytes("The quick brown fox jumps over the lazy dog", 0x4C2DB001, bytearray(b'\x6D\xAB\x8D\xC9'), 3381504877L)
+        self._validate_bytes("", 0x1B873593, bytearray(b'\xEE\xA8\xA2\x67'), long(1738713326))
+        self._validate_bytes("1", 0xE82562E4, bytearray(b'\xD0\x92\x24\xED'), long(3978597072))
+        self._validate_bytes("00", 0xB4C39035, bytearray(b'\xFA\x09\x64\x1B'), long(459540986))
+        self._validate_bytes("eyetooth", 0x8161BD86, bytearray(b'\x98\x62\x1C\x6F'), long(1864131224))
+        self._validate_bytes("acid", 0x4DFFEAD7, bytearray(b'\x36\x92\xC0\xB9'), long(3116405302))
+        self._validate_bytes("elevation", 0x1A9E1828, bytearray(b'\xA9\xB6\x40\xDF'), long(3745560233))
+        self._validate_bytes("dent", 0xE73C4579, bytearray(b'\xD4\x59\xE1\xD3'), long(3554761172))
+        self._validate_bytes("homeland", 0xB3DA72CA, bytearray(b'\x06\x4D\x72\xBB'), long(3144830214))
+        self._validate_bytes("glamor", 0x8078A01B, bytearray(b'\x89\x89\xA2\xA7'), long(2812447113))
+        self._validate_bytes("flags", 0x4D16CD6C, bytearray(b'\x52\x87\x66\x02'), long(40273746))
+        self._validate_bytes("democracy", 0x19B4FABD, bytearray(b'\xE4\x55\xD6\xB0'), long(2966836708))
+        self._validate_bytes("bumble", 0xE653280E, bytearray(b'\xFE\xD7\xC3\x0C'), long(214161406))
+        self._validate_bytes("catch", 0xB2F1555F, bytearray(b'\x98\x4B\xB6\xCD'), long(3451276184))
+        self._validate_bytes("omnomnomnivore", 0x7F8F82B0, bytearray(b'\x38\xC4\xCD\xFF'), long(4291675192))
+        self._validate_bytes("The quick brown fox jumps over the lazy dog", 0x4C2DB001, bytearray(b'\x6D\xAB\x8D\xC9'), long(3381504877))
 
     def _validate_bytes(self, str, seed, expected_hash_bytes, expected_value):
         hash_value = murmur_hash._MurmurHash._ComputeHash(bytearray(str, encoding='utf-8'), seed)
@@ -1729,40 +1749,6 @@ class CRUDTests(unittest.TestCase):
         self._test_attachment_crud(True);
         
     def _test_attachment_crud(self, is_name_based):
-        class ReadableStream(object):
-            """Customized file-like stream.
-            """
-
-            def __init__(self, chunks = ['first chunk ', 'second chunk']):
-                """Initialization.
-
-                :Parameters:
-                    - `chunks`: list
-
-                """
-                self._chunks = list(chunks)
-
-            def read(self, n=-1):
-                """Simulates the read method in a file stream.
-
-                :Parameters:
-                    - `n`: int
-
-                :Returns:
-                    str
-
-                """
-                if self._chunks:
-                    return self._chunks.pop(0)
-                else:
-                    return ''
-
-            def __len__(self):
-                """To make len(ReadableStream) work.
-                """
-                return sum([len(chunk) for chunk in self._chunks])
-
-
         # Should do attachment CRUD operations successfully
         client = document_client.DocumentClient(CRUDTests.host,
                                                 {'masterKey': CRUDTests.masterKey})
@@ -1844,7 +1830,7 @@ class CRUDTests(unittest.TestCase):
         # read attachment media
         media_response = client.ReadMedia(valid_attachment['media'])
         self.assertEqual(media_response,
-                         'first chunk second chunk')
+                         b'first chunk second chunk')
         content_stream = ReadableStream(['modified first chunk ',
                                          'modified second chunk'])
         # update attachment media
@@ -1855,13 +1841,13 @@ class CRUDTests(unittest.TestCase):
         # read media buffered
         media_response = client.ReadMedia(valid_attachment['media'])
         self.assertEqual(media_response,
-                         'modified first chunk modified second chunk')
+                         b'modified first chunk modified second chunk')
         # read media streamed
         client.connection_policy.MediaReadMode = (
             documents.MediaReadMode.Streamed)
         media_response = client.ReadMedia(valid_attachment['media'])
         self.assertEqual(media_response.read(),
-                         'modified first chunk modified second chunk')
+                         b'modified first chunk modified second chunk')
         # share attachment with a second document
         document = client.CreateDocument(self.GetDocumentCollectionLink(db, collection, is_name_based),
                                          {'id': 'document 2'})
@@ -1888,49 +1874,15 @@ class CRUDTests(unittest.TestCase):
 
     # Upsert test for Attachment resource - selflink version
     def test_attachment_upsert_self_link(self):
-        self._test_attachment_upsert(False);
+        self._test_attachment_upsert(False)
 
     # Upsert test for Attachment resource - name based routing version
     def test_attachment_upsert_name_based(self):
-        self._test_attachment_upsert(True);
+        self._test_attachment_upsert(True)
         
     def _test_attachment_upsert(self, is_name_based):
-        class ReadableStream(object):
-            """Customized file-like stream.
-            """
-
-            def __init__(self, chunks = ['first chunk ', 'second chunk']):
-                """Initialization.
-
-                :Parameters:
-                    - `chunks`: list
-
-                """
-                self._chunks = list(chunks)
-
-            def read(self, n=-1):
-                """Simulates the read method in a file stream.
-
-                :Parameters:
-                    - `n`: int
-
-                :Returns:
-                    str
-
-                """
-                if self._chunks:
-                    return self._chunks.pop(0)
-                else:
-                    return ''
-
-            def __len__(self):
-                """To make len(ReadableStream) work.
-                """
-                return sum([len(chunk) for chunk in self._chunks])
-
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
-        
+        client = document_client.DocumentClient(host,
+                                                {'masterKey': masterKey})
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
@@ -3638,35 +3590,35 @@ class CRUDTests(unittest.TestCase):
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id ends with a space.', e.message)
+            self.assertEqual('Id ends with a space.', str(e))
         # Id shouldn't contain '/'.
         database_definition = { 'id': 'id_with_illegal/_char' }
         try:
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id contains illegal chars.', e.message)
+            self.assertEqual('Id contains illegal chars.', str(e))
         # Id shouldn't contain '\\'.
         database_definition = { 'id': 'id_with_illegal\\_char' }
         try:
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id contains illegal chars.', e.message)
+            self.assertEqual('Id contains illegal chars.', str(e))
         # Id shouldn't contain '?'.
         database_definition = { 'id': 'id_with_illegal?_char' }
         try:
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id contains illegal chars.', e.message)
+            self.assertEqual('Id contains illegal chars.', str(e))
         # Id shouldn't contain '#'.
         database_definition = { 'id': 'id_with_illegal#_char' }
         try:
             client.CreateDatabase(database_definition)
             self.assertFalse(True)
         except ValueError as e:
-            self.assertEqual('Id contains illegal chars.', e.message)
+            self.assertEqual('Id contains illegal chars.', str(e))
 
         # Id can begin with space
         database_definition = { 'id': ' id_begin_space' }

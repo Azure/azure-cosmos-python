@@ -10,6 +10,9 @@ import pydocumentdb.errors as errors
 import pydocumentdb.http_constants as http_constants
 
 
+logger = logging.getLogger()
+
+
 def Execute(callback_fn, resource_throttle_retry_policy):
     """Exectutes the callback function using the resource_throttle_retry_policy.
 
@@ -54,12 +57,12 @@ class ResourceThrottleRetryPolicy(object):
         if (self._current_attempt_count < self._max_attempt_count and
                 self._CheckIfRetryNeeded(exception)):
             self._current_attempt_count += 1
-            logging.info('Operation will be retried after %d milliseconds. Exception: %s' %
+            logger.info('Operation will be retried after %d milliseconds. Exception: %s' %
                          (self.retry_after_in_milliseconds,
                           str(exception)))
             return True
         else:
-            logging.warning('Operation will NOT be retried. Exception: %s' %
+            logger.warning('Operation will NOT be retried. Exception: %s' %
                             str(exception))
             return False
 

@@ -24,6 +24,10 @@ import time
 
 import pydocumentdb.errors as errors
 
+logger = logging.basicConfig(format='%(levelname)s:%(message)s',
+                             level=logging.INFO)
+
+
 def _Execute(endpoint_discovery_retry_policy, function, *args, **kwargs):
     """Exectutes the callback function using the endpoint_discovery_retry_policy.
 
@@ -66,7 +70,6 @@ class _EndpointDiscoveryRetryPolicy(object):
         self._max_retry_attempt_count = _EndpointDiscoveryRetryPolicy.Max_retry_attempt_count
         self._current_retry_attempt_count = 0
         self.retry_after_in_milliseconds = _EndpointDiscoveryRetryPolicy.Retry_after_in_milliseconds
-        logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
     def ShouldRetry(self, exception):
         """Returns true if should retry on the passed-in exception.
@@ -83,13 +86,13 @@ class _EndpointDiscoveryRetryPolicy(object):
             self._current_retry_attempt_count += 1
             return True
         else:
-            logging.info('Operation will NOT be retried or has maxed out the retry count. Exception: %s' % str(exception))
+            logger.info('Operation will NOT be retried or has maxed out the retry count. Exception: %s' % str(exception))
             return False
 
     def _CheckIfRetryNeeded(self, exception):
         # Check if it's a write-forbidden exception, which has StatusCode=403 and SubStatus=3 and whether EnableEndpointDiscovery is set to True
         if (isinstance(exception, errors.HTTPFailure) and exception.status_code == 403 and exception.sub_status == 3 and self.global_endpoint_manager.EnableEndpointDiscovery):
-            logging.info('Write location was changed, refreshing the locations list from database account and will retry the request.')
+            logger.info('Write location was changed, refreshing the locations list from database account and will retry the request.')
             return True
 
         return False

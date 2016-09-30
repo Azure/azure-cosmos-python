@@ -1,0 +1,7 @@
+pydocumentdb.routing.routing_range module
+=========================================
+
+.. automodule:: pydocumentdb.routing.routing_range
+    :members:
+    :undoc-members:
+    :show-inheritance:

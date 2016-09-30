@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.documents module &mdash; pydocumentdb 1.9.0 documentation</title>
+    <title>pydocumentdb.documents module &#8212; pydocumentdb 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.9.0',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.9.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.endpoint_discovery_retry_policy module" href="pydocumentdb.endpoint_discovery_retry_policy.html" />
     <link rel="prev" title="pydocumentdb.document_client module" href="pydocumentdb.document_client.html" /> 
@@ -37,17 +37,13 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="pydocumentdb.endpoint_discovery_retry_policy.html" title="pydocumentdb.endpoint_discovery_retry_policy module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pydocumentdb.document_client.html" title="pydocumentdb.document_client module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.9.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -56,574 +52,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pydocumentdb.documents">
-<span id="pydocumentdb-documents-module"></span><h1>pydocumentdb.documents module<a class="headerlink" href="#module-pydocumentdb.documents" title="Permalink to this headline">¶</a></h1>
-<p>AzureDocument classes and enums.</p>
-<dl class="class">
-<dt id="pydocumentdb.documents.ConnectionMode">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">ConnectionMode</code><a class="headerlink" href="#pydocumentdb.documents.ConnectionMode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Represents the connection mode to be used by the client.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Gateway</cite>: Use the DocumentDB gateway to route all requests. The
-gateway proxies requests to the right data partition.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.ConnectionMode.Gateway">
-<code class="descname">Gateway</code><em class="property"> = 0</em><a class="headerlink" href="#pydocumentdb.documents.ConnectionMode.Gateway" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.ConnectionPolicy">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">ConnectionPolicy</code><a class="headerlink" href="#pydocumentdb.documents.ConnectionPolicy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Represents the Connection policy assocated with a DocumentClient.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><cite>RequestTimeout</cite>: int, gets or sets the request timeout (time to wait
-for response from network peer)</p>
-</li>
-<li><p class="first"><cite>MediaRequestTimeout</cite>: int, gets or sets Time to wait for response
-from network peer for attachment content (aka media) operations.</p>
-</li>
-<li><p class="first"><cite>ConnectionMode</cite>: int (documents.ConnectionMode), gets or sets the
-connection mode used in the client. Currently only Gateway is supported.</p>
-</li>
-<li><p class="first"><cite>MediaReadMode</cite>: str (MediaReadMode.Buffered), gets or sets the
-attachment content (aka media) download mode.</p>
-</li>
-<li><p class="first"><cite>SSLConfiguration</cite>: documents.SSLConfiguration, gets or sets the SSL configuration.</p>
-</li>
-<li><p class="first"><cite>ProxyConfiguration</cite>: documents.ProxyConfiguration, gets or sets the proxy configuration.</p>
-</li>
-<li><dl class="first docutils">
-<dt><cite>EnableEndpointDiscovery</cite>: boolean, gets or sets endpoint discovery flag for geo-replicated database accounts.</dt>
-<dd><p class="first last">When EnableEndpointDiscovery is true, the client will automatically discover the
-current write and read locations and direct the requests to the correct location
-taking into consideration of the user&#8217;s preference(if provided) as PreferredLocations.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt><cite>PreferredLocations</cite>: list, gets or sets the preferred locations for geo-replicated database accounts.</dt>
-<dd><p class="first last">When EnableEndpointDiscovery is true and PreferredLocations is non-empty, 
-the client will use this list to evaluate the final location, taking into consideration
-the order specified in PreferredLocations list. The locations in this list are specified as the names of
-the azure documentdb locations like, &#8216;West US&#8217;, &#8216;East US&#8217;, &#8216;Central India&#8217; and so on.</p>
-</dd>
-</dl>
-</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.ConsistencyLevel">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">ConsistencyLevel</code><a class="headerlink" href="#pydocumentdb.documents.ConsistencyLevel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Represents the consistency levels supported for DocumentDB client
-operations.</p>
-<p>The requested ConsistencyLevel must match or be weaker than that provisioned
-for the database account. Consistency levels.</p>
-<p>Consistency levels by order of strength are Strong, BoundedStaleness,
-Session and Eventual.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Strong</cite>: Strong Consistency guarantees that read operations always
-return the value that was last written.</li>
-<li><cite>BoundedStaleness</cite> Bounded Staleness guarantees that reads are not
-too out-of-date. This can be configured based on number of operations
-(MaxStalenessPrefix) or time (MaxStalenessIntervalInSeconds).</li>
-<li><cite>Session</cite>: Session Consistency guarantees monotonic reads (you never
-read old data, then new, then old again), monotonic writes (writes
-are ordered) and read your writes (your writes are immediately
-visible to your reads) within any single session.</li>
-<li><cite>Eventual</cite>: Eventual Consistency guarantees that reads will return
-a subset of writes. All writes will be eventually be available for
-reads.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.ConsistencyLevel.BoundedStaleness">
-<code class="descname">BoundedStaleness</code><em class="property"> = 'BoundedStaleness'</em><a class="headerlink" href="#pydocumentdb.documents.ConsistencyLevel.BoundedStaleness" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.ConsistencyLevel.Eventual">
-<code class="descname">Eventual</code><em class="property"> = 'Eventual'</em><a class="headerlink" href="#pydocumentdb.documents.ConsistencyLevel.Eventual" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.ConsistencyLevel.Session">
-<code class="descname">Session</code><em class="property"> = 'Session'</em><a class="headerlink" href="#pydocumentdb.documents.ConsistencyLevel.Session" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.ConsistencyLevel.Strong">
-<code class="descname">Strong</code><em class="property"> = 'Strong'</em><a class="headerlink" href="#pydocumentdb.documents.ConsistencyLevel.Strong" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.DataType">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">DataType</code><a class="headerlink" href="#pydocumentdb.documents.DataType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Specifies the data type of index specs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Number</cite>: Represents a numeric data type</li>
-<li><cite>String</cite>: Represents a string data type.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.DataType.Number">
-<code class="descname">Number</code><em class="property"> = 'Number'</em><a class="headerlink" href="#pydocumentdb.documents.DataType.Number" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.DataType.String">
-<code class="descname">String</code><em class="property"> = 'String'</em><a class="headerlink" href="#pydocumentdb.documents.DataType.String" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.DatabaseAccount">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">DatabaseAccount</code><a class="headerlink" href="#pydocumentdb.documents.DatabaseAccount" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Database account. A DatabaseAccount is the container for databases.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><cite>DatabaseLink</cite>: str, the self-link for Databases in the
-databaseAccount.</p>
-</li>
-<li><p class="first"><cite>MediaLink</cite>: str, the self-link for Media in the databaseAccount.</p>
-</li>
-<li><p class="first"><cite>MaxMediaStorageUsageInMB</cite>: int, attachment content (media) storage
-quota in MBs ( Retrieved from gateway ).</p>
-</li>
-<li><p class="first"><cite>CurrentMediaStorageUsageInMB</cite>: int, current attachment content
-(media) usage in MBs (Retrieved from gateway ).</p>
-<p>Value is returned from cached information updated periodically and
-is not guaranteed to be real time.</p>
-</li>
-<li><p class="first"><cite>ConsistencyPolicy</cite>: dict, UserConsistencyPolicy settings.</p>
-</li>
-<li><p class="first"><cite>ConsistencyPolicy[&#8216;defaultConsistencyLevel&#8217;]</cite>: dict, the default
-consistency level.</p>
-</li>
-<li><p class="first"><cite>ConsistencyPolicy[&#8216;maxStalenessPrefix&#8217;]</cite>: int, in bounded staleness
-consistency, the maximum allowed staleness in terms difference in
-sequence numbers (aka version).</p>
-</li>
-<li><p class="first"><cite>ConsistencyPolicy[&#8216;maxStalenessIntervalInSeconds&#8217;]</cite>: int, In bounded
-staleness consistency, the maximum allowed staleness in terms time
-interval.</p>
-</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.DatabaseAccount.ReadableLocations">
-<code class="descname">ReadableLocations</code><a class="headerlink" href="#pydocumentdb.documents.DatabaseAccount.ReadableLocations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the list of readable locations for a geo-replicated database account.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.DatabaseAccount.WritableLocations">
-<code class="descname">WritableLocations</code><a class="headerlink" href="#pydocumentdb.documents.DatabaseAccount.WritableLocations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the list of writable locations for a geo-replicated database account.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.IndexKind">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">IndexKind</code><a class="headerlink" href="#pydocumentdb.documents.IndexKind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Specifies the index kind of index specs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Hash</cite>: The index entries are hashed to serve point look up queries.
-Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop = 5</li>
-<li><cite>Range</cite>: The index entries are ordered. Range indexes are optimized for
-inequality predicate queries with efficient range scans.
-Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop &gt; 5</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.IndexKind.Hash">
-<code class="descname">Hash</code><em class="property"> = 'Hash'</em><a class="headerlink" href="#pydocumentdb.documents.IndexKind.Hash" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.IndexKind.Range">
-<code class="descname">Range</code><em class="property"> = 'Range'</em><a class="headerlink" href="#pydocumentdb.documents.IndexKind.Range" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.IndexingDirective">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">IndexingDirective</code><a class="headerlink" href="#pydocumentdb.documents.IndexingDirective" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Specifies whether or not the resource is to be indexed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Default</cite>: Use any pre-defined/pre-configured defaults.</li>
-<li><cite>Include</cite>: Index the resource.</li>
-<li><cite>Exclude</cite>: Do not index the resource.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.IndexingDirective.Default">
-<code class="descname">Default</code><em class="property"> = 0</em><a class="headerlink" href="#pydocumentdb.documents.IndexingDirective.Default" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.IndexingDirective.Exclude">
-<code class="descname">Exclude</code><em class="property"> = 1</em><a class="headerlink" href="#pydocumentdb.documents.IndexingDirective.Exclude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.IndexingDirective.Include">
-<code class="descname">Include</code><em class="property"> = 2</em><a class="headerlink" href="#pydocumentdb.documents.IndexingDirective.Include" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.IndexingMode">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">IndexingMode</code><a class="headerlink" href="#pydocumentdb.documents.IndexingMode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Specifies the supported indexing modes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><cite>Consistent</cite>: Index is updated synchronously with a create or
-update operation. With consistent indexing, query behavior is the
-same as the default consistency level for the collection.</p>
-<p>The index is
-always kept up to date with the data.</p>
-</li>
-<li><p class="first"><cite>Lazy</cite>: Index is updated asynchronously with respect to a create
-or update operation.</p>
-<p>With lazy indexing, queries are eventually consistent. The index is
-updated when the collection is idle.</p>
-</li>
-<li><p class="first"><cite>NoIndex</cite>: No index is provided.</p>
-<p>Setting IndexingMode to &#8220;None&#8221; drops the index. Use this if you don&#8217;t
-want to maintain the index for a document collection, to save the
-storage cost or improve the write throughput. Your queries will
-degenerate to scans of the entire collection.</p>
-</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.IndexingMode.Consistent">
-<code class="descname">Consistent</code><em class="property"> = 'consistent'</em><a class="headerlink" href="#pydocumentdb.documents.IndexingMode.Consistent" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.IndexingMode.Lazy">
-<code class="descname">Lazy</code><em class="property"> = 'lazy'</em><a class="headerlink" href="#pydocumentdb.documents.IndexingMode.Lazy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.IndexingMode.NoIndex">
-<code class="descname">NoIndex</code><em class="property"> = 'none'</em><a class="headerlink" href="#pydocumentdb.documents.IndexingMode.NoIndex" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.MediaReadMode">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">MediaReadMode</code><a class="headerlink" href="#pydocumentdb.documents.MediaReadMode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Represents the mode for use with downloading attachment content
-(aka media).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><cite>Buffered</cite>: Content is buffered at the client and not directly
-streamed from the content store.</p>
-<p>Use Buffered to reduce the time taken to read and write media files.</p>
-</li>
-<li><p class="first"><cite>Streamed</cite>: Content is directly streamed from the content store
-without any buffering at the client.</p>
-<p>Use Streamed to reduce the client memory overhead of reading and
-writing media files.</p>
-</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.MediaReadMode.Buffered">
-<code class="descname">Buffered</code><em class="property"> = 'Buffered'</em><a class="headerlink" href="#pydocumentdb.documents.MediaReadMode.Buffered" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.MediaReadMode.Streamed">
-<code class="descname">Streamed</code><em class="property"> = 'Streamed'</em><a class="headerlink" href="#pydocumentdb.documents.MediaReadMode.Streamed" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.PartitionKind">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">PartitionKind</code><a class="headerlink" href="#pydocumentdb.documents.PartitionKind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Specifies the kind of partitioning to be applied.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Hash</cite>: The partition key definition path is hashed.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.PartitionKind.Hash">
-<code class="descname">Hash</code><em class="property"> = 'Hash'</em><a class="headerlink" href="#pydocumentdb.documents.PartitionKind.Hash" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.PermissionMode">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">PermissionMode</code><a class="headerlink" href="#pydocumentdb.documents.PermissionMode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Enumeration specifying applicability of permission.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>NoneMode</cite>: None.</li>
-<li><cite>Read</cite>: Permission applicable for read operations only.</li>
-<li><cite>All</cite>: Permission applicable for all operations.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.PermissionMode.All">
-<code class="descname">All</code><em class="property"> = 'all'</em><a class="headerlink" href="#pydocumentdb.documents.PermissionMode.All" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.PermissionMode.NoneMode">
-<code class="descname">NoneMode</code><em class="property"> = 'none'</em><a class="headerlink" href="#pydocumentdb.documents.PermissionMode.NoneMode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.PermissionMode.Read">
-<code class="descname">Read</code><em class="property"> = 'read'</em><a class="headerlink" href="#pydocumentdb.documents.PermissionMode.Read" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.ProxyConfiguration">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">ProxyConfiguration</code><a class="headerlink" href="#pydocumentdb.documents.ProxyConfiguration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Configurations for proxy.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Host</cite>: str, the host address of the proxy.</li>
-<li><cite>Port</cite>: int, the port number of the proxy.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.RetryPolicy">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">RetryPolicy</code><a class="headerlink" href="#pydocumentdb.documents.RetryPolicy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>The retry policy.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>MaxRetryAttemptsOnRequest</cite>: int, the max retry attempts on request.</li>
-<li><cite>MaxRetryAttemptsOnQuery</cite>: int, the max retry attempts on query.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.SSLConfiguration">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">SSLConfiguration</code><a class="headerlink" href="#pydocumentdb.documents.SSLConfiguration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Configurations for SSL connections.</p>
-<p>Please refer to <a class="reference external" href="https://docs.python.org/2/library/ssl.html#socket-creation">https://docs.python.org/2/library/ssl.html#socket-creation</a> for more detail.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>SSLKeyFile</cite>: str, the path of the key file for ssl connection.</li>
-<li><cite>SSLCertFile</cite>: str, the path of the cert file for ssl connection.</li>
-<li><cite>SSLCaCerts</cite>: str, the path of the ca_certs file for ssl connection.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.TriggerOperation">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">TriggerOperation</code><a class="headerlink" href="#pydocumentdb.documents.TriggerOperation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Specifies the operations on which a trigger should be executed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>All</cite>: All operations.</li>
-<li><cite>Create</cite>: Create operations only.</li>
-<li><cite>Update</cite>: Update operations only.</li>
-<li><cite>Delete</cite>: Delete operations only.</li>
-<li><cite>Replace</cite>: Replace operations only.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.TriggerOperation.All">
-<code class="descname">All</code><em class="property"> = 'all'</em><a class="headerlink" href="#pydocumentdb.documents.TriggerOperation.All" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.TriggerOperation.Create">
-<code class="descname">Create</code><em class="property"> = 'create'</em><a class="headerlink" href="#pydocumentdb.documents.TriggerOperation.Create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.TriggerOperation.Delete">
-<code class="descname">Delete</code><em class="property"> = 'delete'</em><a class="headerlink" href="#pydocumentdb.documents.TriggerOperation.Delete" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.TriggerOperation.Replace">
-<code class="descname">Replace</code><em class="property"> = 'replace'</em><a class="headerlink" href="#pydocumentdb.documents.TriggerOperation.Replace" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.TriggerOperation.Update">
-<code class="descname">Update</code><em class="property"> = 'update'</em><a class="headerlink" href="#pydocumentdb.documents.TriggerOperation.Update" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.TriggerType">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">TriggerType</code><a class="headerlink" href="#pydocumentdb.documents.TriggerType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Specifies the type of the trigger.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Pre</cite>: Trigger should be executed before the associated operation(s).</li>
-<li><cite>Post</cite>: Trigger should be executed after the associated operation(s).</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pydocumentdb.documents.TriggerType.Post">
-<code class="descname">Post</code><em class="property"> = 'post'</em><a class="headerlink" href="#pydocumentdb.documents.TriggerType.Post" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pydocumentdb.documents.TriggerType.Pre">
-<code class="descname">Pre</code><em class="property"> = 'pre'</em><a class="headerlink" href="#pydocumentdb.documents.TriggerType.Pre" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pydocumentdb.documents.Undefined">
-<em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">Undefined</code><a class="headerlink" href="#pydocumentdb.documents.Undefined" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Represents undefined value for partitionKey when it&#8217;s mising.</p>
-</dd></dl>
-
+  <div class="section" id="pydocumentdb-documents-module">
+<h1>pydocumentdb.documents module<a class="headerlink" href="#pydocumentdb-documents-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -648,14 +78,11 @@ writing media files.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -669,22 +96,18 @@ writing media files.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="pydocumentdb.endpoint_discovery_retry_policy.html" title="pydocumentdb.endpoint_discovery_retry_policy module"
              >next</a> |</li>
         <li class="right" >
           <a href="pydocumentdb.document_client.html" title="pydocumentdb.document_client module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.9.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pydocumentdb.html" >pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
     </div>
   </body>
 </html>

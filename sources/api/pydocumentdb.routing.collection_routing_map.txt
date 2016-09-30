@@ -1,0 +1,7 @@
+pydocumentdb.routing.collection_routing_map module
+==================================================
+
+.. automodule:: pydocumentdb.routing.collection_routing_map
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.synchronized_request module &mdash; pydocumentdb 1.9.0 documentation</title>
+    <title>pydocumentdb.synchronized_request module &#8212; pydocumentdb 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.9.0',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,9 +24,10 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.9.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
-    <link rel="prev" title="pydocumentdb.runtime_constants module" href="pydocumentdb.runtime_constants.html" /> 
+    <link rel="next" title="pydocumentdb.utils module" href="pydocumentdb.utils.html" />
+    <link rel="prev" title="pydocumentdb.session module" href="pydocumentdb.session.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -36,14 +37,13 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
+          <a href="pydocumentdb.utils.html" title="pydocumentdb.utils module"
+             accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.runtime_constants.html" title="pydocumentdb.runtime_constants module"
+          <a href="pydocumentdb.session.html" title="pydocumentdb.session module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.9.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -52,38 +52,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pydocumentdb.synchronized_request">
-<span id="pydocumentdb-synchronized-request-module"></span><h1>pydocumentdb.synchronized_request module<a class="headerlink" href="#module-pydocumentdb.synchronized_request" title="Permalink to this headline">¶</a></h1>
-<p>Synchronized request.</p>
-<dl class="function">
-<dt id="pydocumentdb.synchronized_request.SynchronizedRequest">
-<code class="descclassname">pydocumentdb.synchronized_request.</code><code class="descname">SynchronizedRequest</code><span class="sig-paren">(</span><em>global_endpoint_manager</em>, <em>connection_policy</em>, <em>method</em>, <em>base_url</em>, <em>path</em>, <em>request_data</em>, <em>query_params</em>, <em>headers</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.synchronized_request.SynchronizedRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs one synchronized http request according to the parameters.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>global_endpoint_manager</cite>: _GlobalEndpointManager</li>
-<li><cite>connection_policy</cite>: documents.ConnectionPolicy</li>
-<li><cite>method</cite>: str</li>
-<li><cite>base_url</cite>: str</li>
-<li><cite>path</cite>: str</li>
-<li><cite>request_data</cite>: str, unicode, file-like stream object, dict, list
-or None</li>
-<li><cite>query_params</cite>: dict</li>
-<li><cite>headers</cite>: dict</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple of (result, headers), where both result and headers
-are dicts.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+  <div class="section" id="pydocumentdb-synchronized-request-module">
+<h1>pydocumentdb.synchronized_request module<a class="headerlink" href="#pydocumentdb-synchronized-request-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -93,8 +63,11 @@ are dicts.</p>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pydocumentdb.runtime_constants.html"
-                        title="previous chapter">pydocumentdb.runtime_constants module</a></p>
+  <p class="topless"><a href="pydocumentdb.session.html"
+                        title="previous chapter">pydocumentdb.session module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pydocumentdb.utils.html"
+                        title="next chapter">pydocumentdb.utils module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -105,14 +78,11 @@ are dicts.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -126,19 +96,18 @@ are dicts.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
+          <a href="pydocumentdb.utils.html" title="pydocumentdb.utils module"
+             >next</a> |</li>
         <li class="right" >
-          <a href="pydocumentdb.runtime_constants.html" title="pydocumentdb.runtime_constants module"
+          <a href="pydocumentdb.session.html" title="pydocumentdb.session module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.9.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pydocumentdb.html" >pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
     </div>
   </body>
 </html>

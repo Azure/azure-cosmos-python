@@ -1,0 +1,7 @@
+pydocumentdb.execution_context.execution_dispatcher module
+==========================================================
+
+.. automodule:: pydocumentdb.execution_context.execution_dispatcher
+    :members:
+    :undoc-members:
+    :show-inheritance:

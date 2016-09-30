@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.range_partition_resolver module &mdash; pydocumentdb 1.9.0 documentation</title>
+    <title>pydocumentdb.range_partition_resolver module &#8212; pydocumentdb 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.9.0',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../static/sidebar.js"></script>
-    <link rel="top" title="pydocumentdb 1.9.0 documentation" href="../index.html" />
+    <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.resource_throttle_retry_policy module" href="pydocumentdb.resource_throttle_retry_policy.html" />
     <link rel="prev" title="pydocumentdb.range module" href="pydocumentdb.range.html" /> 
@@ -37,17 +37,13 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="pydocumentdb.resource_throttle_retry_policy.html" title="pydocumentdb.resource_throttle_retry_policy module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pydocumentdb.range.html" title="pydocumentdb.range module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.9.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -56,68 +52,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pydocumentdb.range_partition_resolver">
-<span id="pydocumentdb-range-partition-resolver-module"></span><h1>pydocumentdb.range_partition_resolver module<a class="headerlink" href="#module-pydocumentdb.range_partition_resolver" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pydocumentdb.range_partition_resolver.RangePartitionResolver">
-<em class="property">class </em><code class="descclassname">pydocumentdb.range_partition_resolver.</code><code class="descname">RangePartitionResolver</code><span class="sig-paren">(</span><em>partition_key_extractor</em>, <em>partition_map</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.range_partition_resolver.RangePartitionResolver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>RangePartitionResolver implements partitioning based on the ranges, allowing you to
-distribute requests and data across a number of partitions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><cite>partition_key_extractor</cite>: lambda, returning the partition key from the document passed.</li>
-<li><cite>partition_map</cite>: dict, the dictionary of ranges mapped to their associated collection</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForCreate">
-<code class="descname">ResolveForCreate</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForCreate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resolves the collection for creating the document based on the partition key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document</cite>: dict, the document to be created.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, collection Self link or Name based link which should handle the Create operation.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForRead">
-<code class="descname">ResolveForRead</code><span class="sig-paren">(</span><em>partition_key</em><span class="sig-paren">)</span><a class="headerlink" href="#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForRead" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resolves the collection for reading/querying the documents based on the partition key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document</cite>: dict, the document to be read/queried.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list, collection Self link(s) or Name based link(s) which should handle the Read operation.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pydocumentdb-range-partition-resolver-module">
+<h1>pydocumentdb.range_partition_resolver module<a class="headerlink" href="#pydocumentdb-range-partition-resolver-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -142,14 +78,11 @@ distribute requests and data across a number of partitions.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -163,22 +96,18 @@ distribute requests and data across a number of partitions.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="pydocumentdb.resource_throttle_retry_policy.html" title="pydocumentdb.resource_throttle_retry_policy module"
              >next</a> |</li>
         <li class="right" >
           <a href="pydocumentdb.range.html" title="pydocumentdb.range module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 1.9.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pydocumentdb</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="pydocumentdb.html" >pydocumentdb package</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pydocumentdb.html" >pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
     </div>
   </body>
 </html>

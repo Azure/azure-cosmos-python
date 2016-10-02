@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydocumentdb.query_iterable module &mdash; pydocumentdb 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../static/sidebar.js"></script>
+    <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydocumentdb.query_iterable">
+<span id="pydocumentdb-query-iterable-module"></span><h1>pydocumentdb.query_iterable module<a class="headerlink" href="#module-pydocumentdb.query_iterable" title="Permalink to this headline">¶</a></h1>
+<p>Iterable query results.</p>
+<dl class="class">
+<dt id="pydocumentdb.query_iterable.QueryIterable">
+<em class="property">class </em><code class="descclassname">pydocumentdb.query_iterable.</code><code class="descname">QueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>options</em>, <em>fetch_function</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Represents an iterable object of the query results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><cite>client</cite>: object, document client instance</li>
+<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><cite>fetch_function</cite>: function, for executing the feed query</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example of <cite>fetch_function</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">result_fn</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;Databases&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="pydocumentdb.query_iterable.QueryIterable.Iterator">
+<em class="property">class </em><code class="descname">Iterator</code><span class="sig-paren">(</span><em>iterable</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.Iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pydocumentdb.query_iterable.QueryIterable.Iterator.next">
+<code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.Iterator.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.Iterator.next" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable">
+<em class="property">classmethod </em><code class="descclassname">QueryIterable.</code><code class="descname">PartitioningQueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>options</em>, <em>database_link</em>, <em>query</em>, <em>partition_key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.PartitioningQueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><cite>client</cite>: DocumentClient, instance of document client</li>
+<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><cite>database_link</cite>: str, database self link or ID based link</li>
+<li><cite>query</cite>: str or dict</li>
+<li><cite>partition_key</cite>: str, partition key for the query</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example of <cite>fetch_function</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">result_fn</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;Databases&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydocumentdb.query_iterable.QueryIterable.fetch_items">
+<code class="descclassname">QueryIterable.</code><code class="descname">fetch_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.fetch_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.fetch_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches more items.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of fetched items.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydocumentdb.query_iterable.QueryIterable.fetch_next_block">
+<code class="descclassname">QueryIterable.</code><code class="descname">fetch_next_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.fetch_next_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.fetch_next_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the next block of query results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of fetched items.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../sources/apidoc/pydocumentdb.query_iterable.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

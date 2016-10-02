@@ -1,0 +1,329 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydocumentdb.http_constants &mdash; pydocumentdb 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../static/sidebar.js"></script>
+    <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pydocumentdb.http_constants</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation.  All rights reserved.</span>
+
+<span class="sd">&quot;&quot;&quot;HTTP Constants.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="HttpMethods"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.HttpMethods">[docs]</a><span class="k">class</span> <span class="nc">HttpMethods</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of http methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Get</span> <span class="o">=</span> <span class="s1">&#39;GET&#39;</span>
+    <span class="n">Post</span> <span class="o">=</span> <span class="s1">&#39;POST&#39;</span>
+    <span class="n">Put</span> <span class="o">=</span> <span class="s1">&#39;PUT&#39;</span>
+    <span class="n">Delete</span> <span class="o">=</span> <span class="s1">&#39;DELETE&#39;</span>
+    <span class="n">Head</span> <span class="o">=</span> <span class="s1">&#39;HEAD&#39;</span>
+    <span class="n">Options</span> <span class="o">=</span> <span class="s1">&#39;OPTIONS&#39;</span>
+
+</div>
+<div class="viewcode-block" id="HttpHeaders"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.HttpHeaders">[docs]</a><span class="k">class</span> <span class="nc">HttpHeaders</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of http headers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Authorization</span> <span class="o">=</span> <span class="s1">&#39;authorization&#39;</span>
+    <span class="n">ETag</span> <span class="o">=</span> <span class="s1">&#39;etag&#39;</span>
+    <span class="n">MethodOverride</span> <span class="o">=</span> <span class="s1">&#39;X-HTTP-Method&#39;</span>
+    <span class="n">Slug</span> <span class="o">=</span> <span class="s1">&#39;Slug&#39;</span>
+    <span class="n">ContentType</span> <span class="o">=</span> <span class="s1">&#39;Content-Type&#39;</span>
+    <span class="n">LastModified</span> <span class="o">=</span> <span class="s1">&#39;Last-Modified&#39;</span>
+    <span class="n">ContentEncoding</span> <span class="o">=</span> <span class="s1">&#39;Content-Encoding&#39;</span>
+    <span class="n">CharacterSet</span> <span class="o">=</span> <span class="s1">&#39;CharacterSet&#39;</span>
+    <span class="n">UserAgent</span> <span class="o">=</span> <span class="s1">&#39;User-Agent&#39;</span>
+    <span class="n">IfModified_since</span> <span class="o">=</span> <span class="s1">&#39;If-Modified-Since&#39;</span>
+    <span class="n">IfMatch</span> <span class="o">=</span> <span class="s1">&#39;If-Match&#39;</span>
+    <span class="n">IfNoneMatch</span> <span class="o">=</span> <span class="s1">&#39;If-None-Match&#39;</span>
+    <span class="n">ContentLength</span> <span class="o">=</span> <span class="s1">&#39;Content-Length&#39;</span>
+    <span class="n">AcceptEncoding</span> <span class="o">=</span> <span class="s1">&#39;Accept-Encoding&#39;</span>
+    <span class="n">KeepAlive</span> <span class="o">=</span> <span class="s1">&#39;Keep-Alive&#39;</span>
+    <span class="n">CacheControl</span> <span class="o">=</span> <span class="s1">&#39;Cache-Control&#39;</span>
+    <span class="n">TransferEncoding</span> <span class="o">=</span> <span class="s1">&#39;Transfer-Encoding&#39;</span>
+    <span class="n">ContentLanguage</span> <span class="o">=</span> <span class="s1">&#39;Content-Language&#39;</span>
+    <span class="n">ContentLocation</span> <span class="o">=</span> <span class="s1">&#39;Content-Location&#39;</span>
+    <span class="n">ContentMd5</span> <span class="o">=</span> <span class="s1">&#39;Content-Md5&#39;</span>
+    <span class="n">ContentRange</span> <span class="o">=</span> <span class="s1">&#39;Content-Range&#39;</span>
+    <span class="n">Accept</span> <span class="o">=</span> <span class="s1">&#39;Accept&#39;</span>
+    <span class="n">AcceptCharset</span> <span class="o">=</span> <span class="s1">&#39;Accept-Charset&#39;</span>
+    <span class="n">AcceptLanguage</span> <span class="o">=</span> <span class="s1">&#39;Accept-Language&#39;</span>
+    <span class="n">IfRange</span> <span class="o">=</span> <span class="s1">&#39;If-Range&#39;</span>
+    <span class="n">IfUnmodifiedSince</span> <span class="o">=</span> <span class="s1">&#39;If-Unmodified-Since&#39;</span>
+    <span class="n">MaxForwards</span> <span class="o">=</span> <span class="s1">&#39;Max-Forwards&#39;</span>
+    <span class="n">ProxyAuthorization</span> <span class="o">=</span> <span class="s1">&#39;Proxy-Authorization&#39;</span>
+    <span class="n">AcceptRanges</span> <span class="o">=</span> <span class="s1">&#39;Accept-Ranges&#39;</span>
+    <span class="n">ProxyAuthenticate</span> <span class="o">=</span> <span class="s1">&#39;Proxy-Authenticate&#39;</span>
+    <span class="n">RetryAfter</span> <span class="o">=</span> <span class="s1">&#39;Retry-After&#39;</span>
+    <span class="n">SetCookie</span> <span class="o">=</span> <span class="s1">&#39;Set-Cookie&#39;</span>
+    <span class="n">WwwAuthenticate</span> <span class="o">=</span> <span class="s1">&#39;Www-Authenticate&#39;</span>
+    <span class="n">Origin</span> <span class="o">=</span> <span class="s1">&#39;Origin&#39;</span>
+    <span class="n">Host</span> <span class="o">=</span> <span class="s1">&#39;Host&#39;</span>
+    <span class="n">AccessControlAllowOrigin</span> <span class="o">=</span> <span class="s1">&#39;Access-Control-Allow-Origin&#39;</span>
+    <span class="n">AccessControlAllowHeaders</span> <span class="o">=</span> <span class="s1">&#39;Access-Control-Allow-Headers&#39;</span>
+    <span class="n">KeyValueEncodingFormat</span> <span class="o">=</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span>
+    <span class="n">WrapAssertionFormat</span> <span class="o">=</span> <span class="s1">&#39;wrap_assertion_format&#39;</span>
+    <span class="n">WrapAssertion</span> <span class="o">=</span> <span class="s1">&#39;wrap_assertion&#39;</span>
+    <span class="n">WrapScope</span> <span class="o">=</span> <span class="s1">&#39;wrap_scope&#39;</span>
+    <span class="n">SimpleToken</span> <span class="o">=</span> <span class="s1">&#39;SWT&#39;</span>
+    <span class="n">HttpDate</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
+    <span class="n">Prefer</span> <span class="o">=</span> <span class="s1">&#39;Prefer&#39;</span>
+    <span class="n">Location</span> <span class="o">=</span> <span class="s1">&#39;Location&#39;</span>
+    <span class="n">Referer</span> <span class="o">=</span> <span class="s1">&#39;referer&#39;</span>
+
+    <span class="c1"># Query</span>
+    <span class="n">Query</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-query&#39;</span>
+    <span class="n">IsQuery</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-isquery&#39;</span>
+
+    <span class="c1"># Our custom DocDB headers</span>
+    <span class="n">Continuation</span> <span class="o">=</span> <span class="s1">&#39;x-ms-continuation&#39;</span>
+    <span class="n">PageSize</span> <span class="o">=</span> <span class="s1">&#39;x-ms-max-item-count&#39;</span>
+
+    <span class="c1"># Request sender generated. Simply echoed by backend.</span>
+    <span class="n">ActivityId</span> <span class="o">=</span> <span class="s1">&#39;x-ms-activity-id&#39;</span>
+    <span class="n">PreTriggerInclude</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-pre-trigger-include&#39;</span>
+    <span class="n">PreTriggerExclude</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-pre-trigger-exclude&#39;</span>
+    <span class="n">PostTriggerInclude</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-post-trigger-include&#39;</span>
+    <span class="n">PostTriggerExclude</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-post-trigger-exclude&#39;</span>
+    <span class="n">IndexingDirective</span> <span class="o">=</span> <span class="s1">&#39;x-ms-indexing-directive&#39;</span>
+    <span class="n">SessionToken</span> <span class="o">=</span> <span class="s1">&#39;x-ms-session-token&#39;</span>
+    <span class="n">ConsistencyLevel</span> <span class="o">=</span> <span class="s1">&#39;x-ms-consistency-level&#39;</span>
+    <span class="n">XDate</span> <span class="o">=</span> <span class="s1">&#39;x-ms-date&#39;</span>
+    <span class="n">CollectionPartitionInfo</span> <span class="o">=</span> <span class="s1">&#39;x-ms-collection-partition-info&#39;</span>
+    <span class="n">CollectionServiceInfo</span> <span class="o">=</span> <span class="s1">&#39;x-ms-collection-service-info&#39;</span>
+    <span class="n">RetryAfterInMilliseconds</span> <span class="o">=</span> <span class="s1">&#39;x-ms-retry-after-ms&#39;</span>
+    <span class="n">IsFeedUnfiltered</span> <span class="o">=</span> <span class="s1">&#39;x-ms-is-feed-unfiltered&#39;</span>
+    <span class="n">ResourceTokenExpiry</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-expiry-seconds&#39;</span>
+    <span class="n">EnableScanInQuery</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-query-enable-scan&#39;</span>
+    <span class="n">EmitVerboseTracesInQuery</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-query-emit-traces&#39;</span>
+    <span class="n">SubStatus</span> <span class="o">=</span> <span class="s1">&#39;x-ms-substatus&#39;</span>
+
+    <span class="c1"># Quota Info</span>
+    <span class="n">MaxEntityCount</span> <span class="o">=</span> <span class="s1">&#39;x-ms-root-entity-max-count&#39;</span>
+    <span class="n">CurrentEntityCount</span> <span class="o">=</span> <span class="s1">&#39;x-ms-root-entity-current-count&#39;</span>
+    <span class="n">CollectionQuotaInMb</span> <span class="o">=</span> <span class="s1">&#39;x-ms-collection-quota-mb&#39;</span>
+    <span class="n">CollectionCurrentUsageInMb</span> <span class="o">=</span> <span class="s1">&#39;x-ms-collection-usage-mb&#39;</span>
+    <span class="n">MaxMediaStorageUsageInMB</span> <span class="o">=</span> <span class="s1">&#39;x-ms-max-media-storage-usage-mb&#39;</span>
+
+    <span class="c1"># Usage Info</span>
+    <span class="n">CurrentMediaStorageUsageInMB</span> <span class="o">=</span> <span class="s1">&#39;x-ms-media-storage-usage-mb&#39;</span>
+    <span class="n">RequestCharge</span> <span class="o">=</span> <span class="s1">&#39;x-ms-request-charge&#39;</span>
+
+    <span class="c1">#Address related headers.</span>
+    <span class="n">ForceRefresh</span> <span class="o">=</span> <span class="s1">&#39;x-ms-force-refresh&#39;</span>
+    <span class="n">ItemCount</span> <span class="o">=</span> <span class="s1">&#39;x-ms-item-count&#39;</span>
+    <span class="n">NewResourceId</span> <span class="o">=</span> <span class="s1">&#39;x-ms-new-resource-id&#39;</span>
+    <span class="n">UseMasterCollectionResolver</span> <span class="o">=</span> <span class="s1">&#39;x-ms-use-master-collection-resolver&#39;</span>
+
+    <span class="c1"># Admin Headers</span>
+    <span class="n">FullUpgrade</span> <span class="o">=</span> <span class="s1">&#39;x-ms-force-full-upgrade&#39;</span>
+    <span class="n">OnlyUpgradeSystemApplications</span> <span class="o">=</span> <span class="s1">&#39;x-ms-only-upgrade-system-applications&#39;</span>
+    <span class="n">OnlyUpgradeNonSystemApplications</span> <span class="o">=</span> <span class="s1">&#39;x-ms-only-upgrade-non-system-applications&#39;</span>
+    <span class="n">UpgradeFabricRingCodeAndConfig</span> <span class="o">=</span> <span class="s1">&#39;x-ms-upgrade-fabric-code-config&#39;</span>
+    <span class="n">IgnoreInProgressUpgrade</span> <span class="o">=</span> <span class="s1">&#39;x-ms-ignore-inprogress-upgrade&#39;</span>
+    <span class="n">UpgradeVerificationKind</span> <span class="o">=</span> <span class="s1">&#39;x-ms-upgrade-verification-kind&#39;</span>
+    <span class="n">IsCanary</span> <span class="o">=</span> <span class="s1">&#39;x-ms-iscanary&#39;</span>
+
+    <span class="c1"># Version headers and values</span>
+    <span class="n">Version</span> <span class="o">=</span> <span class="s1">&#39;x-ms-version&#39;</span>
+
+    <span class="c1"># RDFE Resource Provider headers</span>
+    <span class="n">OcpResourceProviderRegisteredUri</span> <span class="o">=</span> <span class="s1">&#39;ocp-resourceprovider-registered-uri&#39;</span>
+
+    <span class="c1"># For Document service management operations only. This is in</span>
+    <span class="c1"># essence a &#39;handle&#39; to (long running) operations.</span>
+    <span class="n">RequestId</span> <span class="o">=</span> <span class="s1">&#39;x-ms-request-id&#39;</span>
+
+    <span class="c1"># Object returning this determines what constitutes state and what</span>
+    <span class="c1"># last state change means. For replica, it is the last role change.</span>
+    <span class="n">LastStateChangeUtc</span> <span class="o">=</span> <span class="s1">&#39;x-ms-last-state-change-utc&#39;</span>
+
+    <span class="c1"># Offer type.</span>
+    <span class="n">OfferType</span> <span class="o">=</span> <span class="s1">&#39;x-ms-offer-type&#39;</span>
+    
+    <span class="c1"># Partitioned collection headers</span>
+    <span class="n">OfferThroughput</span> <span class="o">=</span> <span class="s2">&quot;x-ms-offer-throughput&quot;</span>
+    <span class="n">PartitionKey</span> <span class="o">=</span> <span class="s2">&quot;x-ms-documentdb-partitionkey&quot;</span>
+    <span class="n">EnableCrossPartitionQuery</span> <span class="o">=</span> <span class="s2">&quot;x-ms-documentdb-query-enablecrosspartition&quot;</span>
+
+    <span class="c1"># Upsert header</span>
+    <span class="n">IsUpsert</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-is-upsert&#39;</span>
+
+    <span class="c1"># Index progress headers.</span>
+    <span class="n">IndexTransformationProgress</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-collection-index-transformation-progress&#39;</span>
+    <span class="n">LazyIndexingProgress</span> <span class="o">=</span> <span class="s1">&#39;x-ms-documentdb-collection-lazy-indexing-progress&#39;</span>
+
+    <span class="c1"># Client generated retry count response header</span>
+    <span class="n">ThrottleRetryCount</span> <span class="o">=</span> <span class="s1">&#39;x-ms-throttle-retry-count&#39;</span>
+    <span class="n">ThrottleRetryWaitTimeInMs</span> <span class="o">=</span> <span class="s1">&#39;x-ms-throttle-retry-wait-time-ms&#39;</span>
+</div>
+<div class="viewcode-block" id="HttpHeaderPreferenceTokens"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.HttpHeaderPreferenceTokens">[docs]</a><span class="k">class</span> <span class="nc">HttpHeaderPreferenceTokens</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of http header preference tokens.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">PreferUnfilteredQueryResponse</span> <span class="o">=</span> <span class="s1">&#39;PreferUnfilteredQueryResponse&#39;</span>
+
+</div>
+<div class="viewcode-block" id="HttpStatusDescriptions"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.HttpStatusDescriptions">[docs]</a><span class="k">class</span> <span class="nc">HttpStatusDescriptions</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of http status descriptions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Accepted</span> <span class="o">=</span> <span class="s1">&#39;Accepted&#39;</span>
+    <span class="n">Conflict</span> <span class="o">=</span> <span class="s1">&#39;Conflict&#39;</span>
+    <span class="n">OK</span> <span class="o">=</span> <span class="s1">&#39;Ok&#39;</span>
+    <span class="n">PreconditionFailed</span> <span class="o">=</span> <span class="s1">&#39;Precondition Failed&#39;</span>
+    <span class="n">NotModified</span> <span class="o">=</span> <span class="s1">&#39;Not Modified&#39;</span>
+    <span class="n">NotFound</span> <span class="o">=</span> <span class="s1">&#39;Not Found&#39;</span>
+    <span class="n">BadGateway</span> <span class="o">=</span> <span class="s1">&#39;Bad Gateway&#39;</span>
+    <span class="n">BadRequest</span> <span class="o">=</span> <span class="s1">&#39;Bad Request&#39;</span>
+    <span class="n">InternalServerError</span> <span class="o">=</span> <span class="s1">&#39;Internal Server Error&#39;</span>
+    <span class="n">MethodNotAllowed</span> <span class="o">=</span> <span class="s1">&#39;MethodNotAllowed&#39;</span>
+    <span class="n">NotAcceptable</span> <span class="o">=</span> <span class="s1">&#39;Not Acceptable&#39;</span>
+    <span class="n">NoContent</span> <span class="o">=</span> <span class="s1">&#39;No Content&#39;</span>
+    <span class="n">Created</span> <span class="o">=</span> <span class="s1">&#39;Created&#39;</span>
+    <span class="n">UnsupportedMediaType</span> <span class="o">=</span> <span class="s1">&#39;Unsupported Media Type&#39;</span>
+    <span class="n">LengthRequired</span> <span class="o">=</span> <span class="s1">&#39;Length Required&#39;</span>
+    <span class="n">ServiceUnavailable</span> <span class="o">=</span> <span class="s1">&#39;Service Unavailable&#39;</span>
+    <span class="n">RequestEntityTooLarge</span> <span class="o">=</span> <span class="s1">&#39;Request Entity Too Large&#39;</span>
+    <span class="n">Unauthorized</span> <span class="o">=</span> <span class="s1">&#39;Unauthorized&#39;</span>
+    <span class="n">Forbidden</span> <span class="o">=</span> <span class="s1">&#39;Forbidden&#39;</span>
+    <span class="n">Gone</span> <span class="o">=</span> <span class="s1">&#39;Gone&#39;</span>
+    <span class="n">RequestTimeout</span> <span class="o">=</span> <span class="s1">&#39;Request timed out&#39;</span>
+    <span class="n">GatewayTimeout</span> <span class="o">=</span> <span class="s1">&#39;Gateway timed out&#39;</span>
+    <span class="n">TooManyRequests</span> <span class="o">=</span> <span class="s1">&#39;Too Many Requests&#39;</span>
+    <span class="n">RetryWith</span> <span class="o">=</span> <span class="s1">&#39;Retry the request&#39;</span>
+
+</div>
+<div class="viewcode-block" id="QueryStrings"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.QueryStrings">[docs]</a><span class="k">class</span> <span class="nc">QueryStrings</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of query strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Filter</span> <span class="o">=</span> <span class="s1">&#39;$filter&#39;</span><span class="p">;</span>
+    <span class="n">GenerateId</span> <span class="o">=</span> <span class="s1">&#39;$generateFor&#39;</span>
+    <span class="n">GenerateIdBatchSize</span> <span class="o">=</span> <span class="s1">&#39;$batchSize&#39;</span>
+    <span class="n">GetChildResourcePartitions</span> <span class="o">=</span> <span class="s1">&#39;$getChildResourcePartitions&#39;</span>
+    <span class="n">Url</span> <span class="o">=</span> <span class="s1">&#39;$resolveFor&#39;</span>
+    <span class="n">RootIndex</span> <span class="o">=</span> <span class="s1">&#39;$rootIndex&#39;</span>
+    <span class="n">Query</span> <span class="o">=</span> <span class="s1">&#39;query&#39;</span>
+    <span class="n">SQLQueryType</span> <span class="o">=</span> <span class="s1">&#39;sql&#39;</span>
+
+    <span class="c1"># RDFE Resource Provider query strings</span>
+    <span class="n">ContentView</span> <span class="o">=</span> <span class="s1">&#39;contentview&#39;</span>
+    <span class="n">Generic</span> <span class="o">=</span> <span class="s1">&#39;generic&#39;</span>
+
+</div>
+<div class="viewcode-block" id="CookieHeaders"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.CookieHeaders">[docs]</a><span class="k">class</span> <span class="nc">CookieHeaders</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of cookie headers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SessionToken</span> <span class="o">=</span> <span class="s1">&#39;x-ms-session-token&#39;</span>
+
+</div>
+<div class="viewcode-block" id="Versions"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.Versions">[docs]</a><span class="k">class</span> <span class="nc">Versions</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of versions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CurrentVersion</span> <span class="o">=</span> <span class="s1">&#39;2016-05-30&#39;</span>
+    <span class="n">UserAgent</span> <span class="o">=</span> <span class="s1">&#39;documentdb-python-sdk-1.9.0&#39;</span>
+
+</div>
+<div class="viewcode-block" id="Delimiters"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.Delimiters">[docs]</a><span class="k">class</span> <span class="nc">Delimiters</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of delimiters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ClientContinuationDelimiter</span> <span class="o">=</span> <span class="s1">&#39;!!&#39;</span>
+    <span class="n">ClientContinuationFormat</span> <span class="o">=</span> <span class="s1">&#39;{0}!!{1}&#39;</span>
+
+</div>
+<div class="viewcode-block" id="HttpListenerErrorCodes"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.HttpListenerErrorCodes">[docs]</a><span class="k">class</span> <span class="nc">HttpListenerErrorCodes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of http listener error codes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ERROR_OPERATION_ABORTED</span> <span class="o">=</span> <span class="mi">995</span>
+    <span class="n">ERROR_CONNECTION_INVALID</span> <span class="o">=</span> <span class="mi">1229</span>
+
+</div>
+<div class="viewcode-block" id="HttpContextProperties"><a class="viewcode-back" href="../../apidoc/pydocumentdb.http_constants.html#pydocumentdb.http_constants.HttpContextProperties">[docs]</a><span class="k">class</span> <span class="nc">HttpContextProperties</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants of http context properties.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SubscriptionId</span> <span class="o">=</span> <span class="s1">&#39;SubscriptionId&#39;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

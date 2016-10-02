@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydocumentdb.auth &mdash; pydocumentdb 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../static/sidebar.js"></script>
+    <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pydocumentdb.auth</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation.  All rights reserved.</span>
+
+<span class="sd">&quot;&quot;&quot;Authorization helper functions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">sha256</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+
+<span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="kn">as</span> <span class="nn">http_constants</span>
+
+
+<div class="viewcode-block" id="GetAuthorizationHeader"><a class="viewcode-back" href="../../apidoc/pydocumentdb.auth.html#pydocumentdb.auth.GetAuthorizationHeader">[docs]</a><span class="k">def</span> <span class="nf">GetAuthorizationHeader</span><span class="p">(</span><span class="n">document_client</span><span class="p">,</span>
+                           <span class="n">verb</span><span class="p">,</span>
+                           <span class="n">path</span><span class="p">,</span>
+                           <span class="n">resource_id_or_fullname</span><span class="p">,</span>
+                           <span class="n">resource_type</span><span class="p">,</span>
+                           <span class="n">headers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets the authorization header.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">        - `document_client`: document_client.DocumentClient</span>
+<span class="sd">        - `verb`: str</span>
+<span class="sd">        - `path`: str</span>
+<span class="sd">        - `resource_id_or_fullname`: str</span>
+<span class="sd">        - `resource_type`: str</span>
+<span class="sd">        - `headers`: dict</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        dict, the authorization headers.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">document_client</span><span class="o">.</span><span class="n">master_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">__GetAuthorizationTokenUsingMasterKey</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span>
+                                                    <span class="n">resource_id_or_fullname</span><span class="p">,</span>
+                                                    <span class="n">resource_type</span><span class="p">,</span>
+                                                    <span class="n">headers</span><span class="p">,</span>
+                                                    <span class="n">document_client</span><span class="o">.</span><span class="n">master_key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">document_client</span><span class="o">.</span><span class="n">resource_tokens</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">__GetAuthorizationTokenUsingResourceTokens</span><span class="p">(</span>
+            <span class="n">document_client</span><span class="o">.</span><span class="n">resource_tokens</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">resource_id_or_fullname</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">__GetAuthorizationTokenUsingMasterKey</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span>
+                                         <span class="n">resource_id_or_fullname</span><span class="p">,</span>
+                                         <span class="n">resource_type</span><span class="p">,</span>
+                                         <span class="n">headers</span><span class="p">,</span>
+                                         <span class="n">master_key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets the authorization token using `master_key.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">        - `verb`: str</span>
+<span class="sd">        - `resource_id_or_fullname`: str</span>
+<span class="sd">        - `resource_type`: str</span>
+<span class="sd">        - `headers`: dict</span>
+<span class="sd">        - `master_key`: st</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">master_key</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Skipping lower casing of resource_id_or_fullname since it may now contain &quot;ID&quot; of the resource as part of the fullname</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;{verb}</span><span class="se">\n</span><span class="s1">{resource_type}</span><span class="se">\n</span><span class="s1">{resource_id_or_fullname}</span><span class="se">\n</span><span class="s1">{x_date}</span><span class="se">\n</span><span class="s1">{http_date}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">verb</span><span class="o">=</span><span class="p">(</span><span class="n">verb</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+        <span class="n">resource_type</span><span class="o">=</span><span class="p">(</span><span class="n">resource_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+        <span class="n">resource_id_or_fullname</span><span class="o">=</span><span class="p">(</span><span class="n">resource_id_or_fullname</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+        <span class="n">x_date</span><span class="o">=</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">XDate</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+        <span class="n">http_date</span><span class="o">=</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">HttpDate</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+   
+    <span class="n">body</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+
+    <span class="n">hm</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">sha256</span><span class="p">)</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">)</span>
+
+    <span class="n">master_token</span> <span class="o">=</span> <span class="s1">&#39;master&#39;</span>
+    <span class="n">token_version</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+    <span class="k">return</span> <span class="s1">&#39;type={type}&amp;ver={ver}&amp;sig={sig}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">master_token</span><span class="p">,</span>
+                                                    <span class="n">ver</span><span class="o">=</span><span class="n">token_version</span><span class="p">,</span>
+                                                    <span class="n">sig</span><span class="o">=</span><span class="n">signature</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">__GetAuthorizationTokenUsingResourceTokens</span><span class="p">(</span><span class="n">resource_tokens</span><span class="p">,</span>
+                                              <span class="n">path</span><span class="p">,</span>
+                                              <span class="n">resource_id_or_fullname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the authorization token using `resource_tokens`.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">        - `resource_tokens`: dict</span>
+<span class="sd">        - `path`: str</span>
+<span class="sd">        - `resource_id_or_fullname`: str</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">resource_tokens</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">resource_tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># For database account access(through GetDatabaseAccount API), path and resource_id_or_fullname are &#39;&#39;, </span>
+        <span class="c1"># so in this case we return the first token to be used for creating the auth header as the service will accept any token in this case</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">resource_id_or_fullname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">resource_tokens</span><span class="o">.</span><span class="n">itervalues</span><span class="p">()</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">resource_tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_id_or_fullname</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">resource_tokens</span><span class="p">[</span><span class="n">resource_id_or_fullname</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path_parts</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+                <span class="n">path_parts</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+            <span class="n">resource_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dbs&#39;</span><span class="p">,</span> <span class="s1">&#39;colls&#39;</span><span class="p">,</span> <span class="s1">&#39;docs&#39;</span><span class="p">,</span> <span class="s1">&#39;sprocs&#39;</span><span class="p">,</span> <span class="s1">&#39;udfs&#39;</span><span class="p">,</span> <span class="s1">&#39;triggers&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="s1">&#39;attachments&#39;</span><span class="p">,</span> <span class="s1">&#39;media&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;conflicts&#39;</span><span class="p">,</span> <span class="s1">&#39;offers&#39;</span><span class="p">]</span>
+            <span class="c1"># Get the last resource id or resource name from the path and get it&#39;s token from resource_tokens</span>
+            <span class="k">for</span> <span class="n">one_part</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">path_parts</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">one_part</span> <span class="ow">in</span> <span class="n">resource_types</span> <span class="ow">and</span> <span class="n">one_part</span> <span class="ow">in</span> <span class="n">resource_tokens</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">resource_tokens</span><span class="p">[</span><span class="n">one_part</span><span class="p">]</span>
+    <span class="k">return</span> <span class="bp">None</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

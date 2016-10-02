@@ -70,7 +70,7 @@
     <span class="nb">basestring</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="DocumentClient"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient">[docs]</a><span class="k">class</span> <span class="nc">DocumentClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient">[docs]</a><span class="k">class</span> <span class="nc">DocumentClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents a document client.</span>
 
 <span class="sd">    Provides a client-side logical representation of the Azure DocumentDB</span>
@@ -167,7 +167,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_global_endpoint_manager</span><span class="o">.</span><span class="n">ReadEndpoint</span>
 
-<div class="viewcode-block" id="DocumentClient.RegisterPartitionResolver"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.RegisterPartitionResolver">[docs]</a>    <span class="k">def</span> <span class="nf">RegisterPartitionResolver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">partition_resolver</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.RegisterPartitionResolver"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.RegisterPartitionResolver">[docs]</a>    <span class="k">def</span> <span class="nf">RegisterPartitionResolver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">partition_resolver</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Registers the partition resolver associated with the database link</span>
 
 <span class="sd">        :Parameters:</span>
@@ -184,7 +184,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">partition_resolvers</span> <span class="o">=</span> <span class="p">{</span><span class="n">base</span><span class="o">.</span><span class="n">TrimBeginningAndEndingSlashes</span><span class="p">(</span><span class="n">database_link</span><span class="p">):</span> <span class="n">partition_resolver</span><span class="p">}</span>
 
 </div>
-<div class="viewcode-block" id="DocumentClient.GetPartitionResolver"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.GetPartitionResolver">[docs]</a>    <span class="k">def</span> <span class="nf">GetPartitionResolver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.GetPartitionResolver"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.GetPartitionResolver">[docs]</a>    <span class="k">def</span> <span class="nf">GetPartitionResolver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the partition resolver associated with the database link</span>
 
 <span class="sd">        :Parameters:</span>
@@ -200,7 +200,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_resolvers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">TrimBeginningAndEndingSlashes</span><span class="p">(</span><span class="n">database_link</span><span class="p">))</span>
 
         </div>
-<div class="viewcode-block" id="DocumentClient.CreateDatabase"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">CreateDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreateDatabase"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">CreateDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a database.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -218,7 +218,7 @@
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/dbs&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;dbs&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadDatabase"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadDatabase"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a database.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -236,7 +236,7 @@
         <span class="n">database_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">database_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;dbs&#39;</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadDatabases"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDatabases">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDatabases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadDatabases"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDatabases">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDatabases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all databases.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -251,7 +251,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryDatabases</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryDatabases"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryDatabases">[docs]</a>    <span class="k">def</span> <span class="nf">QueryDatabases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryDatabases"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryDatabases">[docs]</a>    <span class="k">def</span> <span class="nf">QueryDatabases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries databases.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -275,7 +275,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadCollections"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadCollections">[docs]</a>    <span class="k">def</span> <span class="nf">ReadCollections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadCollections"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadCollections">[docs]</a>    <span class="k">def</span> <span class="nf">ReadCollections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all collections in a database.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -291,7 +291,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryCollections</span><span class="p">(</span><span class="n">database_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryCollections"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryCollections">[docs]</a>    <span class="k">def</span> <span class="nf">QueryCollections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryCollections"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryCollections">[docs]</a>    <span class="k">def</span> <span class="nf">QueryCollections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries collections in a database.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -318,7 +318,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.CreateCollection"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateCollection">[docs]</a>    <span class="k">def</span> <span class="nf">CreateCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreateCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateCollection">[docs]</a>    <span class="k">def</span> <span class="nf">CreateCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a collection in a database.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -343,7 +343,7 @@
                            <span class="bp">None</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplaceCollection"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceCollection">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplaceCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceCollection">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a collection and return it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -368,7 +368,7 @@
                             <span class="bp">None</span><span class="p">,</span>
                             <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadCollection"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadCollection">[docs]</a>    <span class="k">def</span> <span class="nf">ReadCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadCollection">[docs]</a>    <span class="k">def</span> <span class="nf">ReadCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -390,7 +390,7 @@
                          <span class="bp">None</span><span class="p">,</span>
                          <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.CreateUser"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateUser">[docs]</a>    <span class="k">def</span> <span class="nf">CreateUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreateUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateUser">[docs]</a>    <span class="k">def</span> <span class="nf">CreateUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a user.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -413,7 +413,7 @@
                            <span class="bp">None</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpsertUser"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertUser">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.UpsertUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertUser">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a user.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -443,7 +443,7 @@
         <span class="k">return</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">path</span>
     
 
-<div class="viewcode-block" id="DocumentClient.ReadUser"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUser">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUser">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a user.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -461,7 +461,7 @@
         <span class="n">user_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">user_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadUsers"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUsers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadUsers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUsers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all users in a database.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -476,7 +476,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryUsers</span><span class="p">(</span><span class="n">database_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryUsers"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryUsers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryUsers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryUsers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries users in a database.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -503,7 +503,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteDatabase"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteDatabase"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a database.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -525,7 +525,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.CreatePermission"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreatePermission">[docs]</a>    <span class="k">def</span> <span class="nf">CreatePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreatePermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreatePermission">[docs]</a>    <span class="k">def</span> <span class="nf">CreatePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a permission for a user.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -548,7 +548,7 @@
                            <span class="bp">None</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpsertPermission"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertPermission">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertPermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.UpsertPermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertPermission">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertPermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a permission for a user.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -578,7 +578,7 @@
         <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="n">user_id</span>
 
 
-<div class="viewcode-block" id="DocumentClient.ReadPermission"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadPermission">[docs]</a>    <span class="k">def</span> <span class="nf">ReadPermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadPermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadPermission">[docs]</a>    <span class="k">def</span> <span class="nf">ReadPermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a permission.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -600,7 +600,7 @@
                           <span class="bp">None</span><span class="p">,</span>
                           <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadPermissions"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadPermissions">[docs]</a>    <span class="k">def</span> <span class="nf">ReadPermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadPermissions"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadPermissions">[docs]</a>    <span class="k">def</span> <span class="nf">ReadPermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all permissions for a user.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -616,7 +616,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryPermissions</span><span class="p">(</span><span class="n">user_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryPermissions"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryPermissions">[docs]</a>    <span class="k">def</span> <span class="nf">QueryPermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryPermissions"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryPermissions">[docs]</a>    <span class="k">def</span> <span class="nf">QueryPermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries permissions for a user.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -643,7 +643,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplaceUser"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceUser">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplaceUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceUser">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a user and return it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -668,7 +668,7 @@
                             <span class="bp">None</span><span class="p">,</span>
                             <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteUser"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteUser">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteUser">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a user.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -690,7 +690,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplacePermission"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplacePermission">[docs]</a>    <span class="k">def</span> <span class="nf">ReplacePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplacePermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplacePermission">[docs]</a>    <span class="k">def</span> <span class="nf">ReplacePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a permission and return it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -715,7 +715,7 @@
                             <span class="bp">None</span><span class="p">,</span>
                             <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeletePermission"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeletePermission">[docs]</a>    <span class="k">def</span> <span class="nf">DeletePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeletePermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeletePermission">[docs]</a>    <span class="k">def</span> <span class="nf">DeletePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a permission.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -737,7 +737,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadDocuments"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDocuments">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDocuments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">feed_options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadDocuments"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDocuments">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDocuments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">feed_options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all documents in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -753,7 +753,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryDocuments</span><span class="p">(</span><span class="n">collection_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">feed_options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryDocuments"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryDocuments">[docs]</a>    <span class="k">def</span> <span class="nf">QueryDocuments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">partition_key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryDocuments"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryDocuments">[docs]</a>    <span class="k">def</span> <span class="nf">QueryDocuments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">partition_key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries documents in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -785,7 +785,7 @@
                                         <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
             <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.CreateDocument"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateDocument">[docs]</a>    <span class="k">def</span> <span class="nf">CreateDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreateDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateDocument">[docs]</a>    <span class="k">def</span> <span class="nf">CreateDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a document in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -819,7 +819,7 @@
                            <span class="bp">None</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpsertDocument"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertDocument">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.UpsertDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertDocument">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a document in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -884,7 +884,7 @@
         <span class="n">collection_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">collection_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">path</span>
     
-<div class="viewcode-block" id="DocumentClient.ReadDocument"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDocument">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDocument">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a document.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -906,7 +906,7 @@
                          <span class="bp">None</span><span class="p">,</span>
                          <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadTriggers"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadTriggers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadTriggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadTriggers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadTriggers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadTriggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all triggers in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -922,7 +922,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryTriggers</span><span class="p">(</span><span class="n">collection_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryTriggers"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryTriggers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryTriggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryTriggers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryTriggers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryTriggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries triggers in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -949,7 +949,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.CreateTrigger"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">CreateTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreateTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">CreateTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a trigger in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -972,7 +972,7 @@
                            <span class="bp">None</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpsertTrigger"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.UpsertTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a trigger in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1008,7 +1008,7 @@
         <span class="k">return</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">trigger</span>
     
 
-<div class="viewcode-block" id="DocumentClient.ReadTrigger"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">ReadTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">ReadTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a trigger.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1026,7 +1026,7 @@
         <span class="n">trigger_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">trigger_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;triggers&#39;</span><span class="p">,</span> <span class="n">trigger_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadUserDefinedFunctions"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunctions">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUserDefinedFunctions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadUserDefinedFunctions"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunctions">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUserDefinedFunctions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all user defined functions in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1042,7 +1042,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryUserDefinedFunctions</span><span class="p">(</span><span class="n">collection_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryUserDefinedFunctions"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryUserDefinedFunctions">[docs]</a>    <span class="k">def</span> <span class="nf">QueryUserDefinedFunctions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryUserDefinedFunctions"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryUserDefinedFunctions">[docs]</a>    <span class="k">def</span> <span class="nf">QueryUserDefinedFunctions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries user defined functions in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1069,7 +1069,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.CreateUserDefinedFunction"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">CreateUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreateUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">CreateUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a user defined function in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1092,7 +1092,7 @@
                            <span class="bp">None</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpsertUserDefinedFunction"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.UpsertUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a user defined function in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1128,7 +1128,7 @@
         <span class="k">return</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">udf</span>
     
 
-<div class="viewcode-block" id="DocumentClient.ReadUserDefinedFunction"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a user defined function.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1146,7 +1146,7 @@
         <span class="n">udf_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">udf_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;udfs&#39;</span><span class="p">,</span> <span class="n">udf_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadStoredProcedures"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadStoredProcedures">[docs]</a>    <span class="k">def</span> <span class="nf">ReadStoredProcedures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadStoredProcedures"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadStoredProcedures">[docs]</a>    <span class="k">def</span> <span class="nf">ReadStoredProcedures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all store procedures in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1162,7 +1162,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryStoredProcedures</span><span class="p">(</span><span class="n">collection_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryStoredProcedures"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryStoredProcedures">[docs]</a>    <span class="k">def</span> <span class="nf">QueryStoredProcedures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryStoredProcedures"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryStoredProcedures">[docs]</a>    <span class="k">def</span> <span class="nf">QueryStoredProcedures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries stored procedures in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1189,7 +1189,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.CreateStoredProcedure"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">CreateStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreateStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">CreateStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a stored procedure in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1212,7 +1212,7 @@
                            <span class="bp">None</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpsertStoredProcedure"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.UpsertStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a stored procedure in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1247,7 +1247,7 @@
         <span class="k">return</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sproc</span>
     
 
-<div class="viewcode-block" id="DocumentClient.ReadStoredProcedure"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ReadStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ReadStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a stored procedure.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1265,7 +1265,7 @@
         <span class="n">sproc_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">sproc_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;sprocs&#39;</span><span class="p">,</span> <span class="n">sproc_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadConflicts"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadConflicts">[docs]</a>    <span class="k">def</span> <span class="nf">ReadConflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">feed_options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadConflicts"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadConflicts">[docs]</a>    <span class="k">def</span> <span class="nf">ReadConflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">feed_options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads conflicts.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1281,7 +1281,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryConflicts</span><span class="p">(</span><span class="n">collection_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">feed_options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryConflicts"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryConflicts">[docs]</a>    <span class="k">def</span> <span class="nf">QueryConflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryConflicts"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryConflicts">[docs]</a>    <span class="k">def</span> <span class="nf">QueryConflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries conflicts in a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1308,7 +1308,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadConflict"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadConflict">[docs]</a>    <span class="k">def</span> <span class="nf">ReadConflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conflict_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadConflict"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadConflict">[docs]</a>    <span class="k">def</span> <span class="nf">ReadConflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conflict_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a conflict.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1330,7 +1330,7 @@
                          <span class="bp">None</span><span class="p">,</span>
                          <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteCollection"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteCollection">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteCollection">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a collection.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1352,7 +1352,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplaceDocument"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceDocument">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">new_document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplaceDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceDocument">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">new_document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a document and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1386,7 +1386,7 @@
                             <span class="bp">None</span><span class="p">,</span>
                             <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteDocument"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteDocument">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteDocument">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a document.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1408,7 +1408,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.CreateAttachment"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">CreateAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.CreateAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">CreateAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates an attachment in a document.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1431,7 +1431,7 @@
                            <span class="bp">None</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpsertAttachment"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.UpsertAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts an attachment in a document.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1460,7 +1460,7 @@
         <span class="n">document_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">document_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">document_id</span><span class="p">,</span> <span class="n">path</span>
 
-<div class="viewcode-block" id="DocumentClient.CreateAttachmentAndUploadMedia"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateAttachmentAndUploadMedia">[docs]</a>    <span class="k">def</span> <span class="nf">CreateAttachmentAndUploadMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="DocumentClient.CreateAttachmentAndUploadMedia"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateAttachmentAndUploadMedia">[docs]</a>    <span class="k">def</span> <span class="nf">CreateAttachmentAndUploadMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                        <span class="n">document_link</span><span class="p">,</span>
                                        <span class="n">readable_stream</span><span class="p">,</span>
                                        <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -1486,7 +1486,7 @@
                            <span class="n">initial_headers</span><span class="p">,</span>
                            <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpsertAttachmentAndUploadMedia"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertAttachmentAndUploadMedia">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertAttachmentAndUploadMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="DocumentClient.UpsertAttachmentAndUploadMedia"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertAttachmentAndUploadMedia">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertAttachmentAndUploadMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                        <span class="n">document_link</span><span class="p">,</span>
                                        <span class="n">readable_stream</span><span class="p">,</span>
                                        <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -1531,7 +1531,7 @@
         <span class="k">return</span> <span class="n">document_id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">path</span>
 
 
-<div class="viewcode-block" id="DocumentClient.ReadAttachment"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">ReadAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">ReadAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads an attachment.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1553,7 +1553,7 @@
                          <span class="bp">None</span><span class="p">,</span>
                          <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadAttachments"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadAttachments">[docs]</a>    <span class="k">def</span> <span class="nf">ReadAttachments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadAttachments"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadAttachments">[docs]</a>    <span class="k">def</span> <span class="nf">ReadAttachments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all attachments in a document.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1569,7 +1569,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryAttachments</span><span class="p">(</span><span class="n">document_link</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryAttachments"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryAttachments">[docs]</a>    <span class="k">def</span> <span class="nf">QueryAttachments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryAttachments"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryAttachments">[docs]</a>    <span class="k">def</span> <span class="nf">QueryAttachments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries attachments in a document.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1598,7 +1598,7 @@
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadMedia"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadMedia">[docs]</a>    <span class="k">def</span> <span class="nf">ReadMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_link</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadMedia"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadMedia">[docs]</a>    <span class="k">def</span> <span class="nf">ReadMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_link</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a media.</span>
 
 <span class="sd">        When self.connection_policy.MediaReadMode ==</span>
@@ -1632,7 +1632,7 @@
                                                         <span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.UpdateMedia"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpdateMedia">[docs]</a>    <span class="k">def</span> <span class="nf">UpdateMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_link</span><span class="p">,</span> <span class="n">readable_stream</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.UpdateMedia"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpdateMedia">[docs]</a>    <span class="k">def</span> <span class="nf">UpdateMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_link</span><span class="p">,</span> <span class="n">readable_stream</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Updates a media and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1680,7 +1680,7 @@
                                                         <span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplaceAttachment"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplaceAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces an attachment and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1705,7 +1705,7 @@
                             <span class="bp">None</span><span class="p">,</span>
                             <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteAttachment"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes an attachment.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1727,7 +1727,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplaceTrigger"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplaceTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a trigger and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1758,7 +1758,7 @@
                             <span class="bp">None</span><span class="p">,</span>
                             <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteTrigger"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a trigger.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1780,7 +1780,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplaceUserDefinedFunction"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplaceUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a user defined function and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1811,7 +1811,7 @@
                             <span class="bp">None</span><span class="p">,</span>
                             <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteUserDefinedFunction"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a user defined function.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1833,7 +1833,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ExecuteStoredProcedure"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ExecuteStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ExecuteStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ExecuteStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ExecuteStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ExecuteStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Executes a store procedure.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1876,7 +1876,7 @@
                                                          <span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplaceStoredProcedure"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplaceStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a stored procedure and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1907,7 +1907,7 @@
                             <span class="bp">None</span><span class="p">,</span>
                             <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteStoredProcedure"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a stored procedure.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1929,7 +1929,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteConflict"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteConflict">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteConflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conflict_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteConflict"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteConflict">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteConflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conflict_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a conflict.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1951,7 +1951,7 @@
                                    <span class="bp">None</span><span class="p">,</span>
                                    <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReplaceOffer"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceOffer">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceOffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offer_link</span><span class="p">,</span> <span class="n">offer</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReplaceOffer"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceOffer">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceOffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offer_link</span><span class="p">,</span> <span class="n">offer</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces an offer and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1967,7 +1967,7 @@
         <span class="n">offer_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">offer_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Replace</span><span class="p">(</span><span class="n">offer</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;offers&#39;</span><span class="p">,</span> <span class="n">offer_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadOffer"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadOffer">[docs]</a>    <span class="k">def</span> <span class="nf">ReadOffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offer_link</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadOffer"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadOffer">[docs]</a>    <span class="k">def</span> <span class="nf">ReadOffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offer_link</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads an offer.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1981,7 +1981,7 @@
         <span class="n">offer_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">offer_link</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;offers&#39;</span><span class="p">,</span> <span class="n">offer_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">{})</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.ReadOffers"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadOffers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadOffers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.ReadOffers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadOffers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadOffers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all offers.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -1996,7 +1996,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryOffers</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.QueryOffers"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryOffers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryOffers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryOffers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryOffers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryOffers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query for all offers.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -2020,7 +2020,7 @@
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
         <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.GetDatabaseAccount"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.GetDatabaseAccount">[docs]</a>    <span class="k">def</span> <span class="nf">GetDatabaseAccount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.GetDatabaseAccount"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.GetDatabaseAccount">[docs]</a>    <span class="k">def</span> <span class="nf">GetDatabaseAccount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets database account info.</span>
 
 <span class="sd">        :Returns:</span>
@@ -2063,7 +2063,7 @@
             <span class="n">database_account</span><span class="o">.</span><span class="n">_ReadableLocations</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">constants</span><span class="o">.</span><span class="n">_Constants</span><span class="o">.</span><span class="n">ReadableLocations</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">database_account</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.Create"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Create">[docs]</a>    <span class="k">def</span> <span class="nf">Create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.Create"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Create">[docs]</a>    <span class="k">def</span> <span class="nf">Create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a DocumentDB resource and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -2097,7 +2097,7 @@
                                                          <span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.Upsert"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Upsert">[docs]</a>    <span class="k">def</span> <span class="nf">Upsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.Upsert"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Upsert">[docs]</a>    <span class="k">def</span> <span class="nf">Upsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a DocumentDB resource and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -2134,7 +2134,7 @@
                                                          <span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.Replace"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Replace">[docs]</a>    <span class="k">def</span> <span class="nf">Replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.Replace"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Replace">[docs]</a>    <span class="k">def</span> <span class="nf">Replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a DocumentDB resource and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -2168,7 +2168,7 @@
                                                         <span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.Read"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Read">[docs]</a>    <span class="k">def</span> <span class="nf">Read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.Read"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Read">[docs]</a>    <span class="k">def</span> <span class="nf">Read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a DocumentDB resource and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -2200,7 +2200,7 @@
                                                         <span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="DocumentClient.DeleteResource"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteResource">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteResource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.DeleteResource"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteResource">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteResource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a DocumentDB resource and returns it.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -2326,7 +2326,7 @@
                                                         <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                                                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DocumentClient.QueryFeed"><a class="viewcode-back" href="../../apidoc/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryFeed">[docs]</a>    <span class="k">def</span> <span class="nf">QueryFeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryFeed"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryFeed">[docs]</a>    <span class="k">def</span> <span class="nf">QueryFeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query Feed for Document Collection resource.</span>
 
 <span class="sd">        :Parameters:</span>

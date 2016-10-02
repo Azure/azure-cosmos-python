@@ -71,7 +71,7 @@
 
 <span class="kn">import</span> <span class="nn">pydocumentdb.range</span> <span class="kn">as</span> <span class="nn">range</span>
 
-<div class="viewcode-block" id="RangePartitionResolver"><a class="viewcode-back" href="../../apidoc/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver">[docs]</a><span class="k">class</span> <span class="nc">RangePartitionResolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="RangePartitionResolver"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver">[docs]</a><span class="k">class</span> <span class="nc">RangePartitionResolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;RangePartitionResolver implements partitioning based on the ranges, allowing you to</span>
 <span class="sd">    distribute requests and data across a number of partitions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -89,7 +89,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">partition_key_extractor</span> <span class="o">=</span> <span class="n">partition_key_extractor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span> <span class="o">=</span> <span class="n">partition_map</span>
 
-<div class="viewcode-block" id="RangePartitionResolver.ResolveForCreate"><a class="viewcode-back" href="../../apidoc/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForCreate">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForCreate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+<div class="viewcode-block" id="RangePartitionResolver.ResolveForCreate"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForCreate">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForCreate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resolves the collection for creating the document based on the partition key.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -109,7 +109,7 @@
         
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">containing_range</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="RangePartitionResolver.ResolveForRead"><a class="viewcode-back" href="../../apidoc/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForRead">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForRead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
+<div class="viewcode-block" id="RangePartitionResolver.ResolveForRead"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForRead">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForRead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resolves the collection for reading/querying the documents based on the partition key.</span>
 
 <span class="sd">        :Parameters:</span>

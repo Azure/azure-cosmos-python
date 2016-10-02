@@ -65,7 +65,7 @@
 <span class="kn">import</span> <span class="nn">pydocumentdb.runtime_constants</span> <span class="kn">as</span> <span class="nn">runtime_constants</span>
 
 
-<div class="viewcode-block" id="GetHeaders"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.GetHeaders">[docs]</a><span class="k">def</span> <span class="nf">GetHeaders</span><span class="p">(</span><span class="n">document_client</span><span class="p">,</span>
+<div class="viewcode-block" id="GetHeaders"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetHeaders">[docs]</a><span class="k">def</span> <span class="nf">GetHeaders</span><span class="p">(</span><span class="n">document_client</span><span class="p">,</span>
                <span class="n">default_headers</span><span class="p">,</span>
                <span class="n">verb</span><span class="p">,</span>
                <span class="n">path</span><span class="p">,</span>
@@ -184,7 +184,7 @@
     <span class="k">return</span> <span class="n">headers</span>
 
 </div>
-<div class="viewcode-block" id="GetResourceIdOrFullNameFromLink"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.GetResourceIdOrFullNameFromLink">[docs]</a><span class="k">def</span> <span class="nf">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">resource_link</span><span class="p">):</span>
+<div class="viewcode-block" id="GetResourceIdOrFullNameFromLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetResourceIdOrFullNameFromLink">[docs]</a><span class="k">def</span> <span class="nf">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">resource_link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets resource id or full name from resource link.</span>
 
 <span class="sd">    :Parameters:</span>
@@ -225,7 +225,7 @@
     <span class="k">return</span> <span class="bp">None</span>
 
 </div>
-<div class="viewcode-block" id="GetAttachmentIdFromMediaId"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.GetAttachmentIdFromMediaId">[docs]</a><span class="k">def</span> <span class="nf">GetAttachmentIdFromMediaId</span><span class="p">(</span><span class="n">media_id</span><span class="p">):</span>
+<div class="viewcode-block" id="GetAttachmentIdFromMediaId"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetAttachmentIdFromMediaId">[docs]</a><span class="k">def</span> <span class="nf">GetAttachmentIdFromMediaId</span><span class="p">(</span><span class="n">media_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets attachment id from media id.</span>
 
 <span class="sd">    :Parameters:</span>
@@ -249,7 +249,7 @@
     <span class="k">return</span> <span class="n">attachment_id</span>
 
 </div>
-<div class="viewcode-block" id="GenerateGuidId"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.GenerateGuidId">[docs]</a><span class="k">def</span> <span class="nf">GenerateGuidId</span><span class="p">():</span>
+<div class="viewcode-block" id="GenerateGuidId"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GenerateGuidId">[docs]</a><span class="k">def</span> <span class="nf">GenerateGuidId</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Gets a random GUID.</span>
 
 <span class="sd">    Note that here we use python&#39;s UUID generation library. Basically UUID</span>
@@ -261,7 +261,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
 </div>
-<div class="viewcode-block" id="GetPathFromLink"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.GetPathFromLink">[docs]</a><span class="k">def</span> <span class="nf">GetPathFromLink</span><span class="p">(</span><span class="n">resource_link</span><span class="p">,</span> <span class="n">resource_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="GetPathFromLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetPathFromLink">[docs]</a><span class="k">def</span> <span class="nf">GetPathFromLink</span><span class="p">(</span><span class="n">resource_link</span><span class="p">,</span> <span class="n">resource_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets path from resource link with optional resource type</span>
 
 <span class="sd">    :Parameters:</span>
@@ -285,7 +285,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">resource_link</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
     </div>
-<div class="viewcode-block" id="IsNameBased"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.IsNameBased">[docs]</a><span class="k">def</span> <span class="nf">IsNameBased</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
+<div class="viewcode-block" id="IsNameBased"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.IsNameBased">[docs]</a><span class="k">def</span> <span class="nf">IsNameBased</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Finds whether the link is name based or not</span>
 
 <span class="sd">    :Parameters:</span>
@@ -329,7 +329,7 @@
 
     <span class="k">return</span> <span class="bp">False</span><span class="p">;</span>
 </div>
-<div class="viewcode-block" id="IsDatabaseLink"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.IsDatabaseLink">[docs]</a><span class="k">def</span> <span class="nf">IsDatabaseLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
+<div class="viewcode-block" id="IsDatabaseLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.IsDatabaseLink">[docs]</a><span class="k">def</span> <span class="nf">IsDatabaseLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Finds whether the link is a database Self Link or a database ID based link</span>
 
 <span class="sd">    :Parameters:</span>
@@ -361,7 +361,7 @@
 
     <span class="k">return</span> <span class="bp">True</span><span class="p">;</span>
 </div>
-<div class="viewcode-block" id="IsDocumentCollectionLink"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.IsDocumentCollectionLink">[docs]</a><span class="k">def</span> <span class="nf">IsDocumentCollectionLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
+<div class="viewcode-block" id="IsDocumentCollectionLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.IsDocumentCollectionLink">[docs]</a><span class="k">def</span> <span class="nf">IsDocumentCollectionLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Finds whether the link is a document colllection Self Link or a document colllection ID based link</span>
 
 <span class="sd">    :Parameters:</span>
@@ -401,7 +401,7 @@
 
     <span class="k">return</span> <span class="bp">True</span><span class="p">;</span>
 </div>
-<div class="viewcode-block" id="GetDocumentCollectionLink"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.GetDocumentCollectionLink">[docs]</a><span class="k">def</span> <span class="nf">GetDocumentCollectionLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
+<div class="viewcode-block" id="GetDocumentCollectionLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetDocumentCollectionLink">[docs]</a><span class="k">def</span> <span class="nf">GetDocumentCollectionLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets the document collection link</span>
 
 <span class="sd">    :Parameters:</span>
@@ -420,7 +420,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unable to parse document collection link from &#39;</span> <span class="o">+</span> <span class="n">link</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="IndexOfNth"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.IndexOfNth">[docs]</a><span class="k">def</span> <span class="nf">IndexOfNth</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="IndexOfNth"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.IndexOfNth">[docs]</a><span class="k">def</span> <span class="nf">IndexOfNth</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets the index of Nth occurance of a given character in a string</span>
 
 <span class="sd">    :Parameters:</span>
@@ -440,7 +440,7 @@
                 <span class="k">return</span> <span class="n">i</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 </div>
-<div class="viewcode-block" id="DecodeBase64String"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.DecodeBase64String">[docs]</a><span class="k">def</span> <span class="nf">DecodeBase64String</span><span class="p">(</span><span class="n">string_to_decode</span><span class="p">):</span>
+<div class="viewcode-block" id="DecodeBase64String"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.DecodeBase64String">[docs]</a><span class="k">def</span> <span class="nf">DecodeBase64String</span><span class="p">(</span><span class="n">string_to_decode</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decodes a Base64 encoded string by replacing &#39;-&#39; with &#39;/&#39; </span>
 
 <span class="sd">    :Parameters:</span>
@@ -454,7 +454,7 @@
     <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">standard_b64decode</span><span class="p">(</span><span class="n">string_to_decode</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="TrimBeginningAndEndingSlashes"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.TrimBeginningAndEndingSlashes">[docs]</a><span class="k">def</span> <span class="nf">TrimBeginningAndEndingSlashes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="TrimBeginningAndEndingSlashes"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.TrimBeginningAndEndingSlashes">[docs]</a><span class="k">def</span> <span class="nf">TrimBeginningAndEndingSlashes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Trims beginning and ending slashes</span>
 
 <span class="sd">    :Parameters:</span>
@@ -475,7 +475,7 @@
     <span class="k">return</span> <span class="n">path</span>
 
 <span class="c1"># Parses the paths into a list of token each representing a property</span></div>
-<div class="viewcode-block" id="ParsePaths"><a class="viewcode-back" href="../../apidoc/pydocumentdb.base.html#pydocumentdb.base.ParsePaths">[docs]</a><span class="k">def</span> <span class="nf">ParsePaths</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+<div class="viewcode-block" id="ParsePaths"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.ParsePaths">[docs]</a><span class="k">def</span> <span class="nf">ParsePaths</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported paths count.&quot;</span><span class="p">)</span>
         

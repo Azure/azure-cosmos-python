@@ -54,12 +54,12 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="kn">as</span> <span class="nn">http_constants</span>
 
-<div class="viewcode-block" id="DocumentDBError"><a class="viewcode-back" href="../../apidoc/pydocumentdb.errors.html#pydocumentdb.errors.DocumentDBError">[docs]</a><span class="k">class</span> <span class="nc">DocumentDBError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentDBError"><a class="viewcode-back" href="../../api/pydocumentdb.errors.html#pydocumentdb.errors.DocumentDBError">[docs]</a><span class="k">class</span> <span class="nc">DocumentDBError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for all DocumentDB errors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 </div>
-<div class="viewcode-block" id="HTTPFailure"><a class="viewcode-back" href="../../apidoc/pydocumentdb.errors.html#pydocumentdb.errors.HTTPFailure">[docs]</a><span class="k">class</span> <span class="nc">HTTPFailure</span><span class="p">(</span><span class="n">DocumentDBError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPFailure"><a class="viewcode-back" href="../../api/pydocumentdb.errors.html#pydocumentdb.errors.HTTPFailure">[docs]</a><span class="k">class</span> <span class="nc">HTTPFailure</span><span class="p">(</span><span class="n">DocumentDBError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raised when a HTTP request to the DocumentDB has failed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -84,12 +84,12 @@
                                  <span class="s1">&#39;Status code: </span><span class="si">%d</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="JSONParseFailure"><a class="viewcode-back" href="../../apidoc/pydocumentdb.errors.html#pydocumentdb.errors.JSONParseFailure">[docs]</a><span class="k">class</span> <span class="nc">JSONParseFailure</span><span class="p">(</span><span class="n">DocumentDBError</span><span class="p">):</span>
+<div class="viewcode-block" id="JSONParseFailure"><a class="viewcode-back" href="../../api/pydocumentdb.errors.html#pydocumentdb.errors.JSONParseFailure">[docs]</a><span class="k">class</span> <span class="nc">JSONParseFailure</span><span class="p">(</span><span class="n">DocumentDBError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raised when fails to parse JSON message.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 </div>
-<div class="viewcode-block" id="UnexpectedDataType"><a class="viewcode-back" href="../../apidoc/pydocumentdb.errors.html#pydocumentdb.errors.UnexpectedDataType">[docs]</a><span class="k">class</span> <span class="nc">UnexpectedDataType</span><span class="p">(</span><span class="n">DocumentDBError</span><span class="p">):</span>
+<div class="viewcode-block" id="UnexpectedDataType"><a class="viewcode-back" href="../../api/pydocumentdb.errors.html#pydocumentdb.errors.UnexpectedDataType">[docs]</a><span class="k">class</span> <span class="nc">UnexpectedDataType</span><span class="p">(</span><span class="n">DocumentDBError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raised when unexpected data type is provided as parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 </pre></div>

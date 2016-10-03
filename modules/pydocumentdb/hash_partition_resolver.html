@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.hash_partition_resolver &mdash; pydocumentdb 2.0.0 documentation</title>
+    <title>pydocumentdb.hash_partition_resolver &#8212; pydocumentdb 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
@@ -24,6 +24,8 @@
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
     <script type="text/javascript" src="../../static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
@@ -37,8 +39,8 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -69,14 +71,14 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="kn">import</span> <span class="nn">pydocumentdb.murmur_hash</span> <span class="kn">as</span> <span class="nn">murmur_hash</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.consistent_hash_ring</span> <span class="kn">as</span> <span class="nn">consistent_hash_ring</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.murmur_hash</span> <span class="k">as</span> <span class="nn">murmur_hash</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.consistent_hash_ring</span> <span class="k">as</span> <span class="nn">consistent_hash_ring</span>
 
 <div class="viewcode-block" id="HashPartitionResolver"><a class="viewcode-back" href="../../api/pydocumentdb.hash_partition_resolver.html#pydocumentdb.hash_partition_resolver.HashPartitionResolver">[docs]</a><span class="k">class</span> <span class="nc">HashPartitionResolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;HashPartitionResolver implements partitioning based on the value of a hash function, allowing you to evenly</span>
 <span class="sd">    distribute requests and data across a number of partitions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key_extractor</span><span class="p">,</span> <span class="n">collection_links</span><span class="p">,</span> <span class="n">default_number_of_virtual_nodes_per_collection</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">hash_generator</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key_extractor</span><span class="p">,</span> <span class="n">collection_links</span><span class="p">,</span> <span class="n">default_number_of_virtual_nodes_per_collection</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">hash_generator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :Parameters:</span>
 <span class="sd">            - `partition_key_extractor`: lambda, returning the partition key from the document passed.</span>
@@ -84,9 +86,9 @@
 <span class="sd">            - `default_number_of_virtual_nodes_per_collection`: int, number of virtual nodes per collection.</span>
 <span class="sd">            - `hash_generator`: HashGenerator, the hash generator to be used for hashing algorithm.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">partition_key_extractor</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">partition_key_extractor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;partition_key_extractor is None.&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">collection_links</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">collection_links</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;collection_links is None.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">default_number_of_virtual_nodes_per_collection</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The number of virtual nodes per collection must greater than 0.&quot;</span><span class="p">)</span>
@@ -94,7 +96,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">partition_key_extractor</span> <span class="o">=</span> <span class="n">partition_key_extractor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection_links</span> <span class="o">=</span> <span class="n">collection_links</span>
 
-        <span class="k">if</span> <span class="n">hash_generator</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hash_generator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">hash_generator</span> <span class="o">=</span> <span class="n">murmur_hash</span><span class="o">.</span><span class="n">_MurmurHash</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">consistent_hash_ring</span> <span class="o">=</span> <span class="n">consistent_hash_ring</span><span class="o">.</span><span class="n">_ConsistentHashRing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_links</span><span class="p">,</span> <span class="n">default_number_of_virtual_nodes_per_collection</span><span class="p">,</span> <span class="n">hash_generator</span><span class="p">)</span>
@@ -108,12 +110,12 @@
 <span class="sd">        :Returns:</span>
 <span class="sd">            str, collection Self link or Name based link which should handle the Create operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">document</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">document</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;document is None.&quot;</span><span class="p">)</span>
 
         <span class="n">partition_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key_extractor</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">consistent_hash_ring</span><span class="o">.</span><span class="n">GetCollectionNode</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">consistent_hash_ring</span><span class="o">.</span><span class="n">GetCollectionNode</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="HashPartitionResolver.ResolveForRead"><a class="viewcode-back" href="../../api/pydocumentdb.hash_partition_resolver.html#pydocumentdb.hash_partition_resolver.HashPartitionResolver.ResolveForRead">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForRead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resolves the collection for reading/querying the documents based on the partition key.</span>
 
@@ -123,7 +125,7 @@
 <span class="sd">        :Returns:</span>
 <span class="sd">            list, collection Self link(s) or Name based link(s) which should handle the Read operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">partition_key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">partition_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_links</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">consistent_hash_ring</span><span class="o">.</span><span class="n">GetCollectionNode</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)]</span></div></div>
@@ -137,14 +139,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -160,13 +159,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
 </html>

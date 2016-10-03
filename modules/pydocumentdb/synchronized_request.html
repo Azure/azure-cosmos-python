@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.synchronized_request &mdash; pydocumentdb 2.0.0 documentation</title>
+    <title>pydocumentdb.synchronized_request &#8212; pydocumentdb 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
@@ -24,6 +24,8 @@
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
     <script type="text/javascript" src="../../static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
@@ -37,8 +39,8 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -57,11 +59,11 @@
 <span class="kn">import</span> <span class="nn">urlparse</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
 
-<span class="kn">import</span> <span class="nn">pydocumentdb.documents</span> <span class="kn">as</span> <span class="nn">documents</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.errors</span> <span class="kn">as</span> <span class="nn">errors</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="kn">as</span> <span class="nn">http_constants</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.https_connection</span> <span class="kn">as</span> <span class="nn">https_connection</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.retry_utility</span> <span class="kn">as</span> <span class="nn">retry_utility</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.documents</span> <span class="k">as</span> <span class="nn">documents</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.errors</span> <span class="k">as</span> <span class="nn">errors</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="k">as</span> <span class="nn">http_constants</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.https_connection</span> <span class="k">as</span> <span class="nn">https_connection</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.retry_utility</span> <span class="k">as</span> <span class="nn">retry_utility</span>
 
 
 <span class="k">def</span> <span class="nf">_IsReadableStream</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
@@ -71,15 +73,15 @@
 <span class="sd">        boolean</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">))):</span>
-        <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">))):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
 
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="nb">basestring</span>
+    <span class="n">basestring</span>
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="nb">basestring</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+    <span class="n">basestring</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_RequestBodyFromData</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
@@ -95,11 +97,11 @@
 <span class="sd">        str, unicode, file-like stream object, or None</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_IsReadableStream</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_IsReadableStream</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">data</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="kc">None</span>
 
 
 <span class="k">def</span> <span class="nf">_InternalRequest</span><span class="p">(</span><span class="n">connection_policy</span><span class="p">,</span> <span class="n">request_options</span><span class="p">,</span> <span class="n">request_body</span><span class="p">):</span>
@@ -125,7 +127,7 @@
                                                       <span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">connection_policy</span><span class="o">.</span><span class="n">ProxyConfiguration</span><span class="o">.</span><span class="n">Port</span><span class="p">),</span>
                                                       <span class="n">ssl_configuration</span><span class="o">=</span><span class="n">connection_policy</span><span class="o">.</span><span class="n">SSLConfiguration</span><span class="p">,</span>
                                                       <span class="n">timeout</span><span class="o">=</span><span class="n">connection_timeout</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">set_tunnel</span><span class="p">(</span><span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;port&#39;</span><span class="p">],</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">set_tunnel</span><span class="p">(</span><span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;port&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">https_connection</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span>
                                                       <span class="n">port</span><span class="o">=</span><span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;port&#39;</span><span class="p">],</span>
@@ -149,7 +151,7 @@
     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">HTTPFailure</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
-    <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">is_media</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">data</span>
     <span class="k">else</span><span class="p">:</span>
@@ -190,7 +192,7 @@
 <span class="sd">        are dicts.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">request_body</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">request_body</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">request_data</span><span class="p">:</span>
         <span class="n">request_body</span> <span class="o">=</span> <span class="n">_RequestBodyFromData</span><span class="p">(</span><span class="n">request_data</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">request_body</span><span class="p">:</span>
@@ -209,14 +211,15 @@
 
     <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headers</span>
     <span class="k">if</span> <span class="n">request_body</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span> <span class="ow">or</span>
-                         <span class="nb">type</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">unicode</span><span class="p">):</span>
+                         <span class="nb">type</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span> <span class="ow">is</span> <span class="n">unicode</span><span class="p">):</span>
         <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">ContentLength</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">request_body</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="n">request_body</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">request_body</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">ContentLength</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="c1"># Pass _InternalRequest function with it&#39;s parameters to retry_utility&#39;s Execute method that wraps the call with retries</span>
-    <span class="k">return</span> <span class="n">retry_utility</span><span class="o">.</span><span class="n">_Execute</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">global_endpoint_manager</span><span class="p">,</span> <span class="n">_InternalRequest</span><span class="p">,</span> <span class="n">connection_policy</span><span class="p">,</span> <span class="n">request_options</span><span class="p">,</span> <span class="n">request_body</span><span class="p">)</span>
-</pre></div></div>
+    <span class="k">return</span> <span class="n">retry_utility</span><span class="o">.</span><span class="n">_Execute</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">global_endpoint_manager</span><span class="p">,</span> <span class="n">_InternalRequest</span><span class="p">,</span> <span class="n">connection_policy</span><span class="p">,</span> <span class="n">request_options</span><span class="p">,</span> <span class="n">request_body</span><span class="p">)</span></div>
+
+</pre></div>
 
           </div>
         </div>
@@ -226,14 +229,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -249,13 +249,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
 </html>

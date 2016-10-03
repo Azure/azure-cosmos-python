@@ -56,14 +56,14 @@
 <div class="section" id="system-requirements">
 <h2>System Requirements:<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>The supported Python versions are 2.7 and 2.7.x.
-To download Python version 2.7, please visit
-<a class="reference external" href="https://www.python.org/download/releases/2.7">https://www.python.org/download/releases/2.7</a></p>
+<div><p>The supported Python versions are 2.7, 3.3, 3.4 and 3.5
+To download Python, please visit
+<a class="reference external" href="https://www.python.org/download/releases">https://www.python.org/download/releases</a></p>
 <dl class="docutils">
 <dt>Python Tools for Visual Studio is required when using Microsoft Visual</dt>
 <dd>Studio to develop Python applications.  To download Python Tools for
 Visual Studio, please visit
-<a class="reference external" href="http://pytools.codeplex.com/wikipage?title=PTVS%20Installation">http://pytools.codeplex.com/wikipage?title=PTVS%20Installation</a></dd>
+<a class="reference external" href="http://microsoft.github.io/PTVS/</a></dd>
 </dl>
 </div></blockquote>
 </div>
@@ -87,7 +87,7 @@ Visual Studio, please visit
 For more information on pip, please visit <a class="reference external" href="https://pypi.python.org/pypi/pip">https://pypi.python.org/pypi/pip</a></p>
 </li>
 <li><p class="first">Execute the following in bash shell:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install -pre pydocumentdb
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install pydocumentdb
 </pre></div>
 </div>
 </li>
@@ -97,11 +97,11 @@ For more information on pip, please visit <a class="reference external" href="ht
 <div class="section" id="to-run-tests">
 <h2>To run tests:<a class="headerlink" href="#to-run-tests" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>$ python test/crud_tests.py
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>$ python -m unittest discover -s .\test -p "*.py" 
 </pre></div>
 </div>
 <p>If you use Microsoft Visual Studio, open the project file python.pyproj,
-and press F5.</p>
+and run all the tests in Test Explorer.</p>
 </div></blockquote>
 </div>
 <div class="section" id="to-generate-documentations">
@@ -109,7 +109,7 @@ and press F5.</p>
 <blockquote>
 <div><p>Install Sphinx: <a class="reference external" href="http://sphinx-doc.org/install.html">http://sphinx-doc.org/install.html</a></p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> doc
-$ sphinx-apidoc -e -o .<span class="se">\a</span>pi ..<span class="se">\p</span>ydocumentdb
+$ sphinx-apidoc -f -e -o api ..<span class="se">\p</span>ydocumentdb
 $ make.bat html
 </pre></div>
 </div>

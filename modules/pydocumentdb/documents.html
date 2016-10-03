@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.documents &mdash; pydocumentdb 2.0.0 documentation</title>
+    <title>pydocumentdb.documents &#8212; pydocumentdb 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
@@ -24,6 +24,8 @@
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
     <script type="text/javascript" src="../../static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
@@ -37,8 +39,8 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -53,7 +55,7 @@
 <span class="sd">&quot;&quot;&quot;AzureDocument classes and enums.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">pydocumentdb.retry_options</span> <span class="kn">as</span> <span class="nn">retry_options</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.retry_options</span> <span class="k">as</span> <span class="nn">retry_options</span>
 
 <div class="viewcode-block" id="DatabaseAccount"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.DatabaseAccount">[docs]</a><span class="k">class</span> <span class="nc">DatabaseAccount</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Database account. A DatabaseAccount is the container for databases.</span>
@@ -88,7 +90,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ConsumedDocumentStorageInMB</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ReservedDocumentStorageInMB</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ProvisionedDocumentStorageInMB</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ConsistencyPolicy</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ConsistencyPolicy</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_WritableLocations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ReadableLocations</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -102,8 +104,8 @@
     <span class="k">def</span> <span class="nf">ReadableLocations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the list of readable locations for a geo-replicated database account.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadableLocations</span>
-</div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadableLocations</span></div>
+
 <div class="viewcode-block" id="ConsistencyLevel"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.ConsistencyLevel">[docs]</a><span class="k">class</span> <span class="nc">ConsistencyLevel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents the consistency levels supported for DocumentDB client</span>
 <span class="sd">    operations.</span>
@@ -131,9 +133,9 @@
     <span class="n">Strong</span> <span class="o">=</span> <span class="s1">&#39;Strong&#39;</span>
     <span class="n">BoundedStaleness</span> <span class="o">=</span> <span class="s1">&#39;BoundedStaleness&#39;</span>
     <span class="n">Session</span> <span class="o">=</span> <span class="s1">&#39;Session&#39;</span>
-    <span class="n">Eventual</span> <span class="o">=</span> <span class="s1">&#39;Eventual&#39;</span>
+    <span class="n">Eventual</span> <span class="o">=</span> <span class="s1">&#39;Eventual&#39;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="IndexingMode"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.IndexingMode">[docs]</a><span class="k">class</span> <span class="nc">IndexingMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the supported indexing modes.</span>
 
@@ -158,9 +160,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Consistent</span> <span class="o">=</span> <span class="s1">&#39;consistent&#39;</span>
     <span class="n">Lazy</span> <span class="o">=</span> <span class="s1">&#39;lazy&#39;</span>
-    <span class="n">NoIndex</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+    <span class="n">NoIndex</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="IndexKind"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.IndexKind">[docs]</a><span class="k">class</span> <span class="nc">IndexKind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the index kind of index specs.</span>
 
@@ -173,16 +175,16 @@
 <span class="sd">          Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop &gt; 5</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Hash</span> <span class="o">=</span> <span class="s1">&#39;Hash&#39;</span>
-    <span class="n">Range</span> <span class="o">=</span> <span class="s1">&#39;Range&#39;</span>
-</div>
+    <span class="n">Range</span> <span class="o">=</span> <span class="s1">&#39;Range&#39;</span></div>
+
 <div class="viewcode-block" id="PartitionKind"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.PartitionKind">[docs]</a><span class="k">class</span> <span class="nc">PartitionKind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the kind of partitioning to be applied.</span>
 
 <span class="sd">    :Attributes:</span>
 <span class="sd">        - `Hash`: The partition key definition path is hashed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">Hash</span> <span class="o">=</span> <span class="s1">&#39;Hash&#39;</span>
-</div>
+    <span class="n">Hash</span> <span class="o">=</span> <span class="s1">&#39;Hash&#39;</span></div>
+
 <div class="viewcode-block" id="DataType"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.DataType">[docs]</a><span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the data type of index specs.</span>
 
@@ -191,9 +193,9 @@
 <span class="sd">        - `String`: Represents a string data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Number</span> <span class="o">=</span> <span class="s1">&#39;Number&#39;</span>
-    <span class="n">String</span> <span class="o">=</span> <span class="s1">&#39;String&#39;</span>
+    <span class="n">String</span> <span class="o">=</span> <span class="s1">&#39;String&#39;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="IndexingDirective"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.IndexingDirective">[docs]</a><span class="k">class</span> <span class="nc">IndexingDirective</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies whether or not the resource is to be indexed.</span>
 
@@ -204,9 +206,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Default</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">Exclude</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">Include</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">Include</span> <span class="o">=</span> <span class="mi">2</span></div>
 
-</div>
+
 <div class="viewcode-block" id="ConnectionMode"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.ConnectionMode">[docs]</a><span class="k">class</span> <span class="nc">ConnectionMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents the connection mode to be used by the client.</span>
 
@@ -214,9 +216,9 @@
 <span class="sd">        - `Gateway`: Use the DocumentDB gateway to route all requests. The</span>
 <span class="sd">          gateway proxies requests to the right data partition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">Gateway</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Gateway</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-</div>
+
 <div class="viewcode-block" id="MediaReadMode"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.MediaReadMode">[docs]</a><span class="k">class</span> <span class="nc">MediaReadMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents the mode for use with downloading attachment content</span>
 <span class="sd">    (aka media).</span>
@@ -233,9 +235,9 @@
 <span class="sd">          writing media files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Buffered</span> <span class="o">=</span> <span class="s1">&#39;Buffered&#39;</span>
-    <span class="n">Streamed</span> <span class="o">=</span> <span class="s1">&#39;Streamed&#39;</span>
+    <span class="n">Streamed</span> <span class="o">=</span> <span class="s1">&#39;Streamed&#39;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="PermissionMode"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.PermissionMode">[docs]</a><span class="k">class</span> <span class="nc">PermissionMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Enumeration specifying applicability of permission.</span>
 
@@ -246,9 +248,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">NoneMode</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>  <span class="c1"># None is python&#39;s key word.</span>
     <span class="n">Read</span> <span class="o">=</span> <span class="s1">&#39;read&#39;</span>
-    <span class="n">All</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
+    <span class="n">All</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="TriggerType"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.TriggerType">[docs]</a><span class="k">class</span> <span class="nc">TriggerType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the type of the trigger.</span>
 
@@ -257,9 +259,9 @@
 <span class="sd">        - `Post`: Trigger should be executed after the associated operation(s).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Pre</span> <span class="o">=</span> <span class="s1">&#39;pre&#39;</span>
-    <span class="n">Post</span> <span class="o">=</span> <span class="s1">&#39;post&#39;</span>
+    <span class="n">Post</span> <span class="o">=</span> <span class="s1">&#39;post&#39;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="TriggerOperation"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.TriggerOperation">[docs]</a><span class="k">class</span> <span class="nc">TriggerOperation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the operations on which a trigger should be executed.</span>
 <span class="sd">   </span>
@@ -274,9 +276,9 @@
     <span class="n">Create</span> <span class="o">=</span> <span class="s1">&#39;create&#39;</span>
     <span class="n">Update</span> <span class="o">=</span> <span class="s1">&#39;update&#39;</span>
     <span class="n">Delete</span> <span class="o">=</span> <span class="s1">&#39;delete&#39;</span>
-    <span class="n">Replace</span> <span class="o">=</span> <span class="s1">&#39;replace&#39;</span>
+    <span class="n">Replace</span> <span class="o">=</span> <span class="s1">&#39;replace&#39;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="SSLConfiguration"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.SSLConfiguration">[docs]</a><span class="k">class</span> <span class="nc">SSLConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configurations for SSL connections.</span>
 
@@ -288,11 +290,11 @@
 <span class="sd">        - `SSLCaCerts`: str, the path of the ca_certs file for ssl connection.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SSLKeyFile</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SSLCertFile</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SSLCaCerts</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SSLKeyFile</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SSLCertFile</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SSLCaCerts</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-</div>
+
 <div class="viewcode-block" id="ProxyConfiguration"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.ProxyConfiguration">[docs]</a><span class="k">class</span> <span class="nc">ProxyConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configurations for proxy.</span>
 
@@ -301,10 +303,10 @@
 <span class="sd">        - `Port`: int, the port number of the proxy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Host</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Port</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Host</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Port</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-</div>
+
 <div class="viewcode-block" id="ConnectionPolicy"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.ConnectionPolicy">[docs]</a><span class="k">class</span> <span class="nc">ConnectionPolicy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents the Connection policy assocated with a DocumentClient.</span>
 
@@ -340,12 +342,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">MediaRequestTimeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__defaultMediaRequestTimeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ConnectionMode</span> <span class="o">=</span> <span class="n">ConnectionMode</span><span class="o">.</span><span class="n">Gateway</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">MediaReadMode</span> <span class="o">=</span> <span class="n">MediaReadMode</span><span class="o">.</span><span class="n">Buffered</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SSLConfiguration</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ProxyConfiguration</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">EnableEndpointDiscovery</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SSLConfiguration</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ProxyConfiguration</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">EnableEndpointDiscovery</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PreferredLocations</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">RetryOptions</span> <span class="o">=</span> <span class="n">retry_options</span><span class="o">.</span><span class="n">RetryOptions</span><span class="p">()</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RetryOptions</span> <span class="o">=</span> <span class="n">retry_options</span><span class="o">.</span><span class="n">RetryOptions</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="Undefined"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.Undefined">[docs]</a><span class="k">class</span> <span class="nc">Undefined</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents undefined value for partitionKey when it&#39;s mising.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
@@ -359,14 +361,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -382,13 +381,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
 </html>

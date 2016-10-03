@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydocumentdb.query_iterable &mdash; pydocumentdb 2.0.0 documentation</title>
+    <title>pydocumentdb.query_iterable &#8212; pydocumentdb 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../../static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
@@ -24,6 +24,8 @@
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
     <script type="text/javascript" src="../../static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="pydocumentdb 2.0.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
@@ -37,8 +39,8 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -53,9 +55,9 @@
 <span class="sd">&quot;&quot;&quot;Iterable query results.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">pydocumentdb.base</span> <span class="kn">as</span> <span class="nn">base</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="kn">as</span> <span class="nn">http_constants</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.retry_utility</span> <span class="kn">as</span> <span class="nn">retry_utility</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.base</span> <span class="k">as</span> <span class="nn">base</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="k">as</span> <span class="nn">http_constants</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.retry_utility</span> <span class="k">as</span> <span class="nn">retry_utility</span>
 
 
 <div class="viewcode-block" id="QueryIterable"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable">[docs]</a><span class="k">class</span> <span class="nc">QueryIterable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -80,8 +82,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_function</span> <span class="o">=</span> <span class="n">fetch_function</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">retry_options</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection_policy</span><span class="o">.</span><span class="n">RetryOptions</span><span class="p">;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_results</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="kc">False</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span> <span class="o">=</span> <span class="p">[]</span>
@@ -106,20 +108,20 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="c1"># This will call the base constructor(__init__ method above)</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_query</span> <span class="o">=</span> <span class="n">query</span>
 
         <span class="n">partition_resolver</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">GetPartitionResolver</span><span class="p">(</span><span class="n">database_link</span><span class="p">)</span>
         
-        <span class="k">if</span><span class="p">(</span><span class="n">partition_resolver</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">partition_resolver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">PartitionResolverErrorMessage</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span> <span class="o">=</span> <span class="n">partition_resolver</span><span class="o">.</span><span class="n">ResolveForRead</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;_collection_links is None.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links_length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
@@ -139,8 +141,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_function</span> <span class="o">=</span> <span class="n">fetch_fn</span>
         
-        <span class="k">return</span> <span class="bp">self</span>
-</div>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Makes this class iterable.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -149,11 +151,11 @@
 <div class="viewcode-block" id="QueryIterable.Iterator"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.Iterator">[docs]</a>    <span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span> <span class="o">=</span> <span class="n">iterable</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_results</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="bp">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="c1"># Always returns self</span>
@@ -162,7 +164,7 @@
 <div class="viewcode-block" id="QueryIterable.Iterator.next"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.Iterator.next">[docs]</a>        <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">def</span> <span class="nf">callback</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">fetch_next_block</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span> <span class="o">=</span> <span class="kc">True</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span><span class="p">:</span>
                 <span class="c1"># Must keep raising once we have ended</span>
@@ -178,11 +180,11 @@
 
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_results</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">return</span> <span class="n">result</span>
+            <span class="k">return</span> <span class="n">result</span></div>
 
-        <span class="c1"># Also support Python 3.x iteration</span></div>
-        <span class="n">__next__</span> <span class="o">=</span> <span class="nb">next</span>
-</div>
+        <span class="c1"># Also support Python 3.x iteration</span>
+        <span class="n">__next__</span> <span class="o">=</span> <span class="nb">next</span></div>
+
 <div class="viewcode-block" id="QueryIterable.fetch_next_block"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.fetch_next_block">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_next_block</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetches the next block of query results.</span>
 
@@ -200,8 +202,8 @@
                 <span class="n">path</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetPathFromLink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span><span class="p">],</span> <span class="s1">&#39;docs&#39;</span><span class="p">)</span>
                 <span class="n">collection_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span><span class="p">])</span>
                 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="kc">False</span>
 
                 <span class="k">def</span> <span class="nf">fetch_fn</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">QueryFeed</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
@@ -216,9 +218,9 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">break</span>
 
-        <span class="k">return</span> <span class="n">fetched_items</span>
+        <span class="k">return</span> <span class="n">fetched_items</span></div>
         
-</div>
+
 <div class="viewcode-block" id="QueryIterable.fetch_items"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.fetch_items">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetches more items.</span>
 
@@ -229,7 +231,7 @@
         <span class="n">fetched_items</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s1">&#39;continuation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span>
             <span class="p">(</span><span class="n">fetched_items</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_results</span> <span class="o">=</span> <span class="n">fetched_items</span>
@@ -248,14 +250,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -271,13 +270,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2016, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
     </div>
   </body>
 </html>

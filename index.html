@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Azure DocumentDB Python SDK &#8212; pydocumentdb 2.0.0 documentation</title>
+    <title>Azure DocumentDB Python SDK. &#8212; pydocumentdb 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="static/classic.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -52,16 +52,18 @@
           <div class="body" role="main">
             
   <div class="section" id="azure-documentdb-python-sdk">
-<h1>Azure DocumentDB Python SDK<a class="headerlink" href="#azure-documentdb-python-sdk" title="Permalink to this headline">¶</a></h1>
+<h1>Azure DocumentDB Python SDK.<a class="headerlink" href="#azure-documentdb-python-sdk" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="system-requirements">
 <h2>System Requirements:<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>The supported Python versions are 2.7, 3.3, 3.4 and 3.5. To download Python, please visit
-<a class="reference external" href="https://www.python.org/download/releases">https://www.python.org/download/releases</a>.</p>
+<div><p>The supported Python versions are 2.7 and 2.7.x.
+To download Python version 2.7, please visit
+<a class="reference external" href="https://www.python.org/download/releases/2.7">https://www.python.org/download/releases/2.7</a></p>
 <dl class="docutils">
-<dt>Python Tools for Visual Studio is required when using Microsoft Visual
-Studio to develop Python applications. To download Python Tools for Visual Studio, please visit
-    <a class="reference external" href="http://microsoft.github.io/PTVS/">http://microsoft.github.io/PTVS</a>.</dt>
+<dt>Python Tools for Visual Studio is required when using Microsoft Visual</dt>
+<dd>Studio to develop Python applications.  To download Python Tools for
+Visual Studio, please visit
+<a class="reference external" href="http://pytools.codeplex.com/wikipage?title=PTVS%20Installation">http://pytools.codeplex.com/wikipage?title=PTVS%20Installation</a></dd>
 </dl>
 </div></blockquote>
 </div>
@@ -71,9 +73,7 @@ Studio to develop Python applications. To download Python Tools for Visual Studi
 <div><p>Method 1:</p>
 <ol class="arabic">
 <li><p class="first">Download the Azure DocumentDB Python SDK source from
-        <a class="reference external" href="https://github.com/Azure/azure-documentdb-python">https://github.com/Azure/azure-documentdb-python</a>
-    which is needed to manage the Azure DocumentDB database service.
-    </p>
+<a class="reference external" href="https://github.com/Azure/azure-documentdb-python">https://github.com/Azure/azure-documentdb-python</a>.</p>
 </li>
 <li><p class="first">Execute the following setup script in bash shell:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ python setup.py install
@@ -87,7 +87,7 @@ Studio to develop Python applications. To download Python Tools for Visual Studi
 For more information on pip, please visit <a class="reference external" href="https://pypi.python.org/pypi/pip">https://pypi.python.org/pypi/pip</a></p>
 </li>
 <li><p class="first">Execute the following in bash shell:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install pydocumentdb
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install -pre pydocumentdb
 </pre></div>
 </div>
 </li>
@@ -97,11 +97,11 @@ For more information on pip, please visit <a class="reference external" href="ht
 <div class="section" id="to-run-tests">
 <h2>To run tests:<a class="headerlink" href="#to-run-tests" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>$ python -m unittest discover -s .\test -p "*.py" 
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>$ python test/crud_tests.py
 </pre></div>
 </div>
 <p>If you use Microsoft Visual Studio, open the project file python.pyproj,
-and run all the tests in Test Explorer.</p>
+and press F5.</p>
 </div></blockquote>
 </div>
 <div class="section" id="to-generate-documentations">
@@ -109,7 +109,7 @@ and run all the tests in Test Explorer.</p>
 <blockquote>
 <div><p>Install Sphinx: <a class="reference external" href="http://sphinx-doc.org/install.html">http://sphinx-doc.org/install.html</a></p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> doc
-$ sphinx-apidoc -f -e -o api ..<span class="se">\p</span>ydocumentdb
+$ sphinx-apidoc -e -o .<span class="se">\a</span>pi ..<span class="se">\p</span>ydocumentdb
 $ make.bat html
 </pre></div>
 </div>

@@ -50,16 +50,35 @@
           <div class="body" role="main">
             
   <h1>Source code for pydocumentdb.auth</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) Microsoft Corporation.  All rights reserved.</span>
+<span></span><span class="c1">#The MIT License (MIT)</span>
+<span class="c1">#Copyright (c) 2014 Microsoft Corporation</span>
+
+<span class="c1">#Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1">#of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1">#in the Software without restriction, including without limitation the rights</span>
+<span class="c1">#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1">#copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1">#furnished to do so, subject to the following conditions:</span>
+
+<span class="c1">#The above copyright notice and this permission notice shall be included in all</span>
+<span class="c1">#copies or substantial portions of the Software.</span>
+
+<span class="c1">#THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1">#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1">#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1">#SOFTWARE.</span>
 
 <span class="sd">&quot;&quot;&quot;Authorization helper functions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">hashlib</span> <span class="k">import</span> <span class="n">sha256</span>
 <span class="kn">import</span> <span class="nn">hmac</span>
-
 <span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="k">as</span> <span class="nn">http_constants</span>
-
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">import</span> <span class="nn">base64</span>
 
 <div class="viewcode-block" id="GetAuthorizationHeader"><a class="viewcode-back" href="../../api/pydocumentdb.auth.html#pydocumentdb.auth.GetAuthorizationHeader">[docs]</a><span class="k">def</span> <span class="nf">GetAuthorizationHeader</span><span class="p">(</span><span class="n">document_client</span><span class="p">,</span>
                            <span class="n">verb</span><span class="p">,</span>
@@ -92,6 +111,8 @@
             <span class="n">document_client</span><span class="o">.</span><span class="n">resource_tokens</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">resource_id_or_fullname</span><span class="p">)</span></div>
 
 
+
+
 <span class="k">def</span> <span class="nf">__GetAuthorizationTokenUsingMasterKey</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span>
                                          <span class="n">resource_id_or_fullname</span><span class="p">,</span>
                                          <span class="n">resource_type</span><span class="p">,</span>
@@ -110,8 +131,11 @@
 <span class="sd">        dict</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">master_key</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">)</span>
 
+
+    <span class="c1"># decodes the master key which is encoded in base64    </span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">master_key</span><span class="p">)</span>
+    
     <span class="c1"># Skipping lower casing of resource_id_or_fullname since it may now contain &quot;ID&quot; of the resource as part of the fullname</span>
     <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{verb}</span><span class="se">\n</span><span class="si">{resource_type}</span><span class="se">\n</span><span class="si">{resource_id_or_fullname}</span><span class="se">\n</span><span class="si">{x_date}</span><span class="se">\n</span><span class="si">{http_date}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">verb</span><span class="o">=</span><span class="p">(</span><span class="n">verb</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
@@ -120,17 +144,21 @@
         <span class="n">x_date</span><span class="o">=</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">XDate</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
         <span class="n">http_date</span><span class="o">=</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">HttpDate</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
    
-    <span class="n">body</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
-
-    <span class="n">hm</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">sha256</span><span class="p">)</span>
-    <span class="n">signature</span> <span class="o">=</span> <span class="n">hm</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">digest</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">digest</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># python 3 support</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">digest</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">encodebytes</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 
     <span class="n">master_token</span> <span class="o">=</span> <span class="s1">&#39;master&#39;</span>
     <span class="n">token_version</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
-    <span class="k">return</span> <span class="s1">&#39;type=</span><span class="si">{type}</span><span class="s1">&amp;ver=</span><span class="si">{ver}</span><span class="s1">&amp;sig=</span><span class="si">{sig}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">master_token</span><span class="p">,</span>
+    <span class="k">return</span>  <span class="s1">&#39;type=</span><span class="si">{type}</span><span class="s1">&amp;ver=</span><span class="si">{ver}</span><span class="s1">&amp;sig=</span><span class="si">{sig}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">master_token</span><span class="p">,</span>
                                                     <span class="n">ver</span><span class="o">=</span><span class="n">token_version</span><span class="p">,</span>
                                                     <span class="n">sig</span><span class="o">=</span><span class="n">signature</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
 
 <span class="k">def</span> <span class="nf">__GetAuthorizationTokenUsingResourceTokens</span><span class="p">(</span><span class="n">resource_tokens</span><span class="p">,</span>
                                               <span class="n">path</span><span class="p">,</span>
@@ -150,7 +178,7 @@
         <span class="c1"># For database account access(through GetDatabaseAccount API), path and resource_id_or_fullname are &#39;&#39;, </span>
         <span class="c1"># so in this case we return the first token to be used for creating the auth header as the service will accept any token in this case</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">resource_id_or_fullname</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">resource_tokens</span><span class="o">.</span><span class="n">itervalues</span><span class="p">()</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">itervalues</span><span class="p">(</span><span class="n">resource_tokens</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">resource_tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_id_or_fullname</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">resource_tokens</span><span class="p">[</span><span class="n">resource_id_or_fullname</span><span class="p">]</span>

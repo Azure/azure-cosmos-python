@@ -62,7 +62,7 @@
 <p>Document client.</p>
 <dl class="class">
 <dt id="pydocumentdb.document_client.DocumentClient">
-<em class="property">class </em><code class="descclassname">pydocumentdb.document_client.</code><code class="descname">DocumentClient</code><span class="sig-paren">(</span><em>url_connection</em>, <em>auth</em>, <em>connection_policy=None</em>, <em>consistency_level=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydocumentdb.document_client.</code><code class="descname">DocumentClient</code><span class="sig-paren">(</span><em>url_connection</em>, <em>auth</em>, <em>connection_policy=None</em>, <em>consistency_level='Session'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Represents a document client.</p>
 <p>Provides a client-side logical representation of the Azure DocumentDB
@@ -750,7 +750,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryFeed">
-<code class="descname">QueryFeed</code><span class="sig-paren">(</span><em>path</em>, <em>collection_id</em>, <em>query</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryFeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryFeed" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryFeed</code><span class="sig-paren">(</span><em>path</em>, <em>collection_id</em>, <em>query</em>, <em>options</em>, <em>partition_key_range_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryFeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryFeed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query Feed for Document Collection resource.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -761,6 +761,7 @@ option is true, an error will be returned.</li>
 <li><cite>collection_id</cite>: str, id of the document collection</li>
 <li><cite>query</cite>: str or dict</li>
 <li><cite>options</cite>: dict, the request options for the request.</li>
+<li><cite>partition_key_range_id</cite>: str, partition key range id</li>
 </ul>
 </td>
 </tr>
@@ -1652,6 +1653,12 @@ otherwise, returns a str.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydocumentdb.document_client.DocumentClient.Session">
+<code class="descname">Session</code><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the session object from the client</p>
 </dd></dl>
 
 <dl class="method">

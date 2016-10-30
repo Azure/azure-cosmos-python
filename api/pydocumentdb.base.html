@@ -117,6 +117,43 @@ is the same as GUID when represented as a string.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="pydocumentdb.base.GetDocumentCollectionInfo">
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetDocumentCollectionInfo</code><span class="sig-paren">(</span><em>self_link</em>, <em>alt_content_path</em>, <em>id_from_response</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetDocumentCollectionInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetDocumentCollectionInfo" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Given the self link and alt_content_path from the reponse header and result</dt>
+<dd><p class="first">extract the collection name and collection id</p>
+<p class="last">Ever response header has alt-content-path that is the 
+owner&#8217;s path in ascii. For document create / update requests, this can be used
+to get the collection name, but for collection create response, we can&#8217;t use it.
+So we also rely on</p>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><cite>self_link</cite> - str, self link of the resource, as obtained from response result</p>
+</li>
+<li><p class="first"><cite>alt_content_path</cite> - owner path of the resource, as obtained from response header</p>
+</li>
+<li><dl class="first docutils">
+<dt><cite>resource_id</cite> - &#8216;id&#8217; as returned from the response result. This is only used if it is deduced that the</dt>
+<dd><p class="first last">request was to create collection</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple of (collection rid, collection name)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pydocumentdb.base.GetDocumentCollectionLink">
 <code class="descclassname">pydocumentdb.base.</code><code class="descname">GetDocumentCollectionLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetDocumentCollectionLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetDocumentCollectionLink" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the document collection link</p>
@@ -138,7 +175,7 @@ is the same as GUID when represented as a string.</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetHeaders">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetHeaders</code><span class="sig-paren">(</span><em>document_client</em>, <em>default_headers</em>, <em>verb</em>, <em>path</em>, <em>resource_id</em>, <em>resource_type</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetHeaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetHeaders" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetHeaders</code><span class="sig-paren">(</span><em>document_client</em>, <em>default_headers</em>, <em>verb</em>, <em>path</em>, <em>resource_id</em>, <em>resource_type</em>, <em>options</em>, <em>partition_key_range_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetHeaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetHeaders" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets HTTP request headers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -152,6 +189,7 @@ is the same as GUID when represented as a string.</p>
 <li><cite>resource_id</cite>: str</li>
 <li><cite>resource_type</cite>: str</li>
 <li><cite>options</cite>: dict</li>
+<li><cite>partition_key_range_id</cite> : str</li>
 </ul>
 </td>
 </tr>
@@ -205,14 +243,14 @@ is the same as GUID when represented as a string.</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.IndexOfNth">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">IndexOfNth</code><span class="sig-paren">(</span><em>str</em>, <em>value</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#IndexOfNth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IndexOfNth" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IndexOfNth</code><span class="sig-paren">(</span><em>s</em>, <em>value</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#IndexOfNth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IndexOfNth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the index of Nth occurance of a given character in a string</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>str</cite>: str, input string</li>
+<li><cite>s</cite>: str, input string</li>
 <li><cite>value</cite>: char, input char to be searched</li>
 <li><cite>n</cite>: int, Nth occurance of char to be searched</li>
 </ul>

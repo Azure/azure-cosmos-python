@@ -120,7 +120,7 @@ taking into consideration of the user&#8217;s preference(if provided) as Preferr
 </li>
 <li><dl class="first docutils">
 <dt><cite>PreferredLocations</cite>: list, gets or sets the preferred locations for geo-replicated database accounts.</dt>
-<dd><p class="first last">When EnableEndpointDiscovery is true and PreferredLocations is non-empty, 
+<dd><p class="first last">When EnableEndpointDiscovery is true and PreferredLocations is non-empty,
 the client will use this list to evaluate the final location, taking into consideration
 the order specified in PreferredLocations list. The locations in this list are specified as the names of
 the azure documentdb locations like, &#8216;West US&#8217;, &#8216;East US&#8217;, &#8216;Central India&#8217; and so on.</p>
@@ -200,14 +200,32 @@ reads.</li>
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
 <li><cite>Number</cite>: Represents a numeric data type</li>
 <li><cite>String</cite>: Represents a string data type.</li>
+<li><cite>Point</cite>: Represents a point data type</li>
+<li><cite>LineString</cite>: Represents a line string data type</li>
+<li><cite>Polygon</cite>: Represents a polygon data type</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
+<dt id="pydocumentdb.documents.DataType.LineString">
+<code class="descname">LineString</code><em class="property"> = 'LineString'</em><a class="headerlink" href="#pydocumentdb.documents.DataType.LineString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pydocumentdb.documents.DataType.Number">
 <code class="descname">Number</code><em class="property"> = 'Number'</em><a class="headerlink" href="#pydocumentdb.documents.DataType.Number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydocumentdb.documents.DataType.Point">
+<code class="descname">Point</code><em class="property"> = 'Point'</em><a class="headerlink" href="#pydocumentdb.documents.DataType.Point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydocumentdb.documents.DataType.Polygon">
+<code class="descname">Polygon</code><em class="property"> = 'Polygon'</em><a class="headerlink" href="#pydocumentdb.documents.DataType.Polygon" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -507,7 +525,7 @@ writing media files.</p>
 <em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">SSLConfiguration</code><a class="reference internal" href="../modules/pydocumentdb/documents.html#SSLConfiguration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.documents.SSLConfiguration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Configurations for SSL connections.</p>
-<p>Please refer to <a class="reference external" href="https://docs.python.org/2/library/ssl.html#socket-creation">https://docs.python.org/2/library/ssl.html#socket-creation</a> for more detail.</p>
+<p>Please refer to <a class="reference external" href="http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification">http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification</a> for more detail.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -515,7 +533,7 @@ writing media files.</p>
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
 <li><cite>SSLKeyFile</cite>: str, the path of the key file for ssl connection.</li>
 <li><cite>SSLCertFile</cite>: str, the path of the cert file for ssl connection.</li>
-<li><cite>SSLCaCerts</cite>: str, the path of the ca_certs file for ssl connection.</li>
+<li><cite>SSLCaCerts</cite>: str, the path of the CA_BUNDLE file with certificates of trusted CAs.</li>
 </ul>
 </td>
 </tr>

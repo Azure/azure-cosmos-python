@@ -62,7 +62,7 @@
 <p>Synchronized request.</p>
 <dl class="function">
 <dt id="pydocumentdb.synchronized_request.SynchronizedRequest">
-<code class="descclassname">pydocumentdb.synchronized_request.</code><code class="descname">SynchronizedRequest</code><span class="sig-paren">(</span><em>client</em>, <em>global_endpoint_manager</em>, <em>connection_policy</em>, <em>method</em>, <em>base_url</em>, <em>path</em>, <em>request_data</em>, <em>query_params</em>, <em>headers</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/synchronized_request.html#SynchronizedRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.synchronized_request.SynchronizedRequest" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.synchronized_request.</code><code class="descname">SynchronizedRequest</code><span class="sig-paren">(</span><em>client</em>, <em>global_endpoint_manager</em>, <em>connection_policy</em>, <em>requests_session</em>, <em>method</em>, <em>base_url</em>, <em>path</em>, <em>request_data</em>, <em>query_params</em>, <em>headers</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/synchronized_request.html#SynchronizedRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.synchronized_request.SynchronizedRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs one synchronized http request according to the parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -72,6 +72,7 @@
 <li><cite>client</cite>: object, document client instance</li>
 <li><cite>global_endpoint_manager</cite>: _GlobalEndpointManager</li>
 <li><cite>connection_policy</cite>: documents.ConnectionPolicy</li>
+<li><cite>requests_session</cite>: requests.Session, Session object in requests module</li>
 <li><cite>method</cite>: str</li>
 <li><cite>base_url</cite>: str</li>
 <li><cite>path</cite>: str</li>

@@ -50,12 +50,33 @@
           <div class="body" role="main">
             
   <h1>Source code for pydocumentdb.document_client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) Microsoft Corporation.  All rights reserved.</span>
+<span></span><span class="c1">#The MIT License (MIT)</span>
+<span class="c1">#Copyright (c) 2014 Microsoft Corporation</span>
+
+<span class="c1">#Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1">#of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1">#in the Software without restriction, including without limitation the rights</span>
+<span class="c1">#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1">#copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1">#furnished to do so, subject to the following conditions:</span>
+
+<span class="c1">#The above copyright notice and this permission notice shall be included in all</span>
+<span class="c1">#copies or substantial portions of the Software.</span>
+
+<span class="c1">#THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1">#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1">#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1">#SOFTWARE.</span>
 
 <span class="sd">&quot;&quot;&quot;Document client.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">requests</span>
 
+<span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">import</span> <span class="nn">pydocumentdb.base</span> <span class="k">as</span> <span class="nn">base</span>
 <span class="kn">import</span> <span class="nn">pydocumentdb.documents</span> <span class="k">as</span> <span class="nn">documents</span>
 <span class="kn">import</span> <span class="nn">pydocumentdb.constants</span> <span class="k">as</span> <span class="nn">constants</span>
@@ -64,13 +85,9 @@
 <span class="kn">import</span> <span class="nn">pydocumentdb.runtime_constants</span> <span class="k">as</span> <span class="nn">runtime_constants</span>
 <span class="kn">import</span> <span class="nn">pydocumentdb.synchronized_request</span> <span class="k">as</span> <span class="nn">synchronized_request</span>
 <span class="kn">import</span> <span class="nn">pydocumentdb.global_endpoint_manager</span> <span class="k">as</span> <span class="nn">global_endpoint_manager</span>
-
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">basestring</span>
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="n">basestring</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
-
+<span class="kn">import</span> <span class="nn">pydocumentdb.routing.routing_map_provider</span> <span class="k">as</span> <span class="nn">routing_map_provider</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.session</span> <span class="k">as</span> <span class="nn">session</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.utils</span> <span class="k">as</span> <span class="nn">utils</span>
 
 <div class="viewcode-block" id="DocumentClient"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient">[docs]</a><span class="k">class</span> <span class="nc">DocumentClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents a document client.</span>
@@ -100,7 +117,7 @@
                  <span class="n">url_connection</span><span class="p">,</span>
                  <span class="n">auth</span><span class="p">,</span>
                  <span class="n">connection_policy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">consistency_level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">consistency_level</span><span class="o">=</span><span class="n">documents</span><span class="o">.</span><span class="n">ConsistencyLevel</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :Parameters:</span>
 <span class="sd">            - `url_connection`: str, the URL for connecting to the DB server.</span>
@@ -141,21 +158,48 @@
             <span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">Version</span><span class="p">:</span>
                 <span class="n">http_constants</span><span class="o">.</span><span class="n">Versions</span><span class="o">.</span><span class="n">CurrentVersion</span><span class="p">,</span>
             <span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">UserAgent</span><span class="p">:</span>
-                <span class="n">http_constants</span><span class="o">.</span><span class="n">Versions</span><span class="o">.</span><span class="n">UserAgent</span>
+                <span class="n">utils</span><span class="o">.</span><span class="n">_get_user_agent</span><span class="p">()</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="n">consistency_level</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">default_headers</span><span class="p">[</span>
                 <span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">ConsistencyLevel</span><span class="p">]</span> <span class="o">=</span> <span class="n">consistency_level</span>
+
         <span class="c1"># Keeps the latest response headers from server.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="k">if</span> <span class="n">consistency_level</span> <span class="o">==</span> <span class="n">documents</span><span class="o">.</span><span class="n">ConsistencyLevel</span><span class="o">.</span><span class="n">Session</span><span class="p">:</span>
+            <span class="sd">&#39;&#39;&#39;create a session - this is maintained only if the default consistency level</span>
+<span class="sd">            on the client is set to session, or if the user explicitly sets it as a property</span>
+<span class="sd">            via setter&#39;&#39;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url_connection</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_global_endpoint_manager</span> <span class="o">=</span> <span class="n">global_endpoint_manager</span><span class="o">.</span><span class="n">_GlobalEndpointManager</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># creating a requests session used for connection pooling and re-used by all requests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
 
         <span class="c1"># Query compatibility mode.</span>
         <span class="c1"># Allows to specify compatibility mode used by client when making query requests. Should be removed when</span>
         <span class="c1"># application/sql is no longer supported.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_query_compatibility_mode</span> <span class="o">=</span> <span class="n">DocumentClient</span><span class="o">.</span><span class="n">_QueryCompatibilityMode</span><span class="o">.</span><span class="n">Default</span>
+
+        <span class="c1"># Routing map provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_routing_map_provider</span> <span class="o">=</span> <span class="n">routing_map_provider</span><span class="o">.</span><span class="n">_SmartRoutingMapProvider</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets the session object from the client &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
+
+    <span class="nd">@Session</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Sets a session object on the document client</span>
+<span class="sd">            This will override the existing session</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">WriteEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -275,7 +319,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.ReadCollections"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadCollections">[docs]</a>    <span class="k">def</span> <span class="nf">ReadCollections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all collections in a database.</span>
@@ -318,7 +362,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">body</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.CreateCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateCollection">[docs]</a>    <span class="k">def</span> <span class="nf">CreateCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a collection in a database.</span>
@@ -503,7 +547,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.DeleteDatabase"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a database.</span>
@@ -643,7 +687,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.ReplaceUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceUser">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a user and return it.</span>
@@ -773,7 +817,7 @@
 
         <span class="k">if</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">IsDatabaseLink</span><span class="p">(</span><span class="n">database_or_collection_link</span><span class="p">)):</span>
             <span class="c1"># Python doesn&#39;t have a good way of specifying an overloaded constructor, and this is how it&#39;s generally overloaded constructors are specified(by calling a @classmethod) and returning the &#39;self&#39; instance</span>
-            <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="o">.</span><span class="n">PartitioningQueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="o">.</span><span class="n">PartitioningQueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>    
             <span class="n">path</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetPathFromLink</span><span class="p">(</span><span class="n">database_or_collection_link</span><span class="p">,</span> <span class="s1">&#39;docs&#39;</span><span class="p">)</span>
             <span class="n">collection_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">database_or_collection_link</span><span class="p">)</span>
@@ -785,7 +829,50 @@
                                         <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                         <span class="n">query</span><span class="p">,</span>
                                         <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-            <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_ReadPartitionKeyRanges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">feed_options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reads Partition Key Ranges.</span>
+
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
+<span class="sd">            - `feed_options`: dict</span>
+
+<span class="sd">        :Returns:</span>
+<span class="sd">            query_iterable.QueryIterable</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">feed_options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">feed_options</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_QueryPartitionKeyRanges</span><span class="p">(</span><span class="n">collection_link</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">feed_options</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_QueryPartitionKeyRanges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Queries Partition Key Ranges in a collection.</span>
+
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
+<span class="sd">            - `query`: str or dict.</span>
+<span class="sd">            - `options`: dict, the request options for the request.</span>
+
+<span class="sd">        :Returns:</span>
+<span class="sd">            query_iterable.QueryIterable</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetPathFromLink</span><span class="p">(</span><span class="n">collection_link</span><span class="p">,</span> <span class="s1">&#39;pkranges&#39;</span><span class="p">)</span>
+        <span class="n">collection_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">collection_link</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">fetch_fn</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__QueryFeed</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
+                                    <span class="s1">&#39;pkranges&#39;</span><span class="p">,</span>
+                                    <span class="n">collection_id</span><span class="p">,</span>
+                                    <span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;PartitionKeyRanges&#39;</span><span class="p">],</span>
+                                    <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
+                                    <span class="n">query</span><span class="p">,</span>
+                                    <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DocumentClient.CreateDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateDocument">[docs]</a>    <span class="k">def</span> <span class="nf">CreateDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a document in a collection.</span>
@@ -880,7 +967,7 @@
             <span class="k">if</span><span class="p">(</span><span class="n">partition_resolver</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="n">collection_link</span> <span class="o">=</span> <span class="n">partition_resolver</span><span class="o">.</span><span class="n">ResolveForCreate</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">PartitionResolverErrorMessage</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">DocumentClient</span><span class="o">.</span><span class="n">PartitionResolverErrorMessage</span><span class="p">)</span>
         
         <span class="n">path</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetPathFromLink</span><span class="p">(</span><span class="n">collection_link</span><span class="p">,</span> <span class="s1">&#39;docs&#39;</span><span class="p">)</span>
         <span class="n">collection_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">collection_link</span><span class="p">)</span>
@@ -949,7 +1036,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.CreateTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">CreateTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a trigger in a collection.</span>
@@ -1069,7 +1156,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.CreateUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">CreateUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a user defined function in a collection.</span>
@@ -1189,7 +1276,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.CreateStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">CreateStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a stored procedure in a collection.</span>
@@ -1308,7 +1395,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.ReadConflict"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadConflict">[docs]</a>    <span class="k">def</span> <span class="nf">ReadConflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conflict_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a conflict.</span>
@@ -1597,7 +1684,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DocumentClient.ReadMedia"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadMedia">[docs]</a>    <span class="k">def</span> <span class="nf">ReadMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_link</span><span class="p">):</span>
@@ -1680,6 +1767,8 @@
                                                         <span class="n">path</span><span class="p">,</span>
                                                         <span class="n">readable_stream</span><span class="p">,</span>
                                                         <span class="n">headers</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_UpdateSessionIfRequired</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="DocumentClient.ReplaceAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -2020,7 +2109,7 @@
                                     <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                     <span class="n">query</span><span class="p">,</span>
                                     <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span>
-        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">query_iterable</span><span class="o">.</span><span class="n">QueryIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_fn</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DocumentClient.GetDatabaseAccount"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.GetDatabaseAccount">[docs]</a>    <span class="k">def</span> <span class="nf">GetDatabaseAccount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_connection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets database account info.</span>
@@ -2097,6 +2186,9 @@
                                                          <span class="n">path</span><span class="p">,</span>
                                                          <span class="n">body</span><span class="p">,</span>
                                                          <span class="n">headers</span><span class="p">)</span>
+
+        <span class="c1"># update session for write request</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_UpdateSessionIfRequired</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="DocumentClient.Upsert"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Upsert">[docs]</a>    <span class="k">def</span> <span class="nf">Upsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -2134,6 +2226,8 @@
                                                          <span class="n">path</span><span class="p">,</span>
                                                          <span class="n">body</span><span class="p">,</span>
                                                          <span class="n">headers</span><span class="p">)</span>
+        <span class="c1"># update session for write request</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_UpdateSessionIfRequired</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="DocumentClient.Replace"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Replace">[docs]</a>    <span class="k">def</span> <span class="nf">Replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -2168,6 +2262,9 @@
                                                         <span class="n">path</span><span class="p">,</span>
                                                         <span class="n">resource</span><span class="p">,</span>
                                                         <span class="n">headers</span><span class="p">)</span>
+        
+        <span class="c1"># update session for request mutates data on server side</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_UpdateSessionIfRequired</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="DocumentClient.Read"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Read">[docs]</a>    <span class="k">def</span> <span class="nf">Read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -2232,6 +2329,11 @@
         <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Delete</span><span class="p">(</span><span class="n">url_connection</span><span class="p">,</span>
                                                            <span class="n">path</span><span class="p">,</span>
                                                            <span class="n">headers</span><span class="p">)</span>
+
+        <span class="c1"># update session for request mutates data on server side</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_UpdateSessionIfRequired</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span><span class="p">)</span>
+
+
         <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="k">def</span> <span class="nf">__Get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
@@ -2250,6 +2352,7 @@
         <span class="k">return</span> <span class="n">synchronized_request</span><span class="o">.</span><span class="n">SynchronizedRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                                         <span class="bp">self</span><span class="o">.</span><span class="n">_global_endpoint_manager</span><span class="p">,</span>
                                                         <span class="bp">self</span><span class="o">.</span><span class="n">connection_policy</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span><span class="p">,</span>
                                                         <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
                                                         <span class="n">url</span><span class="p">,</span>
                                                         <span class="n">path</span><span class="p">,</span>
@@ -2274,6 +2377,7 @@
         <span class="k">return</span> <span class="n">synchronized_request</span><span class="o">.</span><span class="n">SynchronizedRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                                         <span class="bp">self</span><span class="o">.</span><span class="n">_global_endpoint_manager</span><span class="p">,</span>
                                                         <span class="bp">self</span><span class="o">.</span><span class="n">connection_policy</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span><span class="p">,</span>
                                                         <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
                                                         <span class="n">url</span><span class="p">,</span>
                                                         <span class="n">path</span><span class="p">,</span>
@@ -2298,6 +2402,7 @@
         <span class="k">return</span> <span class="n">synchronized_request</span><span class="o">.</span><span class="n">SynchronizedRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                                         <span class="bp">self</span><span class="o">.</span><span class="n">_global_endpoint_manager</span><span class="p">,</span>
                                                         <span class="bp">self</span><span class="o">.</span><span class="n">connection_policy</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span><span class="p">,</span>
                                                         <span class="s1">&#39;PUT&#39;</span><span class="p">,</span>
                                                         <span class="n">url</span><span class="p">,</span>
                                                         <span class="n">path</span><span class="p">,</span>
@@ -2321,6 +2426,7 @@
         <span class="k">return</span> <span class="n">synchronized_request</span><span class="o">.</span><span class="n">SynchronizedRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                                         <span class="bp">self</span><span class="o">.</span><span class="n">_global_endpoint_manager</span><span class="p">,</span>
                                                         <span class="bp">self</span><span class="o">.</span><span class="n">connection_policy</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span><span class="p">,</span>
                                                         <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
                                                         <span class="n">url</span><span class="p">,</span>
                                                         <span class="n">path</span><span class="p">,</span>
@@ -2328,7 +2434,7 @@
                                                         <span class="n">query_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DocumentClient.QueryFeed"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryFeed">[docs]</a>    <span class="k">def</span> <span class="nf">QueryFeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentClient.QueryFeed"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryFeed">[docs]</a>    <span class="k">def</span> <span class="nf">QueryFeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">partition_key_range_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query Feed for Document Collection resource.</span>
 
 <span class="sd">        :Parameters:</span>
@@ -2336,7 +2442,7 @@
 <span class="sd">            - `collection_id`: str, id of the document collection</span>
 <span class="sd">            - `query`: str or dict</span>
 <span class="sd">            - `options`: dict, the request options for the request.</span>
-
+<span class="sd">            - `partition_key_range_id`: str, partition key range id</span>
 <span class="sd">        :Returns:</span>
 <span class="sd">            tuple</span>
 
@@ -2347,7 +2453,8 @@
                                 <span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;Documents&#39;</span><span class="p">],</span>
                                 <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span>
                                 <span class="n">query</span><span class="p">,</span>
-                                <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span></div>
+                                <span class="n">options</span><span class="p">,</span>
+                                <span class="n">partition_key_range_id</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span></div>
     
     <span class="k">def</span> <span class="nf">__QueryFeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                     <span class="n">path</span><span class="p">,</span>
@@ -2356,7 +2463,8 @@
                     <span class="n">result_fn</span><span class="p">,</span>
                     <span class="n">create_fn</span><span class="p">,</span>
                     <span class="n">query</span><span class="p">,</span>
-                    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">partition_key_range_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query for more than one DocumentDB resources.</span>
 
 <span class="sd">        Raises :exc:`SystemError` is the query compatibility mode is undefined.</span>
@@ -2369,6 +2477,7 @@
 <span class="sd">            - `create_fn`: function</span>
 <span class="sd">            - `query`: str or dict</span>
 <span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">            - `partition_key_range_id`: str, specifies partition key range id</span>
 
 <span class="sd">        :Returns:</span>
 <span class="sd">            list</span>
@@ -2388,14 +2497,15 @@
 
         <span class="n">initial_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_headers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="c1"># Copy to make sure that default_headers won&#39;t be changed.</span>
-        <span class="k">if</span> <span class="n">query</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">headers</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetHeaders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                       <span class="n">initial_headers</span><span class="p">,</span>
                                       <span class="s1">&#39;get&#39;</span><span class="p">,</span>
                                       <span class="n">path</span><span class="p">,</span>
                                       <span class="nb">id</span><span class="p">,</span>
                                       <span class="nb">type</span><span class="p">,</span>
-                                      <span class="n">options</span><span class="p">)</span>
+                                      <span class="n">options</span><span class="p">,</span>
+                                      <span class="n">partition_key_range_id</span><span class="p">)</span>
             <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Get</span><span class="p">(</span><span class="n">url_connection</span><span class="p">,</span>
                                                             <span class="n">path</span><span class="p">,</span>
                                                             <span class="n">headers</span><span class="p">)</span>
@@ -2418,7 +2528,8 @@
                                       <span class="n">path</span><span class="p">,</span>
                                       <span class="nb">id</span><span class="p">,</span>
                                       <span class="nb">type</span><span class="p">,</span>
-                                      <span class="n">options</span><span class="p">)</span>
+                                      <span class="n">options</span><span class="p">,</span>
+                                      <span class="n">partition_key_range_id</span><span class="p">)</span>
             <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Post</span><span class="p">(</span><span class="n">url_connection</span><span class="p">,</span>
                                                              <span class="n">path</span><span class="p">,</span>
                                                              <span class="n">query</span><span class="p">,</span>
@@ -2440,14 +2551,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_compatibility_mode</span> <span class="o">==</span> <span class="n">DocumentClient</span><span class="o">.</span><span class="n">_QueryCompatibilityMode</span><span class="o">.</span><span class="n">Default</span> <span class="ow">or</span>
                <span class="bp">self</span><span class="o">.</span><span class="n">_query_compatibility_mode</span> <span class="o">==</span> <span class="n">DocumentClient</span><span class="o">.</span><span class="n">_QueryCompatibilityMode</span><span class="o">.</span><span class="n">Query</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;query body must be a dict or string.&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query_body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;query&#39;</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;query body must have valid query text with key &quot;query&quot;.&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query_body</span><span class="p">}</span>
         <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_compatibility_mode</span> <span class="o">==</span> <span class="n">DocumentClient</span><span class="o">.</span><span class="n">_QueryCompatibilityMode</span><span class="o">.</span><span class="n">SqlQuery</span> <span class="ow">and</span>
-              <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)):</span>
+              <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_body</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;query body must be a string.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="s1">&#39;Unexpected query compatibility mode.&#39;</span><span class="p">)</span>
@@ -2518,8 +2629,35 @@
         <span class="k">if</span> <span class="p">((</span><span class="n">matchCount</span> <span class="o">!=</span> <span class="n">expected_matchCount</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">partitionKey</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">documents</span><span class="o">.</span><span class="n">Undefined</span>
          
-        <span class="k">return</span> <span class="n">partitionKey</span></div>
+        <span class="k">return</span> <span class="n">partitionKey</span>
     
+    <span class="k">def</span> <span class="nf">_UpdateSessionIfRequired</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_headers</span><span class="p">,</span> <span class="n">response_result</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">):</span>    
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates session if necessary.</span>
+
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `response_result`- response result</span>
+<span class="sd">            - `response_headers` - response headers</span>
+
+<span class="sd">        :Returns:</span>
+<span class="sd">            None, but updates the client session if necessary</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="sd">&#39;&#39;&#39;if this request was made with consistency level as session, then update</span>
+<span class="sd">        the session&#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">response_result</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">response_headers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">is_session_consistency</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">ConsistencyLevel</span> <span class="ow">in</span> <span class="n">request_headers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">documents</span><span class="o">.</span><span class="n">ConsistencyLevel</span><span class="o">.</span><span class="n">Session</span> <span class="o">==</span> <span class="n">request_headers</span><span class="p">[</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">ConsistencyLevel</span><span class="p">]:</span>
+                <span class="n">is_session_consistency</span> <span class="o">=</span> <span class="kc">True</span>
+              
+        <span class="k">if</span> <span class="n">is_session_consistency</span><span class="p">:</span>
+            <span class="c1"># update session</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">update_session</span><span class="p">(</span><span class="n">response_result</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

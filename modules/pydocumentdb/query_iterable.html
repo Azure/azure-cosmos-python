@@ -50,98 +50,95 @@
           <div class="body" role="main">
             
   <h1>Source code for pydocumentdb.query_iterable</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) Microsoft Corporation.  All rights reserved.</span>
+<span></span><span class="c1">#The MIT License (MIT)</span>
+<span class="c1">#Copyright (c) 2014 Microsoft Corporation</span>
+
+<span class="c1">#Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1">#of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1">#in the Software without restriction, including without limitation the rights</span>
+<span class="c1">#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1">#copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1">#furnished to do so, subject to the following conditions:</span>
+
+<span class="c1">#The above copyright notice and this permission notice shall be included in all</span>
+<span class="c1">#copies or substantial portions of the Software.</span>
+
+<span class="c1">#THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1">#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1">#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1">#SOFTWARE.</span>
 
 <span class="sd">&quot;&quot;&quot;Iterable query results.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">pydocumentdb.base</span> <span class="k">as</span> <span class="nn">base</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="k">as</span> <span class="nn">http_constants</span>
-<span class="kn">import</span> <span class="nn">pydocumentdb.retry_utility</span> <span class="k">as</span> <span class="nn">retry_utility</span>
-
+<span class="kn">from</span> <span class="nn">pydocumentdb.execution_context</span> <span class="k">import</span> <span class="n">execution_dispatcher</span>
+<span class="kn">from</span> <span class="nn">pydocumentdb.execution_context</span> <span class="k">import</span> <span class="n">base_execution_context</span>
 
 <div class="viewcode-block" id="QueryIterable"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable">[docs]</a><span class="k">class</span> <span class="nc">QueryIterable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents an iterable object of the query results.</span>
+<span class="sd">    QueryIterable is a wrapper for query execution context.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_function</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">fetch_function</span><span class="p">,</span> <span class="n">collection_link</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiates a QueryIterable for non-client side partitioning queries.</span>
+<span class="sd">        _ProxyQueryExecutionContext will be used as the internal query execution context</span>
+<span class="sd">         </span>
 <span class="sd">        :Parameters:</span>
-<span class="sd">            - `client`: object, document client instance</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-<span class="sd">            - `fetch_function`: function, for executing the feed query</span>
-
+<span class="sd">            - client (DocumentClient), instance of document client</span>
+<span class="sd">            - query (dict) or (str), query</span>
+<span class="sd">            - options (dict), the request options for the request.</span>
+<span class="sd">            - fetch_function: method, fetch function</span>
+<span class="sd">            - collection_link (str): if this is a Document query/feed collection_link is required</span>
+<span class="sd"> </span>
 <span class="sd">        Example of `fetch_function`:</span>
-
+<span class="sd"> </span>
 <span class="sd">        &gt;&gt;&gt; def result_fn(result):</span>
 <span class="sd">        &gt;&gt;&gt;     return result[&#39;Databases&#39;]</span>
-
+<span class="sd"> </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retry_options</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection_policy</span><span class="o">.</span><span class="n">RetryOptions</span><span class="p">;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">options</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_function</span> <span class="o">=</span> <span class="n">fetch_function</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">retry_options</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection_policy</span><span class="o">.</span><span class="n">RetryOptions</span><span class="p">;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_results</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="kc">False</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links_length</span> <span class="o">=</span> <span class="mi">0</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collection_link</span> <span class="o">=</span> <span class="n">collection_link</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ex_context</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="QueryIterable.PartitioningQueryIterable"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable">[docs]</a>    <span class="k">def</span> <span class="nf">PartitioningQueryIterable</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryIterable.PartitioningQueryIterable"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable">[docs]</a>    <span class="k">def</span> <span class="nf">PartitioningQueryIterable</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represents a client side partitioning query iterable.</span>
+<span class="sd">        </span>
+<span class="sd">        This constructor instantiates a QueryIterable for</span>
+<span class="sd">        client side partitioning queries, and sets _MultiCollectionQueryExecutionContext</span>
+<span class="sd">        as the internal execution context.</span>
 <span class="sd">        :Parameters:</span>
 <span class="sd">            - `client`: DocumentClient, instance of document client</span>
+<span class="sd">            - `query`: str or dict</span>
 <span class="sd">            - `options`: dict, the request options for the request.</span>
 <span class="sd">            - `database_link`: str, database self link or ID based link</span>
-<span class="sd">            - `query`: str or dict</span>
 <span class="sd">            - `partition_key`: str, partition key for the query</span>
-
-<span class="sd">        Example of `fetch_function`:</span>
-
-<span class="sd">        &gt;&gt;&gt; def result_fn(result):</span>
-<span class="sd">        &gt;&gt;&gt;     return result[&#39;Databases&#39;]</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-        
         <span class="c1"># This will call the base constructor(__init__ method above)</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_query</span> <span class="o">=</span> <span class="n">query</span>
-
-        <span class="n">partition_resolver</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">GetPartitionResolver</span><span class="p">(</span><span class="n">database_link</span><span class="p">)</span>
         
-        <span class="k">if</span><span class="p">(</span><span class="n">partition_resolver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">PartitionResolverErrorMessage</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span> <span class="o">=</span> <span class="n">partition_resolver</span><span class="o">.</span><span class="n">ResolveForRead</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_database_link</span> <span class="o">=</span> <span class="n">database_link</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_partition_key</span> <span class="o">=</span> <span class="n">partition_key</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;_collection_links is None.&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links_length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;_collection_links_length is not greater than 0.&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Creating the QueryFeed for the first collection</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetPathFromLink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span><span class="p">],</span> <span class="s1">&#39;docs&#39;</span><span class="p">)</span>
-        <span class="n">collection_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span><span class="p">])</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span> <span class="o">+=</span> <span class="mi">1</span>
-
-        <span class="k">def</span> <span class="nf">fetch_fn</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">QueryFeed</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
-                                    <span class="n">collection_id</span><span class="p">,</span>
-                                    <span class="n">query</span><span class="p">,</span>
-                                    <span class="n">options</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_function</span> <span class="o">=</span> <span class="n">fetch_fn</span>
-        
         <span class="k">return</span> <span class="bp">self</span></div>
+    
+    <span class="k">def</span> <span class="nf">_create_execution_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;instantiates the internal query execution context based.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_database_link&#39;</span><span class="p">):</span>
+            <span class="c1"># client side partitioning query</span>
+            <span class="k">return</span> <span class="n">base_execution_context</span><span class="o">.</span><span class="n">_MultiCollectionQueryExecutionContext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_link</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_partition_key</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># </span>
+            <span class="k">return</span> <span class="n">execution_dispatcher</span><span class="o">.</span><span class="n">_ProxyQueryExecutionContext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_link</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_function</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Makes this class iterable.</span>
@@ -152,94 +149,34 @@
         <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span> <span class="o">=</span> <span class="n">iterable</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_results</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ex_context</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">_create_execution_context</span><span class="p">()</span>
 
         <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="c1"># Always returns self</span>
             <span class="k">return</span> <span class="bp">self</span>
 
-<div class="viewcode-block" id="QueryIterable.Iterator.next"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.Iterator.next">[docs]</a>        <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">def</span> <span class="nf">callback</span><span class="p">():</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">fetch_next_block</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span> <span class="o">=</span> <span class="kc">True</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span><span class="p">:</span>
-                <span class="c1"># Must keep raising once we have ended</span>
-                <span class="k">raise</span> <span class="ne">StopIteration</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_results</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span><span class="p">):</span>
-                <span class="n">retry_utility</span><span class="o">.</span><span class="n">_Execute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_global_endpoint_manager</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="mi">0</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finished</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">StopIteration</span>
-
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="o">.</span><span class="n">_results</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">return</span> <span class="n">result</span></div>
+        <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ex_context</span><span class="p">)</span>
 
         <span class="c1"># Also support Python 3.x iteration</span>
-        <span class="n">__next__</span> <span class="o">=</span> <span class="nb">next</span></div>
+<div class="viewcode-block" id="QueryIterable.Iterator.next"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.Iterator.next">[docs]</a>        <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span></div></div>
 
 <div class="viewcode-block" id="QueryIterable.fetch_next_block"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.fetch_next_block">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_next_block</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fetches the next block of query results.</span>
+        <span class="sd">&quot;&quot;&quot;Returns a block of results with respecting retry policy.</span>
+<span class="sd">        </span>
+<span class="sd">        This method only exists for backward compatibility reasons. (Because QueryIterable</span>
+<span class="sd">        has exposed fetch_next_block api).</span>
 
 <span class="sd">        :Returns:</span>
-<span class="sd">            list of fetched items.</span>
-
+<span class="sd">            list. List of results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Fetch next block of results by executing the query against the current document collection</span>
-        <span class="n">fetched_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_items</span><span class="p">()</span>
-
-        <span class="c1"># If there are multiple document collections to query for(in case of partitioning), keep looping through each one of them,</span>
-        <span class="c1"># creating separate feed queries for each collection and fetching the items</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="n">fetched_items</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_links_length</span><span class="p">:</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetPathFromLink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span><span class="p">],</span> <span class="s1">&#39;docs&#39;</span><span class="p">)</span>
-                <span class="n">collection_id</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection_links</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span><span class="p">])</span>
                 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="kc">False</span>
-
-                <span class="k">def</span> <span class="nf">fetch_fn</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">QueryFeed</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
-                                            <span class="n">collection_id</span><span class="p">,</span>
-                                            <span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="p">,</span>
-                                            <span class="n">options</span><span class="p">)</span>
-
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_function</span> <span class="o">=</span> <span class="n">fetch_fn</span>
-
-                <span class="n">fetched_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_items</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_current_collection_index</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">break</span>
-
-        <span class="k">return</span> <span class="n">fetched_items</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ex_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># initiates execution context for the first time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ex_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_execution_context</span><span class="p">()</span>
         
-
-<div class="viewcode-block" id="QueryIterable.fetch_items"><a class="viewcode-back" href="../../api/pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable.fetch_items">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fetches more items.</span>
-
-<span class="sd">        :Returns:</span>
-<span class="sd">            list of fetched items.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">fetched_items</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_has_started</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s1">&#39;continuation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span>
-            <span class="p">(</span><span class="n">fetched_items</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_results</span> <span class="o">=</span> <span class="n">fetched_items</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_continuation</span> <span class="o">=</span> <span class="n">response_headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                <span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">Continuation</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">fetched_items</span><span class="p">:</span>
-                <span class="k">break</span>
-        <span class="k">return</span> <span class="n">fetched_items</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ex_context</span><span class="o">.</span><span class="n">fetch_next_block</span><span class="p">()</span></div></div>
 </pre></div>
 
           </div>

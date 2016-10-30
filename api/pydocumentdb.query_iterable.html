@@ -62,17 +62,22 @@
 <p>Iterable query results.</p>
 <dl class="class">
 <dt id="pydocumentdb.query_iterable.QueryIterable">
-<em class="property">class </em><code class="descclassname">pydocumentdb.query_iterable.</code><code class="descname">QueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>options</em>, <em>fetch_function</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydocumentdb.query_iterable.</code><code class="descname">QueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>query</em>, <em>options</em>, <em>fetch_function</em>, <em>collection_link=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Represents an iterable object of the query results.</p>
+<p>Represents an iterable object of the query results.
+QueryIterable is a wrapper for query execution context.</p>
+<p>Instantiates a QueryIterable for non-client side partitioning queries.
+_ProxyQueryExecutionContext will be used as the internal query execution context</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><cite>client</cite>: object, document client instance</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
-<li><cite>fetch_function</cite>: function, for executing the feed query</li>
+<li>client (DocumentClient), instance of document client</li>
+<li>query (dict) or (str), query</li>
+<li>options (dict), the request options for the request.</li>
+<li>fetch_function: method, fetch function</li>
+<li>collection_link (str): if this is a Document query/feed collection_link is required</li>
 </ul>
 </td>
 </tr>
@@ -96,52 +101,34 @@
 
 <dl class="classmethod">
 <dt id="pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable">
-<em class="property">classmethod </em><code class="descclassname">QueryIterable.</code><code class="descname">PartitioningQueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>options</em>, <em>database_link</em>, <em>query</em>, <em>partition_key</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable.PartitioningQueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<em class="property">classmethod </em><code class="descclassname">QueryIterable.</code><code class="descname">PartitioningQueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>query</em>, <em>options</em>, <em>database_link</em>, <em>partition_key</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable.PartitioningQueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a client side partitioning query iterable.</p>
+<p>This constructor instantiates a QueryIterable for
+client side partitioning queries, and sets _MultiCollectionQueryExecutionContext
+as the internal execution context.
+:Parameters:</p>
+<blockquote>
+<div><ul class="simple">
 <li><cite>client</cite>: DocumentClient, instance of document client</li>
+<li><cite>query</cite>: str or dict</li>
 <li><cite>options</cite>: dict, the request options for the request.</li>
 <li><cite>database_link</cite>: str, database self link or ID based link</li>
-<li><cite>query</cite>: str or dict</li>
 <li><cite>partition_key</cite>: str, partition key for the query</li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example of <cite>fetch_function</cite>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">result_fn</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;Databases&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydocumentdb.query_iterable.QueryIterable.fetch_items">
-<code class="descclassname">QueryIterable.</code><code class="descname">fetch_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable.fetch_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.fetch_items" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetches more items.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of fetched items.</td>
-</tr>
-</tbody>
-</table>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydocumentdb.query_iterable.QueryIterable.fetch_next_block">
 <code class="descclassname">QueryIterable.</code><code class="descname">fetch_next_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable.fetch_next_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.fetch_next_block" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetches the next block of query results.</p>
+<dd><p>Returns a block of results with respecting retry policy.</p>
+<p>This method only exists for backward compatibility reasons. (Because QueryIterable
+has exposed fetch_next_block api).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of fetched items.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list. List of results.</td>
 </tr>
 </tbody>
 </table>

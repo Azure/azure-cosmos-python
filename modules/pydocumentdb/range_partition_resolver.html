@@ -71,7 +71,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="kn">import</span> <span class="nn">pydocumentdb.range</span> <span class="k">as</span> <span class="nn">range</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.range</span> <span class="k">as</span> <span class="nn">prange</span>
 
 <div class="viewcode-block" id="RangePartitionResolver"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver">[docs]</a><span class="k">class</span> <span class="nc">RangePartitionResolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;RangePartitionResolver implements partitioning based on the ranges, allowing you to</span>
@@ -144,20 +144,20 @@
         <span class="n">intersecting_ranges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">partition_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">partition_key</span><span class="p">,</span> <span class="nb">range</span><span class="o">.</span><span class="n">Range</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">partition_key</span><span class="p">,</span> <span class="n">prange</span><span class="o">.</span><span class="n">Range</span><span class="p">):</span>
             <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">partition_key</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">partition_key</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">range</span><span class="o">.</span><span class="n">Range</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">prange</span><span class="o">.</span><span class="n">Range</span><span class="p">):</span>
                     <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">range</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+                    <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prange</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">range</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="n">partition_key</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">))</span>
+            <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prange</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="n">partition_key</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">partitionKeyRange</span> <span class="ow">in</span> <span class="n">partitionkey_ranges</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">keyrange</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>

@@ -50,7 +50,26 @@
           <div class="body" role="main">
             
   <h1>Source code for pydocumentdb.documents</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) Microsoft Corporation.  All rights reserved.</span>
+<span></span><span class="c1">#The MIT License (MIT)</span>
+<span class="c1">#Copyright (c) 2014 Microsoft Corporation</span>
+
+<span class="c1">#Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1">#of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1">#in the Software without restriction, including without limitation the rights</span>
+<span class="c1">#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1">#copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1">#furnished to do so, subject to the following conditions:</span>
+
+<span class="c1">#The above copyright notice and this permission notice shall be included in all</span>
+<span class="c1">#copies or substantial portions of the Software.</span>
+
+<span class="c1">#THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1">#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1">#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1">#SOFTWARE.</span>
 
 <span class="sd">&quot;&quot;&quot;AzureDocument classes and enums.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -143,7 +162,7 @@
 <span class="sd">        - `Consistent`: Index is updated synchronously with a create or</span>
 <span class="sd">          update operation. With consistent indexing, query behavior is the</span>
 <span class="sd">          same as the default consistency level for the collection.</span>
-<span class="sd">         </span>
+
 <span class="sd">          The index is</span>
 <span class="sd">          always kept up to date with the data.</span>
 <span class="sd">        - `Lazy`: Index is updated asynchronously with respect to a create</span>
@@ -191,9 +210,15 @@
 <span class="sd">    :Attributes:</span>
 <span class="sd">        - `Number`: Represents a numeric data type</span>
 <span class="sd">        - `String`: Represents a string data type.</span>
+<span class="sd">        - `Point`: Represents a point data type</span>
+<span class="sd">        - `LineString`: Represents a line string data type</span>
+<span class="sd">        - `Polygon`: Represents a polygon data type</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Number</span> <span class="o">=</span> <span class="s1">&#39;Number&#39;</span>
-    <span class="n">String</span> <span class="o">=</span> <span class="s1">&#39;String&#39;</span></div>
+    <span class="n">String</span> <span class="o">=</span> <span class="s1">&#39;String&#39;</span>
+    <span class="n">Point</span> <span class="o">=</span> <span class="s1">&#39;Point&#39;</span>
+    <span class="n">LineString</span> <span class="o">=</span> <span class="s1">&#39;LineString&#39;</span>
+    <span class="n">Polygon</span> <span class="o">=</span> <span class="s1">&#39;Polygon&#39;</span></div>
 
 
 <div class="viewcode-block" id="IndexingDirective"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.IndexingDirective">[docs]</a><span class="k">class</span> <span class="nc">IndexingDirective</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -264,7 +289,7 @@
 
 <div class="viewcode-block" id="TriggerOperation"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.TriggerOperation">[docs]</a><span class="k">class</span> <span class="nc">TriggerOperation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the operations on which a trigger should be executed.</span>
-<span class="sd">   </span>
+
 <span class="sd">    :Attributes:</span>
 <span class="sd">        - `All`: All operations.</span>
 <span class="sd">        - `Create`: Create operations only.</span>
@@ -282,12 +307,12 @@
 <div class="viewcode-block" id="SSLConfiguration"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.SSLConfiguration">[docs]</a><span class="k">class</span> <span class="nc">SSLConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configurations for SSL connections.</span>
 
-<span class="sd">    Please refer to https://docs.python.org/2/library/ssl.html#socket-creation for more detail.</span>
+<span class="sd">    Please refer to http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification for more detail.</span>
 
 <span class="sd">    :Attributes:</span>
 <span class="sd">        - `SSLKeyFile`: str, the path of the key file for ssl connection.</span>
 <span class="sd">        - `SSLCertFile`: str, the path of the cert file for ssl connection.</span>
-<span class="sd">        - `SSLCaCerts`: str, the path of the ca_certs file for ssl connection.</span>
+<span class="sd">        - `SSLCaCerts`: str, the path of the CA_BUNDLE file with certificates of trusted CAs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SSLKeyFile</span> <span class="o">=</span> <span class="kc">None</span>
@@ -326,7 +351,7 @@
 <span class="sd">           current write and read locations and direct the requests to the correct location</span>
 <span class="sd">           taking into consideration of the user&#39;s preference(if provided) as PreferredLocations.</span>
 <span class="sd">        - `PreferredLocations`: list, gets or sets the preferred locations for geo-replicated database accounts.</span>
-<span class="sd">           When EnableEndpointDiscovery is true and PreferredLocations is non-empty, </span>
+<span class="sd">           When EnableEndpointDiscovery is true and PreferredLocations is non-empty,</span>
 <span class="sd">           the client will use this list to evaluate the final location, taking into consideration</span>
 <span class="sd">           the order specified in PreferredLocations list. The locations in this list are specified as the names of</span>
 <span class="sd">           the azure documentdb locations like, &#39;West US&#39;, &#39;East US&#39;, &#39;Central India&#39; and so on.</span>

@@ -56,19 +56,9 @@
 <div class="section" id="system-requirements">
 <h2>System Requirements:<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>
-    The supported Python versions are 2.7, 3.3, 3.4 and 3.5. To download Python, please visit
-    <a class="reference external" href="https://www.python.org/download/releases">https://www.python.org/download/releases</a>.
-</p>
-
-<dl class="docutils">
-    <dt>
-        Python Tools for Visual Studio is required when using Microsoft Visual
-        Studio to develop Python applications. To download Python Tools for Visual Studio, please visit
-        <a class="reference external" href="http://microsoft.github.io/PTVS/">http://microsoft.github.io/PTVS</a>.
-    </dt>
-
-</dl>
+<div><p>The supported Python versions are 2.7, 3.3, 3.4 and 3.5. To download Python, please visit <a class="reference external" href="https://www.python.org/download/releases">https://www.python.org/download/releases</a>.</p>
+<p>Python Tools for Visual Studio is required when using Microsoft Visual
+Studio to develop Python applications. To download Python Tools for Visual Studio, please visit <a class="reference external" href="http://microsoft.github.io/PTVS">http://microsoft.github.io/PTVS</a>.</p>
 </div></blockquote>
 </div>
 <div class="section" id="installation">
@@ -101,7 +91,7 @@ For more information on pip, please visit <a class="reference external" href="ht
 <div class="section" id="to-run-tests">
 <h2>To run tests:<a class="headerlink" href="#to-run-tests" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>$ python -m unittest discover -s .\test -p "*.py"
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>$ python -m unittest discover -s .<span class="se">\t</span>est -p <span class="s2">&quot;*.py&quot;</span>
 </pre></div>
 </div>
 <p>If you use Microsoft Visual Studio, open the project file python.pyproj,
@@ -113,7 +103,7 @@ and run all the tests in Test Explorer.</p>
 <blockquote>
 <div><p>Install Sphinx: <a class="reference external" href="http://sphinx-doc.org/install.html">http://sphinx-doc.org/install.html</a></p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> doc
-$ sphinx-apidoc -f -e -o api ..\pydocumentdb 
+$ sphinx-apidoc -f -e -o api ..<span class="se">\p</span>ydocumentdb
 $ make.bat html
 </pre></div>
 </div>
@@ -139,7 +129,7 @@ $ make.bat html
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Azure DocumentDB Python SDK.</a><ul>
+<li><a class="reference internal" href="#">Azure DocumentDB Python SDK</a><ul>
 <li><a class="reference internal" href="#system-requirements">System Requirements:</a></li>
 <li><a class="reference internal" href="#installation">Installation:</a></li>
 <li><a class="reference internal" href="#to-run-tests">To run tests:</a></li>

@@ -99,6 +99,10 @@ def _Request(connection_policy, requests_session, resource_url, request_options,
     # checking in that certificate on the file system. 
     is_ssl_enabled = (parse_result.hostname != 'localhost')
 
+    # The requests library expects header values to be strings only, and will raise an error on validation if they are not. Because
+    # these values can come from a few different places, go ahead and cast them before passing them along.
+    request_options['headers'] = { header: str(value) for header, value in request_options['headers'].items() }
+
     if connection_policy.SSLConfiguration:
         ca_certs = connection_policy.SSLConfiguration.SSLCaCerts
         cert_files = (connection_policy.SSLConfiguration.SSLCertFile, connection_policy.SSLConfiguration.SSLKeyFile)

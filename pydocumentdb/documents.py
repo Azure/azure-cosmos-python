@@ -23,6 +23,8 @@
 """
 
 import pydocumentdb.retry_options as retry_options
+from pydocumentdb.http_constants import HttpConnectionProperties
+
 
 class DatabaseAccount(object):
     """Database account. A DatabaseAccount is the container for databases.

@@ -284,6 +284,9 @@ class ProxyConfiguration(object):
         self.Port = None
 
 
+
+
+
 class ConnectionPolicy(object):
     """Represents the Connection policy assocated with a DocumentClient.
 
@@ -328,7 +331,8 @@ class ConnectionPolicy(object):
         self.EnableEndpointDiscovery = True
         self.PreferredLocations = []
         self.RetryOptions = retry_options.RetryOptions()
-        self.DisableSSLVerification = False;
+        self.DisableSSLVerification = False
+        self.HTTPRequestPoolSize = HttpConnectionProperties.MaxPoolSize
 
 class Undefined(object):
     """Represents undefined value for partitionKey when it's mising.

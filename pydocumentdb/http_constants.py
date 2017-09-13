@@ -266,3 +266,13 @@ class HttpContextProperties:
     """Constants of http context properties.
     """
     SubscriptionId = 'SubscriptionId'
+
+
+class HttpConnectionProperties:
+    """Constants of http connection properties.
+    """
+
+    # Max pool size increased from 10 to 25 as it is not typical http request,
+    # this is a database connection which requires more number of connections
+    # for parallel writes, queries, reads etc
+    MaxPoolSize = 25

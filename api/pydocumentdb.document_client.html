@@ -1,37 +1,33 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pydocumentdb.document_client module &#8212; pydocumentdb 2.0.1 documentation</title>
-    
-    <link rel="stylesheet" href="../static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    
+    <title>pydocumentdb.document_client module &#8212; pydocumentdb 2.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0.1',
+        VERSION:     '2.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
-    <script type="text/javascript" src="../static/jquery.js"></script>
-    <script type="text/javascript" src="../static/underscore.js"></script>
-    <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pydocumentdb 2.0.1 documentation" href="../index.html" />
-    <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.documents module" href="pydocumentdb.documents.html" />
     <link rel="prev" title="pydocumentdb.constants module" href="pydocumentdb.constants.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -47,7 +43,7 @@
         <li class="right" >
           <a href="pydocumentdb.constants.html" title="pydocumentdb.constants module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>  
@@ -62,7 +58,7 @@
 <p>Document client class for the Azure DocumentDB database service.</p>
 <dl class="class">
 <dt id="pydocumentdb.document_client.DocumentClient">
-<em class="property">class </em><code class="descclassname">pydocumentdb.document_client.</code><code class="descname">DocumentClient</code><span class="sig-paren">(</span><em>url_connection</em>, <em>auth</em>, <em>connection_policy=None</em>, <em>consistency_level='Session'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydocumentdb.document_client.</code><code class="descname">DocumentClient</code><span class="sig-paren">(</span><em>url_connection</em>, <em>auth</em>, <em>connection_policy=None</em>, <em>consistency_level='Session'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Represents a document client.</p>
 <p>Provides a client-side logical representation of the Azure DocumentDB
@@ -74,23 +70,19 @@ the DocumentDB service.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><cite>url_connection</cite>: str, the URL for connecting to the DB server.</p>
-</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><cite>url_connection</cite>: str, the URL for connecting to the DB server.</li>
 <li><dl class="first docutils">
-<dt><cite>auth</cite>: dict, contains &#8216;masterKey&#8217; or &#8216;resourceTokens&#8217;, where</dt>
-<dd><p class="first last">auth[&#8216;masterKey&#8217;] is the default authorization key to use to
-create the client, and auth[&#8216;resourceTokens&#8217;] is the alternative
-authorization key.</p>
-</dd>
+<dt><cite>auth</cite>: dict, contains ‘masterKey’ or ‘resourceTokens’, where</dt>
+<dd>auth[‘masterKey’] is the default authorization key to use to
+create the client, and auth[‘resourceTokens’] is the alternative
+authorization key.</dd>
 </dl>
 </li>
-<li><p class="first"><cite>connection_policy</cite>: documents.ConnectionPolicy, the connection
-policy for the client.</p>
-</li>
-<li><p class="first"><cite>consistency_level</cite>: documents.ConsistencyLevel, the default
-consistency policy for client operations.</p>
-</li>
+<li><cite>connection_policy</cite>: documents.ConnectionPolicy, the connection
+policy for the client.</li>
+<li><cite>consistency_level</cite>: documents.ConsistencyLevel, the default
+consistency policy for client operations.</li>
 </ul>
 </td>
 </tr>
@@ -98,7 +90,7 @@ consistency policy for client operations.</p>
 </table>
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.Create">
-<code class="descname">Create</code><span class="sig-paren">(</span><em>body</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.Create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Create" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Create</code><span class="sig-paren">(</span><em>body</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.Create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a DocumentDB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -123,7 +115,7 @@ consistency policy for client operations.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateAttachment">
-<code class="descname">CreateAttachment</code><span class="sig-paren">(</span><em>document_link</em>, <em>attachment</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateAttachment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateAttachment</code><span class="sig-paren">(</span><em>document_link</em>, <em>attachment</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateAttachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an attachment in a document.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -145,7 +137,7 @@ consistency policy for client operations.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateAttachmentAndUploadMedia">
-<code class="descname">CreateAttachmentAndUploadMedia</code><span class="sig-paren">(</span><em>document_link</em>, <em>readable_stream</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateAttachmentAndUploadMedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateAttachmentAndUploadMedia" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateAttachmentAndUploadMedia</code><span class="sig-paren">(</span><em>document_link</em>, <em>readable_stream</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateAttachmentAndUploadMedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateAttachmentAndUploadMedia" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an attachment and upload media.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -167,7 +159,7 @@ consistency policy for client operations.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateCollection">
-<code class="descname">CreateCollection</code><span class="sig-paren">(</span><em>database_link</em>, <em>collection</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateCollection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateCollection</code><span class="sig-paren">(</span><em>database_link</em>, <em>collection</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a collection in a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -189,7 +181,7 @@ consistency policy for client operations.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateDatabase">
-<code class="descname">CreateDatabase</code><span class="sig-paren">(</span><em>database</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateDatabase" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateDatabase</code><span class="sig-paren">(</span><em>database</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateDatabase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -210,7 +202,7 @@ consistency policy for client operations.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateDocument">
-<code class="descname">CreateDocument</code><span class="sig-paren">(</span><em>database_or_collection_link</em>, <em>document</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateDocument" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateDocument</code><span class="sig-paren">(</span><em>database_or_collection_link</em>, <em>document</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a document in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -220,7 +212,7 @@ consistency policy for client operations.</p>
 <li><cite>database_or_collection_link</cite>: str, the link to the database when using partitioning, otherwise link to the document collection.</li>
 <li><cite>document</cite>: dict, the Azure DocumentDB document to create.</li>
 <li><cite>options</cite>: dict, the request options for the request.</li>
-<li><cite>options[&#8216;disableAutomaticIdGeneration&#8217;]</cite>: bool, disables the
+<li><cite>options[‘disableAutomaticIdGeneration’]</cite>: bool, disables the
 automatic id generation. If id is missing in the body and this
 option is true, an error will be returned.</li>
 </ul>
@@ -235,7 +227,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreatePermission">
-<code class="descname">CreatePermission</code><span class="sig-paren">(</span><em>user_link</em>, <em>permission</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreatePermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreatePermission" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreatePermission</code><span class="sig-paren">(</span><em>user_link</em>, <em>permission</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreatePermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreatePermission" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a permission for a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -257,7 +249,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateStoredProcedure">
-<code class="descname">CreateStoredProcedure</code><span class="sig-paren">(</span><em>collection_link</em>, <em>sproc</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateStoredProcedure" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateStoredProcedure</code><span class="sig-paren">(</span><em>collection_link</em>, <em>sproc</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateStoredProcedure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a stored procedure in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -279,7 +271,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateTrigger">
-<code class="descname">CreateTrigger</code><span class="sig-paren">(</span><em>collection_link</em>, <em>trigger</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateTrigger" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateTrigger</code><span class="sig-paren">(</span><em>collection_link</em>, <em>trigger</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateTrigger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a trigger in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -301,7 +293,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateUser">
-<code class="descname">CreateUser</code><span class="sig-paren">(</span><em>database_link</em>, <em>user</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateUser" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateUser</code><span class="sig-paren">(</span><em>database_link</em>, <em>user</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateUser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -323,7 +315,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.CreateUserDefinedFunction">
-<code class="descname">CreateUserDefinedFunction</code><span class="sig-paren">(</span><em>collection_link</em>, <em>udf</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.CreateUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateUserDefinedFunction</code><span class="sig-paren">(</span><em>collection_link</em>, <em>udf</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.CreateUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.CreateUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a user defined function in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -345,7 +337,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteAttachment">
-<code class="descname">DeleteAttachment</code><span class="sig-paren">(</span><em>attachment_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteAttachment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteAttachment</code><span class="sig-paren">(</span><em>attachment_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteAttachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes an attachment.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -366,7 +358,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteCollection">
-<code class="descname">DeleteCollection</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteCollection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteCollection</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -387,7 +379,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteConflict">
-<code class="descname">DeleteConflict</code><span class="sig-paren">(</span><em>conflict_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteConflict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteConflict</code><span class="sig-paren">(</span><em>conflict_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteConflict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a conflict.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -408,7 +400,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteDatabase">
-<code class="descname">DeleteDatabase</code><span class="sig-paren">(</span><em>database_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteDatabase" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteDatabase</code><span class="sig-paren">(</span><em>database_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteDatabase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -429,7 +421,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteDocument">
-<code class="descname">DeleteDocument</code><span class="sig-paren">(</span><em>document_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteDocument" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteDocument</code><span class="sig-paren">(</span><em>document_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a document.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -450,7 +442,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeletePermission">
-<code class="descname">DeletePermission</code><span class="sig-paren">(</span><em>permission_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeletePermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeletePermission" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeletePermission</code><span class="sig-paren">(</span><em>permission_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeletePermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeletePermission" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a permission.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -471,7 +463,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteResource">
-<code class="descname">DeleteResource</code><span class="sig-paren">(</span><em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteResource" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteResource</code><span class="sig-paren">(</span><em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteResource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a DocumentDB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -495,7 +487,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteStoredProcedure">
-<code class="descname">DeleteStoredProcedure</code><span class="sig-paren">(</span><em>sproc_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteStoredProcedure" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteStoredProcedure</code><span class="sig-paren">(</span><em>sproc_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteStoredProcedure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a stored procedure.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -516,7 +508,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteTrigger">
-<code class="descname">DeleteTrigger</code><span class="sig-paren">(</span><em>trigger_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteTrigger" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteTrigger</code><span class="sig-paren">(</span><em>trigger_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteTrigger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a trigger.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -537,7 +529,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteUser">
-<code class="descname">DeleteUser</code><span class="sig-paren">(</span><em>user_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteUser" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteUser</code><span class="sig-paren">(</span><em>user_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteUser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -558,7 +550,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteUserDefinedFunction">
-<code class="descname">DeleteUserDefinedFunction</code><span class="sig-paren">(</span><em>udf_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.DeleteUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DeleteUserDefinedFunction</code><span class="sig-paren">(</span><em>udf_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a user defined function.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -579,7 +571,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ExecuteStoredProcedure">
-<code class="descname">ExecuteStoredProcedure</code><span class="sig-paren">(</span><em>sproc_link</em>, <em>params</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ExecuteStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ExecuteStoredProcedure" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ExecuteStoredProcedure</code><span class="sig-paren">(</span><em>sproc_link</em>, <em>params</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ExecuteStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ExecuteStoredProcedure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Executes a store procedure.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -601,7 +593,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.GetDatabaseAccount">
-<code class="descname">GetDatabaseAccount</code><span class="sig-paren">(</span><em>url_connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.GetDatabaseAccount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.GetDatabaseAccount" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetDatabaseAccount</code><span class="sig-paren">(</span><em>url_connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.GetDatabaseAccount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.GetDatabaseAccount" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets database account info.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -615,7 +607,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.GetPartitionResolver">
-<code class="descname">GetPartitionResolver</code><span class="sig-paren">(</span><em>database_link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.GetPartitionResolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.GetPartitionResolver" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetPartitionResolver</code><span class="sig-paren">(</span><em>database_link</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.GetPartitionResolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.GetPartitionResolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the partition resolver associated with the database link</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -640,7 +632,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryAttachments">
-<code class="descname">QueryAttachments</code><span class="sig-paren">(</span><em>document_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryAttachments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryAttachments" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryAttachments</code><span class="sig-paren">(</span><em>document_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryAttachments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryAttachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries attachments in a document.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -662,7 +654,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryCollections">
-<code class="descname">QueryCollections</code><span class="sig-paren">(</span><em>database_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryCollections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryCollections" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryCollections</code><span class="sig-paren">(</span><em>database_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryCollections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryCollections" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries collections in a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -684,7 +676,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryConflicts">
-<code class="descname">QueryConflicts</code><span class="sig-paren">(</span><em>collection_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryConflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryConflicts" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryConflicts</code><span class="sig-paren">(</span><em>collection_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryConflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryConflicts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries conflicts in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -706,7 +698,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryDatabases">
-<code class="descname">QueryDatabases</code><span class="sig-paren">(</span><em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryDatabases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryDatabases" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryDatabases</code><span class="sig-paren">(</span><em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryDatabases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryDatabases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries databases.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -727,7 +719,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryDocuments">
-<code class="descname">QueryDocuments</code><span class="sig-paren">(</span><em>database_or_collection_link</em>, <em>query</em>, <em>options=None</em>, <em>partition_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryDocuments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryDocuments" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryDocuments</code><span class="sig-paren">(</span><em>database_or_collection_link</em>, <em>query</em>, <em>options=None</em>, <em>partition_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryDocuments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryDocuments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries documents in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -750,7 +742,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryFeed">
-<code class="descname">QueryFeed</code><span class="sig-paren">(</span><em>path</em>, <em>collection_id</em>, <em>query</em>, <em>options</em>, <em>partition_key_range_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryFeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryFeed" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryFeed</code><span class="sig-paren">(</span><em>path</em>, <em>collection_id</em>, <em>query</em>, <em>options</em>, <em>partition_key_range_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryFeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryFeed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query Feed for Document Collection resource.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -774,7 +766,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryOffers">
-<code class="descname">QueryOffers</code><span class="sig-paren">(</span><em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryOffers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryOffers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryOffers</code><span class="sig-paren">(</span><em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryOffers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryOffers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query for all offers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -795,7 +787,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryPermissions">
-<code class="descname">QueryPermissions</code><span class="sig-paren">(</span><em>user_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryPermissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryPermissions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryPermissions</code><span class="sig-paren">(</span><em>user_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryPermissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryPermissions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries permissions for a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -817,7 +809,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryStoredProcedures">
-<code class="descname">QueryStoredProcedures</code><span class="sig-paren">(</span><em>collection_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryStoredProcedures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryStoredProcedures" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryStoredProcedures</code><span class="sig-paren">(</span><em>collection_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryStoredProcedures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryStoredProcedures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries stored procedures in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -839,7 +831,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryTriggers">
-<code class="descname">QueryTriggers</code><span class="sig-paren">(</span><em>collection_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryTriggers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryTriggers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryTriggers</code><span class="sig-paren">(</span><em>collection_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryTriggers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryTriggers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries triggers in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -861,7 +853,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryUserDefinedFunctions">
-<code class="descname">QueryUserDefinedFunctions</code><span class="sig-paren">(</span><em>collection_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryUserDefinedFunctions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryUserDefinedFunctions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryUserDefinedFunctions</code><span class="sig-paren">(</span><em>collection_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryUserDefinedFunctions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryUserDefinedFunctions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries user defined functions in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -883,7 +875,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.QueryUsers">
-<code class="descname">QueryUsers</code><span class="sig-paren">(</span><em>database_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.QueryUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryUsers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">QueryUsers</code><span class="sig-paren">(</span><em>database_link</em>, <em>query</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.QueryUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.QueryUsers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Queries users in a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -905,7 +897,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.Read">
-<code class="descname">Read</code><span class="sig-paren">(</span><em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.Read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Read" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Read</code><span class="sig-paren">(</span><em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.Read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a DocumentDB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -929,7 +921,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadAttachment">
-<code class="descname">ReadAttachment</code><span class="sig-paren">(</span><em>attachment_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadAttachment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadAttachment</code><span class="sig-paren">(</span><em>attachment_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadAttachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads an attachment.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -950,7 +942,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadAttachments">
-<code class="descname">ReadAttachments</code><span class="sig-paren">(</span><em>document_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadAttachments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadAttachments" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadAttachments</code><span class="sig-paren">(</span><em>document_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadAttachments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadAttachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all attachments in a document.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -971,7 +963,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadCollection">
-<code class="descname">ReadCollection</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadCollection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadCollection</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -992,7 +984,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadCollections">
-<code class="descname">ReadCollections</code><span class="sig-paren">(</span><em>database_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadCollections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadCollections" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadCollections</code><span class="sig-paren">(</span><em>database_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadCollections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadCollections" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all collections in a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1013,7 +1005,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadConflict">
-<code class="descname">ReadConflict</code><span class="sig-paren">(</span><em>conflict_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadConflict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadConflict</code><span class="sig-paren">(</span><em>conflict_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadConflict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a conflict.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1034,7 +1026,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadConflicts">
-<code class="descname">ReadConflicts</code><span class="sig-paren">(</span><em>collection_link</em>, <em>feed_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadConflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadConflicts" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadConflicts</code><span class="sig-paren">(</span><em>collection_link</em>, <em>feed_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadConflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadConflicts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads conflicts.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1055,7 +1047,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadDatabase">
-<code class="descname">ReadDatabase</code><span class="sig-paren">(</span><em>database_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadDatabase" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadDatabase</code><span class="sig-paren">(</span><em>database_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadDatabase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1076,7 +1068,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadDatabases">
-<code class="descname">ReadDatabases</code><span class="sig-paren">(</span><em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadDatabases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadDatabases" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadDatabases</code><span class="sig-paren">(</span><em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadDatabases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadDatabases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all databases.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1096,7 +1088,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadDocument">
-<code class="descname">ReadDocument</code><span class="sig-paren">(</span><em>document_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadDocument" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadDocument</code><span class="sig-paren">(</span><em>document_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a document.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1117,7 +1109,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadDocuments">
-<code class="descname">ReadDocuments</code><span class="sig-paren">(</span><em>collection_link</em>, <em>feed_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadDocuments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadDocuments" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadDocuments</code><span class="sig-paren">(</span><em>collection_link</em>, <em>feed_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadDocuments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadDocuments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all documents in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1144,7 +1136,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadMedia">
-<code class="descname">ReadMedia</code><span class="sig-paren">(</span><em>media_link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadMedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadMedia" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadMedia</code><span class="sig-paren">(</span><em>media_link</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadMedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadMedia" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a media.</p>
 <p>When self.connection_policy.MediaReadMode ==
 documents.MediaReadMode.Streamed, returns a file-like stream object;
@@ -1167,7 +1159,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadOffer">
-<code class="descname">ReadOffer</code><span class="sig-paren">(</span><em>offer_link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadOffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadOffer" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadOffer</code><span class="sig-paren">(</span><em>offer_link</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadOffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadOffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads an offer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1187,7 +1179,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadOffers">
-<code class="descname">ReadOffers</code><span class="sig-paren">(</span><em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadOffers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadOffers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadOffers</code><span class="sig-paren">(</span><em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadOffers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadOffers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all offers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1207,7 +1199,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadPermission">
-<code class="descname">ReadPermission</code><span class="sig-paren">(</span><em>permission_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadPermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadPermission" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadPermission</code><span class="sig-paren">(</span><em>permission_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadPermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadPermission" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a permission.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1228,7 +1220,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadPermissions">
-<code class="descname">ReadPermissions</code><span class="sig-paren">(</span><em>user_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadPermissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadPermissions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadPermissions</code><span class="sig-paren">(</span><em>user_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadPermissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadPermissions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all permissions for a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1249,7 +1241,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadStoredProcedure">
-<code class="descname">ReadStoredProcedure</code><span class="sig-paren">(</span><em>sproc_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadStoredProcedure" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadStoredProcedure</code><span class="sig-paren">(</span><em>sproc_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadStoredProcedure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a stored procedure.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1270,7 +1262,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadStoredProcedures">
-<code class="descname">ReadStoredProcedures</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadStoredProcedures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadStoredProcedures" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadStoredProcedures</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadStoredProcedures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadStoredProcedures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all store procedures in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1291,7 +1283,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadTrigger">
-<code class="descname">ReadTrigger</code><span class="sig-paren">(</span><em>trigger_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadTrigger" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadTrigger</code><span class="sig-paren">(</span><em>trigger_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadTrigger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a trigger.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1312,7 +1304,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadTriggers">
-<code class="descname">ReadTriggers</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadTriggers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadTriggers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadTriggers</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadTriggers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadTriggers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all triggers in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1333,7 +1325,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadUser">
-<code class="descname">ReadUser</code><span class="sig-paren">(</span><em>user_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadUser" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadUser</code><span class="sig-paren">(</span><em>user_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadUser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1354,7 +1346,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunction">
-<code class="descname">ReadUserDefinedFunction</code><span class="sig-paren">(</span><em>udf_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadUserDefinedFunction</code><span class="sig-paren">(</span><em>udf_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a user defined function.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1375,7 +1367,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunctions">
-<code class="descname">ReadUserDefinedFunctions</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadUserDefinedFunctions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunctions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadUserDefinedFunctions</code><span class="sig-paren">(</span><em>collection_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadUserDefinedFunctions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunctions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all user defined functions in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1396,7 +1388,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReadUsers">
-<code class="descname">ReadUsers</code><span class="sig-paren">(</span><em>database_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReadUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadUsers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReadUsers</code><span class="sig-paren">(</span><em>database_link</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReadUsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReadUsers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all users in a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1417,7 +1409,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.RegisterPartitionResolver">
-<code class="descname">RegisterPartitionResolver</code><span class="sig-paren">(</span><em>database_link</em>, <em>partition_resolver</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.RegisterPartitionResolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.RegisterPartitionResolver" title="Permalink to this definition">¶</a></dt>
+<code class="descname">RegisterPartitionResolver</code><span class="sig-paren">(</span><em>database_link</em>, <em>partition_resolver</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.RegisterPartitionResolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.RegisterPartitionResolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers the partition resolver associated with the database link</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1435,7 +1427,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.Replace">
-<code class="descname">Replace</code><span class="sig-paren">(</span><em>resource</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.Replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Replace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Replace</code><span class="sig-paren">(</span><em>resource</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.Replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Replace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a DocumentDB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1460,7 +1452,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplaceAttachment">
-<code class="descname">ReplaceAttachment</code><span class="sig-paren">(</span><em>attachment_link</em>, <em>attachment</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplaceAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceAttachment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplaceAttachment</code><span class="sig-paren">(</span><em>attachment_link</em>, <em>attachment</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplaceAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceAttachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces an attachment and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1482,7 +1474,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplaceCollection">
-<code class="descname">ReplaceCollection</code><span class="sig-paren">(</span><em>collection_link</em>, <em>collection</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplaceCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceCollection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplaceCollection</code><span class="sig-paren">(</span><em>collection_link</em>, <em>collection</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplaceCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a collection and return it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1504,7 +1496,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplaceDocument">
-<code class="descname">ReplaceDocument</code><span class="sig-paren">(</span><em>document_link</em>, <em>new_document</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplaceDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceDocument" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplaceDocument</code><span class="sig-paren">(</span><em>document_link</em>, <em>new_document</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplaceDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a document and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1526,7 +1518,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplaceOffer">
-<code class="descname">ReplaceOffer</code><span class="sig-paren">(</span><em>offer_link</em>, <em>offer</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplaceOffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceOffer" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplaceOffer</code><span class="sig-paren">(</span><em>offer_link</em>, <em>offer</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplaceOffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceOffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces an offer and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1547,7 +1539,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplacePermission">
-<code class="descname">ReplacePermission</code><span class="sig-paren">(</span><em>permission_link</em>, <em>permission</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplacePermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplacePermission" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplacePermission</code><span class="sig-paren">(</span><em>permission_link</em>, <em>permission</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplacePermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplacePermission" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a permission and return it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1569,7 +1561,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplaceStoredProcedure">
-<code class="descname">ReplaceStoredProcedure</code><span class="sig-paren">(</span><em>sproc_link</em>, <em>sproc</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplaceStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceStoredProcedure" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplaceStoredProcedure</code><span class="sig-paren">(</span><em>sproc_link</em>, <em>sproc</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplaceStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceStoredProcedure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a stored procedure and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1591,7 +1583,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplaceTrigger">
-<code class="descname">ReplaceTrigger</code><span class="sig-paren">(</span><em>trigger_link</em>, <em>trigger</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplaceTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceTrigger" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplaceTrigger</code><span class="sig-paren">(</span><em>trigger_link</em>, <em>trigger</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplaceTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceTrigger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a trigger and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1613,7 +1605,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplaceUser">
-<code class="descname">ReplaceUser</code><span class="sig-paren">(</span><em>user_link</em>, <em>user</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplaceUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceUser" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplaceUser</code><span class="sig-paren">(</span><em>user_link</em>, <em>user</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplaceUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceUser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a user and return it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1635,7 +1627,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.ReplaceUserDefinedFunction">
-<code class="descname">ReplaceUserDefinedFunction</code><span class="sig-paren">(</span><em>udf_link</em>, <em>udf</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.ReplaceUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReplaceUserDefinedFunction</code><span class="sig-paren">(</span><em>udf_link</em>, <em>udf</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.ReplaceUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.ReplaceUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a user defined function and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1663,7 +1655,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpdateMedia">
-<code class="descname">UpdateMedia</code><span class="sig-paren">(</span><em>media_link</em>, <em>readable_stream</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpdateMedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpdateMedia" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpdateMedia</code><span class="sig-paren">(</span><em>media_link</em>, <em>readable_stream</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpdateMedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpdateMedia" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a media and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1685,7 +1677,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.Upsert">
-<code class="descname">Upsert</code><span class="sig-paren">(</span><em>body</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.Upsert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Upsert" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Upsert</code><span class="sig-paren">(</span><em>body</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.Upsert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Upsert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts a DocumentDB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1710,7 +1702,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpsertAttachment">
-<code class="descname">UpsertAttachment</code><span class="sig-paren">(</span><em>document_link</em>, <em>attachment</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpsertAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertAttachment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpsertAttachment</code><span class="sig-paren">(</span><em>document_link</em>, <em>attachment</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpsertAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertAttachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts an attachment in a document.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1732,7 +1724,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpsertAttachmentAndUploadMedia">
-<code class="descname">UpsertAttachmentAndUploadMedia</code><span class="sig-paren">(</span><em>document_link</em>, <em>readable_stream</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpsertAttachmentAndUploadMedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertAttachmentAndUploadMedia" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpsertAttachmentAndUploadMedia</code><span class="sig-paren">(</span><em>document_link</em>, <em>readable_stream</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpsertAttachmentAndUploadMedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertAttachmentAndUploadMedia" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts an attachment and upload media.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1754,7 +1746,7 @@ otherwise, returns a str.</p>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpsertDocument">
-<code class="descname">UpsertDocument</code><span class="sig-paren">(</span><em>database_or_collection_link</em>, <em>document</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpsertDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertDocument" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpsertDocument</code><span class="sig-paren">(</span><em>database_or_collection_link</em>, <em>document</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpsertDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts a document in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1764,7 +1756,7 @@ otherwise, returns a str.</p>
 <li><cite>database_or_collection_link</cite>: str, the link to the database when using partitioning, otherwise link to the document collection.</li>
 <li><cite>document</cite>: dict, the Azure DocumentDB document to upsert.</li>
 <li><cite>options</cite>: dict, the request options for the request.</li>
-<li><cite>options[&#8216;disableAutomaticIdGeneration&#8217;]</cite>: bool, disables the
+<li><cite>options[‘disableAutomaticIdGeneration’]</cite>: bool, disables the
 automatic id generation. If id is missing in the body and this
 option is true, an error will be returned.</li>
 </ul>
@@ -1779,7 +1771,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpsertPermission">
-<code class="descname">UpsertPermission</code><span class="sig-paren">(</span><em>user_link</em>, <em>permission</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpsertPermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertPermission" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpsertPermission</code><span class="sig-paren">(</span><em>user_link</em>, <em>permission</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpsertPermission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertPermission" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts a permission for a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1801,7 +1793,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpsertStoredProcedure">
-<code class="descname">UpsertStoredProcedure</code><span class="sig-paren">(</span><em>collection_link</em>, <em>sproc</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpsertStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertStoredProcedure" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpsertStoredProcedure</code><span class="sig-paren">(</span><em>collection_link</em>, <em>sproc</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpsertStoredProcedure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertStoredProcedure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts a stored procedure in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1823,7 +1815,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpsertTrigger">
-<code class="descname">UpsertTrigger</code><span class="sig-paren">(</span><em>collection_link</em>, <em>trigger</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpsertTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertTrigger" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpsertTrigger</code><span class="sig-paren">(</span><em>collection_link</em>, <em>trigger</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpsertTrigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertTrigger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts a trigger in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1845,7 +1837,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpsertUser">
-<code class="descname">UpsertUser</code><span class="sig-paren">(</span><em>database_link</em>, <em>user</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpsertUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertUser" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpsertUser</code><span class="sig-paren">(</span><em>database_link</em>, <em>user</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpsertUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertUser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1867,7 +1859,7 @@ option is true, an error will be returned.</li>
 
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.UpsertUserDefinedFunction">
-<code class="descname">UpsertUserDefinedFunction</code><span class="sig-paren">(</span><em>collection_link</em>, <em>udf</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/document_client.html#DocumentClient.UpsertUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">UpsertUserDefinedFunction</code><span class="sig-paren">(</span><em>collection_link</em>, <em>udf</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.UpsertUserDefinedFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.UpsertUserDefinedFunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upserts a user defined function in a collection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1912,7 +1904,7 @@ option is true, an error will be returned.</li>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../sources/api/pydocumentdb.document_client.txt"
+      <li><a href="../_sources/api/pydocumentdb.document_client.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -1945,13 +1937,13 @@ option is true, an error will be returned.</li>
         <li class="right" >
           <a href="pydocumentdb.constants.html" title="pydocumentdb.constants module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pydocumentdb.html" >pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &#169; Copyright 2017, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
     </div>
   </body>
 </html>

@@ -1,0 +1,281 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pydocumentdb.session &#8212; pydocumentdb 2.3.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pydocumentdb.session</h1><div class="highlight"><pre>
+<span></span><span class="c1">#The MIT License (MIT)</span>
+<span class="c1">#Copyright (c) 2014 Microsoft Corporation</span>
+
+<span class="c1">#Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1">#of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1">#in the Software without restriction, including without limitation the rights</span>
+<span class="c1">#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1">#copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1">#furnished to do so, subject to the following conditions:</span>
+
+<span class="c1">#The above copyright notice and this permission notice shall be included in all</span>
+<span class="c1">#copies or substantial portions of the Software.</span>
+
+<span class="c1">#THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1">#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1">#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1">#SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Session Consistency Tracking in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">import</span> <span class="nn">pydocumentdb.base</span> <span class="k">as</span> <span class="nn">base</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="k">as</span> <span class="nn">http_constants</span>
+
+<div class="viewcode-block" id="SessionContainer"><a class="viewcode-back" href="../../api/pydocumentdb.session.html#pydocumentdb.session.SessionContainer">[docs]</a><span class="k">class</span> <span class="nc">SessionContainer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collection_name_to_rid</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rid_to_session_token</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SessionContainer.get_session_token"><a class="viewcode-back" href="../../api/pydocumentdb.session.html#pydocumentdb.session.SessionContainer.get_session_token">[docs]</a>    <span class="k">def</span> <span class="nf">get_session_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Session Token for collection_link</span>
+<span class="sd">        </span>
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `resource_path` - self link / path to the resource</span>
+
+<span class="sd">        :Returns:</span>
+<span class="sd">            - Session Token dictionary for the collection_id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_lock</span><span class="p">:</span>
+            <span class="n">is_name_based</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">IsNameBased</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span>
+            <span class="n">collection_rid</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">session_token</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">is_name_based</span><span class="p">:</span>
+                    <span class="c1"># get the collection name</span>
+                    <span class="n">collection_name</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetDocumentCollectionLink</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span>
+                    <span class="n">collection_rid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name_to_rid</span><span class="p">[</span><span class="n">collection_name</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">collection_rid</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetDocumentCollectionLink</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">collection_rid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rid_to_session_token</span><span class="p">:</span>
+                    <span class="n">token_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rid_to_session_token</span><span class="p">[</span><span class="n">collection_rid</span><span class="p">]</span>
+                    <span class="n">session_token_list</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">token_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">session_token_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">:</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">token_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+                    <span class="n">session_token</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">session_token_list</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">session_token</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># return empty token if not found </span>
+                    <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">except</span><span class="p">:</span> 
+                <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="SessionContainer.set_session_token"><a class="viewcode-back" href="../../api/pydocumentdb.session.html#pydocumentdb.session.SessionContainer.set_session_token">[docs]</a>    <span class="k">def</span> <span class="nf">set_session_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_result</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        Session token must only be updated from response of requests that successfully mutate resource on the </span>
+<span class="sd">        server side (write, replace, delete etc) </span>
+<span class="sd">        </span>
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `response_result` - response result</span>
+<span class="sd">            - `response_headers` - response headers</span>
+<span class="sd">        </span>
+<span class="sd">        :Returns:</span>
+<span class="sd">            - None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="sd">&#39;&#39;&#39; there are two pieces of information that we need to update session token- </span>
+<span class="sd">        self link which has the rid representation of the resource, and</span>
+<span class="sd">        x-ms-alt-content-path which is the string representation of the resource&#39;&#39;&#39;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_lock</span><span class="p">:</span>
+            <span class="n">collection_rid</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">collection_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">self_link</span> <span class="o">=</span> <span class="n">response_result</span><span class="p">[</span><span class="s1">&#39;_self&#39;</span><span class="p">]</span>
+
+                <span class="sd">&#39;&#39;&#39; extract alternate content path from the response_headers </span>
+<span class="sd">                (only document level resource updates will have this), </span>
+<span class="sd">                and if not present, then we can assume that we don&#39;t have to update</span>
+<span class="sd">                session token for this request&#39;&#39;&#39;</span>
+                <span class="n">alt_content_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="n">alt_content_path_key</span> <span class="o">=</span> <span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">AlternateContentPath</span>
+                <span class="n">response_result_id_key</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;id&#39;</span>
+                <span class="n">response_result_id</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">alt_content_path_key</span> <span class="ow">in</span> <span class="n">response_headers</span><span class="p">:</span>
+                    <span class="n">alt_content_path</span> <span class="o">=</span> <span class="n">response_headers</span><span class="p">[</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">AlternateContentPath</span><span class="p">]</span>
+                    <span class="n">response_result_id</span> <span class="o">=</span> <span class="n">response_result</span><span class="p">[</span><span class="n">response_result_id_key</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span>
+                <span class="n">collection_rid</span><span class="p">,</span> <span class="n">collection_name</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">GetDocumentCollectionInfo</span><span class="p">(</span><span class="n">self_link</span><span class="p">,</span> <span class="n">alt_content_path</span><span class="p">,</span> <span class="n">response_result_id</span><span class="p">)</span>
+         
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exception</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span><span class="p">,</span>
+                                  <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="n">collection_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name_to_rid</span><span class="p">:</span>
+                <span class="sd">&#39;&#39;&#39; check if the rid for the collection name has changed</span>
+<span class="sd">                this means that potentially, the collection was deleted</span>
+<span class="sd">                and recreated</span>
+<span class="sd">                &#39;&#39;&#39;</span>
+                <span class="n">existing_rid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name_to_rid</span><span class="p">[</span><span class="n">collection_name</span><span class="p">]</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">collection_rid</span> <span class="o">!=</span> <span class="n">existing_rid</span><span class="p">):</span>
+                    <span class="sd">&#39;&#39;&#39; flush the session tokens for the old rid, and </span>
+<span class="sd">                    update the new rid into the collection name to rid map.</span>
+<span class="sd">                    &#39;&#39;&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rid_to_session_token</span><span class="p">[</span><span class="n">existing_rid</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">collection_name_to_rid</span><span class="p">[</span><span class="n">collection_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">collection_rid</span>
+
+            <span class="c1"># parse session token</span>
+            <span class="n">parsed_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_session_token</span><span class="p">(</span><span class="n">response_headers</span><span class="p">)</span>
+
+            <span class="c1"># update session token in collection rid to session token map</span>
+            <span class="k">if</span> <span class="n">collection_rid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rid_to_session_token</span><span class="p">:</span>
+                <span class="sd">&#39;&#39;&#39; we need to update the session tokens for &#39;this&#39; collection</span>
+<span class="sd">                &#39;&#39;&#39;</span>
+                <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">parsed_tokens</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rid_to_session_token</span><span class="p">[</span><span class="n">collection_rid</span><span class="p">][</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsed_tokens</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">collection_name_to_rid</span><span class="p">[</span><span class="n">collection_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">collection_rid</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rid_to_session_token</span><span class="p">[</span><span class="n">collection_rid</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsed_tokens</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">collection_name_to_rid</span><span class="p">[</span><span class="n">collection_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">collection_rid</span></div>
+
+<div class="viewcode-block" id="SessionContainer.parse_session_token"><a class="viewcode-back" href="../../api/pydocumentdb.session.html#pydocumentdb.session.SessionContainer.parse_session_token">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">parse_session_token</span><span class="p">(</span><span class="n">response_headers</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Extracts session token from response headers and parses</span>
+
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `response_headers` - response headers from the request</span>
+
+<span class="sd">        :Returns:</span>
+<span class="sd">            - a dictionary of partition id to session lsn</span>
+<span class="sd">            for given collection &quot;&quot;&quot;</span>
+
+        <span class="c1"># extract session token from response header</span>
+        <span class="n">session_token</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">SessionToken</span> <span class="ow">in</span> <span class="n">response_headers</span><span class="p">:</span>
+                <span class="n">session_token</span> <span class="o">=</span> <span class="n">response_headers</span><span class="p">[</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">SessionToken</span><span class="p">]</span>
+
+        <span class="n">id_to_sessionlsn</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">session_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="sd">&#39;&#39;&#39; extract id, lsn from the token. For p-collection,</span>
+<span class="sd">            the token will be a concatenation of pairs for each collection&#39;&#39;&#39;</span>
+            <span class="n">token_pairs</span> <span class="o">=</span> <span class="n">session_token</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">token_pair</span> <span class="ow">in</span> <span class="n">token_pairs</span><span class="p">:</span>
+                <span class="n">tokens</span> <span class="o">=</span> <span class="n">token_pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                <span class="nb">id</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">lsn</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">id_to_sessionlsn</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">lsn</span>
+
+        <span class="k">return</span> <span class="n">id_to_sessionlsn</span></div></div>
+
+<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../api/pydocumentdb.session.html#pydocumentdb.session.Session">[docs]</a><span class="k">class</span> <span class="nc">Session</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    State of a DocumentDB session. This session object</span>
+<span class="sd">    can be shared across clients within the same process</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_connection</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url_connection</span> <span class="o">=</span> <span class="n">url_connection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_container</span> <span class="o">=</span> <span class="n">SessionContainer</span><span class="p">()</span>
+        <span class="c1">#include creation time, and some other stats</span>
+
+<div class="viewcode-block" id="Session.update_session"><a class="viewcode-back" href="../../api/pydocumentdb.session.html#pydocumentdb.session.Session.update_session">[docs]</a>    <span class="k">def</span> <span class="nf">update_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_result</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_container</span><span class="o">.</span><span class="n">set_session_token</span><span class="p">(</span><span class="n">response_result</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Session.get_session_token"><a class="viewcode-back" href="../../api/pydocumentdb.session.html#pydocumentdb.session.Session.get_session_token">[docs]</a>    <span class="k">def</span> <span class="nf">get_session_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource_path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_container</span><span class="o">.</span><span class="n">get_session_token</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

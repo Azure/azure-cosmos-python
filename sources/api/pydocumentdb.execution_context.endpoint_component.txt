@@ -1,7 +1,0 @@
-pydocumentdb.execution_context.endpoint_component module
-========================================================
-
-.. automodule:: pydocumentdb.execution_context.endpoint_component
-    :members:
-    :undoc-members:
-    :show-inheritance:

@@ -1,37 +1,33 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pydocumentdb.session module &#8212; pydocumentdb 2.0.1 documentation</title>
-    
-    <link rel="stylesheet" href="../static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    
+    <title>pydocumentdb.session module &#8212; pydocumentdb 2.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0.1',
+        VERSION:     '2.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
-    <script type="text/javascript" src="../static/jquery.js"></script>
-    <script type="text/javascript" src="../static/underscore.js"></script>
-    <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pydocumentdb 2.0.1 documentation" href="../index.html" />
-    <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.synchronized_request module" href="pydocumentdb.synchronized_request.html" />
     <link rel="prev" title="pydocumentdb.runtime_constants module" href="pydocumentdb.runtime_constants.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -47,7 +43,7 @@
         <li class="right" >
           <a href="pydocumentdb.runtime_constants.html" title="pydocumentdb.runtime_constants module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>  
@@ -62,28 +58,28 @@
 <p>Session Consistency Tracking in the Azure DocumentDB database service.</p>
 <dl class="class">
 <dt id="pydocumentdb.session.Session">
-<em class="property">class </em><code class="descclassname">pydocumentdb.session.</code><code class="descname">Session</code><span class="sig-paren">(</span><em>url_connection</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/session.html#Session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.Session" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydocumentdb.session.</code><code class="descname">Session</code><span class="sig-paren">(</span><em>url_connection</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/session.html#Session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.Session" title="Permalink to this definition">¶</a></dt>
 <dd><p>State of a DocumentDB session. This session object
 can be shared across clients within the same process</p>
 <dl class="method">
 <dt id="pydocumentdb.session.Session.get_session_token">
-<code class="descname">get_session_token</code><span class="sig-paren">(</span><em>resource_path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/session.html#Session.get_session_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.Session.get_session_token" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_session_token</code><span class="sig-paren">(</span><em>resource_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/session.html#Session.get_session_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.Session.get_session_token" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pydocumentdb.session.Session.update_session">
-<code class="descname">update_session</code><span class="sig-paren">(</span><em>response_result</em>, <em>response_headers</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/session.html#Session.update_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.Session.update_session" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_session</code><span class="sig-paren">(</span><em>response_result</em>, <em>response_headers</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/session.html#Session.update_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.Session.update_session" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pydocumentdb.session.SessionContainer">
-<em class="property">class </em><code class="descclassname">pydocumentdb.session.</code><code class="descname">SessionContainer</code><a class="reference internal" href="../modules/pydocumentdb/session.html#SessionContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.SessionContainer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydocumentdb.session.</code><code class="descname">SessionContainer</code><a class="reference internal" href="../_modules/pydocumentdb/session.html#SessionContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.SessionContainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="pydocumentdb.session.SessionContainer.get_session_token">
-<code class="descname">get_session_token</code><span class="sig-paren">(</span><em>resource_path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/session.html#SessionContainer.get_session_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.SessionContainer.get_session_token" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_session_token</code><span class="sig-paren">(</span><em>resource_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/session.html#SessionContainer.get_session_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.SessionContainer.get_session_token" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Session Token for collection_link</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -105,7 +101,7 @@ can be shared across clients within the same process</p>
 
 <dl class="staticmethod">
 <dt id="pydocumentdb.session.SessionContainer.parse_session_token">
-<em class="property">static </em><code class="descname">parse_session_token</code><span class="sig-paren">(</span><em>response_headers</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/session.html#SessionContainer.parse_session_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.SessionContainer.parse_session_token" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">parse_session_token</code><span class="sig-paren">(</span><em>response_headers</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/session.html#SessionContainer.parse_session_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.SessionContainer.parse_session_token" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts session token from response headers and parses</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -128,7 +124,7 @@ can be shared across clients within the same process</p>
 
 <dl class="method">
 <dt id="pydocumentdb.session.SessionContainer.set_session_token">
-<code class="descname">set_session_token</code><span class="sig-paren">(</span><em>response_result</em>, <em>response_headers</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/session.html#SessionContainer.set_session_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.SessionContainer.set_session_token" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_session_token</code><span class="sig-paren">(</span><em>response_result</em>, <em>response_headers</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/session.html#SessionContainer.set_session_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.session.SessionContainer.set_session_token" title="Permalink to this definition">¶</a></dt>
 <dd><p>Session token must only be updated from response of requests that successfully mutate resource on the 
 server side (write, replace, delete etc)</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -169,7 +165,7 @@ server side (write, replace, delete etc)</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../sources/api/pydocumentdb.session.txt"
+      <li><a href="../_sources/api/pydocumentdb.session.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -202,13 +198,13 @@ server side (write, replace, delete etc)</p>
         <li class="right" >
           <a href="pydocumentdb.runtime_constants.html" title="pydocumentdb.runtime_constants module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pydocumentdb.html" >pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &#169; Copyright 2017, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
     </div>
   </body>
 </html>

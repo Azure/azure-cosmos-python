@@ -1,7 +1,0 @@
-pydocumentdb.execution_context.base_execution_context module
-============================================================
-
-.. automodule:: pydocumentdb.execution_context.base_execution_context
-    :members:
-    :undoc-members:
-    :show-inheritance:

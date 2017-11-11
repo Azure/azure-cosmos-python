@@ -1,0 +1,298 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pydocumentdb.synchronized_request &#8212; pydocumentdb 2.3.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pydocumentdb.synchronized_request</h1><div class="highlight"><pre>
+<span></span><span class="c1">#The MIT License (MIT)</span>
+<span class="c1">#Copyright (c) 2014 Microsoft Corporation</span>
+
+<span class="c1">#Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1">#of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1">#in the Software without restriction, including without limitation the rights</span>
+<span class="c1">#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1">#copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1">#furnished to do so, subject to the following conditions:</span>
+
+<span class="c1">#The above copyright notice and this permission notice shall be included in all</span>
+<span class="c1">#copies or substantial portions of the Software.</span>
+
+<span class="c1">#THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1">#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1">#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1">#SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Synchronized request in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="k">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">urlencode</span>    
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">import</span> <span class="nn">pydocumentdb.documents</span> <span class="k">as</span> <span class="nn">documents</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.errors</span> <span class="k">as</span> <span class="nn">errors</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="k">as</span> <span class="nn">http_constants</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.retry_utility</span> <span class="k">as</span> <span class="nn">retry_utility</span>
+
+<span class="k">def</span> <span class="nf">_IsReadableStream</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether obj is a file-like readable stream.</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        boolean</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">))):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_RequestBodyFromData</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets request body from data.</span>
+
+<span class="sd">    When `data` is dict and list into unicode string; otherwise return `data`</span>
+<span class="sd">    without making any change.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">        - `data`: str, unicode, file-like stream object, dict, list or None</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        str, unicode, file-like stream object, or None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_IsReadableStream</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">data</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        
+        <span class="n">json_dumped</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json_dumped</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json_dumped</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">_Request</span><span class="p">(</span><span class="n">connection_policy</span><span class="p">,</span> <span class="n">requests_session</span><span class="p">,</span> <span class="n">resource_url</span><span class="p">,</span> <span class="n">request_options</span><span class="p">,</span> <span class="n">request_body</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Makes one http request using the requests module.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">        - `connection_policy`: documents.ConnectionPolicy</span>
+<span class="sd">        - `requests_session`: requests.Session, Session object in requests module</span>
+<span class="sd">        - `resource_url`: str, the url for the resource</span>
+<span class="sd">        - `request_options`: dict</span>
+<span class="sd">        - `request_body`: str, unicode or None</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        tuple of (result, headers), where both result and headers</span>
+<span class="sd">        are dicts.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">is_media</span> <span class="o">=</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">is_media_stream</span> <span class="o">=</span> <span class="n">is_media</span> <span class="ow">and</span> <span class="n">connection_policy</span><span class="o">.</span><span class="n">MediaReadMode</span> <span class="o">==</span> <span class="n">documents</span><span class="o">.</span><span class="n">MediaReadMode</span><span class="o">.</span><span class="n">Streamed</span>
+
+    <span class="n">connection_timeout</span> <span class="o">=</span> <span class="p">(</span><span class="n">connection_policy</span><span class="o">.</span><span class="n">MediaRequestTimeout</span>
+                          <span class="k">if</span> <span class="n">is_media</span>
+                          <span class="k">else</span> <span class="n">connection_policy</span><span class="o">.</span><span class="n">RequestTimeout</span><span class="p">)</span>
+
+    <span class="n">parse_result</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
+
+    <span class="c1"># The requests library now expects header values to be strings only starting 2.11, </span>
+    <span class="c1"># and will raise an error on validation if they are not, so casting all header values to strings.</span>
+    <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">header</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">header</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="p">}</span> 
+
+    <span class="c1"># We are disabling the SSL verification for local emulator(localhost/127.0.0.1) or if the user</span>
+    <span class="c1"># has explicitly specified to disable SSL verification.</span>
+    <span class="n">is_ssl_enabled</span> <span class="o">=</span> <span class="p">(</span><span class="n">parse_result</span><span class="o">.</span><span class="n">hostname</span> <span class="o">!=</span> <span class="s1">&#39;localhost&#39;</span> <span class="ow">and</span> <span class="n">parse_result</span><span class="o">.</span><span class="n">hostname</span> <span class="o">!=</span> <span class="s1">&#39;127.0.0.1&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">connection_policy</span><span class="o">.</span><span class="n">DisableSSLVerification</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">connection_policy</span><span class="o">.</span><span class="n">SSLConfiguration</span><span class="p">:</span>
+        <span class="n">ca_certs</span> <span class="o">=</span> <span class="n">connection_policy</span><span class="o">.</span><span class="n">SSLConfiguration</span><span class="o">.</span><span class="n">SSLCaCerts</span>
+        <span class="n">cert_files</span> <span class="o">=</span> <span class="p">(</span><span class="n">connection_policy</span><span class="o">.</span><span class="n">SSLConfiguration</span><span class="o">.</span><span class="n">SSLCertFile</span><span class="p">,</span> <span class="n">connection_policy</span><span class="o">.</span><span class="n">SSLConfiguration</span><span class="o">.</span><span class="n">SSLKeyFile</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests_session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">],</span> 
+                                <span class="n">resource_url</span><span class="p">,</span> 
+                                <span class="n">data</span> <span class="o">=</span> <span class="n">request_body</span><span class="p">,</span> 
+                                <span class="n">headers</span> <span class="o">=</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">],</span>
+                                <span class="n">timeout</span> <span class="o">=</span> <span class="n">connection_timeout</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span>
+                                <span class="n">stream</span> <span class="o">=</span> <span class="n">is_media_stream</span><span class="p">,</span>
+                                <span class="n">verify</span> <span class="o">=</span> <span class="n">ca_certs</span><span class="p">,</span>
+                                <span class="n">cert</span> <span class="o">=</span> <span class="n">cert_files</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests_session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">],</span> 
+                                    <span class="n">resource_url</span><span class="p">,</span> 
+                                    <span class="n">data</span> <span class="o">=</span> <span class="n">request_body</span><span class="p">,</span> 
+                                    <span class="n">headers</span> <span class="o">=</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">],</span>
+                                    <span class="n">timeout</span> <span class="o">=</span> <span class="n">connection_timeout</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span>
+                                    <span class="n">stream</span> <span class="o">=</span> <span class="n">is_media_stream</span><span class="p">,</span>
+                                    <span class="c1"># If SSL is disabled, verify = false</span>
+                                    <span class="n">verify</span> <span class="o">=</span> <span class="n">is_ssl_enabled</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="c1"># In case of media stream response, return the response to the user and the user</span>
+    <span class="c1"># will need to handle reading the response.</span>
+    <span class="k">if</span> <span class="n">is_media_stream</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
+        <span class="c1"># python 3 compatible: convert data from byte to unicode string</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">HTTPFailure</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">is_media</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">JSONParseFailure</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SynchronizedRequest"><a class="viewcode-back" href="../../api/pydocumentdb.synchronized_request.html#pydocumentdb.synchronized_request.SynchronizedRequest">[docs]</a><span class="k">def</span> <span class="nf">SynchronizedRequest</span><span class="p">(</span><span class="n">client</span><span class="p">,</span>
+                        <span class="n">global_endpoint_manager</span><span class="p">,</span>
+                        <span class="n">connection_policy</span><span class="p">,</span>
+                        <span class="n">requests_session</span><span class="p">,</span>
+                        <span class="n">method</span><span class="p">,</span>
+                        <span class="n">base_url</span><span class="p">,</span>
+                        <span class="n">path</span><span class="p">,</span>
+                        <span class="n">request_data</span><span class="p">,</span>
+                        <span class="n">query_params</span><span class="p">,</span>
+                        <span class="n">headers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Performs one synchronized http request according to the parameters.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">        - `client`: object, document client instance</span>
+<span class="sd">        - `global_endpoint_manager`: _GlobalEndpointManager</span>
+<span class="sd">        - `connection_policy`: documents.ConnectionPolicy</span>
+<span class="sd">        - `requests_session`: requests.Session, Session object in requests module</span>
+<span class="sd">        - `method`: str</span>
+<span class="sd">        - `base_url`: str</span>
+<span class="sd">        - `path`: str</span>
+<span class="sd">        - `request_data`: str, unicode, file-like stream object, dict, list</span>
+<span class="sd">          or None</span>
+<span class="sd">        - `query_params`: dict</span>
+<span class="sd">        - `headers`: dict</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        tuple of (result, headers), where both result and headers</span>
+<span class="sd">        are dicts.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">request_body</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">request_data</span><span class="p">:</span>
+        <span class="n">request_body</span> <span class="o">=</span> <span class="n">_RequestBodyFromData</span><span class="p">(</span><span class="n">request_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request_body</span><span class="p">:</span>
+           <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">UnexpectedDataType</span><span class="p">(</span>
+               <span class="s1">&#39;parameter data must be a JSON object, string or&#39;</span> <span class="o">+</span>
+               <span class="s1">&#39; readable stream.&#39;</span><span class="p">)</span>
+
+    <span class="n">request_options</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
+    <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span>
+    <span class="k">if</span> <span class="n">query_params</span><span class="p">:</span>
+        <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
+
+    <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headers</span>
+    <span class="k">if</span> <span class="n">request_body</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span> <span class="ow">or</span>
+                         <span class="nb">type</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span> <span class="ow">is</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">):</span>
+        <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">ContentLength</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">request_body</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">request_body</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">][</span><span class="n">http_constants</span><span class="o">.</span><span class="n">HttpHeaders</span><span class="o">.</span><span class="n">ContentLength</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">if</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">resource_url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="c1"># Pass _Request function with it&#39;s parameters to retry_utility&#39;s Execute method that wraps the call with retries</span>
+    <span class="k">return</span> <span class="n">retry_utility</span><span class="o">.</span><span class="n">_Execute</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">global_endpoint_manager</span><span class="p">,</span> <span class="n">_Request</span><span class="p">,</span> <span class="n">connection_policy</span><span class="p">,</span> <span class="n">requests_session</span><span class="p">,</span> <span class="n">resource_url</span><span class="p">,</span> <span class="n">request_options</span><span class="p">,</span> <span class="n">request_body</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

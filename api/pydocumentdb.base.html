@@ -1,37 +1,33 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pydocumentdb.base module &#8212; pydocumentdb 2.0.1 documentation</title>
-    
-    <link rel="stylesheet" href="../static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    
+    <title>pydocumentdb.base module &#8212; pydocumentdb 2.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0.1',
+        VERSION:     '2.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
-    <script type="text/javascript" src="../static/jquery.js"></script>
-    <script type="text/javascript" src="../static/underscore.js"></script>
-    <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pydocumentdb 2.0.1 documentation" href="../index.html" />
-    <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.consistent_hash_ring module" href="pydocumentdb.consistent_hash_ring.html" />
     <link rel="prev" title="pydocumentdb.auth module" href="pydocumentdb.auth.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -47,7 +43,7 @@
         <li class="right" >
           <a href="pydocumentdb.auth.html" title="pydocumentdb.auth module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>  
@@ -62,8 +58,8 @@
 <p>Base functions in the Azure DocumentDB database service.</p>
 <dl class="function">
 <dt id="pydocumentdb.base.DecodeBase64String">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">DecodeBase64String</code><span class="sig-paren">(</span><em>string_to_decode</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#DecodeBase64String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.DecodeBase64String" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decodes a Base64 encoded string by replacing &#8216;-&#8216; with &#8216;/&#8217;</p>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">DecodeBase64String</code><span class="sig-paren">(</span><em>string_to_decode</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#DecodeBase64String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.DecodeBase64String" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a Base64 encoded string by replacing ‘-‘ with ‘/’</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -82,9 +78,9 @@
 
 <dl class="function">
 <dt id="pydocumentdb.base.GenerateGuidId">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">GenerateGuidId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GenerateGuidId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GenerateGuidId" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GenerateGuidId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#GenerateGuidId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GenerateGuidId" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a random GUID.</p>
-<p>Note that here we use python&#8217;s UUID generation library. Basically UUID
+<p>Note that here we use python’s UUID generation library. Basically UUID
 is the same as GUID when represented as a string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -98,7 +94,7 @@ is the same as GUID when represented as a string.</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetAttachmentIdFromMediaId">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetAttachmentIdFromMediaId</code><span class="sig-paren">(</span><em>media_id</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetAttachmentIdFromMediaId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetAttachmentIdFromMediaId" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetAttachmentIdFromMediaId</code><span class="sig-paren">(</span><em>media_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#GetAttachmentIdFromMediaId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetAttachmentIdFromMediaId" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets attachment id from media id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -118,13 +114,13 @@ is the same as GUID when represented as a string.</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetDocumentCollectionInfo">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetDocumentCollectionInfo</code><span class="sig-paren">(</span><em>self_link</em>, <em>alt_content_path</em>, <em>id_from_response</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetDocumentCollectionInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetDocumentCollectionInfo" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetDocumentCollectionInfo</code><span class="sig-paren">(</span><em>self_link</em>, <em>alt_content_path</em>, <em>id_from_response</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#GetDocumentCollectionInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetDocumentCollectionInfo" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Given the self link and alt_content_path from the reponse header and result</dt>
 <dd><p class="first">extract the collection name and collection id</p>
 <p class="last">Ever response header has alt-content-path that is the 
-owner&#8217;s path in ascii. For document create / update requests, this can be used
-to get the collection name, but for collection create response, we can&#8217;t use it.
+owner’s path in ascii. For document create / update requests, this can be used
+to get the collection name, but for collection create response, we can’t use it.
 So we also rely on</p>
 </dd>
 </dl>
@@ -132,15 +128,12 @@ So we also rely on</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><cite>self_link</cite> - str, self link of the resource, as obtained from response result</p>
-</li>
-<li><p class="first"><cite>alt_content_path</cite> - owner path of the resource, as obtained from response header</p>
-</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><cite>self_link</cite> - str, self link of the resource, as obtained from response result</li>
+<li><cite>alt_content_path</cite> - owner path of the resource, as obtained from response header</li>
 <li><dl class="first docutils">
-<dt><cite>resource_id</cite> - &#8216;id&#8217; as returned from the response result. This is only used if it is deduced that the</dt>
-<dd><p class="first last">request was to create collection</p>
-</dd>
+<dt><cite>resource_id</cite> - ‘id’ as returned from the response result. This is only used if it is deduced that the</dt>
+<dd>request was to create collection</dd>
 </dl>
 </li>
 </ul>
@@ -155,7 +148,7 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetDocumentCollectionLink">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetDocumentCollectionLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetDocumentCollectionLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetDocumentCollectionLink" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetDocumentCollectionLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#GetDocumentCollectionLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetDocumentCollectionLink" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the document collection link</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -175,7 +168,7 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetHeaders">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetHeaders</code><span class="sig-paren">(</span><em>document_client</em>, <em>default_headers</em>, <em>verb</em>, <em>path</em>, <em>resource_id</em>, <em>resource_type</em>, <em>options</em>, <em>partition_key_range_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetHeaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetHeaders" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetHeaders</code><span class="sig-paren">(</span><em>document_client</em>, <em>default_headers</em>, <em>verb</em>, <em>path</em>, <em>resource_id</em>, <em>resource_type</em>, <em>options</em>, <em>partition_key_range_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#GetHeaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetHeaders" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets HTTP request headers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -202,7 +195,7 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetPathFromLink">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetPathFromLink</code><span class="sig-paren">(</span><em>resource_link</em>, <em>resource_type=''</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetPathFromLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetPathFromLink" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetPathFromLink</code><span class="sig-paren">(</span><em>resource_link</em>, <em>resource_type=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#GetPathFromLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetPathFromLink" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets path from resource link with optional resource type</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -223,7 +216,7 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.GetResourceIdOrFullNameFromLink">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetResourceIdOrFullNameFromLink</code><span class="sig-paren">(</span><em>resource_link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#GetResourceIdOrFullNameFromLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetResourceIdOrFullNameFromLink" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">GetResourceIdOrFullNameFromLink</code><span class="sig-paren">(</span><em>resource_link</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#GetResourceIdOrFullNameFromLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.GetResourceIdOrFullNameFromLink" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets resource id or full name from resource link.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -243,7 +236,7 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.IndexOfNth">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">IndexOfNth</code><span class="sig-paren">(</span><em>s</em>, <em>value</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#IndexOfNth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IndexOfNth" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IndexOfNth</code><span class="sig-paren">(</span><em>s</em>, <em>value</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#IndexOfNth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IndexOfNth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the index of Nth occurance of a given character in a string</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -265,7 +258,7 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.IsDatabaseLink">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsDatabaseLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#IsDatabaseLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IsDatabaseLink" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsDatabaseLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#IsDatabaseLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IsDatabaseLink" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds whether the link is a database Self Link or a database ID based link</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -285,7 +278,7 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.IsDocumentCollectionLink">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsDocumentCollectionLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#IsDocumentCollectionLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IsDocumentCollectionLink" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsDocumentCollectionLink</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#IsDocumentCollectionLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IsDocumentCollectionLink" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds whether the link is a document colllection Self Link or a document colllection ID based link</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -305,7 +298,7 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.IsNameBased">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsNameBased</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#IsNameBased"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IsNameBased" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">IsNameBased</code><span class="sig-paren">(</span><em>link</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#IsNameBased"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.IsNameBased" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds whether the link is name based or not</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -325,12 +318,12 @@ So we also rely on</p>
 
 <dl class="function">
 <dt id="pydocumentdb.base.ParsePaths">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">ParsePaths</code><span class="sig-paren">(</span><em>paths</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#ParsePaths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.ParsePaths" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">ParsePaths</code><span class="sig-paren">(</span><em>paths</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#ParsePaths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.ParsePaths" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="pydocumentdb.base.TrimBeginningAndEndingSlashes">
-<code class="descclassname">pydocumentdb.base.</code><code class="descname">TrimBeginningAndEndingSlashes</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/base.html#TrimBeginningAndEndingSlashes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.TrimBeginningAndEndingSlashes" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pydocumentdb.base.</code><code class="descname">TrimBeginningAndEndingSlashes</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#TrimBeginningAndEndingSlashes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.TrimBeginningAndEndingSlashes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trims beginning and ending slashes</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -365,7 +358,7 @@ So we also rely on</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../sources/api/pydocumentdb.base.txt"
+      <li><a href="../_sources/api/pydocumentdb.base.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -398,13 +391,13 @@ So we also rely on</p>
         <li class="right" >
           <a href="pydocumentdb.auth.html" title="pydocumentdb.auth module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pydocumentdb.html" >pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &#169; Copyright 2017, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
     </div>
   </body>
 </html>

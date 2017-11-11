@@ -1,37 +1,33 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pydocumentdb.query_iterable module &#8212; pydocumentdb 2.0.1 documentation</title>
-    
-    <link rel="stylesheet" href="../static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    
+    <title>pydocumentdb.query_iterable module &#8212; pydocumentdb 2.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0.1',
+        VERSION:     '2.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
-    <script type="text/javascript" src="../static/jquery.js"></script>
-    <script type="text/javascript" src="../static/underscore.js"></script>
-    <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pydocumentdb 2.0.1 documentation" href="../index.html" />
-    <link rel="up" title="pydocumentdb package" href="pydocumentdb.html" />
     <link rel="next" title="pydocumentdb.range module" href="pydocumentdb.range.html" />
     <link rel="prev" title="pydocumentdb.partition module" href="pydocumentdb.partition.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -47,7 +43,7 @@
         <li class="right" >
           <a href="pydocumentdb.partition.html" title="pydocumentdb.partition module"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pydocumentdb.html" accesskey="U">pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>  
@@ -62,7 +58,7 @@
 <p>Iterable query results in the Azure DocumentDB database service.</p>
 <dl class="class">
 <dt id="pydocumentdb.query_iterable.QueryIterable">
-<em class="property">class </em><code class="descclassname">pydocumentdb.query_iterable.</code><code class="descname">QueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>query</em>, <em>options</em>, <em>fetch_function</em>, <em>collection_link=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydocumentdb.query_iterable.</code><code class="descname">QueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>query</em>, <em>options</em>, <em>fetch_function</em>, <em>collection_link=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Represents an iterable object of the query results.
 QueryIterable is a wrapper for query execution context.</p>
@@ -90,18 +86,18 @@ _ProxyQueryExecutionContext will be used as the internal query execution context
 </div>
 <dl class="class">
 <dt id="pydocumentdb.query_iterable.QueryIterable.Iterator">
-<em class="property">class </em><code class="descname">Iterator</code><span class="sig-paren">(</span><em>iterable</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable.Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.Iterator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">Iterator</code><span class="sig-paren">(</span><em>iterable</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.Iterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="pydocumentdb.query_iterable.QueryIterable.Iterator.next">
-<code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable.Iterator.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.Iterator.next" title="Permalink to this definition">¶</a></dt>
+<code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.Iterator.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.Iterator.next" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable">
-<em class="property">classmethod </em><code class="descclassname">QueryIterable.</code><code class="descname">PartitioningQueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>query</em>, <em>options</em>, <em>database_link</em>, <em>partition_key</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable.PartitioningQueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">PartitioningQueryIterable</code><span class="sig-paren">(</span><em>client</em>, <em>query</em>, <em>options</em>, <em>database_link</em>, <em>partition_key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.PartitioningQueryIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.PartitioningQueryIterable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a client side partitioning query iterable.</p>
 <p>This constructor instantiates a QueryIterable for
 client side partitioning queries, and sets _MultiCollectionQueryExecutionContext
@@ -120,7 +116,7 @@ as the internal execution context.
 
 <dl class="method">
 <dt id="pydocumentdb.query_iterable.QueryIterable.fetch_next_block">
-<code class="descclassname">QueryIterable.</code><code class="descname">fetch_next_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/pydocumentdb/query_iterable.html#QueryIterable.fetch_next_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.fetch_next_block" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fetch_next_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/query_iterable.html#QueryIterable.fetch_next_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.query_iterable.QueryIterable.fetch_next_block" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a block of results with respecting retry policy.</p>
 <p>This method only exists for backward compatibility reasons. (Because QueryIterable
 has exposed fetch_next_block api).</p>
@@ -153,7 +149,7 @@ has exposed fetch_next_block api).</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../sources/api/pydocumentdb.query_iterable.txt"
+      <li><a href="../_sources/api/pydocumentdb.query_iterable.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -186,13 +182,13 @@ has exposed fetch_next_block api).</p>
         <li class="right" >
           <a href="pydocumentdb.partition.html" title="pydocumentdb.partition module"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pydocumentdb.html" >pydocumentdb package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Microsoft.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+        &#169; Copyright 2017, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
     </div>
   </body>
 </html>

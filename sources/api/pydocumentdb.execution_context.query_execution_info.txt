@@ -1,7 +1,0 @@
-pydocumentdb.execution_context.query_execution_info module
-==========================================================
-
-.. automodule:: pydocumentdb.execution_context.query_execution_info
-    :members:
-    :undoc-members:
-    :show-inheritance:

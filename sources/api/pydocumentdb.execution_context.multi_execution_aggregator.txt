@@ -1,7 +1,0 @@
-pydocumentdb.execution_context.multi_execution_aggregator module
-================================================================
-
-.. automodule:: pydocumentdb.execution_context.multi_execution_aggregator
-    :members:
-    :undoc-members:
-    :show-inheritance:

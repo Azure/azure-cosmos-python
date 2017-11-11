@@ -1,0 +1,206 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pydocumentdb.range_partition_resolver &#8212; pydocumentdb 2.3.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pydocumentdb.range_partition_resolver</h1><div class="highlight"><pre>
+<span></span><span class="c1">#The MIT License (MIT)</span>
+<span class="c1">#Copyright (c) 2014 Microsoft Corporation</span>
+
+<span class="c1">#Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="c1">#of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="c1">#in the Software without restriction, including without limitation the rights</span>
+<span class="c1">#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="c1">#copies of the Software, and to permit persons to whom the Software is</span>
+<span class="c1">#furnished to do so, subject to the following conditions:</span>
+
+<span class="c1">#The above copyright notice and this permission notice shall be included in all</span>
+<span class="c1">#copies or substantial portions of the Software.</span>
+
+<span class="c1">#THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="c1">#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="c1">#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="c1">#SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Range partition resolver implementation in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pydocumentdb.range</span> <span class="k">as</span> <span class="nn">prange</span>
+
+<div class="viewcode-block" id="RangePartitionResolver"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver">[docs]</a><span class="k">class</span> <span class="nc">RangePartitionResolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;RangePartitionResolver implements partitioning based on the ranges, allowing you to</span>
+<span class="sd">    distribute requests and data across a number of partitions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key_extractor</span><span class="p">,</span> <span class="n">partition_map</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `partition_key_extractor`: lambda, returning the partition key from the document passed.</span>
+<span class="sd">            - `partition_map`: dict, the dictionary of ranges mapped to their associated collection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">partition_key_extractor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;partition_key_extractor is None.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">partition_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;partition_map is None.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">partition_key_extractor</span> <span class="o">=</span> <span class="n">partition_key_extractor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span> <span class="o">=</span> <span class="n">partition_map</span>
+
+<div class="viewcode-block" id="RangePartitionResolver.ResolveForCreate"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForCreate">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForCreate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resolves the collection for creating the document based on the partition key.</span>
+
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `document`: dict, the document to be created.</span>
+
+<span class="sd">        :Returns:</span>
+<span class="sd">            str, collection Self link or Name based link which should handle the Create operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">document</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;document is None.&quot;</span><span class="p">)</span>
+
+        <span class="n">partition_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key_extractor</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+        <span class="n">containing_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetContainingRange</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">containing_range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A containing range for &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; doesn&#39;t exist in the partition map.&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">containing_range</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RangePartitionResolver.ResolveForRead"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForRead">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForRead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resolves the collection for reading/querying the documents based on the partition key.</span>
+
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `document`: dict, the document to be read/queried.</span>
+
+<span class="sd">        :Returns:</span>
+<span class="sd">            list, collection Self link(s) or Name based link(s) which should handle the Read operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">intersecting_ranges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetIntersectingRanges</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span>
+
+        <span class="n">collection_links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">keyrange</span> <span class="ow">in</span> <span class="n">intersecting_ranges</span><span class="p">:</span>
+            <span class="n">collection_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keyrange</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">collection_links</span></div>
+
+    <span class="k">def</span> <span class="nf">_GetContainingRange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the containing range based on the partition key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">keyrange</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">keyrange</span><span class="o">.</span><span class="n">Contains</span><span class="p">(</span><span class="n">partition_key</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">keyrange</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_GetIntersectingRanges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the intersecting ranges based on the partition key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">partitionkey_ranges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">intersecting_ranges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">partition_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">partition_key</span><span class="p">,</span> <span class="n">prange</span><span class="o">.</span><span class="n">Range</span><span class="p">):</span>
+            <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">partition_key</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">partition_key</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">prange</span><span class="o">.</span><span class="n">Range</span><span class="p">):</span>
+                    <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prange</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">partitionkey_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prange</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="n">partition_key</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">partitionKeyRange</span> <span class="ow">in</span> <span class="n">partitionkey_ranges</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">keyrange</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">keyrange</span><span class="o">.</span><span class="n">Intersect</span><span class="p">(</span><span class="n">partitionKeyRange</span><span class="p">):</span>
+                    <span class="n">intersecting_ranges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">keyrange</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">intersecting_ranges</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pydocumentdb 2.3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

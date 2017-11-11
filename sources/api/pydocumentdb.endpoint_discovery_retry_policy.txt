@@ -1,7 +1,0 @@
-pydocumentdb.endpoint_discovery_retry_policy module
-===================================================
-
-.. automodule:: pydocumentdb.endpoint_discovery_retry_policy
-    :members:
-    :undoc-members:
-    :show-inheritance:

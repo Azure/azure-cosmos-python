@@ -1,7 +1,0 @@
-pydocumentdb.routing.routing_map_provider module
-================================================
-
-.. automodule:: pydocumentdb.routing.routing_map_provider
-    :members:
-    :undoc-members:
-    :show-inheritance:

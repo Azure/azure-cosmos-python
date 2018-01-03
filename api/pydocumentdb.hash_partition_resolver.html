@@ -55,7 +55,7 @@
             
   <div class="section" id="module-pydocumentdb.hash_partition_resolver">
 <span id="pydocumentdb-hash-partition-resolver-module"></span><h1>pydocumentdb.hash_partition_resolver module<a class="headerlink" href="#module-pydocumentdb.hash_partition_resolver" title="Permalink to this headline">¶</a></h1>
-<p>Hash partition resolver implementation in the Azure DocumentDB database service.</p>
+<p>Hash partition resolver implementation in the Azure Cosmos DB database service.</p>
 <dl class="class">
 <dt id="pydocumentdb.hash_partition_resolver.HashPartitionResolver">
 <em class="property">class </em><code class="descclassname">pydocumentdb.hash_partition_resolver.</code><code class="descname">HashPartitionResolver</code><span class="sig-paren">(</span><em>partition_key_extractor</em>, <em>collection_links</em>, <em>default_number_of_virtual_nodes_per_collection=128</em>, <em>hash_generator=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/hash_partition_resolver.html#HashPartitionResolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.hash_partition_resolver.HashPartitionResolver" title="Permalink to this definition">¶</a></dt>
@@ -67,10 +67,10 @@ distribute requests and data across a number of partitions.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><cite>partition_key_extractor</cite>: lambda, returning the partition key from the document passed.</li>
-<li><cite>collection_links</cite>: list, the links of collections participating in partitioning.</li>
-<li><cite>default_number_of_virtual_nodes_per_collection</cite>: int, number of virtual nodes per collection.</li>
-<li><cite>hash_generator</cite>: HashGenerator, the hash generator to be used for hashing algorithm.</li>
+<li><strong>partition_key_extractor</strong> (<em>lambda</em>) – Returning the partition key from the document passed.</li>
+<li><strong>collection_links</strong> (<em>list</em>) – The links of collections participating in partitioning.</li>
+<li><strong>default_number_of_virtual_nodes_per_collection</strong> (<em>int</em>) – Number of virtual nodes per collection.</li>
+<li><strong>hash_generator</strong> (<em>HashGenerator</em>) – The hash generator to be used for hashing algorithm.</li>
 </ul>
 </td>
 </tr>
@@ -84,13 +84,11 @@ distribute requests and data across a number of partitions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document</cite>: dict, the document to be created.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document</strong> (<em>dict</em>) – The document to be created.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, collection Self link or Name based link which should handle the Create operation.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Collection Self link or Name based link which should handle the Create operation.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -104,13 +102,11 @@ distribute requests and data across a number of partitions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document</cite>: dict, the document to be read/queried.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document</strong> (<em>dict</em>) – The document to be read/queried.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list, collection Self link(s) or Name based link(s) which should handle the Read operation.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Collection Self link(s) or Name based link(s) which should handle the Read operation.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 </tbody>
 </table>

@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Base functions in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Base functions in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">base64</span>
@@ -95,19 +95,18 @@
                <span class="n">partition_key_range_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets HTTP request headers.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `document_client`: document_client.DocumentClient</span>
-<span class="sd">        - `default_headers`: dict</span>
-<span class="sd">        - `verb`: str</span>
-<span class="sd">        - `path`: str</span>
-<span class="sd">        - `resource_id`: str</span>
-<span class="sd">        - `resource_type`: str</span>
-<span class="sd">        - `options`: dict</span>
-<span class="sd">        - `partition_key_range_id` : str</span>
+<span class="sd">    :param document_client.DocumentClient document_client:</span>
+<span class="sd">    :param dict default_headers:</span>
+<span class="sd">    :param str verb:</span>
+<span class="sd">    :param str path:</span>
+<span class="sd">    :param str resource_id:</span>
+<span class="sd">    :param str resource_type:</span>
+<span class="sd">    :param dict options:</span>
+<span class="sd">    :param str partition_key_range_id:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        dict, the HTTP request headers.</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        The HTTP request headers.</span>
+<span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">headers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">default_headers</span><span class="p">)</span>
     <span class="n">options</span> <span class="o">=</span> <span class="n">options</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -241,12 +240,11 @@
 <div class="viewcode-block" id="GetResourceIdOrFullNameFromLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetResourceIdOrFullNameFromLink">[docs]</a><span class="k">def</span> <span class="nf">GetResourceIdOrFullNameFromLink</span><span class="p">(</span><span class="n">resource_link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets resource id or full name from resource link.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `resource_link`: str</span>
+<span class="sd">    :param str resource_link:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        str, the resource id or full name from the resource link.</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        The resource id or full name from the resource link.</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># For named based, the resource link is the full name</span>
     <span class="k">if</span> <span class="n">IsNameBased</span><span class="p">(</span><span class="n">resource_link</span><span class="p">):</span>
@@ -282,12 +280,11 @@
 <div class="viewcode-block" id="GetAttachmentIdFromMediaId"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetAttachmentIdFromMediaId">[docs]</a><span class="k">def</span> <span class="nf">GetAttachmentIdFromMediaId</span><span class="p">(</span><span class="n">media_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets attachment id from media id.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `media_id`: str</span>
+<span class="sd">    :param str media_id:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        str, the attachment id from the media id.</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        The attachment id from the media id.</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">altchars</span> <span class="o">=</span> <span class="s1">&#39;+-&#39;</span>
     <span class="c1"># altchars for &#39;+&#39; and &#39;/&#39;. We keep &#39;+&#39; but replace &#39;/&#39; with &#39;-&#39;</span>
@@ -311,22 +308,21 @@
 <span class="sd">    Note that here we use python&#39;s UUID generation library. Basically UUID</span>
 <span class="sd">    is the same as GUID when represented as a string.</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        str, the generated random GUID.</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        The generated random GUID.</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="GetPathFromLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetPathFromLink">[docs]</a><span class="k">def</span> <span class="nf">GetPathFromLink</span><span class="p">(</span><span class="n">resource_link</span><span class="p">,</span> <span class="n">resource_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets path from resource link with optional resource type</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `resource_link`: str</span>
-<span class="sd">        - `resource_type`: str</span>
+<span class="sd">    :param str resource_link:</span>
+<span class="sd">    :param str resource_type:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        str, path from resource link with resource type appended(if provided).</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        Path from resource link with resource type appended (if provided).</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_link</span> <span class="o">=</span> <span class="n">TrimBeginningAndEndingSlashes</span><span class="p">(</span><span class="n">resource_link</span><span class="p">)</span>
         
@@ -344,12 +340,11 @@
 <div class="viewcode-block" id="IsNameBased"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.IsNameBased">[docs]</a><span class="k">def</span> <span class="nf">IsNameBased</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Finds whether the link is name based or not</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `link`: str</span>
+<span class="sd">    :param str link:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        boolean, True if link is name based otherwise False.</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        True if link is name-based; otherwise, False.</span>
+<span class="sd">    :rtype: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -388,12 +383,12 @@
 <div class="viewcode-block" id="IsDatabaseLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.IsDatabaseLink">[docs]</a><span class="k">def</span> <span class="nf">IsDatabaseLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Finds whether the link is a database Self Link or a database ID based link</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `link`: str, link to analyze</span>
+<span class="sd">    :param str link:</span>
+<span class="sd">        Link to analyze</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        boolean, True or False.</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        True or False.</span>
+<span class="sd">    :rtype: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -420,12 +415,12 @@
 <div class="viewcode-block" id="IsDocumentCollectionLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.IsDocumentCollectionLink">[docs]</a><span class="k">def</span> <span class="nf">IsDocumentCollectionLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Finds whether the link is a document colllection Self Link or a document colllection ID based link</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `link`: str, link to analyze</span>
+<span class="sd">    :param str link:</span>
+<span class="sd">        Link to analyze</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        boolean, True or False.</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        True or False.</span>
+<span class="sd">    :rtype: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -466,14 +461,17 @@
 <span class="sd">        to get the collection name, but for collection create response, we can&#39;t use it.</span>
 <span class="sd">        So we also rely on  </span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `self_link` - str, self link of the resource, as obtained from response result</span>
-<span class="sd">        - `alt_content_path` - owner path of the resource, as obtained from response header</span>
-<span class="sd">        - `resource_id` - &#39;id&#39; as returned from the response result. This is only used if it is deduced that the</span>
-<span class="sd">            request was to create collection</span>
+<span class="sd">    :param str self_link:</span>
+<span class="sd">        Self link of the resource, as obtained from response result.</span>
+<span class="sd">    :param str alt_content_path:</span>
+<span class="sd">        Owner path of the resource, as obtained from response header.</span>
+<span class="sd">    :param str resource_id:</span>
+<span class="sd">        &#39;id&#39; as returned from the response result. This is only used if it is deduced that the</span>
+<span class="sd">         request was to create a collection.</span>
 
-<span class="sd">    :Returns:</span>
+<span class="sd">    :return:</span>
 <span class="sd">        tuple of (collection rid, collection name)</span>
+<span class="sd">    :rtype: tuple</span>
 <span class="sd">    &quot;&quot;&quot;</span> 
 
     <span class="n">self_link</span> <span class="o">=</span> <span class="n">TrimBeginningAndEndingSlashes</span><span class="p">(</span><span class="n">self_link</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
@@ -501,11 +499,12 @@
 <div class="viewcode-block" id="GetDocumentCollectionLink"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.GetDocumentCollectionLink">[docs]</a><span class="k">def</span> <span class="nf">GetDocumentCollectionLink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets the document collection link</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `link`: str, resource link</span>
+<span class="sd">    :param str link:</span>
+<span class="sd">        Resource link</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        str, document collection link</span>
+<span class="sd">    :return:</span>
+<span class="sd">        Document collection link.</span>
+<span class="sd">    :rtype: str</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">link</span> <span class="o">=</span> <span class="n">TrimBeginningAndEndingSlashes</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
@@ -520,13 +519,16 @@
 <div class="viewcode-block" id="IndexOfNth"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.IndexOfNth">[docs]</a><span class="k">def</span> <span class="nf">IndexOfNth</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets the index of Nth occurance of a given character in a string</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `s`: str, input string</span>
-<span class="sd">        - `value`: char, input char to be searched</span>
-<span class="sd">        - `n`: int, Nth occurance of char to be searched</span>
+<span class="sd">    :param str s:</span>
+<span class="sd">        Input string</span>
+<span class="sd">    :param char value:</span>
+<span class="sd">        Input char to be searched.</span>
+<span class="sd">    :param int n:</span>
+<span class="sd">        Nth occurrence of char to be searched.</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        int, index of the Nth occurance in the string</span>
+<span class="sd">    :return:</span>
+<span class="sd">        Index of the Nth occurrence in the string.</span>
+<span class="sd">    :rtype: int</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">remaining</span> <span class="o">=</span> <span class="n">n</span>
@@ -540,12 +542,12 @@
 <div class="viewcode-block" id="DecodeBase64String"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.DecodeBase64String">[docs]</a><span class="k">def</span> <span class="nf">DecodeBase64String</span><span class="p">(</span><span class="n">string_to_decode</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decodes a Base64 encoded string by replacing &#39;-&#39; with &#39;/&#39; </span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `string_to_decode`: string to decode</span>
+<span class="sd">    :param string string_to_decode:</span>
+<span class="sd">        String to decode.</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        str, path with beginning and ending slashes trimmed</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        Path with beginning and ending slashes trimmed.</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># &#39;-&#39; is not supported char for decoding in Python(same as C# and Java) which has similar logic while parsing ResourceID generated by backend</span>
     <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">standard_b64decode</span><span class="p">(</span><span class="n">string_to_decode</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span></div>
@@ -553,12 +555,11 @@
 <div class="viewcode-block" id="TrimBeginningAndEndingSlashes"><a class="viewcode-back" href="../../api/pydocumentdb.base.html#pydocumentdb.base.TrimBeginningAndEndingSlashes">[docs]</a><span class="k">def</span> <span class="nf">TrimBeginningAndEndingSlashes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Trims beginning and ending slashes</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `path`: str</span>
+<span class="sd">    :param str path:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        str, path with beginning and ending slashes trimmed</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        Path with beginning and ending slashes trimmed.</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
         <span class="c1"># Returns substring starting from index 1 to end of the string</span>

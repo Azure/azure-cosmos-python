@@ -55,7 +55,7 @@
             
   <div class="section" id="module-pydocumentdb.synchronized_request">
 <span id="pydocumentdb-synchronized-request-module"></span><h1>pydocumentdb.synchronized_request module<a class="headerlink" href="#module-pydocumentdb.synchronized_request" title="Permalink to this headline">¶</a></h1>
-<p>Synchronized request in the Azure DocumentDB database service.</p>
+<p>Synchronized request in the Azure Cosmos DB database service.</p>
 <dl class="function">
 <dt id="pydocumentdb.synchronized_request.SynchronizedRequest">
 <code class="descclassname">pydocumentdb.synchronized_request.</code><code class="descname">SynchronizedRequest</code><span class="sig-paren">(</span><em>client</em>, <em>global_endpoint_manager</em>, <em>connection_policy</em>, <em>requests_session</em>, <em>method</em>, <em>base_url</em>, <em>path</em>, <em>request_data</em>, <em>query_params</em>, <em>headers</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/synchronized_request.html#SynchronizedRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.synchronized_request.SynchronizedRequest" title="Permalink to this definition">¶</a></dt>
@@ -65,22 +65,23 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>client</cite>: object, document client instance</li>
-<li><cite>global_endpoint_manager</cite>: _GlobalEndpointManager</li>
-<li><cite>connection_policy</cite>: documents.ConnectionPolicy</li>
-<li><cite>requests_session</cite>: requests.Session, Session object in requests module</li>
-<li><cite>method</cite>: str</li>
-<li><cite>base_url</cite>: str</li>
-<li><cite>path</cite>: str</li>
-<li><cite>request_data</cite>: str, unicode, file-like stream object, dict, list
-or None</li>
-<li><cite>query_params</cite>: dict</li>
-<li><cite>headers</cite>: dict</li>
+<li><strong>client</strong> (<em>object</em>) – Document client instance</li>
+<li><strong>global_endpoint_manager</strong> (<em>_GlobalEndpointManager</em>) – </li>
+<li><strong>connection_policy</strong> (<a class="reference internal" href="pydocumentdb.documents.html#pydocumentdb.documents.ConnectionPolicy" title="pydocumentdb.documents.ConnectionPolicy"><em>documents.ConnectionPolicy</em></a>) – </li>
+<li><strong>requests_session</strong> (<em>requests.Session</em>) – Session object in requests module</li>
+<li><strong>method</strong> (<em>str</em>) – </li>
+<li><strong>base_url</strong> (<em>str</em>) – </li>
+<li><strong>path</strong> (<em>str</em>) – </li>
+<li><strong>unicode, file-like stream object, dict, list or None) request_data</strong> (<em>(</em><em>str</em><em>,</em>) – </li>
+<li><strong>query_params</strong> (<em>dict</em>) – </li>
+<li><strong>headers</strong> (<em>dict</em>) – </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple of (result, headers), where both result and headers
-are dicts.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple of (result, headers)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple of (dict dict)</p>
 </td>
 </tr>
 </tbody>

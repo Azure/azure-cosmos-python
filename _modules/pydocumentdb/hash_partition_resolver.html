@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Hash partition resolver implementation in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Hash partition resolver implementation in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">pydocumentdb.murmur_hash</span> <span class="k">as</span> <span class="nn">murmur_hash</span>
@@ -79,11 +79,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key_extractor</span><span class="p">,</span> <span class="n">collection_links</span><span class="p">,</span> <span class="n">default_number_of_virtual_nodes_per_collection</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">hash_generator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `partition_key_extractor`: lambda, returning the partition key from the document passed.</span>
-<span class="sd">            - `collection_links`: list, the links of collections participating in partitioning.</span>
-<span class="sd">            - `default_number_of_virtual_nodes_per_collection`: int, number of virtual nodes per collection.</span>
-<span class="sd">            - `hash_generator`: HashGenerator, the hash generator to be used for hashing algorithm.</span>
+<span class="sd">        :param lambda partition_key_extractor:</span>
+<span class="sd">            Returning the partition key from the document passed.</span>
+<span class="sd">        :param list collection_links:</span>
+<span class="sd">            The links of collections participating in partitioning.</span>
+<span class="sd">        :param int default_number_of_virtual_nodes_per_collection:</span>
+<span class="sd">            Number of virtual nodes per collection.</span>
+<span class="sd">        :param HashGenerator hash_generator:</span>
+<span class="sd">            The hash generator to be used for hashing algorithm.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">partition_key_extractor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;partition_key_extractor is None.&quot;</span><span class="p">)</span>
@@ -103,11 +106,13 @@
 <div class="viewcode-block" id="HashPartitionResolver.ResolveForCreate"><a class="viewcode-back" href="../../api/pydocumentdb.hash_partition_resolver.html#pydocumentdb.hash_partition_resolver.HashPartitionResolver.ResolveForCreate">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForCreate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resolves the collection for creating the document based on the partition key.</span>
 <span class="sd">        </span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document`: dict, the document to be created.</span>
+<span class="sd">        :param dict document:</span>
+<span class="sd">            The document to be created.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            str, collection Self link or Name based link which should handle the Create operation.</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Collection Self link or Name based link which should handle the Create operation.</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">document</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;document is None.&quot;</span><span class="p">)</span>
@@ -118,11 +123,13 @@
 <div class="viewcode-block" id="HashPartitionResolver.ResolveForRead"><a class="viewcode-back" href="../../api/pydocumentdb.hash_partition_resolver.html#pydocumentdb.hash_partition_resolver.HashPartitionResolver.ResolveForRead">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForRead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resolves the collection for reading/querying the documents based on the partition key.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document`: dict, the document to be read/queried.</span>
+<span class="sd">        :param dict document:</span>
+<span class="sd">            The document to be read/queried.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            list, collection Self link(s) or Name based link(s) which should handle the Read operation.</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Collection Self link(s) or Name based link(s) which should handle the Read operation.</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">partition_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_links</span>

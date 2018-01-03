@@ -67,23 +67,22 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;PyDocumentDB Exceptions in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;PyDocumentDB Exceptions in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pydocumentdb.http_constants</span> <span class="k">as</span> <span class="nn">http_constants</span>
 
 <div class="viewcode-block" id="DocumentDBError"><a class="viewcode-back" href="../../api/pydocumentdb.errors.html#pydocumentdb.errors.DocumentDBError">[docs]</a><span class="k">class</span> <span class="nc">DocumentDBError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for all DocumentDB errors.</span>
+    <span class="sd">&quot;&quot;&quot;Base class for all Azure Cosmos DB errors.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="HTTPFailure"><a class="viewcode-back" href="../../api/pydocumentdb.errors.html#pydocumentdb.errors.HTTPFailure">[docs]</a><span class="k">class</span> <span class="nc">HTTPFailure</span><span class="p">(</span><span class="n">DocumentDBError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Raised when a HTTP request to the DocumentDB has failed.</span>
+    <span class="sd">&quot;&quot;&quot;Raised when a HTTP request to the Azure Cosmos DB has failed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            status_code: int</span>
-<span class="sd">            message: str</span>
+<span class="sd">        :param int status_code:</span>
+<span class="sd">        :param str message:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">headers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

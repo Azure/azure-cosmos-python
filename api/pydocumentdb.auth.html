@@ -55,7 +55,7 @@
             
   <div class="section" id="module-pydocumentdb.auth">
 <span id="pydocumentdb-auth-module"></span><h1>pydocumentdb.auth module<a class="headerlink" href="#module-pydocumentdb.auth" title="Permalink to this headline">¶</a></h1>
-<p>Authorization helper functions in the Azure DocumentDB database service.</p>
+<p>Authorization helper functions in the Azure Cosmos DB database service.</p>
 <dl class="function">
 <dt id="pydocumentdb.auth.GetAuthorizationHeader">
 <code class="descclassname">pydocumentdb.auth.</code><code class="descname">GetAuthorizationHeader</code><span class="sig-paren">(</span><em>document_client</em>, <em>verb</em>, <em>path</em>, <em>resource_id_or_fullname</em>, <em>resource_type</em>, <em>headers</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/auth.html#GetAuthorizationHeader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.auth.GetAuthorizationHeader" title="Permalink to this definition">¶</a></dt>
@@ -65,16 +65,19 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_client</cite>: document_client.DocumentClient</li>
-<li><cite>verb</cite>: str</li>
-<li><cite>path</cite>: str</li>
-<li><cite>resource_id_or_fullname</cite>: str</li>
-<li><cite>resource_type</cite>: str</li>
-<li><cite>headers</cite>: dict</li>
+<li><strong>document_client</strong> (<a class="reference internal" href="pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient" title="pydocumentdb.document_client.DocumentClient"><em>document_client.DocumentClient</em></a>) – </li>
+<li><strong>verb</strong> (<em>str</em>) – </li>
+<li><strong>path</strong> (<em>str</em>) – </li>
+<li><strong>resource_id_or_fullname</strong> (<em>str</em>) – </li>
+<li><strong>resource_type</strong> (<em>str</em>) – </li>
+<li><strong>headers</strong> (<em>dict</em>) – </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict, the authorization headers.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The authorization headers.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>

@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Document client class for the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Document client class for the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
@@ -88,12 +88,12 @@
 <div class="viewcode-block" id="DocumentClient"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient">[docs]</a><span class="k">class</span> <span class="nc">DocumentClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents a document client.</span>
 
-<span class="sd">    Provides a client-side logical representation of the Azure DocumentDB</span>
+<span class="sd">    Provides a client-side logical representation of the Azure Cosmos DB</span>
 <span class="sd">    service. This client is used to configure and execute requests against the</span>
 <span class="sd">    service.</span>
 
 <span class="sd">    The service client encapsulates the endpoint and credentials used to access</span>
-<span class="sd">    the DocumentDB service.</span>
+<span class="sd">    the Azure Cosmos DB service.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">class</span> <span class="nc">_QueryCompatibilityMode</span><span class="p">:</span>
@@ -115,16 +115,17 @@
                  <span class="n">connection_policy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">consistency_level</span><span class="o">=</span><span class="n">documents</span><span class="o">.</span><span class="n">ConsistencyLevel</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `url_connection`: str, the URL for connecting to the DB server.</span>
-<span class="sd">            - `auth`: dict, contains &#39;masterKey&#39; or &#39;resourceTokens&#39;, where</span>
-<span class="sd">               auth[&#39;masterKey&#39;] is the default authorization key to use to</span>
-<span class="sd">               create the client, and auth[&#39;resourceTokens&#39;] is the alternative</span>
-<span class="sd">               authorization key.</span>
-<span class="sd">            - `connection_policy`: documents.ConnectionPolicy, the connection</span>
-<span class="sd">              policy for the client.</span>
-<span class="sd">            - `consistency_level`: documents.ConsistencyLevel, the default</span>
-<span class="sd">              consistency policy for client operations.</span>
+<span class="sd">        :param str url_connection:</span>
+<span class="sd">            The URL for connecting to the DB server.</span>
+<span class="sd">        :param dict auth:</span>
+<span class="sd">            Contains &#39;masterKey&#39; or &#39;resourceTokens&#39;, where</span>
+<span class="sd">            auth[&#39;masterKey&#39;] is the default authorization key to use to</span>
+<span class="sd">            create the client, and auth[&#39;resourceTokens&#39;] is the alternative</span>
+<span class="sd">            authorization key.</span>
+<span class="sd">        :param documents.ConnectionPolicy connection_policy:</span>
+<span class="sd">            The connection policy for the client.</span>
+<span class="sd">        :param documents.ConsistencyLevel consistency_level:</span>
+<span class="sd">            The default consistency policy for client operations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">url_connection</span> <span class="o">=</span> <span class="n">url_connection</span>
@@ -215,9 +216,10 @@
 <div class="viewcode-block" id="DocumentClient.RegisterPartitionResolver"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.RegisterPartitionResolver">[docs]</a>    <span class="k">def</span> <span class="nf">RegisterPartitionResolver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">partition_resolver</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Registers the partition resolver associated with the database link</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, database Self Link or ID based link</span>
-<span class="sd">            - `partition_resolver`: object, an instance of PartitionResolver</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            Database Self Link or ID based link.</span>
+<span class="sd">        :param object partition_resolver:</span>
+<span class="sd">            An instance of PartitionResolver.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">database_link</span><span class="p">:</span>
@@ -232,12 +234,13 @@
 <div class="viewcode-block" id="DocumentClient.GetPartitionResolver"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.GetPartitionResolver">[docs]</a>    <span class="k">def</span> <span class="nf">GetPartitionResolver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the partition resolver associated with the database link</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, database self link or ID based link</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            Database self link or ID based link.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            object, an instance of PartitionResolver</span>
-<span class="sd">        </span>
+<span class="sd">        :return:</span>
+<span class="sd">            An instance of PartitionResolver.</span>
+<span class="sd">        :rtype: object</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">database_link</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;database_link is None or empty.&quot;</span><span class="p">)</span>
@@ -248,12 +251,14 @@
 <div class="viewcode-block" id="DocumentClient.CreateDatabase"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">CreateDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a database.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database`: dict, the Azure DocumentDB database to create.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param dict database:</span>
+<span class="sd">            The Azure Cosmos DB database to create.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            dict</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The Database that was created.</span>
+<span class="sd">        :rtype: dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -266,12 +271,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadDatabase"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a database.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            dict</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The Database that was read.</span>
+<span class="sd">        :rtype: dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -284,10 +291,12 @@
 <div class="viewcode-block" id="DocumentClient.ReadDatabases"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDatabases">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDatabases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all databases.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return: </span>
+<span class="sd">            Query Iterable of Databases.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -299,11 +308,12 @@
 <div class="viewcode-block" id="DocumentClient.QueryDatabases"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryDatabases">[docs]</a>    <span class="k">def</span> <span class="nf">QueryDatabases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries databases.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return: Query Iterable of Databases.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -323,11 +333,13 @@
 <div class="viewcode-block" id="DocumentClient.ReadCollections"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadCollections">[docs]</a>    <span class="k">def</span> <span class="nf">ReadCollections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all collections in a database.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-
-<span class="sd">        :Returns:</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">            </span>
+<span class="sd">        :return: Query Iterable of Collections.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -339,12 +351,14 @@
 <div class="viewcode-block" id="DocumentClient.QueryCollections"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryCollections">[docs]</a>    <span class="k">def</span> <span class="nf">QueryCollections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries collections in a database.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return: Query Iterable of Collections.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -366,13 +380,15 @@
 <div class="viewcode-block" id="DocumentClient.CreateCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateCollection">[docs]</a>    <span class="k">def</span> <span class="nf">CreateCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a collection in a database.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `collection`: dict, the Azure DocumentDB collection to create.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :param dict collection:</span>
+<span class="sd">            The Azure Cosmos DB collection to create.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            dict</span>
+<span class="sd">        :return: The Collection that was created.</span>
+<span class="sd">        :rtype: dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -391,12 +407,16 @@
 <div class="viewcode-block" id="DocumentClient.ReplaceCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceCollection">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a collection and return it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the collection entity.</span>
-<span class="sd">            - `collection`: dict, the collection to be used.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the collection entity.</span>
+<span class="sd">        :param dict collection: </span>
+<span class="sd">            The collection to be used.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The new Collection.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -416,11 +436,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadCollection">[docs]</a>    <span class="k">def</span> <span class="nf">ReadCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read Collection.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -438,12 +461,16 @@
 <div class="viewcode-block" id="DocumentClient.CreateUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateUser">[docs]</a>    <span class="k">def</span> <span class="nf">CreateUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a user.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `user`: dict, the Azure DocumentDB user to create.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :param dict user:</span>
+<span class="sd">            The Azure Cosmos DB user to create.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created User.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -461,14 +488,16 @@
 <div class="viewcode-block" id="DocumentClient.UpsertUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertUser">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a user.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `user`: dict, the Azure DocumentDB user to upsert.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :param dict user:</span>
+<span class="sd">            The Azure Cosmos DB user to upsert.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            dict</span>
-
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted User.</span>
+<span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
@@ -491,11 +520,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUser">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a user.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `user_link`: str, the link to the user entity.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str user_link:</span>
+<span class="sd">            The link to the user entity.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read User.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -509,10 +541,13 @@
 <div class="viewcode-block" id="DocumentClient.ReadUsers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUsers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all users in a database.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-<span class="sd">        :Returns:</span>
+<span class="sd">        :params str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :params dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query iterable of Users.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -524,12 +559,15 @@
 <div class="viewcode-block" id="DocumentClient.QueryUsers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryUsers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries users in a database.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Users.</span>
+<span class="sd">        :rtype:   </span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -551,11 +589,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteDatabase"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a database.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_link`: str, the link to the database.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            The link to the database.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Database.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -573,12 +614,16 @@
 <div class="viewcode-block" id="DocumentClient.CreatePermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreatePermission">[docs]</a>    <span class="k">def</span> <span class="nf">CreatePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a permission for a user.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `user_link`: str, the link to the user entity.</span>
-<span class="sd">            - `permission`: dict, the Azure DocumentDB user permission to create.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str user_link:</span>
+<span class="sd">            The link to the user entity.</span>
+<span class="sd">        :param dict permission:</span>
+<span class="sd">            The Azure Cosmos DB user permission to create.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created Permission.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -596,12 +641,16 @@
 <div class="viewcode-block" id="DocumentClient.UpsertPermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertPermission">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertPermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a permission for a user.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `user_link`: str, the link to the user entity.</span>
-<span class="sd">            - `permission`: dict, the Azure DocumentDB user permission to upsert.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str user_link:</span>
+<span class="sd">            The link to the user entity.</span>
+<span class="sd">        :param dict permission:</span>
+<span class="sd">            The Azure Cosmos DB user permission to upsert.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted permission.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -626,11 +675,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadPermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadPermission">[docs]</a>    <span class="k">def</span> <span class="nf">ReadPermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a permission.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `permission_link`: str, the link to the permission.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str permission_link:</span>
+<span class="sd">            The link to the permission.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read permission.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -648,11 +700,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadPermissions"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadPermissions">[docs]</a>    <span class="k">def</span> <span class="nf">ReadPermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all permissions for a user.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `user_link`: str, the link to the user entity.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str user_link:</span>
+<span class="sd">            The link to the user entity.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Permissions.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -664,12 +719,15 @@
 <div class="viewcode-block" id="DocumentClient.QueryPermissions"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryPermissions">[docs]</a>    <span class="k">def</span> <span class="nf">QueryPermissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries permissions for a user.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `user_link`: str, the link to the user entity.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str user_link:</span>
+<span class="sd">            The link to the user entity.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Permissions.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -691,12 +749,15 @@
 <div class="viewcode-block" id="DocumentClient.ReplaceUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceUser">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a user and return it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `user_link`: str, the link to the user entity.</span>
-<span class="sd">            - `user`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str user_link:</span>
+<span class="sd">            The link to the user entity.</span>
+<span class="sd">        :param dict user:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The new User.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -716,11 +777,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteUser"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteUser">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a user.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `user_link`: str, the link to the user entity.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str user_link:</span>
+<span class="sd">            The link to the user entity.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted user.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -738,12 +802,15 @@
 <div class="viewcode-block" id="DocumentClient.ReplacePermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplacePermission">[docs]</a>    <span class="k">def</span> <span class="nf">ReplacePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">permission</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a permission and return it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `permission_link`: str, the link to the permission.</span>
-<span class="sd">            - `permission`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str permission_link:</span>
+<span class="sd">            The link to the permission.</span>
+<span class="sd">        :param dict permission:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The new Permission.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -763,11 +830,14 @@
 <div class="viewcode-block" id="DocumentClient.DeletePermission"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeletePermission">[docs]</a>    <span class="k">def</span> <span class="nf">DeletePermission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permission_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a permission.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `permission_link`: str, the link to the permission.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str permission_link:</span>
+<span class="sd">            The link to the permission.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Permission.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -785,11 +855,13 @@
 <div class="viewcode-block" id="DocumentClient.ReadDocuments"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDocuments">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDocuments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">feed_options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all documents in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `feed_options`: dict</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict feed_options:</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Documents.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -801,13 +873,17 @@
 <div class="viewcode-block" id="DocumentClient.QueryDocuments"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryDocuments">[docs]</a>    <span class="k">def</span> <span class="nf">QueryDocuments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">partition_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries documents in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_or_collection_link`: str, the link to the database when using partitioning, otherwise link to the document collection.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-<span class="sd">            - `partition_key`: str, partition key for the query(default value None)</span>
+<span class="sd">        :param str database_or_collection_link:</span>
+<span class="sd">            The link to the database when using partitioning, otherwise link to the document collection.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">        :param str partition_key:</span>
+<span class="sd">            Partition key for the query(default value None)</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Documents.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -835,11 +911,13 @@
     <span class="k">def</span> <span class="nf">_ReadPartitionKeyRanges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">feed_options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads Partition Key Ranges.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `feed_options`: dict</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict feed_options:</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of PartitionKeyRanges.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -851,12 +929,15 @@
     <span class="k">def</span> <span class="nf">_QueryPartitionKeyRanges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries Partition Key Ranges in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of PartitionKeyRanges.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -878,15 +959,19 @@
 <div class="viewcode-block" id="DocumentClient.CreateDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateDocument">[docs]</a>    <span class="k">def</span> <span class="nf">CreateDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a document in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_or_collection_link`: str, the link to the database when using partitioning, otherwise link to the document collection.</span>
-<span class="sd">            - `document`: dict, the Azure DocumentDB document to create.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-<span class="sd">            - `options[&#39;disableAutomaticIdGeneration&#39;]`: bool, disables the</span>
-<span class="sd">              automatic id generation. If id is missing in the body and this</span>
-<span class="sd">              option is true, an error will be returned.</span>
+<span class="sd">        :param str database_or_collection_link:</span>
+<span class="sd">            The link to the database when using partitioning, otherwise link to the document collection.</span>
+<span class="sd">        :param dict document:</span>
+<span class="sd">            The Azure Cosmos DB document to create.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">        :param bool options[&#39;disableAutomaticIdGeneration&#39;]:</span>
+<span class="sd">            Disables the automatic id generation. If id is missing in the body and this</span>
+<span class="sd">            option is true, an error will be returned.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created Document.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -912,15 +997,19 @@
 <div class="viewcode-block" id="DocumentClient.UpsertDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertDocument">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_or_collection_link</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a document in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `database_or_collection_link`: str, the link to the database when using partitioning, otherwise link to the document collection.</span>
-<span class="sd">            - `document`: dict, the Azure DocumentDB document to upsert.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-<span class="sd">            - `options[&#39;disableAutomaticIdGeneration&#39;]`: bool, disables the</span>
-<span class="sd">              automatic id generation. If id is missing in the body and this</span>
-<span class="sd">              option is true, an error will be returned.</span>
+<span class="sd">        :param str database_or_collection_link:</span>
+<span class="sd">            The link to the database when using partitioning, otherwise link to the document collection.</span>
+<span class="sd">        :param dict document:</span>
+<span class="sd">            The Azure Cosmos DB document to upsert.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">        :param bool options[&#39;disableAutomaticIdGeneration&#39;]:</span>
+<span class="sd">            Disables the automatic id generation. If id is missing in the body and this</span>
+<span class="sd">            option is true, an error will be returned.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted Document.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -977,11 +1066,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadDocument">[docs]</a>    <span class="k">def</span> <span class="nf">ReadDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a document.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read Document.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -999,11 +1091,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadTriggers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadTriggers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadTriggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all triggers in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Triggers.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1015,12 +1110,15 @@
 <div class="viewcode-block" id="DocumentClient.QueryTriggers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryTriggers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryTriggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries triggers in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Triggers.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1042,12 +1140,15 @@
 <div class="viewcode-block" id="DocumentClient.CreateTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">CreateTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a trigger in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `trigger`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict trigger:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created Trigger.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1065,12 +1166,15 @@
 <div class="viewcode-block" id="DocumentClient.UpsertTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a trigger in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `trigger`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict trigger:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted Trigger.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1101,11 +1205,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">ReadTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a trigger.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `trigger_link`: str, the link to the trigger.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str trigger_link:</span>
+<span class="sd">            The link to the trigger.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read Trigger.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1119,11 +1226,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadUserDefinedFunctions"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunctions">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUserDefinedFunctions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all user defined functions in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of UDFs.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1135,12 +1245,15 @@
 <div class="viewcode-block" id="DocumentClient.QueryUserDefinedFunctions"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryUserDefinedFunctions">[docs]</a>    <span class="k">def</span> <span class="nf">QueryUserDefinedFunctions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries user defined functions in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the collection.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the collection.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of UDFs.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1162,12 +1275,15 @@
 <div class="viewcode-block" id="DocumentClient.CreateUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">CreateUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a user defined function in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the collection.</span>
-<span class="sd">            - `udf`: str</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the collection.</span>
+<span class="sd">        :param str udf:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created UDF.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1185,12 +1301,15 @@
 <div class="viewcode-block" id="DocumentClient.UpsertUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a user defined function in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the collection.</span>
-<span class="sd">            - `udf`: str</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the collection.</span>
+<span class="sd">        :param str udf:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted UDF.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1221,11 +1340,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">ReadUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a user defined function.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `udf_link`: str, the link to the user defined function.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str udf_link:</span>
+<span class="sd">            The link to the user defined function.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read UDF.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1239,11 +1361,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadStoredProcedures"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadStoredProcedures">[docs]</a>    <span class="k">def</span> <span class="nf">ReadStoredProcedures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all store procedures in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Stored Procedures.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1255,12 +1380,15 @@
 <div class="viewcode-block" id="DocumentClient.QueryStoredProcedures"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryStoredProcedures">[docs]</a>    <span class="k">def</span> <span class="nf">QueryStoredProcedures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries stored procedures in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Stored Procedures.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1282,12 +1410,15 @@
 <div class="viewcode-block" id="DocumentClient.CreateStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">CreateStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a stored procedure in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `sproc`: str</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param str sproc:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created Stored Procedure.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1305,12 +1436,15 @@
 <div class="viewcode-block" id="DocumentClient.UpsertStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts a stored procedure in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `sproc`: str</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param str sproc:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted Stored Procedure.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1340,11 +1474,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ReadStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a stored procedure.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `sproc_link`: str, the link to the stored procedure.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str sproc_link:</span>
+<span class="sd">            The link to the stored procedure.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read Stored Procedure.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1358,11 +1495,13 @@
 <div class="viewcode-block" id="DocumentClient.ReadConflicts"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadConflicts">[docs]</a>    <span class="k">def</span> <span class="nf">ReadConflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">feed_options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads conflicts.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `feed_options`: dict</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict feed_options:</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Conflicts.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1374,12 +1513,15 @@
 <div class="viewcode-block" id="DocumentClient.QueryConflicts"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryConflicts">[docs]</a>    <span class="k">def</span> <span class="nf">QueryConflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries conflicts in a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Conflicts.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1401,11 +1543,13 @@
 <div class="viewcode-block" id="DocumentClient.ReadConflict"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadConflict">[docs]</a>    <span class="k">def</span> <span class="nf">ReadConflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conflict_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads a conflict.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `conflict_link`: str, the link to the conflict.</span>
-<span class="sd">            - `opitions`: dict</span>
+<span class="sd">        :param str conflict_link:</span>
+<span class="sd">            The link to the conflict.</span>
+<span class="sd">        :param dict options:</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read Conflict.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1423,11 +1567,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteCollection"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteCollection">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `collection_link`: str, the link to the document collection.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            The link to the document collection.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Collection.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1445,12 +1592,15 @@
 <div class="viewcode-block" id="DocumentClient.ReplaceDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceDocument">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">new_document</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a document and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `new_document`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param dict new_document:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The new Document.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1479,11 +1629,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteDocument"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteDocument">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a document.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Document.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1501,12 +1654,16 @@
 <div class="viewcode-block" id="DocumentClient.CreateAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.CreateAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">CreateAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates an attachment in a document.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `attachment`: dict, the Azure DocumentDB attachment to create.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param dict attachment:</span>
+<span class="sd">            The Azure Cosmos DB attachment to create.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created Attachment.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1524,12 +1681,16 @@
 <div class="viewcode-block" id="DocumentClient.UpsertAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpsertAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">UpsertAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts an attachment in a document.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `attachment`: dict, the Azure DocumentDB attachment to upsert.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param dict attachment:</span>
+<span class="sd">            The Azure Cosmos DB attachment to upsert.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted Attachment.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1556,12 +1717,15 @@
                                        <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates an attachment and upload media.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `readable_stream`: file-like stream object</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param (file-like stream object) readable_stream: </span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created Attachment.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1582,12 +1746,15 @@
                                        <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upserts an attachment and upload media.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `readable_stream`: file-like stream object</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param (file-like stream object) readable_stream:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted Attachment.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1624,11 +1791,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">ReadAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads an attachment.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `attachment_link`: str, the link to the attachment.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str attachment_link:</span>
+<span class="sd">            The link to the attachment.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read Attachment.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1646,11 +1816,14 @@
 <div class="viewcode-block" id="DocumentClient.ReadAttachments"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadAttachments">[docs]</a>    <span class="k">def</span> <span class="nf">ReadAttachments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all attachments in a document.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Attachments.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1662,12 +1835,15 @@
 <div class="viewcode-block" id="DocumentClient.QueryAttachments"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryAttachments">[docs]</a>    <span class="k">def</span> <span class="nf">QueryAttachments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_link</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Queries attachments in a document.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document_link`: str, the link to the document.</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str document_link:</span>
+<span class="sd">            The link to the document.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Attachments.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1695,10 +1871,12 @@
 <span class="sd">        documents.MediaReadMode.Streamed, returns a file-like stream object;</span>
 <span class="sd">        otherwise, returns a str.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `media_link`: str, the link to the media.</span>
+<span class="sd">        :param str media_link:</span>
+<span class="sd">            The link to the media.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read Media.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            str or file-like stream object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1725,12 +1903,15 @@
 <div class="viewcode-block" id="DocumentClient.UpdateMedia"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.UpdateMedia">[docs]</a>    <span class="k">def</span> <span class="nf">UpdateMedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_link</span><span class="p">,</span> <span class="n">readable_stream</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Updates a media and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `media_link`: str, the link to the media.</span>
-<span class="sd">            - `readable_stream`: file-like stream object</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str media_link:</span>
+<span class="sd">            The link to the media.</span>
+<span class="sd">        :param (file-like stream object) readable_stream:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The updated Media.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            str or file-like stream object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1775,12 +1956,15 @@
 <div class="viewcode-block" id="DocumentClient.ReplaceAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces an attachment and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `attachment_link`: str, the link to the attachment.</span>
-<span class="sd">            - `attachment`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str attachment_link:</span>
+<span class="sd">            The link to the attachment.</span>
+<span class="sd">        :param dict attachment:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The replaced Attachment</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1800,11 +1984,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteAttachment"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteAttachment">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteAttachment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attachment_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes an attachment.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `attachment_link`: str, the link to the attachment.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str attachment_link:</span>
+<span class="sd">            The link to the attachment.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Attachment.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1822,12 +2009,15 @@
 <div class="viewcode-block" id="DocumentClient.ReplaceTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a trigger and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `trigger_link`: str, the link to the trigger.</span>
-<span class="sd">            - `trigger`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str trigger_link:</span>
+<span class="sd">            The link to the trigger.</span>
+<span class="sd">        :param dict trigger:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The replaced Trigger.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1853,11 +2043,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteTrigger"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteTrigger">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteTrigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a trigger.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `trigger_link`: str, the link to the trigger.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str trigger_link:</span>
+<span class="sd">            The link to the trigger.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Trigger.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1875,12 +2068,15 @@
 <div class="viewcode-block" id="DocumentClient.ReplaceUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">udf</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a user defined function and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `udf_link`: str, the link to the user defined function.</span>
-<span class="sd">            - `udf`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str udf_link:</span>
+<span class="sd">            The link to the user defined function.</span>
+<span class="sd">        :param dict udf:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The new UDF.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1906,11 +2102,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteUserDefinedFunction"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteUserDefinedFunction">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteUserDefinedFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a user defined function.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `udf_link`: str, the link to the user defined function.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str udf_link:</span>
+<span class="sd">            The link to the user defined function.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted UDF.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1928,12 +2127,16 @@
 <div class="viewcode-block" id="DocumentClient.ExecuteStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ExecuteStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ExecuteStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Executes a store procedure.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `sproc_link`: str, the link to the stored procedure.</span>
-<span class="sd">            - `params`: dict, list or None</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str sproc_link:</span>
+<span class="sd">            The link to the stored procedure.</span>
+<span class="sd">        :param dict params:</span>
+<span class="sd">            List or None</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The Stored Procedure response.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1971,12 +2174,15 @@
 <div class="viewcode-block" id="DocumentClient.ReplaceStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">sproc</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces a stored procedure and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `sproc_link`: str, the link to the stored procedure.</span>
-<span class="sd">            - `sproc`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str sproc_link:</span>
+<span class="sd">            The link to the stored procedure.</span>
+<span class="sd">        :param dict sproc:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The replaced Stored Procedure.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2002,11 +2208,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteStoredProcedure"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteStoredProcedure">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteStoredProcedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sproc_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a stored procedure.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `sproc_link`: str, the link to the stored procedure.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str sproc_link:</span>
+<span class="sd">            The link to the stored procedure.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Stored Procedure.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2024,11 +2233,14 @@
 <div class="viewcode-block" id="DocumentClient.DeleteConflict"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteConflict">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteConflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conflict_link</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a conflict.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `conflict_link`: str, the link to the conflict.</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str conflict_link:</span>
+<span class="sd">            The link to the conflict.</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Conflict.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2046,11 +2258,13 @@
 <div class="viewcode-block" id="DocumentClient.ReplaceOffer"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReplaceOffer">[docs]</a>    <span class="k">def</span> <span class="nf">ReplaceOffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offer_link</span><span class="p">,</span> <span class="n">offer</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replaces an offer and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `offer_link`: str, the link to the offer.</span>
-<span class="sd">            - `offer`: dict</span>
+<span class="sd">        :param str offer_link:</span>
+<span class="sd">            The link to the offer.</span>
+<span class="sd">        :param dict offer:</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The replaced Offer.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2062,10 +2276,12 @@
 <div class="viewcode-block" id="DocumentClient.ReadOffer"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadOffer">[docs]</a>    <span class="k">def</span> <span class="nf">ReadOffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offer_link</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads an offer.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `offer_link`: str, the link to the offer.</span>
+<span class="sd">        :param str offer_link:</span>
+<span class="sd">            The link to the offer.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The read Offer.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2076,10 +2292,12 @@
 <div class="viewcode-block" id="DocumentClient.ReadOffers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.ReadOffers">[docs]</a>    <span class="k">def</span> <span class="nf">ReadOffers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reads all offers.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `options`: dict, the request options for the request</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Offers.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2091,11 +2309,13 @@
 <div class="viewcode-block" id="DocumentClient.QueryOffers"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryOffers">[docs]</a>    <span class="k">def</span> <span class="nf">QueryOffers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query for all offers.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `query`: str or dict.</span>
-<span class="sd">            - `options`: dict, the request options for the request</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Query Iterable of Offers.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            query_iterable.QueryIterable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2115,7 +2335,9 @@
 <div class="viewcode-block" id="DocumentClient.GetDatabaseAccount"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.GetDatabaseAccount">[docs]</a>    <span class="k">def</span> <span class="nf">GetDatabaseAccount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_connection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets database account info.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The Database Account.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            documents.DatabaseAccount</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2156,17 +2378,19 @@
         <span class="k">return</span> <span class="n">database_account</span></div>
 
 <div class="viewcode-block" id="DocumentClient.Create"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Create">[docs]</a>    <span class="k">def</span> <span class="nf">Create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Creates a DocumentDB resource and returns it.</span>
+        <span class="sd">&quot;&quot;&quot;Creates a Azure Cosmos DB resource and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `body`: dict</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `type`: str</span>
-<span class="sd">            - `id`: str</span>
-<span class="sd">            - `initial_headers`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param dict body:</span>
+<span class="sd">        :param str path:</span>
+<span class="sd">        :param str type:</span>
+<span class="sd">        :param str id:</span>
+<span class="sd">        :param dict initial_headers:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The created Azure Cosmos DB resource.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2193,17 +2417,19 @@
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="DocumentClient.Upsert"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Upsert">[docs]</a>    <span class="k">def</span> <span class="nf">Upsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Upserts a DocumentDB resource and returns it.</span>
+        <span class="sd">&quot;&quot;&quot;Upserts a Azure Cosmos DB resource and returns it.</span>
+<span class="sd">        </span>
+<span class="sd">        :param dict body:</span>
+<span class="sd">        :param str path:</span>
+<span class="sd">        :param str type:</span>
+<span class="sd">        :param str id:</span>
+<span class="sd">        :param dict initial_headers:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `body`: dict</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `type`: str</span>
-<span class="sd">            - `id`: str</span>
-<span class="sd">            - `initial_headers`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted Azure Cosmos DB resource.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2232,17 +2458,19 @@
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="DocumentClient.Replace"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Replace">[docs]</a>    <span class="k">def</span> <span class="nf">Replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Replaces a DocumentDB resource and returns it.</span>
+        <span class="sd">&quot;&quot;&quot;Replaces a Azure Cosmos DB resource and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `resource`: dict</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `type`: str</span>
-<span class="sd">            - `id`: str</span>
-<span class="sd">            - `initial_headers`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param dict resource:</span>
+<span class="sd">        :param str path:</span>
+<span class="sd">        :param str type:</span>
+<span class="sd">        :param str id:</span>
+<span class="sd">        :param dict initial_headers:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The new Azure Cosmos DB resource.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2269,16 +2497,18 @@
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="DocumentClient.Read"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.Read">[docs]</a>    <span class="k">def</span> <span class="nf">Read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reads a DocumentDB resource and returns it.</span>
+        <span class="sd">&quot;&quot;&quot;Reads a Azure Cosmos DB resource and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `type`: str</span>
-<span class="sd">            - `id`: str</span>
-<span class="sd">            - `initial_headers`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str path:</span>
+<span class="sd">        :param str type:</span>
+<span class="sd">        :param str id:</span>
+<span class="sd">        :param dict initial_headers:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The upserted Azure Cosmos DB resource.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2301,16 +2531,18 @@
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="DocumentClient.DeleteResource"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.DeleteResource">[docs]</a>    <span class="k">def</span> <span class="nf">DeleteResource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">initial_headers</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Deletes a DocumentDB resource and returns it.</span>
+        <span class="sd">&quot;&quot;&quot;Deletes a Azure Cosmos DB resource and returns it.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `type`: str</span>
-<span class="sd">            - `id`: str</span>
-<span class="sd">            - `initial_headers`: dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
+<span class="sd">        :param str path:</span>
+<span class="sd">        :param str type:</span>
+<span class="sd">        :param str id:</span>
+<span class="sd">        :param dict initial_headers:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
 
-<span class="sd">        :Returns:</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The deleted Azure Cosmos DB resource.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            dict</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2338,16 +2570,16 @@
         <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="k">def</span> <span class="nf">__Get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;DocumentDB &#39;GET&#39; http request.</span>
+        <span class="sd">&quot;&quot;&quot;Azure Cosmos DB &#39;GET&#39; http request.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `url`: str</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `headers`: dict</span>
+<span class="sd">        :params str url:</span>
+<span class="sd">        :params str path:</span>
+<span class="sd">        :params dict headers:</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            tuple (result, headers), and result and headers are both</span>
-<span class="sd">            dicts</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Tuple of (result, headers).</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            tuple of (dict, dict)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">synchronized_request</span><span class="o">.</span><span class="n">SynchronizedRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -2362,17 +2594,17 @@
                                                         <span class="n">headers</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__Post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;DocumentDB &#39;POST&#39; http request.</span>
+        <span class="sd">&quot;&quot;&quot;Azure Cosmos DB &#39;POST&#39; http request.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `url`: str</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `body`: str, unicode or dict</span>
-<span class="sd">            - `headers`: dict</span>
+<span class="sd">        :params str url:</span>
+<span class="sd">        :params str path:</span>
+<span class="sd">        :params (str, unicode, dict) body:</span>
+<span class="sd">        :params dict headers:</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            tuple (result, headers), and result and headers are both</span>
-<span class="sd">            dicts</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Tuple of (result, headers).</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            tuple of (dict, dict)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">synchronized_request</span><span class="o">.</span><span class="n">SynchronizedRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -2387,17 +2619,17 @@
                                                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__Put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;DocumentDB &#39;PUT&#39; http request.</span>
+        <span class="sd">&quot;&quot;&quot;Azure Cosmos DB &#39;PUT&#39; http request.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `url`: str</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `body`: str, unicode or dict</span>
-<span class="sd">            - `headers`: dict</span>
+<span class="sd">        :params str url:</span>
+<span class="sd">        :params str path:</span>
+<span class="sd">        :params (str, unicode, dict) body:</span>
+<span class="sd">        :params dict headers:</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            tuple (result, headers), and result and headers are both</span>
-<span class="sd">            dicts</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Tuple of (result, headers).</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            tuple of (dict, dict)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">synchronized_request</span><span class="o">.</span><span class="n">SynchronizedRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -2412,16 +2644,16 @@
                                                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__Delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;DocumentDB &#39;DELETE&#39; http request.</span>
+        <span class="sd">&quot;&quot;&quot;Azure Cosmos DB &#39;DELETE&#39; http request.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `url`: str</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `headers`: dict</span>
+<span class="sd">        :params str url:</span>
+<span class="sd">        :params str path:</span>
+<span class="sd">        :params dict headers:</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            tuple (result, headers), and result and headers are both</span>
-<span class="sd">            dicts</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Tuple of (result, headers).</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            tuple of (dict, dict)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">synchronized_request</span><span class="o">.</span><span class="n">SynchronizedRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -2438,13 +2670,16 @@
 <div class="viewcode-block" id="DocumentClient.QueryFeed"><a class="viewcode-back" href="../../api/pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient.QueryFeed">[docs]</a>    <span class="k">def</span> <span class="nf">QueryFeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">partition_key_range_id</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Query Feed for Document Collection resource.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `path`: str, path to the document collection</span>
-<span class="sd">            - `collection_id`: str, id of the document collection</span>
-<span class="sd">            - `query`: str or dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-<span class="sd">            - `partition_key_range_id`: str, partition key range id</span>
-<span class="sd">        :Returns:</span>
+<span class="sd">        :param str path:</span>
+<span class="sd">            Path to the document collection.</span>
+<span class="sd">        :param str collection_id:</span>
+<span class="sd">            Id of the document collection.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">        :param str partition_key_range_id:</span>
+<span class="sd">            Partition key range id.</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            tuple</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2466,22 +2701,23 @@
                     <span class="n">query</span><span class="p">,</span>
                     <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">partition_key_range_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Query for more than one DocumentDB resources.</span>
+        <span class="sd">&quot;&quot;&quot;Query for more than one Azure Cosmos DB resources.</span>
 
-<span class="sd">        Raises :exc:`SystemError` is the query compatibility mode is undefined.</span>
+<span class="sd">        :param str path:</span>
+<span class="sd">        :param str type:</span>
+<span class="sd">        :param str id:</span>
+<span class="sd">        :param function result_fn:</span>
+<span class="sd">        :param function create_fn:</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">        :param str partition_key_range_id:</span>
+<span class="sd">            Specifies partition key range id.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `path`: str</span>
-<span class="sd">            - `type`: str</span>
-<span class="sd">            - `id`: str</span>
-<span class="sd">            - `result_fn`: function</span>
-<span class="sd">            - `create_fn`: function</span>
-<span class="sd">            - `query`: str or dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-<span class="sd">            - `partition_key_range_id`: str, specifies partition key range id</span>
-
-<span class="sd">        :Returns:</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">            list</span>
+<span class="sd">        </span>
+<span class="sd">        :raises SystemError: If the query compatibility mode is undefined.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2540,15 +2776,16 @@
     <span class="k">def</span> <span class="nf">__CheckAndUnifyQueryFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_body</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Checks and unifies the format of the query body.</span>
 
-<span class="sd">        Raises :exc:`TypeError` if query_body is not of expected type (depending on the query compatibility mode).</span>
-<span class="sd">        Raises :exc:`ValueError` is query_body is a dict but doesn\&#39;t have valid query text.</span>
-<span class="sd">        Raises :exc:`SystemError` is the query compatibility mode is undefined.</span>
+<span class="sd">        :raises TypeError: If query_body is not of expected type (depending on the query compatibility mode).</span>
+<span class="sd">        :raises ValueError: If query_body is a dict but doesn\&#39;t have valid query text.</span>
+<span class="sd">        :raises SystemError: If the query compatibility mode is undefined.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `query_body`: str or dict</span>
+<span class="sd">        :param (str or dict) query_body:</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            dict or string, the formatted query body.</span>
+<span class="sd">        :return:</span>
+<span class="sd">            The formatted query body.</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            dict or string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_compatibility_mode</span> <span class="o">==</span> <span class="n">DocumentClient</span><span class="o">.</span><span class="n">_QueryCompatibilityMode</span><span class="o">.</span><span class="n">Default</span> <span class="ow">or</span>
                <span class="bp">self</span><span class="o">.</span><span class="n">_query_compatibility_mode</span> <span class="o">==</span> <span class="n">DocumentClient</span><span class="o">.</span><span class="n">_QueryCompatibilityMode</span><span class="o">.</span><span class="n">Query</span><span class="p">):</span>
@@ -2636,12 +2873,12 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates session if necessary.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `response_result`- response result</span>
-<span class="sd">            - `response_headers` - response headers</span>
+<span class="sd">        :param dict response_result:</span>
+<span class="sd">        :param dict response_headers:</span>
+<span class="sd">        :param dict response_headers</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            None, but updates the client session if necessary</span>
+<span class="sd">        :return:</span>
+<span class="sd">            None, but updates the client session if necessary.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 

@@ -55,7 +55,7 @@
             
   <div class="section" id="module-pydocumentdb.retry_options">
 <span id="pydocumentdb-retry-options-module"></span><h1>pydocumentdb.retry_options module<a class="headerlink" href="#module-pydocumentdb.retry_options" title="Permalink to this headline">¶</a></h1>
-<p>Class for retry options in the Azure DocumentDB database service.</p>
+<p>Class for retry options in the Azure Cosmos DB database service.</p>
 <dl class="class">
 <dt id="pydocumentdb.retry_options.RetryOptions">
 <em class="property">class </em><code class="descclassname">pydocumentdb.retry_options.</code><code class="descname">RetryOptions</code><span class="sig-paren">(</span><em>max_retry_attempt_count=9</em>, <em>fixed_retry_interval_in_milliseconds=None</em>, <em>max_wait_time_in_seconds=30</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/retry_options.html#RetryOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.retry_options.RetryOptions" title="Permalink to this definition">¶</a></dt>
@@ -65,10 +65,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Properties:</th><td class="field-body"><ul class="first last simple">
-<li><cite>MaxRetryAttemptCount</cite>: int, Max number of retries to be performed for a request. Default value 9.</li>
-<li><cite>FixedRetryIntervalInMilliseconds</cite>: int, Fixed retry interval in milliseconds to wait between each retry ignoring the retryAfter returned as part of the response.</li>
-<li><cite>MaxRetryAttemptCount</cite>: int, Max wait time in seconds to wait for a request while the retries are happening. Default value 30 seconds.</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>MaxRetryAttemptCount</strong> (<em>int</em>) – Max number of retries to be performed for a request. Default value 9.</li>
+<li><strong>FixedRetryIntervalInMilliseconds</strong> (<em>int</em>) – Fixed retry interval in milliseconds to wait between each retry ignoring the retryAfter returned as part of the response.</li>
+<li><strong>MaxRetryAttemptCount</strong> – Max wait time in seconds to wait for a request while the retries are happening. Default value 30 seconds.</li>
 </ul>
 </td>
 </tr>

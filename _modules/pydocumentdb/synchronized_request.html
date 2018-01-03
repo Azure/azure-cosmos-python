@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Synchronized request in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Synchronized request in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">json</span>
@@ -83,7 +83,7 @@
 <span class="k">def</span> <span class="nf">_IsReadableStream</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Checks whether obj is a file-like readable stream.</span>
 
-<span class="sd">    :Returns:</span>
+<span class="sd">    :rtype:</span>
 <span class="sd">        boolean</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -98,10 +98,9 @@
 <span class="sd">    When `data` is dict and list into unicode string; otherwise return `data`</span>
 <span class="sd">    without making any change.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `data`: str, unicode, file-like stream object, dict, list or None</span>
+<span class="sd">    :param (str, unicode, file-like stream object, dict, list or None) data:</span>
 
-<span class="sd">    :Returns:</span>
+<span class="sd">    :rtype:</span>
 <span class="sd">        str, unicode, file-like stream object, or None</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -121,16 +120,19 @@
 <span class="k">def</span> <span class="nf">_Request</span><span class="p">(</span><span class="n">connection_policy</span><span class="p">,</span> <span class="n">requests_session</span><span class="p">,</span> <span class="n">resource_url</span><span class="p">,</span> <span class="n">request_options</span><span class="p">,</span> <span class="n">request_body</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Makes one http request using the requests module.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `connection_policy`: documents.ConnectionPolicy</span>
-<span class="sd">        - `requests_session`: requests.Session, Session object in requests module</span>
-<span class="sd">        - `resource_url`: str, the url for the resource</span>
-<span class="sd">        - `request_options`: dict</span>
-<span class="sd">        - `request_body`: str, unicode or None</span>
+<span class="sd">    :param documents.ConnectionPolicy connection_policy:</span>
+<span class="sd">    :param requests.Session requests_session:</span>
+<span class="sd">        Session object in requests module</span>
+<span class="sd">    :param str resource_url:</span>
+<span class="sd">        The url for the resource</span>
+<span class="sd">    :param dict request_options:</span>
+<span class="sd">    :param str request_body:</span>
+<span class="sd">        Unicode or None</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        tuple of (result, headers), where both result and headers</span>
-<span class="sd">        are dicts.</span>
+<span class="sd">    :return:</span>
+<span class="sd">        tuple of (result, headers)</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">        tuple of (dict, dict)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">is_media</span> <span class="o">=</span> <span class="n">request_options</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
@@ -211,22 +213,23 @@
                         <span class="n">headers</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Performs one synchronized http request according to the parameters.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `client`: object, document client instance</span>
-<span class="sd">        - `global_endpoint_manager`: _GlobalEndpointManager</span>
-<span class="sd">        - `connection_policy`: documents.ConnectionPolicy</span>
-<span class="sd">        - `requests_session`: requests.Session, Session object in requests module</span>
-<span class="sd">        - `method`: str</span>
-<span class="sd">        - `base_url`: str</span>
-<span class="sd">        - `path`: str</span>
-<span class="sd">        - `request_data`: str, unicode, file-like stream object, dict, list</span>
-<span class="sd">          or None</span>
-<span class="sd">        - `query_params`: dict</span>
-<span class="sd">        - `headers`: dict</span>
+<span class="sd">    :param object client:</span>
+<span class="sd">        Document client instance</span>
+<span class="sd">    :param _GlobalEndpointManager global_endpoint_manager: </span>
+<span class="sd">    :param  documents.ConnectionPolicy connection_policy:</span>
+<span class="sd">    :param requests.Session requests_session:</span>
+<span class="sd">        Session object in requests module</span>
+<span class="sd">    :param str method:</span>
+<span class="sd">    :param str base_url:</span>
+<span class="sd">    :param str path:</span>
+<span class="sd">    :param (str, unicode, file-like stream object, dict, list or None) request_data:</span>
+<span class="sd">    :param dict query_params:</span>
+<span class="sd">    :param dict headers:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        tuple of (result, headers), where both result and headers</span>
-<span class="sd">        are dicts.</span>
+<span class="sd">    :return:</span>
+<span class="sd">        tuple of (result, headers)</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">        tuple of (dict dict)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">request_body</span> <span class="o">=</span> <span class="kc">None</span>

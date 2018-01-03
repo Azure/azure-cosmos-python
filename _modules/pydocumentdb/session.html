@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Session Consistency Tracking in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Session Consistency Tracking in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">traceback</span>
@@ -87,11 +87,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Session Token for collection_link</span>
 <span class="sd">        </span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `resource_path` - self link / path to the resource</span>
+<span class="sd">        :param str resource_path:</span>
+<span class="sd">            Self link / path to the resource</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            - Session Token dictionary for the collection_id</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Session Token dictionary for the collection_id</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_lock</span><span class="p">:</span>
@@ -125,11 +127,10 @@
 <span class="sd">        Session token must only be updated from response of requests that successfully mutate resource on the </span>
 <span class="sd">        server side (write, replace, delete etc) </span>
 <span class="sd">        </span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `response_result` - response result</span>
-<span class="sd">            - `response_headers` - response headers</span>
-<span class="sd">        </span>
-<span class="sd">        :Returns:</span>
+<span class="sd">        :param dict response_result:</span>
+<span class="sd">        :param dict response_headers:</span>
+
+<span class="sd">        :return:</span>
 <span class="sd">            - None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -198,12 +199,13 @@
     <span class="k">def</span> <span class="nf">parse_session_token</span><span class="p">(</span><span class="n">response_headers</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Extracts session token from response headers and parses</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `response_headers` - response headers from the request</span>
+<span class="sd">        :param dict response_headers:</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            - a dictionary of partition id to session lsn</span>
-<span class="sd">            for given collection &quot;&quot;&quot;</span>
+<span class="sd">        :return:</span>
+<span class="sd">            A dictionary of partition id to session lsn</span>
+<span class="sd">            for given collection </span>
+<span class="sd">        :rtype: dict    </span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># extract session token from response header</span>
         <span class="n">session_token</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -225,7 +227,7 @@
 
 <div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../api/pydocumentdb.session.html#pydocumentdb.session.Session">[docs]</a><span class="k">class</span> <span class="nc">Session</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    State of a DocumentDB session. This session object</span>
+<span class="sd">    State of a Azure Cosmos DB session. This session object</span>
 <span class="sd">    can be shared across clients within the same process</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

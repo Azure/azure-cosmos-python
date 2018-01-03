@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Iterable query results in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Iterable query results in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">pydocumentdb.execution_context</span> <span class="k">import</span> <span class="n">execution_dispatcher</span>
 <span class="kn">from</span> <span class="nn">pydocumentdb.execution_context</span> <span class="k">import</span> <span class="n">base_execution_context</span>
@@ -82,12 +82,14 @@
 <span class="sd">        Instantiates a QueryIterable for non-client side partitioning queries.</span>
 <span class="sd">        _ProxyQueryExecutionContext will be used as the internal query execution context</span>
 <span class="sd">         </span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - client (DocumentClient), instance of document client</span>
-<span class="sd">            - query (dict) or (str), query</span>
-<span class="sd">            - options (dict), the request options for the request.</span>
-<span class="sd">            - fetch_function: method, fetch function</span>
-<span class="sd">            - collection_link (str): if this is a Document query/feed collection_link is required</span>
+<span class="sd">        :param DocumentClient client:</span>
+<span class="sd">            Instance of document client.</span>
+<span class="sd">        :param (str or dict) query:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">        :param method fetch_function:</span>
+<span class="sd">        :param str collection_link:</span>
+<span class="sd">            If this is a Document query/feed collection_link is required.</span>
 <span class="sd"> </span>
 <span class="sd">        Example of `fetch_function`:</span>
 <span class="sd"> </span>
@@ -111,12 +113,15 @@
 <span class="sd">        This constructor instantiates a QueryIterable for</span>
 <span class="sd">        client side partitioning queries, and sets _MultiCollectionQueryExecutionContext</span>
 <span class="sd">        as the internal execution context.</span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `client`: DocumentClient, instance of document client</span>
-<span class="sd">            - `query`: str or dict</span>
-<span class="sd">            - `options`: dict, the request options for the request.</span>
-<span class="sd">            - `database_link`: str, database self link or ID based link</span>
-<span class="sd">            - `partition_key`: str, partition key for the query</span>
+<span class="sd">        :param DocumentClient client:</span>
+<span class="sd">            Instance of document client</span>
+<span class="sd">        :param (str or dict) options:</span>
+<span class="sd">        :param dict options:</span>
+<span class="sd">            The request options for the request.</span>
+<span class="sd">        :param str database_link:</span>
+<span class="sd">            Database self link or ID based link</span>
+<span class="sd">        :param str partition_key:</span>
+<span class="sd">            Partition key for the query</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># This will call the base constructor(__init__ method above)</span>
         
@@ -164,8 +169,10 @@
 <span class="sd">        This method only exists for backward compatibility reasons. (Because QueryIterable</span>
 <span class="sd">        has exposed fetch_next_block api).</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            list. List of results.</span>
+<span class="sd">        :return:</span>
+<span class="sd">            List of results.</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
                 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ex_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

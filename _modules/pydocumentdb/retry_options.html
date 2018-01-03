@@ -67,16 +67,18 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Class for retry options in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Class for retry options in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="RetryOptions"><a class="viewcode-back" href="../../api/pydocumentdb.retry_options.html#pydocumentdb.retry_options.RetryOptions">[docs]</a><span class="k">class</span> <span class="nc">RetryOptions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The retry options to be applied to all requests when retrying</span>
 
-<span class="sd">    :Properties:</span>
-<span class="sd">        - `MaxRetryAttemptCount`: int, Max number of retries to be performed for a request. Default value 9.</span>
-<span class="sd">        - `FixedRetryIntervalInMilliseconds`: int, Fixed retry interval in milliseconds to wait between each retry ignoring the retryAfter returned as part of the response.</span>
-<span class="sd">        - `MaxRetryAttemptCount`: int, Max wait time in seconds to wait for a request while the retries are happening. Default value 30 seconds.</span>
+<span class="sd">    :ivar int MaxRetryAttemptCount:</span>
+<span class="sd">        Max number of retries to be performed for a request. Default value 9.</span>
+<span class="sd">    :ivar int FixedRetryIntervalInMilliseconds:</span>
+<span class="sd">        Fixed retry interval in milliseconds to wait between each retry ignoring the retryAfter returned as part of the response.</span>
+<span class="sd">    :ivar int MaxRetryAttemptCount:</span>
+<span class="sd">        Max wait time in seconds to wait for a request while the retries are happening. Default value 30 seconds.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_retry_attempt_count</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span> <span class="n">fixed_retry_interval_in_milliseconds</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_wait_time_in_seconds</span> <span class="o">=</span> <span class="mi">30</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_retry_attempt_count</span> <span class="o">=</span> <span class="n">max_retry_attempt_count</span>

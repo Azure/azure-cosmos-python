@@ -55,34 +55,29 @@
             
   <div class="section" id="module-pydocumentdb.document_client">
 <span id="pydocumentdb-document-client-module"></span><h1>pydocumentdb.document_client module<a class="headerlink" href="#module-pydocumentdb.document_client" title="Permalink to this headline">¶</a></h1>
-<p>Document client class for the Azure DocumentDB database service.</p>
+<p>Document client class for the Azure Cosmos DB database service.</p>
 <dl class="class">
 <dt id="pydocumentdb.document_client.DocumentClient">
 <em class="property">class </em><code class="descclassname">pydocumentdb.document_client.</code><code class="descname">DocumentClient</code><span class="sig-paren">(</span><em>url_connection</em>, <em>auth</em>, <em>connection_policy=None</em>, <em>consistency_level='Session'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Represents a document client.</p>
-<p>Provides a client-side logical representation of the Azure DocumentDB
+<p>Provides a client-side logical representation of the Azure Cosmos DB
 service. This client is used to configure and execute requests against the
 service.</p>
 <p>The service client encapsulates the endpoint and credentials used to access
-the DocumentDB service.</p>
+the Azure Cosmos DB service.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><cite>url_connection</cite>: str, the URL for connecting to the DB server.</li>
-<li><dl class="first docutils">
-<dt><cite>auth</cite>: dict, contains ‘masterKey’ or ‘resourceTokens’, where</dt>
-<dd>auth[‘masterKey’] is the default authorization key to use to
+<li><strong>url_connection</strong> (<em>str</em>) – The URL for connecting to the DB server.</li>
+<li><strong>auth</strong> (<em>dict</em>) – Contains ‘masterKey’ or ‘resourceTokens’, where
+auth[‘masterKey’] is the default authorization key to use to
 create the client, and auth[‘resourceTokens’] is the alternative
-authorization key.</dd>
-</dl>
-</li>
-<li><cite>connection_policy</cite>: documents.ConnectionPolicy, the connection
-policy for the client.</li>
-<li><cite>consistency_level</cite>: documents.ConsistencyLevel, the default
-consistency policy for client operations.</li>
+authorization key.</li>
+<li><strong>connection_policy</strong> (<a class="reference internal" href="pydocumentdb.documents.html#pydocumentdb.documents.ConnectionPolicy" title="pydocumentdb.documents.ConnectionPolicy"><em>documents.ConnectionPolicy</em></a>) – The connection policy for the client.</li>
+<li><strong>consistency_level</strong> (<a class="reference internal" href="pydocumentdb.documents.html#pydocumentdb.documents.ConsistencyLevel" title="pydocumentdb.documents.ConsistencyLevel"><em>documents.ConsistencyLevel</em></a>) – The default consistency policy for client operations.</li>
 </ul>
 </td>
 </tr>
@@ -91,22 +86,25 @@ consistency policy for client operations.</li>
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.Create">
 <code class="descname">Create</code><span class="sig-paren">(</span><em>body</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.Create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a DocumentDB resource and returns it.</p>
+<dd><p>Creates a Azure Cosmos DB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>body</cite>: dict</li>
-<li><cite>path</cite>: str</li>
-<li><cite>type</cite>: str</li>
-<li><cite>id</cite>: str</li>
-<li><cite>initial_headers</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>body</strong> (<em>dict</em>) – </li>
+<li><strong>path</strong> (<em>str</em>) – </li>
+<li><strong>type</strong> (<em>str</em>) – </li>
+<li><strong>id</strong> (<em>str</em>) – </li>
+<li><strong>initial_headers</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created Azure Cosmos DB resource.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -122,13 +120,16 @@ consistency policy for client operations.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>attachment</cite>: dict, the Azure DocumentDB attachment to create.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>attachment</strong> (<em>dict</em>) – The Azure Cosmos DB attachment to create.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created Attachment.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -144,13 +145,16 @@ consistency policy for client operations.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>readable_stream</cite>: file-like stream object</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>stream object) readable_stream</strong> (<em>(</em><em>file-like</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created Attachment.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -166,13 +170,16 @@ consistency policy for client operations.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>collection</cite>: dict, the Azure DocumentDB collection to create.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database_link</strong> (<em>str</em>) – The link to the database.</li>
+<li><strong>collection</strong> (<em>dict</em>) – The Azure Cosmos DB collection to create.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The Collection that was created.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -188,12 +195,15 @@ consistency policy for client operations.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database</cite>: dict, the Azure DocumentDB database to create.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database</strong> (<em>dict</em>) – The Azure Cosmos DB database to create.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The Database that was created.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -209,16 +219,18 @@ consistency policy for client operations.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_or_collection_link</cite>: str, the link to the database when using partitioning, otherwise link to the document collection.</li>
-<li><cite>document</cite>: dict, the Azure DocumentDB document to create.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
-<li><cite>options[‘disableAutomaticIdGeneration’]</cite>: bool, disables the
-automatic id generation. If id is missing in the body and this
+<li><strong>database_or_collection_link</strong> (<em>str</em>) – The link to the database when using partitioning, otherwise link to the document collection.</li>
+<li><strong>document</strong> (<em>dict</em>) – The Azure Cosmos DB document to create.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
+<li><strong>options['disableAutomaticIdGeneration']</strong> (<em>bool</em>) – Disables the automatic id generation. If id is missing in the body and this
 option is true, an error will be returned.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created Document.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -234,13 +246,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>user_link</cite>: str, the link to the user entity.</li>
-<li><cite>permission</cite>: dict, the Azure DocumentDB user permission to create.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>user_link</strong> (<em>str</em>) – The link to the user entity.</li>
+<li><strong>permission</strong> (<em>dict</em>) – The Azure Cosmos DB user permission to create.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created Permission.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -256,13 +271,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>sproc</cite>: str</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>sproc</strong> (<em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created Stored Procedure.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -278,13 +296,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>trigger</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>trigger</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created Trigger.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -300,13 +321,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>user</cite>: dict, the Azure DocumentDB user to create.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database_link</strong> (<em>str</em>) – The link to the database.</li>
+<li><strong>user</strong> (<em>dict</em>) – The Azure Cosmos DB user to create.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created User.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -322,13 +346,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the collection.</li>
-<li><cite>udf</cite>: str</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the collection.</li>
+<li><strong>udf</strong> (<em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The created UDF.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -344,12 +371,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>attachment_link</cite>: str, the link to the attachment.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>attachment_link</strong> (<em>str</em>) – The link to the attachment.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Attachment.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -365,12 +395,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Collection.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -386,12 +419,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>conflict_link</cite>: str, the link to the conflict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>conflict_link</strong> (<em>str</em>) – The link to the conflict.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Conflict.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -407,12 +443,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database_link</strong> (<em>str</em>) – The link to the database.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Database.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -428,12 +467,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Document.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -449,12 +491,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>permission_link</cite>: str, the link to the permission.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>permission_link</strong> (<em>str</em>) – The link to the permission.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Permission.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -464,21 +509,24 @@ option is true, an error will be returned.</li>
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.DeleteResource">
 <code class="descname">DeleteResource</code><span class="sig-paren">(</span><em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.DeleteResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.DeleteResource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes a DocumentDB resource and returns it.</p>
+<dd><p>Deletes a Azure Cosmos DB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>path</cite>: str</li>
-<li><cite>type</cite>: str</li>
-<li><cite>id</cite>: str</li>
-<li><cite>initial_headers</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>path</strong> (<em>str</em>) – </li>
+<li><strong>type</strong> (<em>str</em>) – </li>
+<li><strong>id</strong> (<em>str</em>) – </li>
+<li><strong>initial_headers</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Azure Cosmos DB resource.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -494,12 +542,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>sproc_link</cite>: str, the link to the stored procedure.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>sproc_link</strong> (<em>str</em>) – The link to the stored procedure.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Stored Procedure.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -515,12 +566,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>trigger_link</cite>: str, the link to the trigger.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>trigger_link</strong> (<em>str</em>) – The link to the trigger.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted Trigger.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -536,12 +590,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>user_link</cite>: str, the link to the user entity.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>user_link</strong> (<em>str</em>) – The link to the user entity.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted user.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -557,12 +614,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>udf_link</cite>: str, the link to the user defined function.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>udf_link</strong> (<em>str</em>) – The link to the user defined function.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The deleted UDF.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -578,13 +638,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>sproc_link</cite>: str, the link to the stored procedure.</li>
-<li><cite>params</cite>: dict, list or None</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>sproc_link</strong> (<em>str</em>) – The link to the stored procedure.</li>
+<li><strong>params</strong> (<em>dict</em>) – List or None</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The Stored Procedure response.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -599,7 +662,9 @@ option is true, an error will be returned.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">documents.DatabaseAccount</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The Database Account.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pydocumentdb.documents.html#pydocumentdb.documents.DatabaseAccount" title="pydocumentdb.documents.DatabaseAccount">documents.DatabaseAccount</a></td>
 </tr>
 </tbody>
 </table>
@@ -613,13 +678,11 @@ option is true, an error will be returned.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, database self link or ID based link</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database_link</strong> (<em>str</em>) – Database self link or ID based link.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">object, an instance of PartitionResolver</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An instance of PartitionResolver.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">object</td>
 </tr>
 </tbody>
 </table>
@@ -639,13 +702,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Attachments.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -661,13 +727,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database_link</strong> (<em>str</em>) – The link to the database.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Collections.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -683,13 +752,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Conflicts.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -705,12 +777,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Databases.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -726,14 +801,17 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_or_collection_link</cite>: str, the link to the database when using partitioning, otherwise link to the document collection.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
-<li><cite>partition_key</cite>: str, partition key for the query(default value None)</li>
+<li><strong>database_or_collection_link</strong> (<em>str</em>) – The link to the database when using partitioning, otherwise link to the document collection.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
+<li><strong>partition_key</strong> (<em>str</em>) – Partition key for the query(default value None)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Documents.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -749,15 +827,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>path</cite>: str, path to the document collection</li>
-<li><cite>collection_id</cite>: str, id of the document collection</li>
-<li><cite>query</cite>: str or dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
-<li><cite>partition_key_range_id</cite>: str, partition key range id</li>
+<li><strong>path</strong> (<em>str</em>) – Path to the document collection.</li>
+<li><strong>collection_id</strong> (<em>str</em>) – Id of the document collection.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
+<li><strong>partition_key_range_id</strong> (<em>str</em>) – Partition key range id.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
 </td>
 </tr>
 </tbody>
@@ -773,12 +851,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Offers.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -794,13 +875,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>user_link</cite>: str, the link to the user entity.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>user_link</strong> (<em>str</em>) – The link to the user entity.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Permissions.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -816,13 +900,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Stored Procedures.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -838,13 +925,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Triggers.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -860,13 +950,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the collection.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the collection.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of UDFs.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -882,13 +975,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>query</cite>: str or dict.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database_link</strong> (<em>str</em>) – The link to the database.</li>
+<li><strong>or dict) query</strong> (<em>(</em><em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Users.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -898,21 +994,24 @@ option is true, an error will be returned.</li>
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.Read">
 <code class="descname">Read</code><span class="sig-paren">(</span><em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.Read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads a DocumentDB resource and returns it.</p>
+<dd><p>Reads a Azure Cosmos DB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>path</cite>: str</li>
-<li><cite>type</cite>: str</li>
-<li><cite>id</cite>: str</li>
-<li><cite>initial_headers</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>path</strong> (<em>str</em>) – </li>
+<li><strong>type</strong> (<em>str</em>) – </li>
+<li><strong>id</strong> (<em>str</em>) – </li>
+<li><strong>initial_headers</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted Azure Cosmos DB resource.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -928,12 +1027,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>attachment_link</cite>: str, the link to the attachment.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>attachment_link</strong> (<em>str</em>) – The link to the attachment.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read Attachment.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -949,12 +1051,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Attachments.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -970,12 +1075,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read Collection.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -991,12 +1099,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database_link</strong> (<em>str</em>) – The link to the database.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Collections.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -1012,12 +1123,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>conflict_link</cite>: str, the link to the conflict.</li>
-<li><cite>opitions</cite>: dict</li>
+<li><strong>conflict_link</strong> (<em>str</em>) – The link to the conflict.</li>
+<li><strong>options</strong> (<em>dict</em>) – </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read Conflict.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1033,12 +1147,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>feed_options</cite>: dict</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>feed_options</strong> (<em>dict</em>) – </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Conflicts.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -1054,12 +1171,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database_link</strong> (<em>str</em>) – The link to the database.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The Database that was read.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1074,13 +1194,11 @@ option is true, an error will be returned.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>options</cite>: dict, the request options for the request.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> (<em>dict</em>) – The request options for the request.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Query Iterable of Databases.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></td>
 </tr>
 </tbody>
 </table>
@@ -1095,12 +1213,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read Document.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1116,12 +1237,15 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>feed_options</cite>: dict</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>feed_options</strong> (<em>dict</em>) – </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Documents.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -1145,13 +1269,11 @@ otherwise, returns a str.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>media_link</cite>: str, the link to the media.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>media_link</strong> (<em>str</em>) – The link to the media.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str or file-like stream object</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The read Media.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or file-like stream object</td>
 </tr>
 </tbody>
 </table>
@@ -1165,13 +1287,11 @@ otherwise, returns a str.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>offer_link</cite>: str, the link to the offer.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>offer_link</strong> (<em>str</em>) – The link to the offer.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The read Offer.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -1185,13 +1305,11 @@ otherwise, returns a str.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>options</cite>: dict, the request options for the request</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> (<em>dict</em>) – The request options for the request</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Query Iterable of Offers.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></td>
 </tr>
 </tbody>
 </table>
@@ -1206,12 +1324,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>permission_link</cite>: str, the link to the permission.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>permission_link</strong> (<em>str</em>) – The link to the permission.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read permission.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1227,12 +1348,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>user_link</cite>: str, the link to the user entity.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>user_link</strong> (<em>str</em>) – The link to the user entity.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Permissions.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -1248,12 +1372,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>sproc_link</cite>: str, the link to the stored procedure.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>sproc_link</strong> (<em>str</em>) – The link to the stored procedure.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read Stored Procedure.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1269,12 +1396,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Stored Procedures.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -1290,12 +1420,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>trigger_link</cite>: str, the link to the trigger.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>trigger_link</strong> (<em>str</em>) – The link to the trigger.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read Trigger.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1311,12 +1444,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of Triggers.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -1332,12 +1468,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>user_link</cite>: str, the link to the user entity.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>user_link</strong> (<em>str</em>) – The link to the user entity.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read User.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1353,12 +1492,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>udf_link</cite>: str, the link to the user defined function.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>udf_link</strong> (<em>str</em>) – The link to the user defined function.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read UDF.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1374,12 +1516,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Query Iterable of UDFs.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></p>
 </td>
 </tr>
 </tbody>
@@ -1394,14 +1539,15 @@ otherwise, returns a str.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">Params str database_link:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">The link to the database.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">query_iterable.QueryIterable</p>
-</td>
+<tr class="field-even field"><th class="field-name" colspan="2">Params dict options:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">The request options for the request.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Query iterable of Users.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pydocumentdb.query_iterable.html#pydocumentdb.query_iterable.QueryIterable" title="pydocumentdb.query_iterable.QueryIterable">query_iterable.QueryIterable</a></td>
 </tr>
 </tbody>
 </table>
@@ -1416,8 +1562,8 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><cite>database_link</cite>: str, database Self Link or ID based link</li>
-<li><cite>partition_resolver</cite>: object, an instance of PartitionResolver</li>
+<li><strong>database_link</strong> (<em>str</em>) – Database Self Link or ID based link.</li>
+<li><strong>partition_resolver</strong> (<em>object</em>) – An instance of PartitionResolver.</li>
 </ul>
 </td>
 </tr>
@@ -1428,22 +1574,25 @@ otherwise, returns a str.</p>
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.Replace">
 <code class="descname">Replace</code><span class="sig-paren">(</span><em>resource</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.Replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replaces a DocumentDB resource and returns it.</p>
+<dd><p>Replaces a Azure Cosmos DB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>resource</cite>: dict</li>
-<li><cite>path</cite>: str</li>
-<li><cite>type</cite>: str</li>
-<li><cite>id</cite>: str</li>
-<li><cite>initial_headers</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>resource</strong> (<em>dict</em>) – </li>
+<li><strong>path</strong> (<em>str</em>) – </li>
+<li><strong>type</strong> (<em>str</em>) – </li>
+<li><strong>id</strong> (<em>str</em>) – </li>
+<li><strong>initial_headers</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The new Azure Cosmos DB resource.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1459,13 +1608,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>attachment_link</cite>: str, the link to the attachment.</li>
-<li><cite>attachment</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>attachment_link</strong> (<em>str</em>) – The link to the attachment.</li>
+<li><strong>attachment</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The replaced Attachment</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1481,13 +1633,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the collection entity.</li>
-<li><cite>collection</cite>: dict, the collection to be used.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the collection entity.</li>
+<li><strong>collection</strong> (<em>dict</em>) – The collection to be used.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The new Collection.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1503,13 +1658,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>new_document</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>new_document</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The new Document.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1525,12 +1683,15 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>offer_link</cite>: str, the link to the offer.</li>
-<li><cite>offer</cite>: dict</li>
+<li><strong>offer_link</strong> (<em>str</em>) – The link to the offer.</li>
+<li><strong>offer</strong> (<em>dict</em>) – </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The replaced Offer.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1546,13 +1707,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>permission_link</cite>: str, the link to the permission.</li>
-<li><cite>permission</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>permission_link</strong> (<em>str</em>) – The link to the permission.</li>
+<li><strong>permission</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The new Permission.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1568,13 +1732,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>sproc_link</cite>: str, the link to the stored procedure.</li>
-<li><cite>sproc</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>sproc_link</strong> (<em>str</em>) – The link to the stored procedure.</li>
+<li><strong>sproc</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The replaced Stored Procedure.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1590,13 +1757,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>trigger_link</cite>: str, the link to the trigger.</li>
-<li><cite>trigger</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>trigger_link</strong> (<em>str</em>) – The link to the trigger.</li>
+<li><strong>trigger</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The replaced Trigger.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1612,13 +1782,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>user_link</cite>: str, the link to the user entity.</li>
-<li><cite>user</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>user_link</strong> (<em>str</em>) – The link to the user entity.</li>
+<li><strong>user</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The new User.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1634,13 +1807,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>udf_link</cite>: str, the link to the user defined function.</li>
-<li><cite>udf</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>udf_link</strong> (<em>str</em>) – The link to the user defined function.</li>
+<li><strong>udf</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The new UDF.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1662,13 +1838,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>media_link</cite>: str, the link to the media.</li>
-<li><cite>readable_stream</cite>: file-like stream object</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>media_link</strong> (<em>str</em>) – The link to the media.</li>
+<li><strong>stream object) readable_stream</strong> (<em>(</em><em>file-like</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str or file-like stream object</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The updated Media.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str or file-like stream object</p>
 </td>
 </tr>
 </tbody>
@@ -1678,22 +1857,25 @@ otherwise, returns a str.</p>
 <dl class="method">
 <dt id="pydocumentdb.document_client.DocumentClient.Upsert">
 <code class="descname">Upsert</code><span class="sig-paren">(</span><em>body</em>, <em>path</em>, <em>type</em>, <em>id</em>, <em>initial_headers</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/document_client.html#DocumentClient.Upsert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.document_client.DocumentClient.Upsert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Upserts a DocumentDB resource and returns it.</p>
+<dd><p>Upserts a Azure Cosmos DB resource and returns it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>body</cite>: dict</li>
-<li><cite>path</cite>: str</li>
-<li><cite>type</cite>: str</li>
-<li><cite>id</cite>: str</li>
-<li><cite>initial_headers</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>body</strong> (<em>dict</em>) – </li>
+<li><strong>path</strong> (<em>str</em>) – </li>
+<li><strong>type</strong> (<em>str</em>) – </li>
+<li><strong>id</strong> (<em>str</em>) – </li>
+<li><strong>initial_headers</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted Azure Cosmos DB resource.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1709,13 +1891,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>attachment</cite>: dict, the Azure DocumentDB attachment to upsert.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>attachment</strong> (<em>dict</em>) – The Azure Cosmos DB attachment to upsert.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted Attachment.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1731,13 +1916,16 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_link</cite>: str, the link to the document.</li>
-<li><cite>readable_stream</cite>: file-like stream object</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>document_link</strong> (<em>str</em>) – The link to the document.</li>
+<li><strong>stream object) readable_stream</strong> (<em>(</em><em>file-like</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted Attachment.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1753,16 +1941,18 @@ otherwise, returns a str.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_or_collection_link</cite>: str, the link to the database when using partitioning, otherwise link to the document collection.</li>
-<li><cite>document</cite>: dict, the Azure DocumentDB document to upsert.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
-<li><cite>options[‘disableAutomaticIdGeneration’]</cite>: bool, disables the
-automatic id generation. If id is missing in the body and this
+<li><strong>database_or_collection_link</strong> (<em>str</em>) – The link to the database when using partitioning, otherwise link to the document collection.</li>
+<li><strong>document</strong> (<em>dict</em>) – The Azure Cosmos DB document to upsert.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
+<li><strong>options['disableAutomaticIdGeneration']</strong> (<em>bool</em>) – Disables the automatic id generation. If id is missing in the body and this
 option is true, an error will be returned.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted Document.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1778,13 +1968,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>user_link</cite>: str, the link to the user entity.</li>
-<li><cite>permission</cite>: dict, the Azure DocumentDB user permission to upsert.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>user_link</strong> (<em>str</em>) – The link to the user entity.</li>
+<li><strong>permission</strong> (<em>dict</em>) – The Azure Cosmos DB user permission to upsert.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted permission.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1800,13 +1993,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>sproc</cite>: str</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>sproc</strong> (<em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted Stored Procedure.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1822,13 +2018,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the document collection.</li>
-<li><cite>trigger</cite>: dict</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the document collection.</li>
+<li><strong>trigger</strong> (<em>dict</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted Trigger.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1844,13 +2043,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>database_link</cite>: str, the link to the database.</li>
-<li><cite>user</cite>: dict, the Azure DocumentDB user to upsert.</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>database_link</strong> (<em>str</em>) – The link to the database.</li>
+<li><strong>user</strong> (<em>dict</em>) – The Azure Cosmos DB user to upsert.</li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted User.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -1866,13 +2068,16 @@ option is true, an error will be returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>collection_link</cite>: str, the link to the collection.</li>
-<li><cite>udf</cite>: str</li>
-<li><cite>options</cite>: dict, the request options for the request.</li>
+<li><strong>collection_link</strong> (<em>str</em>) – The link to the collection.</li>
+<li><strong>udf</strong> (<em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – The request options for the request.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upserted UDF.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>

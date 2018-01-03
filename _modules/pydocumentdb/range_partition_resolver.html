@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Range partition resolver implementation in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Range partition resolver implementation in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">pydocumentdb.range</span> <span class="k">as</span> <span class="nn">prange</span>
@@ -78,9 +78,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key_extractor</span><span class="p">,</span> <span class="n">partition_map</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `partition_key_extractor`: lambda, returning the partition key from the document passed.</span>
-<span class="sd">            - `partition_map`: dict, the dictionary of ranges mapped to their associated collection</span>
+<span class="sd">        :param lambda partition_key_extractor:</span>
+<span class="sd">            Returning the partition key from the document passed.</span>
+<span class="sd">        :param dict partition_map:</span>
+<span class="sd">            The dictionary of ranges mapped to their associated collection</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">partition_key_extractor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;partition_key_extractor is None.&quot;</span><span class="p">)</span>
@@ -93,11 +94,13 @@
 <div class="viewcode-block" id="RangePartitionResolver.ResolveForCreate"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForCreate">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForCreate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resolves the collection for creating the document based on the partition key.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document`: dict, the document to be created.</span>
+<span class="sd">        :param dict document:</span>
+<span class="sd">            The document to be created.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            str, collection Self link or Name based link which should handle the Create operation.</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Collection Self link or Name based link which should handle the Create operation.</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">document</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;document is None.&quot;</span><span class="p">)</span>
@@ -113,11 +116,13 @@
 <div class="viewcode-block" id="RangePartitionResolver.ResolveForRead"><a class="viewcode-back" href="../../api/pydocumentdb.range_partition_resolver.html#pydocumentdb.range_partition_resolver.RangePartitionResolver.ResolveForRead">[docs]</a>    <span class="k">def</span> <span class="nf">ResolveForRead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition_key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resolves the collection for reading/querying the documents based on the partition key.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">            - `document`: dict, the document to be read/queried.</span>
+<span class="sd">        :param dict document:</span>
+<span class="sd">            The document to be read/queried.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            list, collection Self link(s) or Name based link(s) which should handle the Read operation.</span>
+<span class="sd">        :return:</span>
+<span class="sd">            Collection Self link(s) or Name based link(s) which should handle the Read operation.</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">intersecting_ranges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GetIntersectingRanges</span><span class="p">(</span><span class="n">partition_key</span><span class="p">)</span>
 

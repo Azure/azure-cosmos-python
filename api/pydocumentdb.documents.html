@@ -55,7 +55,7 @@
             
   <div class="section" id="module-pydocumentdb.documents">
 <span id="pydocumentdb-documents-module"></span><h1>pydocumentdb.documents module<a class="headerlink" href="#module-pydocumentdb.documents" title="Permalink to this headline">¶</a></h1>
-<p>AzureDocument classes and enums for the Azure DocumentDB database service.</p>
+<p>AzureDocument classes and enums for the Azure Cosmos DB database service.</p>
 <dl class="class">
 <dt id="pydocumentdb.documents.ConnectionMode">
 <em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">ConnectionMode</code><a class="reference internal" href="../_modules/pydocumentdb/documents.html#ConnectionMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.documents.ConnectionMode" title="Permalink to this definition">¶</a></dt>
@@ -65,11 +65,8 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Gateway</cite>: Use the DocumentDB gateway to route all requests. The
-gateway proxies requests to the right data partition.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>Gateway</strong> (<em>int</em>) – Use the Azure Cosmos DB gateway to route all requests. The
+gateway proxies requests to the right data partition.</td>
 </tr>
 </tbody>
 </table>
@@ -89,39 +86,29 @@ gateway proxies requests to the right data partition.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>RequestTimeout</cite>: int, gets or sets the request timeout (time to wait
-for response from network peer)</li>
-<li><cite>MediaRequestTimeout</cite>: int, gets or sets Time to wait for response
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RequestTimeout</strong> (<em>int</em>) – Gets or sets the request timeout (time to wait
+for response from network peer).</li>
+<li><strong>MediaRequestTimeout</strong> (<em>int</em>) – Gets or sets Time to wait for response
 from network peer for attachment content (aka media) operations.</li>
-<li><cite>ConnectionMode</cite>: int (documents.ConnectionMode), gets or sets the
-connection mode used in the client. Currently only Gateway is supported.</li>
-<li><cite>MediaReadMode</cite>: str (MediaReadMode.Buffered), gets or sets the
-attachment content (aka media) download mode.</li>
-<li><cite>SSLConfiguration</cite>: documents.SSLConfiguration, gets or sets the SSL configuration.</li>
-<li><cite>ProxyConfiguration</cite>: documents.ProxyConfiguration, gets or sets the proxy configuration.</li>
-<li><dl class="first docutils">
-<dt><cite>EnableEndpointDiscovery</cite>: boolean, gets or sets endpoint discovery flag for geo-replicated database accounts.</dt>
-<dd>When EnableEndpointDiscovery is true, the client will automatically discover the
+<li><strong>ConnectionMode</strong> (<a class="reference internal" href="#pydocumentdb.documents.ConnectionMode" title="pydocumentdb.documents.ConnectionMode"><em>documents.ConnectionMode</em></a>) – Gets or sets the connection mode used in the client. Currently 
+only Gateway is supported.</li>
+<li><strong>MediaReadMode</strong> (<a class="reference internal" href="#pydocumentdb.documents.MediaReadMode.Buffered" title="pydocumentdb.documents.MediaReadMode.Buffered"><em>MediaReadMode.Buffered</em></a>) – Gets or sets the attachment content (aka media) download mode.</li>
+<li><strong>SSLConfiguration</strong> (<a class="reference internal" href="#pydocumentdb.documents.SSLConfiguration" title="pydocumentdb.documents.SSLConfiguration"><em>documents.SSLConfiguration</em></a>) – Gets or sets the SSL configuration.</li>
+<li><strong>ProxyConfiguration</strong> (<a class="reference internal" href="#pydocumentdb.documents.ProxyConfiguration" title="pydocumentdb.documents.ProxyConfiguration"><em>documents.ProxyConfiguration</em></a>) – Gets or sets the proxy configuration.</li>
+<li><strong>EnableEndpointDiscovery</strong> (<em>boolean</em>) – Gets or sets endpoint discovery flag for geo-replicated database accounts.
+When EnableEndpointDiscovery is true, the client will automatically discover the
 current write and read locations and direct the requests to the correct location
-taking into consideration of the user’s preference(if provided) as PreferredLocations.</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt><cite>PreferredLocations</cite>: list, gets or sets the preferred locations for geo-replicated database accounts.</dt>
-<dd>When EnableEndpointDiscovery is true and PreferredLocations is non-empty,
+taking into consideration of the user’s preference(if provided) as PreferredLocations.</li>
+<li><strong>PreferredLocations</strong> (<em>list</em>) – Gets or sets the preferred locations for geo-replicated database accounts.
+When EnableEndpointDiscovery is true and PreferredLocations is non-empty,
 the client will use this list to evaluate the final location, taking into consideration
 the order specified in PreferredLocations list. The locations in this list are specified as the names of
-the azure documentdb locations like, ‘West US’, ‘East US’, ‘Central India’ and so on.</dd>
-</dl>
-</li>
-<li><cite>RetryOptions</cite>: RetryOptions, gets or sets the retry options to be applied to all requests when retrying.</li>
-<li><dl class="first docutils">
-<dt><cite>DisableSSLVerification</cite> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, flag to disable SSL verification for the requests. SSL verification is enabled by default. </span></dt>
-<dd>Don’t set this when targeting production endpoints.
-This is intended to be used only when targeting emulator endpoint to avoid failing your requests with SSL related error.</dd>
-</dl>
-</li>
+the azure cosmos db locations like, ‘West US’, ‘East US’, ‘Central India’ and so on.</li>
+<li><strong>RetryOptions</strong> (<a class="reference internal" href="pydocumentdb.retry_options.html#pydocumentdb.retry_options.RetryOptions" title="pydocumentdb.retry_options.RetryOptions"><em>RetryOptions</em></a>) – Gets or sets the retry options to be applied to all requests when retrying.</li>
+<li><strong>DisableSSLVerification</strong> (<em>boolean</em>) – Flag to disable SSL verification for the requests. SSL verification is enabled by default. 
+Don’t set this when targeting production endpoints.
+This is intended to be used only when targeting emulator endpoint to avoid failing your requests with SSL related error.</li>
 </ul>
 </td>
 </tr>
@@ -133,7 +120,7 @@ This is intended to be used only when targeting emulator endpoint to avoid faili
 <dt id="pydocumentdb.documents.ConsistencyLevel">
 <em class="property">class </em><code class="descclassname">pydocumentdb.documents.</code><code class="descname">ConsistencyLevel</code><a class="reference internal" href="../_modules/pydocumentdb/documents.html#ConsistencyLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.documents.ConsistencyLevel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Represents the consistency levels supported for DocumentDB client
+<p>Represents the consistency levels supported for Azure Cosmos DB client
 operations.</p>
 <p>The requested ConsistencyLevel must match or be weaker than that provisioned
 for the database account. Consistency levels.</p>
@@ -143,20 +130,20 @@ Session, ConsistentPrefix and Eventual.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Strong</cite>: Strong Consistency guarantees that read operations always
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Strong</strong> (<em>str</em>) – Strong Consistency guarantees that read operations always
 return the value that was last written.</li>
-<li><cite>BoundedStaleness</cite> Bounded Staleness guarantees that reads are not
+<li><strong>BoundedStaleness</strong> (<em>str</em>) – Bounded Staleness guarantees that reads are not
 too out-of-date. This can be configured based on number of operations
 (MaxStalenessPrefix) or time (MaxStalenessIntervalInSeconds).</li>
-<li><cite>Session</cite>: Session Consistency guarantees monotonic reads (you never
+<li><strong>Session</strong> (<em>str</em>) – Session Consistency guarantees monotonic reads (you never
 read old data, then new, then old again), monotonic writes (writes
 are ordered) and read your writes (your writes are immediately
 visible to your reads) within any single session.</li>
-<li><cite>Eventual</cite>: Eventual Consistency guarantees that reads will return
+<li><strong>Eventual</strong> (<em>str</em>) – Eventual Consistency guarantees that reads will return
 a subset of writes. All writes will be eventually be available for
 reads.</li>
-<li><cite>ConsistentPrefix</cite>: ConsistentPrefix Consistency guarantees that
+<li><strong>ConsistentPrefix</strong> (<em>str</em>) – ConsistentPrefix Consistency guarantees that
 reads will return some prefix of all writes with no gaps. All writes
 will be eventually be available for reads.</li>
 </ul>
@@ -200,12 +187,12 @@ will be eventually be available for reads.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Number</cite>: Represents a numeric data type</li>
-<li><cite>String</cite>: Represents a string data type.</li>
-<li><cite>Point</cite>: Represents a point data type</li>
-<li><cite>LineString</cite>: Represents a line string data type</li>
-<li><cite>Polygon</cite>: Represents a polygon data type</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Number</strong> (<em>str</em>) – Represents a numeric data type.</li>
+<li><strong>String</strong> (<em>str</em>) – Represents a string data type.</li>
+<li><strong>Point</strong> (<em>str</em>) – Represents a point data type.</li>
+<li><strong>LineString</strong> (<em>str</em>) – Represents a line string data type.</li>
+<li><strong>Polygon</strong> (<em>str</em>) – Represents a polygon data type.</li>
 </ul>
 </td>
 </tr>
@@ -247,33 +234,19 @@ will be eventually be available for reads.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><cite>DatabaseLink</cite>: str, the self-link for Databases in the
-databaseAccount.</p>
-</li>
-<li><p class="first"><cite>MediaLink</cite>: str, the self-link for Media in the databaseAccount.</p>
-</li>
-<li><p class="first"><cite>MaxMediaStorageUsageInMB</cite>: int, attachment content (media) storage
-quota in MBs ( Retrieved from gateway ).</p>
-</li>
-<li><p class="first"><cite>CurrentMediaStorageUsageInMB</cite>: int, current attachment content
-(media) usage in MBs (Retrieved from gateway ).</p>
-<p>Value is returned from cached information updated periodically and
-is not guaranteed to be real time.</p>
-</li>
-<li><p class="first"><cite>ConsistencyPolicy</cite>: dict, UserConsistencyPolicy settings.</p>
-</li>
-<li><p class="first"><cite>ConsistencyPolicy[‘defaultConsistencyLevel’]</cite>: dict, the default
-consistency level.</p>
-</li>
-<li><p class="first"><cite>ConsistencyPolicy[‘maxStalenessPrefix’]</cite>: int, in bounded staleness
-consistency, the maximum allowed staleness in terms difference in
-sequence numbers (aka version).</p>
-</li>
-<li><p class="first"><cite>ConsistencyPolicy[‘maxStalenessIntervalInSeconds’]</cite>: int, In bounded
-staleness consistency, the maximum allowed staleness in terms time
-interval.</p>
-</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>DatabaseLink</strong> (<em>str</em>) – The self-link for Databases in the databaseAccount.</li>
+<li><strong>MediaLink</strong> (<em>str</em>) – The self-link for Media in the databaseAccount.</li>
+<li><strong>MaxMediaStorageUsageInMB</strong> (<em>int</em>) – Attachment content (media) storage quota in MBs (Retrieved from gateway).</li>
+<li><strong>CurrentMediaStorageUsageInMB</strong> (<em>int</em>) – Current attachment content (media) usage in MBs (Retrieved from gateway).
+Value is returned from cached information updated periodically and
+is not guaranteed to be real time.</li>
+<li><strong>ConsistencyPolicy</strong> (<em>dict</em>) – UserConsistencyPolicy settings.</li>
+<li><strong>ConsistencyPolicy['defaultConsistencyLevel']</strong> (<em>dict</em>) – The default consistency level.</li>
+<li><strong>ConsistencyPolicy['maxStalenessPrefix']</strong> (<em>int</em>) – In bounded staleness consistency, the maximum allowed staleness in 
+terms difference in sequence numbers (aka version).</li>
+<li><strong>ConsistencyPolicy['maxStalenessIntervalInSeconds']</strong> (<em>int</em>) – In bounded staleness consistency, the maximum allowed staleness in 
+terms time interval.</li>
 </ul>
 </td>
 </tr>
@@ -302,10 +275,10 @@ interval.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Hash</cite>: The index entries are hashed to serve point look up queries.
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Hash</strong> (<em>str</em>) – The index entries are hashed to serve point look up queries.
 Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop = 5</li>
-<li><cite>Range</cite>: The index entries are ordered. Range indexes are optimized for
+<li><strong>Range</strong> (<em>str</em>) – The index entries are ordered. Range indexes are optimized for
 inequality predicate queries with efficient range scans.
 Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop &gt; 5</li>
 </ul>
@@ -334,10 +307,10 @@ Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop &gt; 5</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Default</cite>: Use any pre-defined/pre-configured defaults.</li>
-<li><cite>Include</cite>: Index the resource.</li>
-<li><cite>Exclude</cite>: Do not index the resource.</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Default</strong> (<em>int</em>) – Use any pre-defined/pre-configured defaults.</li>
+<li><strong>Exclude</strong> (<em>int</em>) – Index the resource.</li>
+<li><strong>Include</strong> (<em>int</em>) – Do not index the resource.</li>
 </ul>
 </td>
 </tr>
@@ -369,19 +342,19 @@ Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop &gt; 5</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><cite>Consistent</cite>: Index is updated synchronously with a create or
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Consistent</strong> (<em>str</em>) – <p>Index is updated synchronously with a create or
 update operation. With consistent indexing, query behavior is the
 same as the default consistency level for the collection.</p>
 <p>The index is
 always kept up to date with the data.</p>
 </li>
-<li><p class="first"><cite>Lazy</cite>: Index is updated asynchronously with respect to a create
+<li><strong>Lazy</strong> (<em>str</em>) – <p>Index is updated asynchronously with respect to a create
 or update operation.</p>
 <p>With lazy indexing, queries are eventually consistent. The index is
 updated when the collection is idle.</p>
 </li>
-<li><p class="first"><cite>NoIndex</cite>: No index is provided.</p>
+<li><strong>NoIndex</strong> (<em>str</em>) – <p>No index is provided.</p>
 <p>Setting IndexingMode to “None” drops the index. Use this if you don’t
 want to maintain the index for a document collection, to save the
 storage cost or improve the write throughput. Your queries will
@@ -419,12 +392,12 @@ degenerate to scans of the entire collection.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><cite>Buffered</cite>: Content is buffered at the client and not directly
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Buffered</strong> (<em>str</em>) – <p>Content is buffered at the client and not directly
 streamed from the content store.</p>
 <p>Use Buffered to reduce the time taken to read and write media files.</p>
 </li>
-<li><p class="first"><cite>Streamed</cite>: Content is directly streamed from the content store
+<li><strong>Streamed</strong> (<em>str</em>) – <p>Content is directly streamed from the content store
 without any buffering at the client.</p>
 <p>Use Streamed to reduce the client memory overhead of reading and
 writing media files.</p>
@@ -455,10 +428,7 @@ writing media files.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Hash</cite>: The partition key definition path is hashed.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>Hash</strong> (<em>str</em>) – The partition key definition path is hashed.</td>
 </tr>
 </tbody>
 </table>
@@ -478,10 +448,10 @@ writing media files.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>NoneMode</cite>: None.</li>
-<li><cite>Read</cite>: Permission applicable for read operations only.</li>
-<li><cite>All</cite>: Permission applicable for all operations.</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>NoneMode</strong> (<em>str</em>) – None.</li>
+<li><strong>Read</strong> (<em>str</em>) – Permission applicable for read operations only.</li>
+<li><strong>All</strong> (<em>str</em>) – Permission applicable for all operations.</li>
 </ul>
 </td>
 </tr>
@@ -513,9 +483,9 @@ writing media files.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Host</cite>: str, the host address of the proxy.</li>
-<li><cite>Port</cite>: int, the port number of the proxy.</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Host</strong> (<em>str</em>) – The host address of the proxy.</li>
+<li><strong>Port</strong> (<em>int</em>) – The port number of the proxy.</li>
 </ul>
 </td>
 </tr>
@@ -533,10 +503,10 @@ writing media files.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>SSLKeyFile</cite>: str, the path of the key file for ssl connection.</li>
-<li><cite>SSLCertFile</cite>: str, the path of the cert file for ssl connection.</li>
-<li><cite>SSLCaCerts</cite>: str, the path of the CA_BUNDLE file with certificates of trusted CAs.</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>SSLKeyFIle</strong> (<em>str</em>) – The path of the key file for ssl connection.</li>
+<li><strong>SSLCertFile</strong> (<em>str</em>) – The path of the cert file for ssl connection.</li>
+<li><strong>SSLCaCerts</strong> (<em>str</em>) – The path of the CA_BUNDLE file with certificates of trusted CAs.</li>
 </ul>
 </td>
 </tr>
@@ -553,12 +523,12 @@ writing media files.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>All</cite>: All operations.</li>
-<li><cite>Create</cite>: Create operations only.</li>
-<li><cite>Update</cite>: Update operations only.</li>
-<li><cite>Delete</cite>: Delete operations only.</li>
-<li><cite>Replace</cite>: Replace operations only.</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>All</strong> (<em>str</em>) – All operations.</li>
+<li><strong>Create</strong> (<em>str</em>) – Create operations only.</li>
+<li><strong>Update</strong> (<em>str</em>) – Update operations only.</li>
+<li><strong>Delete</strong> (<em>str</em>) – Delete operations only.</li>
+<li><strong>Replace</strong> (<em>str</em>) – Replace operations only.</li>
 </ul>
 </td>
 </tr>
@@ -600,9 +570,9 @@ writing media files.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><ul class="first last simple">
-<li><cite>Pre</cite>: Trigger should be executed before the associated operation(s).</li>
-<li><cite>Post</cite>: Trigger should be executed after the associated operation(s).</li>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Pre</strong> (<em>str</em>) – Trigger should be executed before the associated operation(s).</li>
+<li><strong>Post</strong> (<em>str</em>) – Trigger should be executed after the associated operation(s).</li>
 </ul>
 </td>
 </tr>

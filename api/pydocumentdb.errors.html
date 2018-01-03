@@ -55,25 +55,28 @@
             
   <div class="section" id="module-pydocumentdb.errors">
 <span id="pydocumentdb-errors-module"></span><h1>pydocumentdb.errors module<a class="headerlink" href="#module-pydocumentdb.errors" title="Permalink to this headline">¶</a></h1>
-<p>PyDocumentDB Exceptions in the Azure DocumentDB database service.</p>
+<p>PyDocumentDB Exceptions in the Azure Cosmos DB database service.</p>
 <dl class="exception">
 <dt id="pydocumentdb.errors.DocumentDBError">
 <em class="property">exception </em><code class="descclassname">pydocumentdb.errors.</code><code class="descname">DocumentDBError</code><a class="reference internal" href="../_modules/pydocumentdb/errors.html#DocumentDBError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.errors.DocumentDBError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
-<p>Base class for all DocumentDB errors.</p>
+<p>Base class for all Azure Cosmos DB errors.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="pydocumentdb.errors.HTTPFailure">
 <em class="property">exception </em><code class="descclassname">pydocumentdb.errors.</code><code class="descname">HTTPFailure</code><span class="sig-paren">(</span><em>status_code</em>, <em>message=''</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/errors.html#HTTPFailure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.errors.HTTPFailure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydocumentdb.errors.DocumentDBError" title="pydocumentdb.errors.DocumentDBError"><code class="xref py py-class docutils literal"><span class="pre">pydocumentdb.errors.DocumentDBError</span></code></a></p>
-<p>Raised when a HTTP request to the DocumentDB has failed.</p>
+<p>Raised when a HTTP request to the Azure Cosmos DB has failed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body">status_code: int
-message: str</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>status_code</strong> (<em>int</em>) – </li>
+<li><strong>message</strong> (<em>str</em>) – </li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>

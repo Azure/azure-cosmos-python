@@ -55,7 +55,7 @@
             
   <div class="section" id="module-pydocumentdb.base">
 <span id="pydocumentdb-base-module"></span><h1>pydocumentdb.base module<a class="headerlink" href="#module-pydocumentdb.base" title="Permalink to this headline">¶</a></h1>
-<p>Base functions in the Azure DocumentDB database service.</p>
+<p>Base functions in the Azure Cosmos DB database service.</p>
 <dl class="function">
 <dt id="pydocumentdb.base.DecodeBase64String">
 <code class="descclassname">pydocumentdb.base.</code><code class="descname">DecodeBase64String</code><span class="sig-paren">(</span><em>string_to_decode</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydocumentdb/base.html#DecodeBase64String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydocumentdb.base.DecodeBase64String" title="Permalink to this definition">¶</a></dt>
@@ -64,13 +64,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>string_to_decode</cite>: string to decode</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string_to_decode</strong> (<em>string</em>) – String to decode.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, path with beginning and ending slashes trimmed</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Path with beginning and ending slashes trimmed.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -86,7 +84,9 @@ is the same as GUID when represented as a string.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">str, the generated random GUID.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The generated random GUID.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -100,13 +100,11 @@ is the same as GUID when represented as a string.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>media_id</cite>: str</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>media_id</strong> (<em>str</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, the attachment id from the media id.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The attachment id from the media id.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -129,17 +127,20 @@ So we also rely on</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>self_link</cite> - str, self link of the resource, as obtained from response result</li>
-<li><cite>alt_content_path</cite> - owner path of the resource, as obtained from response header</li>
-<li><dl class="first docutils">
-<dt><cite>resource_id</cite> - ‘id’ as returned from the response result. This is only used if it is deduced that the</dt>
-<dd>request was to create collection</dd>
+<li><strong>self_link</strong> (<em>str</em>) – Self link of the resource, as obtained from response result.</li>
+<li><strong>alt_content_path</strong> (<em>str</em>) – Owner path of the resource, as obtained from response header.</li>
+<li><strong>resource_id</strong> (<em>str</em>) – <dl class="docutils">
+<dt>‘id’ as returned from the response result. This is only used if it is deduced that the</dt>
+<dd>request was to create a collection.</dd>
 </dl>
 </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple of (collection rid, collection name)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple of (collection rid, collection name)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
 </td>
 </tr>
 </tbody>
@@ -154,13 +155,11 @@ So we also rely on</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>link</cite>: str, resource link</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>link</strong> (<em>str</em>) – Resource link</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, document collection link</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Document collection link.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -175,18 +174,21 @@ So we also rely on</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>document_client</cite>: document_client.DocumentClient</li>
-<li><cite>default_headers</cite>: dict</li>
-<li><cite>verb</cite>: str</li>
-<li><cite>path</cite>: str</li>
-<li><cite>resource_id</cite>: str</li>
-<li><cite>resource_type</cite>: str</li>
-<li><cite>options</cite>: dict</li>
-<li><cite>partition_key_range_id</cite> : str</li>
+<li><strong>document_client</strong> (<a class="reference internal" href="pydocumentdb.document_client.html#pydocumentdb.document_client.DocumentClient" title="pydocumentdb.document_client.DocumentClient"><em>document_client.DocumentClient</em></a>) – </li>
+<li><strong>default_headers</strong> (<em>dict</em>) – </li>
+<li><strong>verb</strong> (<em>str</em>) – </li>
+<li><strong>path</strong> (<em>str</em>) – </li>
+<li><strong>resource_id</strong> (<em>str</em>) – </li>
+<li><strong>resource_type</strong> (<em>str</em>) – </li>
+<li><strong>options</strong> (<em>dict</em>) – </li>
+<li><strong>partition_key_range_id</strong> (<em>str</em>) – </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict, the HTTP request headers.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP request headers.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
@@ -202,12 +204,15 @@ So we also rely on</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>resource_link</cite>: str</li>
-<li><cite>resource_type</cite>: str</li>
+<li><strong>resource_link</strong> (<em>str</em>) – </li>
+<li><strong>resource_type</strong> (<em>str</em>) – </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, path from resource link with resource type appended(if provided).</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Path from resource link with resource type appended (if provided).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
 </td>
 </tr>
 </tbody>
@@ -222,13 +227,11 @@ So we also rely on</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>resource_link</cite>: str</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_link</strong> (<em>str</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, the resource id or full name from the resource link.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The resource id or full name from the resource link.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -243,13 +246,16 @@ So we also rely on</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>s</cite>: str, input string</li>
-<li><cite>value</cite>: char, input char to be searched</li>
-<li><cite>n</cite>: int, Nth occurance of char to be searched</li>
+<li><strong>s</strong> (<em>str</em>) – Input string</li>
+<li><strong>value</strong> (<em>char</em>) – Input char to be searched.</li>
+<li><strong>n</strong> (<em>int</em>) – Nth occurrence of char to be searched.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">int, index of the Nth occurance in the string</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Index of the Nth occurrence in the string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
 </td>
 </tr>
 </tbody>
@@ -264,13 +270,11 @@ So we also rely on</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>link</cite>: str, link to analyze</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>link</strong> (<em>str</em>) – Link to analyze</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">boolean, True or False.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
 </tr>
 </tbody>
 </table>
@@ -284,13 +288,11 @@ So we also rely on</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>link</cite>: str, link to analyze</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>link</strong> (<em>str</em>) – Link to analyze</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">boolean, True or False.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
 </tr>
 </tbody>
 </table>
@@ -304,13 +306,11 @@ So we also rely on</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>link</cite>: str</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>link</strong> (<em>str</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">boolean, True if link is name based otherwise False.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if link is name-based; otherwise, False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
 </tr>
 </tbody>
 </table>
@@ -329,13 +329,11 @@ So we also rely on</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><cite>path</cite>: str</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str, path with beginning and ending slashes trimmed</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Path with beginning and ending slashes trimmed.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>

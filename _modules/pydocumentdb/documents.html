@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;AzureDocument classes and enums for the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;AzureDocument classes and enums for the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">pydocumentdb.retry_options</span> <span class="k">as</span> <span class="nn">retry_options</span>
@@ -75,26 +75,26 @@
 <div class="viewcode-block" id="DatabaseAccount"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.DatabaseAccount">[docs]</a><span class="k">class</span> <span class="nc">DatabaseAccount</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Database account. A DatabaseAccount is the container for databases.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `DatabaseLink`: str, the self-link for Databases in the</span>
-<span class="sd">          databaseAccount.</span>
-<span class="sd">        - `MediaLink`: str, the self-link for Media in the databaseAccount.</span>
-<span class="sd">        - `MaxMediaStorageUsageInMB`: int, attachment content (media) storage</span>
-<span class="sd">          quota in MBs ( Retrieved from gateway ).</span>
-<span class="sd">        - `CurrentMediaStorageUsageInMB`: int, current attachment content</span>
-<span class="sd">          (media) usage in MBs (Retrieved from gateway ).</span>
-
-<span class="sd">          Value is returned from cached information updated periodically and</span>
-<span class="sd">          is not guaranteed to be real time.</span>
-<span class="sd">        - `ConsistencyPolicy`: dict, UserConsistencyPolicy settings.</span>
-<span class="sd">        - `ConsistencyPolicy[&#39;defaultConsistencyLevel&#39;]`: dict, the default</span>
-<span class="sd">          consistency level.</span>
-<span class="sd">        - `ConsistencyPolicy[&#39;maxStalenessPrefix&#39;]`: int, in bounded staleness</span>
-<span class="sd">          consistency, the maximum allowed staleness in terms difference in</span>
-<span class="sd">          sequence numbers (aka version).</span>
-<span class="sd">        - `ConsistencyPolicy[&#39;maxStalenessIntervalInSeconds&#39;]`: int, In bounded</span>
-<span class="sd">          staleness consistency, the maximum allowed staleness in terms time</span>
-<span class="sd">          interval.</span>
+<span class="sd">    :ivar str DatabaseLink:</span>
+<span class="sd">        The self-link for Databases in the databaseAccount.</span>
+<span class="sd">    :ivar str MediaLink:</span>
+<span class="sd">        The self-link for Media in the databaseAccount.</span>
+<span class="sd">    :ivar int MaxMediaStorageUsageInMB:</span>
+<span class="sd">        Attachment content (media) storage quota in MBs (Retrieved from gateway).</span>
+<span class="sd">    :ivar int CurrentMediaStorageUsageInMB:</span>
+<span class="sd">        Current attachment content (media) usage in MBs (Retrieved from gateway).</span>
+<span class="sd">        Value is returned from cached information updated periodically and</span>
+<span class="sd">        is not guaranteed to be real time.</span>
+<span class="sd">    :ivar dict ConsistencyPolicy:</span>
+<span class="sd">        UserConsistencyPolicy settings.</span>
+<span class="sd">    :ivar dict ConsistencyPolicy[&#39;defaultConsistencyLevel&#39;]:</span>
+<span class="sd">        The default consistency level.</span>
+<span class="sd">    :ivar int ConsistencyPolicy[&#39;maxStalenessPrefix&#39;]: </span>
+<span class="sd">        In bounded staleness consistency, the maximum allowed staleness in </span>
+<span class="sd">        terms difference in sequence numbers (aka version).</span>
+<span class="sd">    :ivar int ConsistencyPolicy[&#39;maxStalenessIntervalInSeconds&#39;]:</span>
+<span class="sd">        In bounded staleness consistency, the maximum allowed staleness in </span>
+<span class="sd">        terms time interval.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -122,7 +122,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ReadableLocations</span></div>
 
 <div class="viewcode-block" id="ConsistencyLevel"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.ConsistencyLevel">[docs]</a><span class="k">class</span> <span class="nc">ConsistencyLevel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents the consistency levels supported for DocumentDB client</span>
+    <span class="sd">&quot;&quot;&quot;Represents the consistency levels supported for Azure Cosmos DB client</span>
 <span class="sd">    operations.</span>
 
 <span class="sd">    The requested ConsistencyLevel must match or be weaker than that provisioned</span>
@@ -131,22 +131,26 @@
 <span class="sd">    Consistency levels by order of strength are Strong, BoundedStaleness,</span>
 <span class="sd">    Session, ConsistentPrefix and Eventual.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Strong`: Strong Consistency guarantees that read operations always</span>
-<span class="sd">          return the value that was last written.</span>
-<span class="sd">        - `BoundedStaleness` Bounded Staleness guarantees that reads are not</span>
-<span class="sd">          too out-of-date. This can be configured based on number of operations</span>
-<span class="sd">          (MaxStalenessPrefix) or time (MaxStalenessIntervalInSeconds).</span>
-<span class="sd">        - `Session`: Session Consistency guarantees monotonic reads (you never</span>
-<span class="sd">          read old data, then new, then old again), monotonic writes (writes</span>
-<span class="sd">          are ordered) and read your writes (your writes are immediately</span>
-<span class="sd">          visible to your reads) within any single session.</span>
-<span class="sd">        - `Eventual`: Eventual Consistency guarantees that reads will return</span>
-<span class="sd">          a subset of writes. All writes will be eventually be available for</span>
-<span class="sd">          reads.</span>
-<span class="sd">        - `ConsistentPrefix`: ConsistentPrefix Consistency guarantees that</span>
-<span class="sd">          reads will return some prefix of all writes with no gaps. All writes</span>
-<span class="sd">          will be eventually be available for reads.</span>
+<span class="sd">    :ivar str Strong:</span>
+<span class="sd">        Strong Consistency guarantees that read operations always</span>
+<span class="sd">        return the value that was last written.</span>
+<span class="sd">    :ivar str BoundedStaleness:</span>
+<span class="sd">        Bounded Staleness guarantees that reads are not</span>
+<span class="sd">        too out-of-date. This can be configured based on number of operations</span>
+<span class="sd">        (MaxStalenessPrefix) or time (MaxStalenessIntervalInSeconds).</span>
+<span class="sd">    :ivar str Session:</span>
+<span class="sd">        Session Consistency guarantees monotonic reads (you never</span>
+<span class="sd">        read old data, then new, then old again), monotonic writes (writes</span>
+<span class="sd">        are ordered) and read your writes (your writes are immediately</span>
+<span class="sd">        visible to your reads) within any single session.</span>
+<span class="sd">    :ivar str Eventual:</span>
+<span class="sd">        Eventual Consistency guarantees that reads will return</span>
+<span class="sd">        a subset of writes. All writes will be eventually be available for</span>
+<span class="sd">        reads.</span>
+<span class="sd">    :ivar str ConsistentPrefix: </span>
+<span class="sd">        ConsistentPrefix Consistency guarantees that</span>
+<span class="sd">        reads will return some prefix of all writes with no gaps. All writes</span>
+<span class="sd">        will be eventually be available for reads.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Strong</span> <span class="o">=</span> <span class="s1">&#39;Strong&#39;</span>
     <span class="n">BoundedStaleness</span> <span class="o">=</span> <span class="s1">&#39;BoundedStaleness&#39;</span>
@@ -158,24 +162,26 @@
 <div class="viewcode-block" id="IndexingMode"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.IndexingMode">[docs]</a><span class="k">class</span> <span class="nc">IndexingMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the supported indexing modes.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Consistent`: Index is updated synchronously with a create or</span>
-<span class="sd">          update operation. With consistent indexing, query behavior is the</span>
-<span class="sd">          same as the default consistency level for the collection.</span>
+<span class="sd">    :ivar str Consistent:</span>
+<span class="sd">        Index is updated synchronously with a create or</span>
+<span class="sd">        update operation. With consistent indexing, query behavior is the</span>
+<span class="sd">        same as the default consistency level for the collection.</span>
 
-<span class="sd">          The index is</span>
-<span class="sd">          always kept up to date with the data.</span>
-<span class="sd">        - `Lazy`: Index is updated asynchronously with respect to a create</span>
-<span class="sd">          or update operation.</span>
+<span class="sd">        The index is</span>
+<span class="sd">        always kept up to date with the data.</span>
+<span class="sd">    :ivar str Lazy:</span>
+<span class="sd">        Index is updated asynchronously with respect to a create</span>
+<span class="sd">        or update operation.</span>
 
-<span class="sd">          With lazy indexing, queries are eventually consistent. The index is</span>
-<span class="sd">          updated when the collection is idle.</span>
-<span class="sd">        - `NoIndex`: No index is provided.</span>
+<span class="sd">        With lazy indexing, queries are eventually consistent. The index is</span>
+<span class="sd">        updated when the collection is idle.</span>
+<span class="sd">    :ivar str NoIndex:</span>
+<span class="sd">        No index is provided.</span>
 
-<span class="sd">          Setting IndexingMode to &quot;None&quot; drops the index. Use this if you don&#39;t</span>
-<span class="sd">          want to maintain the index for a document collection, to save the</span>
-<span class="sd">          storage cost or improve the write throughput. Your queries will</span>
-<span class="sd">          degenerate to scans of the entire collection.</span>
+<span class="sd">        Setting IndexingMode to &quot;None&quot; drops the index. Use this if you don&#39;t</span>
+<span class="sd">        want to maintain the index for a document collection, to save the</span>
+<span class="sd">        storage cost or improve the write throughput. Your queries will</span>
+<span class="sd">        degenerate to scans of the entire collection.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Consistent</span> <span class="o">=</span> <span class="s1">&#39;consistent&#39;</span>
     <span class="n">Lazy</span> <span class="o">=</span> <span class="s1">&#39;lazy&#39;</span>
@@ -185,13 +191,14 @@
 <div class="viewcode-block" id="IndexKind"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.IndexKind">[docs]</a><span class="k">class</span> <span class="nc">IndexKind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the index kind of index specs.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Hash`: The index entries are hashed to serve point look up queries.</span>
-<span class="sd">          Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop = 5</span>
+<span class="sd">    :ivar str Hash:</span>
+<span class="sd">        The index entries are hashed to serve point look up queries.</span>
+<span class="sd">        Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop = 5</span>
 
-<span class="sd">        - `Range`: The index entries are ordered. Range indexes are optimized for</span>
-<span class="sd">          inequality predicate queries with efficient range scans.</span>
-<span class="sd">          Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop &gt; 5</span>
+<span class="sd">    :ivar str Range:</span>
+<span class="sd">        The index entries are ordered. Range indexes are optimized for</span>
+<span class="sd">        inequality predicate queries with efficient range scans.</span>
+<span class="sd">        Can be used to serve queries like: SELECT * FROM docs d WHERE d.prop &gt; 5</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Hash</span> <span class="o">=</span> <span class="s1">&#39;Hash&#39;</span>
     <span class="n">Range</span> <span class="o">=</span> <span class="s1">&#39;Range&#39;</span></div>
@@ -199,20 +206,24 @@
 <div class="viewcode-block" id="PartitionKind"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.PartitionKind">[docs]</a><span class="k">class</span> <span class="nc">PartitionKind</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the kind of partitioning to be applied.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Hash`: The partition key definition path is hashed.</span>
+<span class="sd">    :ivar str Hash:</span>
+<span class="sd">        The partition key definition path is hashed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Hash</span> <span class="o">=</span> <span class="s1">&#39;Hash&#39;</span></div>
 
 <div class="viewcode-block" id="DataType"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.DataType">[docs]</a><span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the data type of index specs.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Number`: Represents a numeric data type</span>
-<span class="sd">        - `String`: Represents a string data type.</span>
-<span class="sd">        - `Point`: Represents a point data type</span>
-<span class="sd">        - `LineString`: Represents a line string data type</span>
-<span class="sd">        - `Polygon`: Represents a polygon data type</span>
+<span class="sd">    :ivar str Number:</span>
+<span class="sd">        Represents a numeric data type.</span>
+<span class="sd">    :ivar str String:</span>
+<span class="sd">        Represents a string data type.</span>
+<span class="sd">    :ivar str Point:</span>
+<span class="sd">        Represents a point data type.</span>
+<span class="sd">    :ivar str LineString:</span>
+<span class="sd">        Represents a line string data type.</span>
+<span class="sd">    :ivar str Polygon:</span>
+<span class="sd">        Represents a polygon data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Number</span> <span class="o">=</span> <span class="s1">&#39;Number&#39;</span>
     <span class="n">String</span> <span class="o">=</span> <span class="s1">&#39;String&#39;</span>
@@ -224,10 +235,12 @@
 <div class="viewcode-block" id="IndexingDirective"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.IndexingDirective">[docs]</a><span class="k">class</span> <span class="nc">IndexingDirective</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies whether or not the resource is to be indexed.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Default`: Use any pre-defined/pre-configured defaults.</span>
-<span class="sd">        - `Include`: Index the resource.</span>
-<span class="sd">        - `Exclude`: Do not index the resource.</span>
+<span class="sd">    :ivar int Default:</span>
+<span class="sd">        Use any pre-defined/pre-configured defaults.</span>
+<span class="sd">    :ivar int Exclude:</span>
+<span class="sd">        Index the resource.</span>
+<span class="sd">    :ivar int Include:</span>
+<span class="sd">        Do not index the resource.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Default</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">Exclude</span> <span class="o">=</span> <span class="mi">1</span>
@@ -237,9 +250,9 @@
 <div class="viewcode-block" id="ConnectionMode"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.ConnectionMode">[docs]</a><span class="k">class</span> <span class="nc">ConnectionMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents the connection mode to be used by the client.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Gateway`: Use the DocumentDB gateway to route all requests. The</span>
-<span class="sd">          gateway proxies requests to the right data partition.</span>
+<span class="sd">    :ivar int Gateway:</span>
+<span class="sd">        Use the Azure Cosmos DB gateway to route all requests. The</span>
+<span class="sd">        gateway proxies requests to the right data partition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Gateway</span> <span class="o">=</span> <span class="mi">0</span></div>
 
@@ -248,16 +261,17 @@
     <span class="sd">&quot;&quot;&quot;Represents the mode for use with downloading attachment content</span>
 <span class="sd">    (aka media).</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Buffered`: Content is buffered at the client and not directly</span>
-<span class="sd">          streamed from the content store.</span>
+<span class="sd">    :ivar str Buffered:</span>
+<span class="sd">        Content is buffered at the client and not directly</span>
+<span class="sd">        streamed from the content store.</span>
 
-<span class="sd">          Use Buffered to reduce the time taken to read and write media files.</span>
-<span class="sd">        - `Streamed`: Content is directly streamed from the content store</span>
-<span class="sd">          without any buffering at the client.</span>
+<span class="sd">        Use Buffered to reduce the time taken to read and write media files.</span>
+<span class="sd">    :ivar str Streamed:</span>
+<span class="sd">        Content is directly streamed from the content store</span>
+<span class="sd">        without any buffering at the client.</span>
 
-<span class="sd">          Use Streamed to reduce the client memory overhead of reading and</span>
-<span class="sd">          writing media files.</span>
+<span class="sd">        Use Streamed to reduce the client memory overhead of reading and</span>
+<span class="sd">        writing media files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Buffered</span> <span class="o">=</span> <span class="s1">&#39;Buffered&#39;</span>
     <span class="n">Streamed</span> <span class="o">=</span> <span class="s1">&#39;Streamed&#39;</span></div>
@@ -266,10 +280,12 @@
 <div class="viewcode-block" id="PermissionMode"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.PermissionMode">[docs]</a><span class="k">class</span> <span class="nc">PermissionMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Enumeration specifying applicability of permission.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `NoneMode`: None.</span>
-<span class="sd">        - `Read`: Permission applicable for read operations only.</span>
-<span class="sd">        - `All`: Permission applicable for all operations.</span>
+<span class="sd">    :ivar str NoneMode:</span>
+<span class="sd">        None.</span>
+<span class="sd">    :ivar str Read:</span>
+<span class="sd">        Permission applicable for read operations only.</span>
+<span class="sd">    :ivar str All:</span>
+<span class="sd">        Permission applicable for all operations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">NoneMode</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>  <span class="c1"># None is python&#39;s key word.</span>
     <span class="n">Read</span> <span class="o">=</span> <span class="s1">&#39;read&#39;</span>
@@ -279,9 +295,10 @@
 <div class="viewcode-block" id="TriggerType"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.TriggerType">[docs]</a><span class="k">class</span> <span class="nc">TriggerType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the type of the trigger.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Pre`: Trigger should be executed before the associated operation(s).</span>
-<span class="sd">        - `Post`: Trigger should be executed after the associated operation(s).</span>
+<span class="sd">    :ivar str Pre:</span>
+<span class="sd">        Trigger should be executed before the associated operation(s).</span>
+<span class="sd">    :ivar str Post:</span>
+<span class="sd">        Trigger should be executed after the associated operation(s).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Pre</span> <span class="o">=</span> <span class="s1">&#39;pre&#39;</span>
     <span class="n">Post</span> <span class="o">=</span> <span class="s1">&#39;post&#39;</span></div>
@@ -290,12 +307,16 @@
 <div class="viewcode-block" id="TriggerOperation"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.TriggerOperation">[docs]</a><span class="k">class</span> <span class="nc">TriggerOperation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies the operations on which a trigger should be executed.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `All`: All operations.</span>
-<span class="sd">        - `Create`: Create operations only.</span>
-<span class="sd">        - `Update`: Update operations only.</span>
-<span class="sd">        - `Delete`: Delete operations only.</span>
-<span class="sd">        - `Replace`: Replace operations only.</span>
+<span class="sd">    :ivar str All:</span>
+<span class="sd">        All operations.</span>
+<span class="sd">    :ivar str Create:</span>
+<span class="sd">        Create operations only.</span>
+<span class="sd">    :ivar str Update:</span>
+<span class="sd">        Update operations only.</span>
+<span class="sd">    :ivar str Delete:</span>
+<span class="sd">        Delete operations only.</span>
+<span class="sd">    :ivar str Replace:</span>
+<span class="sd">        Replace operations only.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">All</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
     <span class="n">Create</span> <span class="o">=</span> <span class="s1">&#39;create&#39;</span>
@@ -309,10 +330,12 @@
 
 <span class="sd">    Please refer to http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification for more detail.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `SSLKeyFile`: str, the path of the key file for ssl connection.</span>
-<span class="sd">        - `SSLCertFile`: str, the path of the cert file for ssl connection.</span>
-<span class="sd">        - `SSLCaCerts`: str, the path of the CA_BUNDLE file with certificates of trusted CAs.</span>
+<span class="sd">    :ivar str SSLKeyFIle:</span>
+<span class="sd">        The path of the key file for ssl connection.</span>
+<span class="sd">    :ivar str SSLCertFile:</span>
+<span class="sd">        The path of the cert file for ssl connection.</span>
+<span class="sd">    :ivar str SSLCaCerts:</span>
+<span class="sd">        The path of the CA_BUNDLE file with certificates of trusted CAs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SSLKeyFile</span> <span class="o">=</span> <span class="kc">None</span>
@@ -323,9 +346,10 @@
 <div class="viewcode-block" id="ProxyConfiguration"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.ProxyConfiguration">[docs]</a><span class="k">class</span> <span class="nc">ProxyConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configurations for proxy.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `Host`: str, the host address of the proxy.</span>
-<span class="sd">        - `Port`: int, the port number of the proxy.</span>
+<span class="sd">    :ivar str Host:</span>
+<span class="sd">        The host address of the proxy.</span>
+<span class="sd">    :ivar int Port:</span>
+<span class="sd">        The port number of the proxy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Host</span> <span class="o">=</span> <span class="kc">None</span>
@@ -335,30 +359,38 @@
 <div class="viewcode-block" id="ConnectionPolicy"><a class="viewcode-back" href="../../api/pydocumentdb.documents.html#pydocumentdb.documents.ConnectionPolicy">[docs]</a><span class="k">class</span> <span class="nc">ConnectionPolicy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents the Connection policy assocated with a DocumentClient.</span>
 
-<span class="sd">    :Attributes:</span>
-<span class="sd">        - `RequestTimeout`: int, gets or sets the request timeout (time to wait</span>
-<span class="sd">          for response from network peer)</span>
-<span class="sd">        - `MediaRequestTimeout`: int, gets or sets Time to wait for response</span>
-<span class="sd">          from network peer for attachment content (aka media) operations.</span>
-<span class="sd">        - `ConnectionMode`: int (documents.ConnectionMode), gets or sets the</span>
-<span class="sd">          connection mode used in the client. Currently only Gateway is supported.</span>
-<span class="sd">        - `MediaReadMode`: str (MediaReadMode.Buffered), gets or sets the</span>
-<span class="sd">          attachment content (aka media) download mode.</span>
-<span class="sd">        - `SSLConfiguration`: documents.SSLConfiguration, gets or sets the SSL configuration.</span>
-<span class="sd">        - `ProxyConfiguration`: documents.ProxyConfiguration, gets or sets the proxy configuration.</span>
-<span class="sd">        - `EnableEndpointDiscovery`: boolean, gets or sets endpoint discovery flag for geo-replicated database accounts.</span>
-<span class="sd">           When EnableEndpointDiscovery is true, the client will automatically discover the</span>
-<span class="sd">           current write and read locations and direct the requests to the correct location</span>
-<span class="sd">           taking into consideration of the user&#39;s preference(if provided) as PreferredLocations.</span>
-<span class="sd">        - `PreferredLocations`: list, gets or sets the preferred locations for geo-replicated database accounts.</span>
-<span class="sd">           When EnableEndpointDiscovery is true and PreferredLocations is non-empty,</span>
-<span class="sd">           the client will use this list to evaluate the final location, taking into consideration</span>
-<span class="sd">           the order specified in PreferredLocations list. The locations in this list are specified as the names of</span>
-<span class="sd">           the azure documentdb locations like, &#39;West US&#39;, &#39;East US&#39;, &#39;Central India&#39; and so on.</span>
-<span class="sd">        - `RetryOptions`: RetryOptions, gets or sets the retry options to be applied to all requests when retrying.</span>
-<span class="sd">        - `DisableSSLVerification` : boolean, flag to disable SSL verification for the requests. SSL verification is enabled by default. </span>
-<span class="sd">           Don&#39;t set this when targeting production endpoints.</span>
-<span class="sd">           This is intended to be used only when targeting emulator endpoint to avoid failing your requests with SSL related error.</span>
+<span class="sd">    :ivar int RequestTimeout:</span>
+<span class="sd">        Gets or sets the request timeout (time to wait</span>
+<span class="sd">        for response from network peer).</span>
+<span class="sd">    :ivar int MediaRequestTimeout: </span>
+<span class="sd">        Gets or sets Time to wait for response</span>
+<span class="sd">        from network peer for attachment content (aka media) operations.</span>
+<span class="sd">    :ivar documents.ConnectionMode ConnectionMode:</span>
+<span class="sd">        Gets or sets the connection mode used in the client. Currently </span>
+<span class="sd">        only Gateway is supported.</span>
+<span class="sd">    :ivar MediaReadMode.Buffered MediaReadMode:</span>
+<span class="sd">        Gets or sets the attachment content (aka media) download mode.</span>
+<span class="sd">    :ivar documents.SSLConfiguration SSLConfiguration:</span>
+<span class="sd">        Gets or sets the SSL configuration.</span>
+<span class="sd">    :ivar documents.ProxyConfiguration ProxyConfiguration:</span>
+<span class="sd">        Gets or sets the proxy configuration.</span>
+<span class="sd">    :ivar boolean EnableEndpointDiscovery:</span>
+<span class="sd">        Gets or sets endpoint discovery flag for geo-replicated database accounts.</span>
+<span class="sd">        When EnableEndpointDiscovery is true, the client will automatically discover the</span>
+<span class="sd">        current write and read locations and direct the requests to the correct location</span>
+<span class="sd">        taking into consideration of the user&#39;s preference(if provided) as PreferredLocations.</span>
+<span class="sd">    :ivar list PreferredLocations:</span>
+<span class="sd">        Gets or sets the preferred locations for geo-replicated database accounts.</span>
+<span class="sd">        When EnableEndpointDiscovery is true and PreferredLocations is non-empty,</span>
+<span class="sd">        the client will use this list to evaluate the final location, taking into consideration</span>
+<span class="sd">        the order specified in PreferredLocations list. The locations in this list are specified as the names of</span>
+<span class="sd">        the azure cosmos db locations like, &#39;West US&#39;, &#39;East US&#39;, &#39;Central India&#39; and so on.</span>
+<span class="sd">    :ivar RetryOptions RetryOptions:</span>
+<span class="sd">        Gets or sets the retry options to be applied to all requests when retrying.</span>
+<span class="sd">    :ivar boolean DisableSSLVerification:</span>
+<span class="sd">        Flag to disable SSL verification for the requests. SSL verification is enabled by default. </span>
+<span class="sd">        Don&#39;t set this when targeting production endpoints.</span>
+<span class="sd">        This is intended to be used only when targeting emulator endpoint to avoid failing your requests with SSL related error.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">__defaultRequestTimeout</span> <span class="o">=</span> <span class="mi">60000</span>  <span class="c1"># milliseconds</span>

@@ -67,7 +67,7 @@
 <span class="c1">#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
 <span class="c1">#SOFTWARE.</span>
 
-<span class="sd">&quot;&quot;&quot;Authorization helper functions in the Azure DocumentDB database service.</span>
+<span class="sd">&quot;&quot;&quot;Authorization helper functions in the Azure Cosmos DB database service.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">hashlib</span> <span class="k">import</span> <span class="n">sha256</span>
@@ -84,17 +84,16 @@
                            <span class="n">headers</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets the authorization header.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `document_client`: document_client.DocumentClient</span>
-<span class="sd">        - `verb`: str</span>
-<span class="sd">        - `path`: str</span>
-<span class="sd">        - `resource_id_or_fullname`: str</span>
-<span class="sd">        - `resource_type`: str</span>
-<span class="sd">        - `headers`: dict</span>
+<span class="sd">    :param document_client.DocumentClient document_client:</span>
+<span class="sd">    :param str verb:</span>
+<span class="sd">    :param str path:</span>
+<span class="sd">    :param str resource_id_or_fullname:</span>
+<span class="sd">    :param str resource_type:</span>
+<span class="sd">    :param dict headers:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        dict, the authorization headers.</span>
-
+<span class="sd">    :return:</span>
+<span class="sd">        The authorization headers.</span>
+<span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">document_client</span><span class="o">.</span><span class="n">master_key</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">__GetAuthorizationTokenUsingMasterKey</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span>
@@ -116,15 +115,15 @@
                                          <span class="n">master_key</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets the authorization token using `master_key.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `verb`: str</span>
-<span class="sd">        - `resource_id_or_fullname`: str</span>
-<span class="sd">        - `resource_type`: str</span>
-<span class="sd">        - `headers`: dict</span>
-<span class="sd">        - `master_key`: st</span>
+<span class="sd">    :param str verb:</span>
+<span class="sd">    :param str resource_id_or_fullname:</span>
+<span class="sd">    :param str resource_type:</span>
+<span class="sd">    :param dict headers:</span>
+<span class="sd">    :param str master_key:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        dict</span>
+<span class="sd">    :return:</span>
+<span class="sd">        The authorization token.</span>
+<span class="sd">    :rtype: dict</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -161,13 +160,13 @@
                                               <span class="n">resource_id_or_fullname</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the authorization token using `resource_tokens`.</span>
 
-<span class="sd">    :Parameters:</span>
-<span class="sd">        - `resource_tokens`: dict</span>
-<span class="sd">        - `path`: str</span>
-<span class="sd">        - `resource_id_or_fullname`: str</span>
+<span class="sd">    :param dict resource_tokens:</span>
+<span class="sd">    :param str path:</span>
+<span class="sd">    :param str resource_id_or_fullname:</span>
 
-<span class="sd">    :Returns:</span>
-<span class="sd">        dict</span>
+<span class="sd">    :return:</span>
+<span class="sd">        The authorization token.</span>
+<span class="sd">    :rtype: dict</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">resource_tokens</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">resource_tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>

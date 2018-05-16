@@ -1,0 +1,183 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Azure DocumentDB Python SDK &#8212; pydocumentdb 2.3.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.3.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pydocumentdb package" href="api/pydocumentdb.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api/pydocumentdb.html" title="pydocumentdb package"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pydocumentdb 2.3.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="azure-documentdb-python-sdk">
+<h1>Azure DocumentDB Python SDK<a class="headerlink" href="#azure-documentdb-python-sdk" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="system-requirements">
+<h2>System Requirements:<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>The supported Python versions are 2.7, 3.3, 3.4 and 3.5. To download Python, please visit <a class="reference external" href="https://www.python.org/download/releases">https://www.python.org/download/releases</a>.</p>
+<p>Python Tools for Visual Studio is required when using Microsoft Visual
+Studio to develop Python applications. To download Python Tools for Visual Studio, please visit <a class="reference external" href="http://microsoft.github.io/PTVS">http://microsoft.github.io/PTVS</a>.</p>
+</div></blockquote>
+</div>
+<div class="section" id="installation">
+<h2>Installation:<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Method 1:</p>
+<ol class="arabic">
+<li><p class="first">Download the Azure DocumentDB Python SDK source from
+<a class="reference external" href="https://github.com/Azure/azure-documentdb-python">https://github.com/Azure/azure-documentdb-python</a> which is needed to manage the Azure DocumentDB database service.</p>
+</li>
+<li><p class="first">Execute the following setup script in bash shell:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python setup.py install
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Method 2:</p>
+<ol class="arabic">
+<li><p class="first">Install the Azure DocumentDB Python SDK using pip.
+For more information on pip, please visit <a class="reference external" href="https://pypi.python.org/pypi/pip">https://pypi.python.org/pypi/pip</a></p>
+</li>
+<li><p class="first">Execute the following in bash shell:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install pydocumentdb
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="to-run-tests">
+<h2>To run tests:<a class="headerlink" href="#to-run-tests" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>$ python -m unittest discover -s .<span class="se">\t</span>est -p <span class="s2">&quot;*.py&quot;</span>
+</pre></div>
+</div>
+<p>If you use Microsoft Visual Studio, open the project file python.pyproj,
+and run all the tests in Test Explorer.</p>
+</div></blockquote>
+</div>
+<div class="section" id="to-generate-documentations">
+<h2>To generate documentations:<a class="headerlink" href="#to-generate-documentations" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Install Sphinx: <a class="reference external" href="http://sphinx-doc.org/install.html">http://sphinx-doc.org/install.html</a></p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> doc
+$ sphinx-apidoc -f -e -o api ..<span class="se">\p</span>ydocumentdb
+$ make.bat html
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Azure DocumentDB Python SDK</a><ul>
+<li><a class="reference internal" href="#system-requirements">System Requirements:</a></li>
+<li><a class="reference internal" href="#installation">Installation:</a></li>
+<li><a class="reference internal" href="#to-run-tests">To run tests:</a></li>
+<li><a class="reference internal" href="#to-generate-documentations">To generate documentations:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api/pydocumentdb.html"
+                        title="next chapter">pydocumentdb package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api/pydocumentdb.html" title="pydocumentdb package"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pydocumentdb 2.3.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Microsoft.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

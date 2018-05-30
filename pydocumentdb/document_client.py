@@ -21,6 +21,7 @@
 
 """Document client class for the Azure Cosmos DB database service.
 """
+# coding=utf-8
 
 import requests
 
@@ -927,7 +928,7 @@ class DocumentClient(object):
             dict
 
         """
-        # Python’s default arguments are evaluated once when the function is defined, not each time the function is called (like it is in say, Ruby). 
+        # Python's default arguments are evaluated once when the function is defined, not each time the function is called (like it is in say, Ruby). 
         # This means that if you use a mutable default argument and mutate it, you will and have mutated that object for all future calls to the function as well.
         # So, using a non-mutable deafult in this case(None) and assigning an empty dict(mutable) inside the method
         # For more details on this gotcha, please refer http://docs.python-guide.org/en/latest/writing/gotchas/
@@ -965,7 +966,7 @@ class DocumentClient(object):
             dict
 
         """
-        # Python’s default arguments are evaluated once when the function is defined, not each time the function is called (like it is in say, Ruby). 
+        # Python's default arguments are evaluated once when the function is defined, not each time the function is called (like it is in say, Ruby). 
         # This means that if you use a mutable default argument and mutate it, you will and have mutated that object for all future calls to the function as well.
         # So, using a non-mutable deafult in this case(None) and assigning an empty dict(mutable) inside the method
         # For more details on this gotcha, please refer http://docs.python-guide.org/en/latest/writing/gotchas/
@@ -1560,7 +1561,7 @@ class DocumentClient(object):
         path = base.GetPathFromLink(document_link)
         document_id = base.GetResourceIdOrFullNameFromLink(document_link)
         
-        # Python’s default arguments are evaluated once when the function is defined, not each time the function is called (like it is in say, Ruby). 
+        # Python's default arguments are evaluated once when the function is defined, not each time the function is called (like it is in say, Ruby). 
         # This means that if you use a mutable default argument and mutate it, you will and have mutated that object for all future calls to the function as well.
         # So, using a non-mutable deafult in this case(None) and assigning an empty dict(mutable) inside the function so that it remains local
         # For more details on this gotcha, please refer http://docs.python-guide.org/en/latest/writing/gotchas/

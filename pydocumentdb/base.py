@@ -248,7 +248,7 @@ def GetAttachmentIdFromMediaId(media_id):
     attachment_id = ''
     if len(buffer) > resoure_id_length:
         # We are cutting off the storage index.
-        attachment_id = base64.b64encode(buffer[0:resoure_id_length], altchars)
+        attachment_id = base64.b64encode(buffer[0:resoure_id_length], bytes(altchars, 'utf-8'))
         if not six.PY2:
             attachment_id = attachment_id.decode('utf-8')
     else:

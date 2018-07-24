@@ -134,9 +134,6 @@ def _Request(connection_policy, requests_session, resource_url, request_options,
         return (response.raw, headers)
 
     data = response.content
-    if not six.PY2:
-        # python 3 compatible: convert data from byte to unicode string
-        data = data.decode('utf-8')
 
     if response.status_code >= 400:
         raise errors.HTTPFailure(response.status_code, data, headers)

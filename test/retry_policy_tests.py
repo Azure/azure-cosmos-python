@@ -221,7 +221,7 @@ class Test_retry_policy_tests(unittest.TestCase):
         result_docs = list(docs)
         self.assertEqual(result_docs[0]['id'], 'doc1')
         self.assertEqual(result_docs[1]['id'], 'doc2')
-        self.assertEqual(self.counter, 12)
+        self.assertEqual(self.counter, 6)
 
         self.counter = 0;
         retry_utility._ExecuteFunction = self.OriginalExecuteFunction
@@ -300,7 +300,7 @@ class Test_retry_policy_tests(unittest.TestCase):
             self.assertEqual(ex.status_code, StatusCodes.TOO_MANY_REQUESTS)
 
         client._DocumentClient__Post = original_post_function
-        client.DeleteDocument(created_doc['_self'])
+        client.DeleteDocument(created_document['_self'])
 
     def _MockPost429(self, url, path, body, headers):
         raise errors.HTTPFailure(StatusCodes.TOO_MANY_REQUESTS,

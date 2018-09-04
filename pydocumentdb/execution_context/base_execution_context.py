@@ -124,13 +124,7 @@ class _QueryExecutionContextBase(object):
             if fetched_items:
                 break
         return fetched_items   
-            
-    def _fetch_items_helper_with_retries(self, fetch_function):
-        def callback():
-            return self._fetch_items_helper_no_retries(fetch_function)
-                
-        return retry_utility._Execute(self._client, self._client._global_endpoint_manager, callback)
-    
+
 
 class _DefaultQueryExecutionContext(_QueryExecutionContextBase):
     """
@@ -155,7 +149,7 @@ class _DefaultQueryExecutionContext(_QueryExecutionContextBase):
     
     def _fetch_next_block(self):
         while super(self.__class__, self)._has_more_pages() and len(self._buffer) == 0:
-            return self._fetch_items_helper_with_retries(self._fetch_function)
+            return self._fetch_items_helper_no_retries(self._fetch_function)
         
 class _MultiCollectionQueryExecutionContext(_QueryExecutionContextBase):
     """
@@ -224,7 +218,7 @@ class _MultiCollectionQueryExecutionContext(_QueryExecutionContextBase):
         :rtype: list
         """
         # Fetch next block of results by executing the query against the current document collection
-        fetched_items = self._fetch_items_helper_with_retries(self._fetch_function)
+        fetched_items = self._fetch_items_helper_no_retries(self._fetch_function)
 
         # If there are multiple document collections to query for(in case of partitioning), keep looping through each one of them,
         # creating separate feed queries for each collection and fetching the items
@@ -244,7 +238,7 @@ class _MultiCollectionQueryExecutionContext(_QueryExecutionContextBase):
 
                 self._fetch_function = fetch_fn
 
-                fetched_items = self._fetch_items_helper_with_retries(self._fetch_function)
+                fetched_items = self._fetch_items_helper_no_retries(self._fetch_function)
                 self._current_collection_index += 1
             else:
                 break

@@ -28,32 +28,36 @@ import os.path
 import sys
 import unittest
 from six.moves import xrange
-from struct import *
-from six.moves.builtins import *
+from struct import unpack, pack
+# from six.moves.builtins import *
 import six
-
-import pydocumentdb.base as base
-import pydocumentdb.consistent_hash_ring as consistent_hash_ring
-import pydocumentdb.documents as documents
-import pydocumentdb.document_client as document_client
-import pydocumentdb.errors as errors
-import pydocumentdb.hash_partition_resolver as hash_partition_resolver
-from pydocumentdb.http_constants import HttpHeaders, StatusCodes, SubStatusCodes
-import pydocumentdb.murmur_hash as murmur_hash
-import pydocumentdb.range_partition_resolver as range_partition_resolver
-import pydocumentdb.range as partition_range
+if six.PY2:
+    import urllib as urllib
+else:
+    import urllib.parse as urllib
+import uuid
+import azure.cosmos.base as base
+import azure.cosmos.consistent_hash_ring as consistent_hash_ring
+import azure.cosmos.documents as documents
+import azure.cosmos.cosmos_client as cosmos_client
+import azure.cosmos.errors as errors
+import azure.cosmos.hash_partition_resolver as hash_partition_resolver
+from azure.cosmos.http_constants import HttpHeaders, StatusCodes, SubStatusCodes
+import azure.cosmos.murmur_hash as murmur_hash
+import azure.cosmos.range_partition_resolver as range_partition_resolver
+import azure.cosmos.range as partition_range
 import test.test_config as test_config
 import test.test_partition_resolver as test_partition_resolver
-import pydocumentdb.base as base
+import azure.cosmos.base as base
 
 
 #IMPORTANT NOTES: 
   
-#  	Most test cases in this file create collections in your Azure Cosmos DB account.
+#  	Most test cases in this file create collections in your Azure Cosmos account.
 #  	Collections are billing entities.  By running these test cases, you may incur monetary costs on your account.
   
 #  	To Run the test, replace the two member fields (masterKey and host) with values 
-#   associated with your Azure Cosmos DB account.
+#   associated with your Azure Cosmos account.
 
 class CRUDTests(unittest.TestCase):
     """Python CRUD Tests.
@@ -61,6 +65,7 @@ class CRUDTests(unittest.TestCase):
 
     host = test_config._test_config.host
     masterKey = test_config._test_config.masterKey
+    connectionPolicy = test_config._test_config.connectionPolicy
     testDbName = 'sample database'
 
     def __AssertHTTPFailureWithStatus(self, status_code, func, *args, **kwargs):
@@ -78,8 +83,8 @@ class CRUDTests(unittest.TestCase):
 
     @classmethod
     def cleanUpTestDatabase(cls):
-        client = document_client.DocumentClient(cls.host, 
-                                                {'masterKey': cls.masterKey})
+        client = cosmos_client.CosmosClient(cls.host, 
+                                                {'masterKey': cls.masterKey}, cls.connectionPolicy)
         query_iterable = client.QueryDatabases('SELECT * FROM root r WHERE r.id=\'' + cls.testDbName + '\'')
         it = iter(query_iterable)
         
@@ -92,16 +97,16 @@ class CRUDTests(unittest.TestCase):
         if (cls.masterKey == '[YOUR_KEY_HERE]' or
                 cls.host == '[YOUR_ENDPOINT_HERE]'):
             raise Exception(
-                "You must specify your Azure Cosmos DB account values for "
+                "You must specify your Azure Cosmos account values for "
                 "'masterKey' and 'host' at the top of this class to run the "
                 "tests.")
 
     @classmethod
     def tearDownClass(cls):
-        CRUDTests.cleanUpTestDatabase();
+        CRUDTests.cleanUpTestDatabase()
 
     def setUp(self):
-        CRUDTests.cleanUpTestDatabase();
+        CRUDTests.cleanUpTestDatabase()
 
     def test_database_crud_self_link(self):
         self._test_database_crud(False)
@@ -110,8 +115,8 @@ class CRUDTests(unittest.TestCase):
         self._test_database_crud(True)
 
     def _test_database_crud(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # read databases.
         databases = list(client.ReadDatabases())
         # create a database.
@@ -135,7 +140,7 @@ class CRUDTests(unittest.TestCase):
                      'number of results for the query should be > 0')
 
         # read database.
-        one_db_from_read = client.ReadDatabase(self.GetDatabaseLink(created_db, is_name_based))
+        client.ReadDatabase(self.GetDatabaseLink(created_db, is_name_based))
 
         # delete database.
         client.DeleteDatabase(self.GetDatabaseLink(created_db, is_name_based))
@@ -145,7 +150,7 @@ class CRUDTests(unittest.TestCase):
                                            self.GetDatabaseLink(created_db, is_name_based))
 
     def test_sql_query_crud(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create two databases.
         db1 = client.CreateDatabase({ 'id': 'database 1' })
         db2 = client.CreateDatabase({ 'id': 'database 2' })
@@ -178,26 +183,26 @@ class CRUDTests(unittest.TestCase):
         self._test_collection_crud(True)
 
     def _test_collection_crud(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
-        collections = list(client.ReadCollections(self.GetDatabaseLink(created_db, is_name_based)))
+        collections = list(client.ReadContainers(self.GetDatabaseLink(created_db, is_name_based)))
         # create a collection
         before_create_collections_count = len(collections)
-        collection_definition = { 'id': 'sample collection', 'indexingPolicy': {'indexingMode': 'consistent'} }
-        created_collection = client.CreateCollection(self.GetDatabaseLink(created_db, is_name_based),
+        collection_definition = { 'id': 'sample collection ' + str(uuid.uuid4()), 'indexingPolicy': {'indexingMode': 'consistent'} }
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db, is_name_based),
                                                      collection_definition)
         self.assertEqual(collection_definition['id'], created_collection['id'])
         self.assertEqual('consistent', created_collection['indexingPolicy']['indexingMode'])
 
         # read collections after creation
-        collections = list(client.ReadCollections(self.GetDatabaseLink(created_db, is_name_based)))
+        collections = list(client.ReadContainers(self.GetDatabaseLink(created_db, is_name_based)))
         self.assertEqual(len(collections),
                          before_create_collections_count + 1,
                          'create should increase the number of collections')
         # query collections
-        collections = list(client.QueryCollections(
+        collections = list(client.QueryContainers(
             self.GetDatabaseLink(created_db, is_name_based),
             {
                 'query': 'SELECT * FROM root r WHERE r.id=@id',
@@ -208,31 +213,31 @@ class CRUDTests(unittest.TestCase):
         # Replacing indexing policy is allowed.
         lazy_policy = {'indexingMode': 'lazy'}
         created_collection['indexingPolicy'] = lazy_policy
-        replaced_collection = client.ReplaceCollection(self.GetDocumentCollectionLink(created_db, created_collection, is_name_based), created_collection)
+        replaced_collection = client.ReplaceContainer(self.GetDocumentCollectionLink(created_db, created_collection, is_name_based), created_collection)
         self.assertEqual('lazy', replaced_collection['indexingPolicy']['indexingMode'])
         # Replacing collection Id should fail.
         change_collection = created_collection.copy()
         change_collection['id'] = 'try_change_id'
         self.__AssertHTTPFailureWithStatus(StatusCodes.BAD_REQUEST,
-                                           client.ReplaceCollection,
+                                           client.ReplaceContainer,
                                            self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
                                            change_collection)
 
         self.assertTrue(collections)
         # delete collection
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection, is_name_based))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection, is_name_based))
         # read collection after deletion
         self.__AssertHTTPFailureWithStatus(StatusCodes.NOT_FOUND,
-                                           client.ReadCollection,
+                                           client.ReadContainer,
                                            self.GetDocumentCollectionLink(created_db, created_collection, is_name_based))
 
     
     def test_partitioned_collection(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
-        collection_definition = {   'id': 'sample collection', 
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/id'],
@@ -242,7 +247,7 @@ class CRUDTests(unittest.TestCase):
 
         options = { 'offerThroughput': 10100 }
 
-        created_collection = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition, 
                                 options)
         
@@ -256,14 +261,42 @@ class CRUDTests(unittest.TestCase):
         expected_offer = offers[0]
         self.assertEqual(expected_offer.get('content').get('offerThroughput'), options.get('offerThroughput'))
 
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection))
+
+
+    def test_partitioned_collection_quota(self):
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
+
+        created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
+
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()),
+                                    'partitionKey':
+                                    {
+                                        'paths': ['/id'],
+                                        'kind': documents.PartitionKind.Hash
+                                    }
+                                }
+
+        options = { 'offerThroughput': 20000 }
+
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
+                                collection_definition,
+                                options)
+
+
+        read_options = { 'populatePartitionKeyRangeStatistics': True, 'populateQuotaInfo': True}
+
+        retrieved_collection = client.ReadContainer(created_collection.get('_self'), read_options)
+
+        self.assertTrue(retrieved_collection.get("statistics") != None)
+        self.assertTrue(client.last_response_headers.get("x-ms-resource-usage") != None)
 
     def test_partitioned_collection_partition_key_extraction(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
-        collection_definition = {   'id': 'sample collection', 
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/address/state'],
@@ -271,7 +304,7 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
 
-        created_collection = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition)
 
         document_definition = {'id': 'document1',
@@ -283,7 +316,7 @@ class CRUDTests(unittest.TestCase):
                                }
 
         # create document without partition key being specified
-        created_document = client.CreateDocument(
+        created_document = client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
@@ -296,12 +329,12 @@ class CRUDTests(unittest.TestCase):
 
         self.__AssertHTTPFailureWithStatus(
             StatusCodes.BAD_REQUEST,
-            client.CreateDocument,
+            client.CreateItem,
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition,
             options)
 
-        collection_definition1 = {   'id': 'sample collection1', 
+        collection_definition1 = {   'id': 'sample collection1 ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/address'],
@@ -309,18 +342,18 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
 
-        created_collection1 = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection1 = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition1)
 
         # Create document with partitionkey not present as a leaf level property but a dict
         options = {}
-        created_document = client.CreateDocument(
+        created_document = client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection1),
             document_definition, options)
 
         self.assertEqual(options['partitionKey'], documents.Undefined)
 
-        collection_definition2 = {   'id': 'sample collection2', 
+        collection_definition2 = {   'id': 'sample collection2 ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/address/state/city'],
@@ -328,27 +361,27 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
 
-        created_collection2 = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection2 = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition2)
 
         # Create document with partitionkey not present in the document
         options = {}
-        created_document = client.CreateDocument(
+        created_document = client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection2),
             document_definition, options)
 
         self.assertEqual(options['partitionKey'], documents.Undefined)
 
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection1))
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection2))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection1))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection2))
 
     def test_partitioned_collection_partition_key_extraction_special_chars(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
-        collection_definition1 = {   'id': 'sample collection1', 
+        collection_definition1 = {   'id': 'sample collection1 ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/\"level\' 1*()\"/\"le/vel2\"'],
@@ -356,7 +389,7 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
         
-        created_collection1 = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection1 = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition1)
 
         document_definition = {'id': 'document1',
@@ -364,13 +397,13 @@ class CRUDTests(unittest.TestCase):
                               }
 
         options = {}
-        created_document = client.CreateDocument(
+        client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection1),
             document_definition, options)
 
         self.assertEqual(options['partitionKey'], 'val1')
 
-        collection_definition2 = {   'id': 'sample collection2', 
+        collection_definition2 = {   'id': 'sample collection2 ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/\'level\" 1*()\'/\'le/vel2\''],
@@ -378,7 +411,7 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
         
-        created_collection2 = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection2 = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition2)
 
         document_definition = {'id': 'document2',
@@ -386,14 +419,14 @@ class CRUDTests(unittest.TestCase):
                               }
 
         options = {}
-        created_document = client.CreateDocument(
+        client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection2),
             document_definition, options)
 
         self.assertEqual(options['partitionKey'], 'val2')
 
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection1))
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection2))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection1))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection2))
 
         
     def test_partitioned_collection_path_parser(self):
@@ -414,11 +447,11 @@ class CRUDTests(unittest.TestCase):
         
 
     def test_partitioned_collection_document_crud_and_query(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, None, documents.ConsistencyLevel.Session)
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy, documents.ConsistencyLevel.Session)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
-        collection_definition = {   'id': 'sample collection', 
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/id'],
@@ -426,13 +459,13 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
 
-        created_collection = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition)
 
         document_definition = {'id': 'document',
                                'key': 'value'}
 
-        created_document = client.CreateDocument(
+        created_document = client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
@@ -440,14 +473,14 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(created_document.get('key'), document_definition.get('key'))
 
         # For ReadDocument, we require to have the partitionKey to be specified as part of options otherwise we get BadRequest(status code 400)
-        self.__AssertHTTPFailureWithStatus(
-            StatusCodes.BAD_REQUEST,
-            client.ReadDocument,
-            self.GetDocumentLink(created_db, created_collection, created_document))
+        #self.__AssertHTTPFailureWithStatus(
+        #    StatusCodes.BAD_REQUEST,
+        #    client.ReadItem,
+        #    self.GetDocumentLink(created_db, created_collection, created_document))
 
         # read document
         options = { 'partitionKey': document_definition.get('id') }
-        read_document = client.ReadDocument(
+        read_document = client.ReadItem(
             self.GetDocumentLink(created_db, created_collection, created_document), 
             options)
 
@@ -455,14 +488,14 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(read_document.get('key'), created_document.get('key'))
 
         # Read document feed doesn't require partitionKey as it's always a cross partition query
-        documentlist = list(client.ReadDocuments(
+        documentlist = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection)))
         self.assertEqual(1, len(documentlist))
 
         # replace document
         document_definition['key'] = 'new value'
 
-        replaced_document = client.ReplaceDocument(
+        replaced_document = client.ReplaceItem(
             self.GetDocumentLink(created_db, created_collection, created_document),
             document_definition)
 
@@ -472,30 +505,30 @@ class CRUDTests(unittest.TestCase):
         document_definition['id'] = 'document2'
         document_definition['key'] = 'value2'
 
-        upserted_document = client.UpsertDocument(self.GetDocumentCollectionLink(created_db, created_collection),
+        upserted_document = client.UpsertItem(self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
         self.assertEqual(upserted_document.get('id'), document_definition.get('id'))
         self.assertEqual(upserted_document.get('key'), document_definition.get('key'))
 
-        documentlist = list(client.ReadDocuments(
+        documentlist = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection)))
         self.assertEqual(2, len(documentlist))
 
         # For DeleteDocument, we require to have the partitionKey to be specified as part of options otherwise we get BadRequest(status code 400)
         self.__AssertHTTPFailureWithStatus(
             StatusCodes.BAD_REQUEST,
-            client.DeleteDocument,
+            client.DeleteItem,
             self.GetDocumentLink(created_db, created_collection, upserted_document))
 
         # delete document
         options = { 'partitionKey': upserted_document.get('id') }
-        client.DeleteDocument(
+        client.DeleteItem(
             self.GetDocumentLink(created_db, created_collection, upserted_document), 
             options)
 
         # query document on the partition key specified in the predicate will pass even without setting enableCrossPartitionQuery or passing in the partitionKey value
-        documentlist = list(client.QueryDocuments(
+        documentlist = list(client.QueryItems(
             self.GetDocumentCollectionLink(created_db, created_collection),
             {
                 'query': 'SELECT * FROM root r WHERE r.id=\'' + replaced_document.get('id') + '\''
@@ -504,7 +537,7 @@ class CRUDTests(unittest.TestCase):
 
         # query document on any property other than partitionKey will fail without setting enableCrossPartitionQuery or passing in the partitionKey value
         try:
-            list(client.QueryDocuments(
+            list(client.QueryItems(
                 self.GetDocumentCollectionLink(created_db, created_collection),
                 {
                     'query': 'SELECT * FROM root r WHERE r.key=\'' + replaced_document.get('key') + '\''
@@ -514,7 +547,7 @@ class CRUDTests(unittest.TestCase):
 
         # cross partition query
         options = { 'enableCrossPartitionQuery': True }
-        documentlist = list(client.QueryDocuments(
+        documentlist = list(client.QueryItems(
             self.GetDocumentCollectionLink(created_db, created_collection),
             {
                 'query': 'SELECT * FROM root r WHERE r.key=\'' + replaced_document.get('key') + '\''
@@ -524,7 +557,7 @@ class CRUDTests(unittest.TestCase):
 
         # query document by providing the partitionKey value
         options = { 'partitionKey': replaced_document.get('id') }
-        documentlist = list(client.QueryDocuments(
+        documentlist = list(client.QueryItems(
             self.GetDocumentCollectionLink(created_db, created_collection),
             {
                 'query': 'SELECT * FROM root r WHERE r.key=\'' + replaced_document.get('key') + '\''
@@ -532,14 +565,14 @@ class CRUDTests(unittest.TestCase):
 
         self.assertEqual(1, len(documentlist))
 
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection))
 
     def test_partitioned_collection_permissions(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
-        collection_definition = {   'id': 'sample collection', 
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/key'],
@@ -549,12 +582,12 @@ class CRUDTests(unittest.TestCase):
 
         collection_definition['id'] = 'all collection'
         
-        all_collection = client.CreateCollection(self.GetDatabaseLink(created_db),
+        all_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition)
 
         collection_definition['id'] = 'read collection'
 
-        read_collection = client.CreateCollection(self.GetDatabaseLink(created_db),
+        read_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition)
 
         user = client.CreateUser(self.GetDatabaseLink(created_db), { 'id': 'user' })
@@ -582,28 +615,28 @@ class CRUDTests(unittest.TestCase):
         resource_tokens[all_collection['_rid']] = (all_permission['_token'])
         resource_tokens[read_collection['_rid']] = (read_permission['_token'])
         
-        restricted_client = document_client.DocumentClient(
-            CRUDTests.host, {'resourceTokens': resource_tokens})
+        restricted_client = cosmos_client.CosmosClient(
+            CRUDTests.host, {'resourceTokens': resource_tokens}, CRUDTests.connectionPolicy)
 
         document_definition = {'id': 'document1',
                                'key': 1
                                }
         
         # Create document in all_collection should succeed since the partitionKey is 1 which is what specified as resourcePartitionKey in permission object and it has all permissions
-        created_document = restricted_client.CreateDocument(
+        created_document = restricted_client.CreateItem(
             self.GetDocumentCollectionLink(created_db, all_collection, False),
             document_definition)
 
         # Create document in read_collection should fail since it has only read permissions for this collection
         self.__AssertHTTPFailureWithStatus(
             StatusCodes.FORBIDDEN,
-            restricted_client.CreateDocument,
+            restricted_client.CreateItem,
             self.GetDocumentCollectionLink(created_db, read_collection, False),
             document_definition)
 
         # Read document feed should succeed for this collection. Note that I need to pass in partitionKey here since permission has resourcePartitionKey defined
         options = { 'partitionKey': document_definition.get('key') }
-        documentlist = list(restricted_client.ReadDocuments(
+        documentlist = list(restricted_client.ReadItems(
             self.GetDocumentCollectionLink(created_db, read_collection, False),
             options))
 
@@ -614,7 +647,7 @@ class CRUDTests(unittest.TestCase):
         # Create document should fail since the partitionKey is 2 which is different that what is specified as resourcePartitionKey in permission object
         self.__AssertHTTPFailureWithStatus(
             StatusCodes.FORBIDDEN,
-            restricted_client.CreateDocument,
+            restricted_client.CreateItem,
             self.GetDocumentCollectionLink(created_db, all_collection, False),
             document_definition,
             options)
@@ -622,26 +655,26 @@ class CRUDTests(unittest.TestCase):
         document_definition['key'] = 1
         options = { 'partitionKey': document_definition.get('key') }
         # Delete document should succeed since the partitionKey is 1 which is what specified as resourcePartitionKey in permission object
-        created_document = restricted_client.DeleteDocument(
+        created_document = restricted_client.DeleteItem(
             self.GetDocumentLink(created_db, all_collection, created_document, False),
             options)
 
         # Delete document in read_collection should fail since it has only read permissions for this collection
         self.__AssertHTTPFailureWithStatus(
             StatusCodes.FORBIDDEN,
-            restricted_client.DeleteDocument,
+            restricted_client.DeleteItem,
             self.GetDocumentCollectionLink(created_db, read_collection, False),
             options)
 
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, all_collection))
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, read_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, all_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, read_collection))
 
     def test_partitioned_collection_execute_stored_procedure(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
-        collection_definition = {   'id': 'sample collection', 
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/pk'],
@@ -649,7 +682,7 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
 
-        created_collection = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition)
         
         sproc = {
@@ -679,7 +712,7 @@ class CRUDTests(unittest.TestCase):
             None,
             { 'partitionKey' : 3})
         
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection))
 
     def test_partitioned_collection_attachment_crud_and_query(self):
         class ReadableStream(object):
@@ -720,11 +753,11 @@ class CRUDTests(unittest.TestCase):
                 return sum([len(chunk) for chunk in self._chunks])
 
 
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
-        collection_definition = {   'id': 'sample collection', 
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/id'],
@@ -732,12 +765,12 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
 
-        collection = client.CreateCollection(self.GetDatabaseLink(db), collection_definition)
+        collection = client.CreateContainer(self.GetDatabaseLink(db), collection_definition)
         
         document_definition = {'id': 'sample document',
                                'key': 'value'}
 
-        document = client.CreateDocument(self.GetDocumentCollectionLink(db, collection),
+        document = client.CreateItem(self.GetDocumentCollectionLink(db, collection),
                                          document_definition)
 
         content_stream = ReadableStream()
@@ -745,12 +778,12 @@ class CRUDTests(unittest.TestCase):
                     'contentType': 'application/text' }
 
         # Currently, we require to have the partitionKey to be specified as part of options otherwise we get BadRequest(status code 400)
-        self.__AssertHTTPFailureWithStatus(
-            StatusCodes.BAD_REQUEST,
-            client.CreateAttachmentAndUploadMedia,
-            self.GetDocumentLink(db, collection, document),
-            content_stream,
-            options)
+        #self.__AssertHTTPFailureWithStatus(
+        #    StatusCodes.BAD_REQUEST,
+        #    client.CreateAttachmentAndUploadMedia,
+        #    self.GetDocumentLink(db, collection, document),
+        #    content_stream,
+        #    options)
 
         content_stream = ReadableStream()
         # Setting the partitionKey as part of options is required for attachment CRUD
@@ -837,10 +870,10 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(3, len(attachmentlist))
         
         # Currently, we require to have the partitionKey to be specified as part of options otherwise we get BadRequest(status code 400)
-        self.__AssertHTTPFailureWithStatus(
-            StatusCodes.BAD_REQUEST,
-            client.ReadAttachment,
-            self.GetAttachmentLink(db, collection, document, attachment))
+        #self.__AssertHTTPFailureWithStatus(
+        #    StatusCodes.BAD_REQUEST,
+        #    client.ReadAttachment,
+        #    self.GetAttachmentLink(db, collection, document, attachment))
 
         # Read attachment
         options = { 'partitionKey': document_definition.get('id') }
@@ -912,14 +945,14 @@ class CRUDTests(unittest.TestCase):
         options = { 'partitionKey': document_definition.get('id') }
         client.DeleteAttachment(self.GetAttachmentLink(db, collection, document, attachment), options)
         
-        client.DeleteCollection(self.GetDocumentCollectionLink(db, collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(db, collection))
 
     def test_partitioned_collection_partition_key_value_types(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
-        collection_definition = {   'id': 'sample collection1', 
+        collection_definition = {   'id': 'sample collection1 ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/key'],
@@ -927,7 +960,7 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
 
-        created_collection = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition)
 
         document_definition = {'id': 'document1',
@@ -935,7 +968,7 @@ class CRUDTests(unittest.TestCase):
                                'spam': 'eggs'}
 
         # create document with partitionKey set as None here
-        created_document = client.CreateDocument(
+        client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
@@ -943,7 +976,7 @@ class CRUDTests(unittest.TestCase):
                                'spam': 'eggs'}
 
         # create document with partitionKey set as Undefined here
-        created_document = client.CreateDocument(
+        client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
@@ -952,7 +985,7 @@ class CRUDTests(unittest.TestCase):
                                'spam': 'eggs'}
 
         # create document with bool partitionKey
-        created_document = client.CreateDocument(
+        client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
@@ -961,7 +994,7 @@ class CRUDTests(unittest.TestCase):
                                'spam': 'eggs'}
 
         # create document with string partitionKey
-        created_document = client.CreateDocument(
+        client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
@@ -970,7 +1003,7 @@ class CRUDTests(unittest.TestCase):
                                'spam': 'eggs'}
 
         # create document with int partitionKey
-        created_document = client.CreateDocument(
+        client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
@@ -979,18 +1012,18 @@ class CRUDTests(unittest.TestCase):
                                'spam': 'eggs'}
 
         # create document with float partitionKey
-        created_document = client.CreateDocument(
+        client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection),
             document_definition)
 
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection))
 
-    def test_partitioned_collection_conflit_crud_and_query(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+    def test_partitioned_collection_conflict_crud_and_query(self):
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
-        collection_definition = {   'id': 'sample collection', 
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()), 
                                     'partitionKey': 
                                     {   
                                         'paths': ['/id'],
@@ -998,7 +1031,7 @@ class CRUDTests(unittest.TestCase):
                                     }
                                 }
 
-        created_collection = client.CreateCollection(self.GetDatabaseLink(created_db),
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
                                 collection_definition)
 
         conflict_definition = {'id': 'new conflict',
@@ -1008,10 +1041,10 @@ class CRUDTests(unittest.TestCase):
                               }
 
         # Currently, we require to have the partitionKey to be specified as part of options otherwise we get BadRequest(status code 400)
-        self.__AssertHTTPFailureWithStatus(
-            StatusCodes.BAD_REQUEST,
-            client.ReadConflict,
-            self.GetConflictLink(created_db, created_collection, conflict_definition))
+        #self.__AssertHTTPFailureWithStatus(
+        #    StatusCodes.BAD_REQUEST,
+        #    client.ReadConflict,
+        #    self.GetConflictLink(created_db, created_collection, conflict_definition))
 
         # read conflict here will return resource not found(404) since there is no conflict here
         options = { 'partitionKey': conflict_definition.get('id') }
@@ -1069,7 +1102,7 @@ class CRUDTests(unittest.TestCase):
 
         self.assertEqual(0, len(conflictlist))
 
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection))
 
     def test_document_crud_self_link(self):
         self._test_document_crud(False)
@@ -1078,17 +1111,18 @@ class CRUDTests(unittest.TestCase):
         self._test_document_crud(True)
         
     def _test_document_crud(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create collection
-        created_collection = client.CreateCollection(
+        created_collection = client.CreateContainer(
             self.GetDatabaseLink(created_db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         # read documents
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based)))
+
         # create a document
         before_create_documents_count = len(documents)
         document_definition = {'name': 'sample document',
@@ -1097,19 +1131,19 @@ class CRUDTests(unittest.TestCase):
         # Should throw an error because automatic id generation is disabled.
         self.__AssertHTTPFailureWithStatus(
             StatusCodes.BAD_REQUEST,
-            client.CreateDocument,
+            client.CreateItem,
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
             document_definition,
             {'disableAutomaticIdGeneration': True})
 
-        created_document = client.CreateDocument(
+        created_document = client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
             document_definition)
         self.assertEqual(created_document['name'],
                          document_definition['name'])
         self.assertTrue(created_document['id'] != None)
         # duplicated documents are allowed when 'id' is not provided.
-        duplicated_document = client.CreateDocument(
+        duplicated_document = client.CreateItem(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
             document_definition)
         self.assertEqual(duplicated_document['name'],
@@ -1121,18 +1155,18 @@ class CRUDTests(unittest.TestCase):
         duplicated_definition_with_id = document_definition.copy()
         duplicated_definition_with_id['id'] = created_document['id']
         self.__AssertHTTPFailureWithStatus(StatusCodes.CONFLICT,
-                                           client.CreateDocument,
+                                           client.CreateItem,
                                            self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
                                            duplicated_definition_with_id)
         # read documents after creation
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based)))
         self.assertEqual(
             len(documents),
             before_create_documents_count + 2,
             'create should increase the number of documents')
         # query documents
-        documents = list(client.QueryDocuments(
+        documents = list(client.QueryItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
             {
                 'query': 'SELECT * FROM root r WHERE r.name=@name',
@@ -1141,7 +1175,7 @@ class CRUDTests(unittest.TestCase):
                 ]
             }))
         self.assert_(documents)
-        documents = list(client.QueryDocuments(
+        documents = list(client.QueryItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
             {
                 'query': 'SELECT * FROM root r WHERE r.name=@name',
@@ -1154,7 +1188,8 @@ class CRUDTests(unittest.TestCase):
         # replace document.
         created_document['name'] = 'replaced document'
         created_document['spam'] = 'not eggs'
-        replaced_document = client.ReplaceDocument(
+        old_etag = created_document['_etag']
+        replaced_document = client.ReplaceItem(
             self.GetDocumentLink(created_db, created_collection, created_document, is_name_based),
             created_document)
         self.assertEqual(replaced_document['name'],
@@ -1166,32 +1201,56 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(created_document['id'],
                          replaced_document['id'],
                          'document id should stay the same')
+        
+        #replace document based on condition
+        replaced_document['name'] = 'replaced document based on condition'
+        replaced_document['spam'] = 'new spam field'
+
+        #should fail for stale etag
+        self.__AssertHTTPFailureWithStatus(
+            StatusCodes.PRECONDITION_FAILED, client.ReplaceItem,
+                self.GetDocumentLink(created_db, created_collection, replaced_document, is_name_based),
+                replaced_document, { 'accessCondition' : { 'type': 'IfMatch', 'condition': old_etag } })
+
+        #should pass for most recent etag
+        replaced_document_conditional = client.ReplaceItem(
+            self.GetDocumentLink(created_db, created_collection, replaced_document, is_name_based),
+            replaced_document, { 'accessCondition' : { 'type': 'IfMatch', 'condition': replaced_document['_etag'] } })
+        self.assertEqual(replaced_document_conditional['name'],
+                         'replaced document based on condition',
+                         'document id property should change')
+        self.assertEqual(replaced_document_conditional['spam'],
+                         'new spam field',
+                         'property should have changed')
+        self.assertEqual(replaced_document_conditional['id'],
+                         replaced_document['id'],
+                         'document id should stay the same')
         # read document
-        one_document_from_read = client.ReadDocument(
+        one_document_from_read = client.ReadItem(
             self.GetDocumentLink(created_db, created_collection, replaced_document, is_name_based))
         self.assertEqual(replaced_document['id'],
                          one_document_from_read['id'])
         # delete document
-        client.DeleteDocument(self.GetDocumentLink(created_db, created_collection, replaced_document, is_name_based))
+        client.DeleteItem(self.GetDocumentLink(created_db, created_collection, replaced_document, is_name_based))
         # read documents after deletion
         self.__AssertHTTPFailureWithStatus(StatusCodes.NOT_FOUND,
-                                           client.ReadDocument,
+                                           client.ReadItem,
                                            self.GetDocumentLink(created_db, created_collection, replaced_document, is_name_based))
-    
+
     def test_partitioning(self):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create test database
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
         # Create bunch of collections participating in partitioning
-        collection0 = client.CreateCollection(
+        collection0 = client.CreateContainer(
             self.GetDatabaseLink(created_db, True),
             { 'id': 'coll_0' })
-        collection1 = client.CreateCollection(
+        collection1 = client.CreateContainer(
             self.GetDatabaseLink(created_db, True),
             { 'id': 'coll_1' })
-        collection2 = client.CreateCollection(
+        collection2 = client.CreateContainer(
             self.GetDatabaseLink(created_db, True),
             { 'id': 'coll_2' })
 
@@ -1205,12 +1264,12 @@ class CRUDTests(unittest.TestCase):
                                 'name': 'sample document',
                                 'key': 'value' }
         
-        client.CreateDocument(
+        client.CreateItem(
             self.GetDatabaseLink(created_db, True),
             document_definition)
 
         # Read the documents in collection1 and verify that the count is 1 now
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, collection0, True)))
         self.assertEqual(1, len(documents))
         
@@ -1219,12 +1278,12 @@ class CRUDTests(unittest.TestCase):
 
         document_definition['id'] = '1'
 
-        client.CreateDocument(
+        client.CreateItem(
             self.GetDatabaseLink(created_db, True),
             document_definition)
 
         # Read the documents in collection1 and verify that the count is 1 now
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, collection1, True)))
         self.assertEqual(1, len(documents))
 
@@ -1233,12 +1292,12 @@ class CRUDTests(unittest.TestCase):
 
         document_definition['id'] = '2'
 
-        client.CreateDocument(
+        client.CreateItem(
             self.GetDatabaseLink(created_db, True),
             document_definition)
 
         # Read the documents in collection2 and verify that the count is 1 now
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, collection2, True)))
         self.assertEqual(1, len(documents))
 
@@ -1249,12 +1308,12 @@ class CRUDTests(unittest.TestCase):
         document_definition['id'] = '0'
         document_definition['key'] = 'new value'
 
-        client.UpsertDocument(
+        client.UpsertItem(
             self.GetDatabaseLink(created_db, True),
             document_definition)
 
         # Read the documents in collection0 and verify that the count is still 1
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, collection0, True)))
         self.assertEqual(1, len(documents))
 
@@ -1262,7 +1321,7 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(document_definition['key'], documents[0]['key'])
 
         # Query documents in all collections(since no partition key specified) using query string
-        documents = list(client.QueryDocuments(
+        documents = list(client.QueryItems(
             self.GetDatabaseLink(created_db, True),
             {
                 'query': 'SELECT * FROM root r WHERE r.id=\'2\''
@@ -1272,17 +1331,17 @@ class CRUDTests(unittest.TestCase):
         # Updating the value of id property to test UpsertDocument(create scenario)
         document_definition['id'] = '4'
 
-        client.UpsertDocument(
+        client.UpsertItem(
             self.GetDatabaseLink(created_db, True),
             document_definition)
 
         # Read the documents in collection1 and verify that the count is 2 now
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, collection1, True)))
         self.assertEqual(2, len(documents))
 
         # Query documents in all collections(since no partition key specified) using query spec
-        documents = list(client.QueryDocuments(
+        documents = list(client.QueryItems(
             self.GetDatabaseLink(created_db, True),
             {
                 'query': 'SELECT * FROM root r WHERE r.id=@id',
@@ -1293,7 +1352,7 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(1, len(documents))
 
         # Query documents in collection(with partition key of '4' specified) which resolves to collection1
-        documents = list(client.QueryDocuments(
+        documents = list(client.QueryItems(
             self.GetDatabaseLink(created_db, True),
             {
                 'query': 'SELECT * FROM root r'
@@ -1301,7 +1360,7 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(2, len(documents))
 
         # Query documents in collection(with partition key '5' specified) which resolves to collection2 but non existent document in that collection
-        documents = list(client.QueryDocuments(
+        documents = list(client.QueryItems(
             self.GetDatabaseLink(created_db, True),
             {
                 'query': 'SELECT * FROM root r WHERE r.id=@id',
@@ -1314,18 +1373,18 @@ class CRUDTests(unittest.TestCase):
     
     # Partitioning test(with paging)
     def test_partition_paging(self):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create test database
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
         # Create bunch of collections participating in partitioning
-        collection0 = client.CreateCollection(
+        collection0 = client.CreateContainer(
             self.GetDatabaseLink(created_db, True),
-            { 'id': 'coll_0' })
-        collection1 = client.CreateCollection(
+            { 'id': 'coll_0 ' + str(uuid.uuid4()) })
+        collection1 = client.CreateContainer(
             self.GetDatabaseLink(created_db, True),
-            { 'id': 'coll_1' })
+            { 'id': 'coll_1 ' + str(uuid.uuid4()) })
         
         # Register the collection links for partitioning through partition resolver
         collection_links = [self.GetDocumentCollectionLink(created_db, collection0, True), self.GetDocumentCollectionLink(created_db, collection1, True)]
@@ -1339,13 +1398,13 @@ class CRUDTests(unittest.TestCase):
         
         # Create 10 documents each with a different id starting from 0 to 9
         for i in xrange(0, 10):
-            document_definition['id'] = str(i);
-            client.CreateDocument(
+            document_definition['id'] = str(i)
+            client.CreateItem(
                 self.GetDatabaseLink(created_db, True),
                 document_definition)
 
         # Query the documents to ensure that you get the correct count(no paging)
-        documents = list(client.QueryDocuments(
+        documents = list(client.QueryItems(
             self.GetDatabaseLink(created_db, True),
             {
                 'query': 'SELECT * FROM root r WHERE r.id < \'7\''
@@ -1353,7 +1412,7 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(7, len(documents))
 
         # Query the documents with maxItemCount to restrict the max number of documents returned
-        queryIterable = client.QueryDocuments(
+        queryIterable = client.QueryItems(
             self.GetDatabaseLink(created_db, True),
             {
                 'query': 'SELECT * FROM root r WHERE r.id < \'7\''
@@ -1361,13 +1420,13 @@ class CRUDTests(unittest.TestCase):
 
         # Query again and count the number of documents(with paging)
         docCount = 0
-        for doc in queryIterable:
+        for _ in queryIterable:
             docCount += 1
 
         self.assertEqual(7, docCount)
 
         # Query again to test fetch_next_block to ensure that it returns the correct number of documents everytime it's called
-        queryIterable = client.QueryDocuments(
+        queryIterable = client.QueryItems(
             self.GetDatabaseLink(created_db, True),
             {
                 'query': 'SELECT * FROM root r WHERE r.id < \'7\''
@@ -1386,7 +1445,7 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(0, len(queryIterable.fetch_next_block()))
 
         # Set maxItemCount to -1 to lift the limit on max documents returned by the query
-        queryIterable = client.QueryDocuments(
+        queryIterable = client.QueryItems(
             self.GetDatabaseLink(created_db, True),
             {
                 'query': 'SELECT * FROM root r WHERE r.id < \'7\''
@@ -1405,8 +1464,8 @@ class CRUDTests(unittest.TestCase):
         created_db = { 'id': CRUDTests.testDbName }
         
         # Create bunch of collections participating in partitioning
-        collection0 = { 'id': 'coll_0' }
-        collection1 = { 'id': 'coll_1' }
+        collection0 = { 'id': 'coll_0 ' + str(uuid.uuid4()) }
+        collection1 = { 'id': 'coll_1 ' + str(uuid.uuid4()) }
 
         collection_links = [self.GetDocumentCollectionLink(created_db, collection0, True), self.GetDocumentCollectionLink(created_db, collection1, True)]
 
@@ -1499,20 +1558,20 @@ class CRUDTests(unittest.TestCase):
         hash_value = murmur_hash._MurmurHash._ComputeHash(bytes)
         self.assertEqual(3717946798, hash_value)
 
-        self._validate_bytes("", 0x1B873593, bytearray(b'\xEE\xA8\xA2\x67'), 1738713326);
-        self._validate_bytes("1", 0xE82562E4, bytearray(b'\xD0\x92\x24\xED'), 3978597072);
-        self._validate_bytes("00", 0xB4C39035, bytearray(b'\xFA\x09\x64\x1B'), 459540986);
-        self._validate_bytes("eyetooth", 0x8161BD86, bytearray(b'\x98\x62\x1C\x6F'), 1864131224);
-        self._validate_bytes("acid", 0x4DFFEAD7, bytearray(b'\x36\x92\xC0\xB9'), 3116405302);
-        self._validate_bytes("elevation", 0x1A9E1828, bytearray(b'\xA9\xB6\x40\xDF'), 3745560233);
-        self._validate_bytes("dent", 0xE73C4579, bytearray(b'\xD4\x59\xE1\xD3'), 3554761172);
-        self._validate_bytes("homeland", 0xB3DA72CA, bytearray(b'\x06\x4D\x72\xBB'), 3144830214);
-        self._validate_bytes("glamor", 0x8078A01B, bytearray(b'\x89\x89\xA2\xA7'), 2812447113);
-        self._validate_bytes("flags", 0x4D16CD6C, bytearray(b'\x52\x87\x66\x02'), 40273746);
-        self._validate_bytes("democracy", 0x19B4FABD, bytearray(b'\xE4\x55\xD6\xB0'), 2966836708);
-        self._validate_bytes("bumble", 0xE653280E, bytearray(b'\xFE\xD7\xC3\x0C'), 214161406);
-        self._validate_bytes("catch", 0xB2F1555F, bytearray(b'\x98\x4B\xB6\xCD'), 3451276184);
-        self._validate_bytes("omnomnomnivore", 0x7F8F82B0, bytearray(b'\x38\xC4\xCD\xFF'), 4291675192);
+        self._validate_bytes("", 0x1B873593, bytearray(b'\xEE\xA8\xA2\x67'), 1738713326)
+        self._validate_bytes("1", 0xE82562E4, bytearray(b'\xD0\x92\x24\xED'), 3978597072)
+        self._validate_bytes("00", 0xB4C39035, bytearray(b'\xFA\x09\x64\x1B'), 459540986)
+        self._validate_bytes("eyetooth", 0x8161BD86, bytearray(b'\x98\x62\x1C\x6F'), 1864131224)
+        self._validate_bytes("acid", 0x4DFFEAD7, bytearray(b'\x36\x92\xC0\xB9'), 3116405302)
+        self._validate_bytes("elevation", 0x1A9E1828, bytearray(b'\xA9\xB6\x40\xDF'), 3745560233)
+        self._validate_bytes("dent", 0xE73C4579, bytearray(b'\xD4\x59\xE1\xD3'), 3554761172)
+        self._validate_bytes("homeland", 0xB3DA72CA, bytearray(b'\x06\x4D\x72\xBB'), 3144830214)
+        self._validate_bytes("glamor", 0x8078A01B, bytearray(b'\x89\x89\xA2\xA7'), 2812447113)
+        self._validate_bytes("flags", 0x4D16CD6C, bytearray(b'\x52\x87\x66\x02'), 40273746)
+        self._validate_bytes("democracy", 0x19B4FABD, bytearray(b'\xE4\x55\xD6\xB0'), 2966836708)
+        self._validate_bytes("bumble", 0xE653280E, bytearray(b'\xFE\xD7\xC3\x0C'), 214161406)
+        self._validate_bytes("catch", 0xB2F1555F, bytearray(b'\x98\x4B\xB6\xCD'), 3451276184)
+        self._validate_bytes("omnomnomnivore", 0x7F8F82B0, bytearray(b'\x38\xC4\xCD\xFF'), 4291675192)
         self._validate_bytes("The quick brown fox jumps over the lazy dog", 0x4C2DB001, bytearray(b'\x6D\xAB\x8D\xC9'), 3381504877)
 
     def _validate_bytes(self, str, seed, expected_hash_bytes, expected_value):
@@ -1610,19 +1669,19 @@ class CRUDTests(unittest.TestCase):
         self._test_document_upsert(True)
         
     def _test_document_upsert(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         # create database
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
         # create collection
-        created_collection = client.CreateCollection(
+        created_collection = client.CreateContainer(
             self.GetDatabaseLink(created_db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
 
         # read documents and check count
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based)))
         before_create_documents_count = len(documents)
 
@@ -1633,7 +1692,7 @@ class CRUDTests(unittest.TestCase):
                                'key': 'value'}
 
         # create document using Upsert API
-        created_document = client.UpsertDocument(
+        created_document = client.UpsertItem(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
             document_definition)
 
@@ -1642,7 +1701,7 @@ class CRUDTests(unittest.TestCase):
                          document_definition['id'])
 
         # read documents after creation and verify updated count
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based)))
         self.assertEqual(
             len(documents),
@@ -1654,7 +1713,7 @@ class CRUDTests(unittest.TestCase):
         created_document['spam'] = 'not eggs'
         
         # should replace document since it already exists
-        upserted_document = client.UpsertDocument(
+        upserted_document = client.UpsertItem(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
             created_document)
         
@@ -1672,7 +1731,7 @@ class CRUDTests(unittest.TestCase):
                          'document id should stay the same')
         
         # read documents after upsert and verify count doesn't increases again
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based)))
         self.assertEqual(
             len(documents),
@@ -1682,7 +1741,7 @@ class CRUDTests(unittest.TestCase):
         created_document['id'] = 'new id'
 
         # Upsert should create new document since the id is different
-        new_document = client.UpsertDocument(
+        new_document = client.UpsertItem(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based),
             created_document)
         
@@ -1692,7 +1751,7 @@ class CRUDTests(unittest.TestCase):
                          'document id should be same')
         
         # read documents after upsert and verify count increases
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based)))
         self.assertEqual(
             len(documents),
@@ -1700,11 +1759,11 @@ class CRUDTests(unittest.TestCase):
             'upsert should increase the number of documents')
 
         # delete documents
-        client.DeleteDocument(self.GetDocumentLink(created_db, created_collection, upserted_document, is_name_based))
-        client.DeleteDocument(self.GetDocumentLink(created_db, created_collection, new_document, is_name_based))
+        client.DeleteItem(self.GetDocumentLink(created_db, created_collection, upserted_document, is_name_based))
+        client.DeleteItem(self.GetDocumentLink(created_db, created_collection, new_document, is_name_based))
 
         # read documents after delete and verify count is same as original
-        documents = list(client.ReadDocuments(
+        documents = list(client.ReadItems(
             self.GetDocumentCollectionLink(created_db, created_collection, is_name_based)))
         self.assertEqual(
             len(documents),
@@ -1713,19 +1772,19 @@ class CRUDTests(unittest.TestCase):
         
 
     def test_spatial_index_self_link(self):
-        self._test_spatial_index(False);
+        self._test_spatial_index(False)
 
     def test_spatial_index_name_based(self):
-        self._test_spatial_index(True);
+        self._test_spatial_index(True)
         
     def _test_spatial_index(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # partial policy specified
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
             {
-                'id': 'collection with spatial index',
+                'id': 'collection with spatial index ' + str(uuid.uuid4()),
                 'indexingPolicy': {
                     'includedPaths': [
                         {
@@ -1743,21 +1802,21 @@ class CRUDTests(unittest.TestCase):
                     ]
                 }
             })
-        client.CreateDocument(self.GetDocumentCollectionLink(db, collection, is_name_based), {
+        client.CreateItem(self.GetDocumentCollectionLink(db, collection, is_name_based), {
             'id': 'loc1',
             'Location': {
                 'type': 'Point',
                 'coordinates': [ 20.0, 20.0 ]
             }
         })
-        client.CreateDocument(self.GetDocumentCollectionLink(db, collection, is_name_based), {
+        client.CreateItem(self.GetDocumentCollectionLink(db, collection, is_name_based), {
             'id': 'loc2',
             'Location': {
                 'type': 'Point',
                 'coordinates': [ 100.0, 100.0 ]
             }
         })
-        results = list(client.QueryDocuments(
+        results = list(client.QueryItems(
             self.GetDocumentCollectionLink(db, collection, is_name_based),
             "SELECT * FROM root WHERE (ST_DISTANCE(root.Location, {type: 'Point', coordinates: [20.1, 20]}) < 20000) "))
         self.assertEqual(1, len(results))
@@ -1765,10 +1824,10 @@ class CRUDTests(unittest.TestCase):
 
     
     def test_attachment_crud_self_link(self):
-        self._test_attachment_crud(False);
+        self._test_attachment_crud(False)
 
     def test_attachment_crud_name_based(self):
-        self._test_attachment_crud(True);
+        self._test_attachment_crud(True)
         
     def _test_attachment_crud(self, is_name_based):
         class ReadableStream(object):
@@ -1810,16 +1869,18 @@ class CRUDTests(unittest.TestCase):
 
 
         # Should do attachment CRUD operations successfully
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        connection_policy = CRUDTests.connectionPolicy
+        connection_policy.MediaReadMode = documents.MediaReadMode.Buffered
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, connection_policy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         # create document
-        document = client.CreateDocument(self.GetDocumentCollectionLink(db, collection, is_name_based),
+        document = client.CreateItem(self.GetDocumentCollectionLink(db, collection, is_name_based),
                                          { 'id': 'sample document',
                                            'spam': 'eggs',
                                            'key': 'value' })
@@ -1909,7 +1970,7 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(media_response.read(),
                          b'modified first chunk modified second chunk')
         # share attachment with a second document
-        document = client.CreateDocument(self.GetDocumentCollectionLink(db, collection, is_name_based),
+        document = client.CreateItem(self.GetDocumentCollectionLink(db, collection, is_name_based),
                                          {'id': 'document 2'})
         second_attachment = {
             'id': valid_attachment['id'],
@@ -1934,11 +1995,11 @@ class CRUDTests(unittest.TestCase):
 
     # Upsert test for Attachment resource - selflink version
     def test_attachment_upsert_self_link(self):
-        self._test_attachment_upsert(False);
+        self._test_attachment_upsert(False)
 
     # Upsert test for Attachment resource - name based routing version
     def test_attachment_upsert_name_based(self):
-        self._test_attachment_upsert(True);
+        self._test_attachment_upsert(True)
         
     def _test_attachment_upsert(self, is_name_based):
         class ReadableStream(object):
@@ -1978,19 +2039,19 @@ class CRUDTests(unittest.TestCase):
                 """
                 return sum([len(chunk) for chunk in self._chunks])
 
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         
         # create document
-        document = client.CreateDocument(self.GetDocumentCollectionLink(db, collection, is_name_based),
+        document = client.CreateItem(self.GetDocumentCollectionLink(db, collection, is_name_based),
                                          { 'id': 'sample document',
                                            'spam': 'eggs',
                                            'key': 'value' })
@@ -2107,15 +2168,15 @@ class CRUDTests(unittest.TestCase):
         
 
     def test_user_crud_self_link(self):
-        self._test_user_crud(False);
+        self._test_user_crud(False)
 
     def test_user_crud_name_based(self):
-        self._test_user_crud(True);
+        self._test_user_crud(True)
         
     def _test_user_crud(self, is_name_based):
         # Should do User CRUD operations successfully.
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # list users
@@ -2161,15 +2222,15 @@ class CRUDTests(unittest.TestCase):
     
     # Upsert test for User resource - selflink version
     def test_user_upsert_self_link(self):
-        self._test_user_upsert(False);
+        self._test_user_upsert(False)
 
     # Upsert test for User resource - named based routing version
     def test_user_upsert_name_based(self):
-        self._test_user_upsert(True);
+        self._test_user_upsert(True)
         
     def _test_user_upsert(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
@@ -2222,15 +2283,15 @@ class CRUDTests(unittest.TestCase):
 
 
     def test_permission_crud_self_link(self):
-        self._test_permission_crud(False);
+        self._test_permission_crud(False)
 
     def test_permission_crud_name_based(self):
-        self._test_permission_crud(True);
+        self._test_permission_crud(True)
         
     def _test_permission_crud(self, is_name_based):
         # Should do Permission CRUD operations successfully
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create user
@@ -2285,15 +2346,15 @@ class CRUDTests(unittest.TestCase):
 
     # Upsert test for Permission resource - selflink version
     def test_permission_upsert_self_link(self):
-        self._test_permission_upsert(False);
+        self._test_permission_upsert(False)
 
     # Upsert test for Permission resource - name based routing version
     def test_permission_upsert_name_based(self):
-        self._test_permission_upsert(True);
+        self._test_permission_upsert(True)
         
     def _test_permission_upsert(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
@@ -2378,7 +2439,7 @@ class CRUDTests(unittest.TestCase):
             """Sets up entities for this test.
 
             :Parameters:
-                - `client`: document_client.DocumentClient
+                - `client`: cosmos_client.CosmosClient
 
             :Returns:
                 dict
@@ -2387,15 +2448,15 @@ class CRUDTests(unittest.TestCase):
             # create database
             db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
             # create collection1
-            collection1 = client.CreateCollection(
-                db['_self'], { 'id': 'sample collection' })
+            collection1 = client.CreateContainer(
+                db['_self'], { 'id': 'sample collection ' + str(uuid.uuid4()) })
             # create document1
-            document1 = client.CreateDocument(collection1['_self'],
+            document1 = client.CreateItem(collection1['_self'],
                                               { 'id': 'coll1doc1',
                                                 'spam': 'eggs',
                                                 'key': 'value' })
             # create document 2
-            document2 = client.CreateDocument(
+            document2 = client.CreateItem(
                 collection1['_self'],
                 { 'id': 'coll1doc2', 'spam': 'eggs2', 'key': 'value2' })
             # create attachment
@@ -2410,9 +2471,9 @@ class CRUDTests(unittest.TestCase):
             attachment = client.CreateAttachment(document1['_self'],
                                                  dynamic_attachment)
             # create collection 2
-            collection2 = client.CreateCollection(
+            collection2 = client.CreateContainer(
                 db['_self'],
-                { 'id': 'sample collection2' })
+                { 'id': 'sample collection2 ' + str(uuid.uuid4()) })
             # create user1
             user1 = client.CreateUser(db['_self'], { 'id': 'user1' })
             permission = {
@@ -2461,13 +2522,13 @@ class CRUDTests(unittest.TestCase):
             return entities
 
         # Client without any authorization will fail.
-        client = document_client.DocumentClient(CRUDTests.host, {})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {}, CRUDTests.connectionPolicy)
         self.__AssertHTTPFailureWithStatus(StatusCodes.UNAUTHORIZED,
                                            list,
                                            client.ReadDatabases())
         # Client with master key.
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # setup entities
         entities = __SetupEntities(client)
         resource_tokens = {}
@@ -2475,17 +2536,17 @@ class CRUDTests(unittest.TestCase):
             entities['permissionOnColl1']['_token'])
         resource_tokens[entities['doc1']['_rid']] = (
             entities['permissionOnColl1']['_token'])
-        col1_client = document_client.DocumentClient(
-            CRUDTests.host, {'resourceTokens': resource_tokens})
+        col1_client = cosmos_client.CosmosClient(
+            CRUDTests.host, {'resourceTokens': resource_tokens}, CRUDTests.connectionPolicy)
         # 1. Success-- Use Col1 Permission to Read
-        success_coll1 = col1_client.ReadCollection(
+        success_coll1 = col1_client.ReadContainer(
             entities['coll1']['_self'])
         # 2. Failure-- Use Col1 Permission to delete
         self.__AssertHTTPFailureWithStatus(StatusCodes.FORBIDDEN,
-                                           col1_client.DeleteCollection,
+                                           col1_client.DeleteContainer,
                                            success_coll1['_self'])
         # 3. Success-- Use Col1 Permission to Read All Docs
-        success_documents = list(col1_client.ReadDocuments(
+        success_documents = list(col1_client.ReadItems(
             success_coll1['_self']))
         self.assertTrue(success_documents != None,
                         'error reading documents')
@@ -2493,22 +2554,21 @@ class CRUDTests(unittest.TestCase):
                          2,
                          'Expected 2 Documents to be succesfully read')
         # 4. Success-- Use Col1 Permission to Read Col1Doc1
-        success_doc = col1_client.ReadDocument(entities['doc1']['_self'])
+        success_doc = col1_client.ReadItem(entities['doc1']['_self'])
         self.assertTrue(success_doc != None, 'error reading document')
         self.assertEqual(
             success_doc['id'],
             entities['doc1']['id'],
             'Expected to read children using parent permissions')
-        col2_client = document_client.DocumentClient(
+        col2_client = cosmos_client.CosmosClient(
             CRUDTests.host,
-            { 'permissionFeed': [ entities['permissionOnColl2'] ] })
+            { 'permissionFeed': [ entities['permissionOnColl2'] ] }, CRUDTests.connectionPolicy)
         doc = {
-            'id': 'new doc',
             'CustomProperty1': 'BBBBBB',
             'customProperty2': 1000,
             'id': entities['doc2']['id']
         }
-        success_doc = col2_client.CreateDocument(
+        success_doc = col2_client.CreateItem(
             entities['coll2']['_self'], doc)
         self.assertTrue(success_doc != None, 'error creating document')
         self.assertEqual(success_doc['CustomProperty1'],
@@ -2516,20 +2576,20 @@ class CRUDTests(unittest.TestCase):
                          'document should have been created successfully')
 
     def test_trigger_crud_self_link(self):
-        self._test_trigger_crud(False);
+        self._test_trigger_crud(False)
 
     def test_trigger_crud_name_based(self):
-        self._test_trigger_crud(True);
+        self._test_trigger_crud(True)
         
     def _test_trigger_crud(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         # read triggers
         triggers = list(client.ReadTriggers(self.GetDocumentCollectionLink(db, collection, is_name_based)))
         # create a trigger
@@ -2586,7 +2646,7 @@ class CRUDTests(unittest.TestCase):
         trigger = client.ReadTrigger(self.GetTriggerLink(db, collection, replaced_trigger, is_name_based))
         self.assertEqual(replaced_trigger['id'], trigger['id'])
         # delete trigger
-        res = client.DeleteTrigger(self.GetTriggerLink(db, collection, replaced_trigger, is_name_based))
+        client.DeleteTrigger(self.GetTriggerLink(db, collection, replaced_trigger, is_name_based))
         # read triggers after deletion
         self.__AssertHTTPFailureWithStatus(StatusCodes.NOT_FOUND,
                                            client.ReadTrigger,
@@ -2594,23 +2654,23 @@ class CRUDTests(unittest.TestCase):
 
     # Upsert test for Trigger resource - selflink version
     def test_trigger_upsert_self_link(self):
-        self._test_trigger_upsert(False);
+        self._test_trigger_upsert(False)
 
     # Upsert test for Trigger resource - name based routing version
     def test_trigger_upsert_name_based(self):
-        self._test_trigger_upsert(True);
+        self._test_trigger_upsert(True)
         
     def _test_trigger_upsert(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         
         # read triggers and check count
         triggers = list(client.ReadTriggers(self.GetDocumentCollectionLink(db, collection, is_name_based)))
@@ -2675,8 +2735,8 @@ class CRUDTests(unittest.TestCase):
                          'upsert should increase the number of triggers')
         
         # delete triggers
-        res = client.DeleteTrigger(self.GetTriggerLink(db, collection, upserted_trigger, is_name_based))
-        res = client.DeleteTrigger(self.GetTriggerLink(db, collection, new_trigger, is_name_based))
+        client.DeleteTrigger(self.GetTriggerLink(db, collection, upserted_trigger, is_name_based))
+        client.DeleteTrigger(self.GetTriggerLink(db, collection, new_trigger, is_name_based))
 
         # read triggers after delete and verify count remains the same
         triggers = list(client.ReadTriggers(self.GetDocumentCollectionLink(db, collection, is_name_based)))
@@ -2686,20 +2746,20 @@ class CRUDTests(unittest.TestCase):
 
 
     def test_udf_crud_self_link(self):
-        self._test_udf_crud(False);
+        self._test_udf_crud(False)
 
     def test_udf_crud_name_based(self):
-        self._test_udf_crud(True);
+        self._test_udf_crud(True)
         
     def _test_udf_crud(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         # read udfs
         udfs = list(client.ReadUserDefinedFunctions(self.GetDocumentCollectionLink(db, collection, is_name_based)))
         # create a udf
@@ -2744,7 +2804,7 @@ class CRUDTests(unittest.TestCase):
         udf = client.ReadUserDefinedFunction(self.GetUserDefinedFunctionLink(db, collection, replaced_udf, is_name_based))
         self.assertEqual(replaced_udf['id'], udf['id'])
         # delete udf
-        res = client.DeleteUserDefinedFunction(self.GetUserDefinedFunctionLink(db, collection, replaced_udf, is_name_based))
+        client.DeleteUserDefinedFunction(self.GetUserDefinedFunctionLink(db, collection, replaced_udf, is_name_based))
         # read udfs after deletion
         self.__AssertHTTPFailureWithStatus(StatusCodes.NOT_FOUND,
                                            client.ReadUserDefinedFunction,
@@ -2753,23 +2813,23 @@ class CRUDTests(unittest.TestCase):
 
     # Upsert test for User Defined Function resource - selflink version
     def test_udf_upsert_self_link(self):
-        self._test_udf_upsert(False);
+        self._test_udf_upsert(False)
 
     # Upsert test for User Defined Function resource - name based routing version
     def test_udf_upsert_name_based(self):
-        self._test_udf_upsert(True);
+        self._test_udf_upsert(True)
         
     def _test_udf_upsert(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         
         # read udfs and check count
         udfs = list(client.ReadUserDefinedFunctions(self.GetDocumentCollectionLink(db, collection, is_name_based)))
@@ -2842,20 +2902,20 @@ class CRUDTests(unittest.TestCase):
 
 
     def test_sproc_crud_self_link(self):
-        self._test_sproc_crud(False);
+        self._test_sproc_crud(False)
 
     def test_sproc_crud_name_based(self):
-        self._test_sproc_crud(True);
+        self._test_sproc_crud(True)
         
     def _test_sproc_crud(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         # read sprocs
         sprocs = list(client.ReadStoredProcedures(self.GetDocumentCollectionLink(db, collection, is_name_based)))
         # create a sproc
@@ -2908,7 +2968,7 @@ class CRUDTests(unittest.TestCase):
         sproc = client.ReadStoredProcedure(self.GetStoredProcedureLink(db, collection, replaced_sproc, is_name_based))
         self.assertEqual(replaced_sproc['id'], sproc['id'])
         # delete sproc
-        res = client.DeleteStoredProcedure(self.GetStoredProcedureLink(db, collection, replaced_sproc, is_name_based))
+        client.DeleteStoredProcedure(self.GetStoredProcedureLink(db, collection, replaced_sproc, is_name_based))
         # read sprocs after deletion
         self.__AssertHTTPFailureWithStatus(StatusCodes.NOT_FOUND,
                                            client.ReadStoredProcedure,
@@ -2916,23 +2976,23 @@ class CRUDTests(unittest.TestCase):
 
     # Upsert test for sproc resource - selflink version
     def test_sproc_upsert_self_link(self):
-        self._test_sproc_upsert(False);
+        self._test_sproc_upsert(False)
 
     # Upsert test for sproc resource - name based routing version
     def test_sproc_upsert_name_based(self):
-        self._test_sproc_upsert(True);
+        self._test_sproc_upsert(True)
         
     def _test_sproc_upsert(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': 'sample collection' })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         
         # read sprocs and check count
         sprocs = list(client.ReadStoredProcedures(self.GetDocumentCollectionLink(db, collection, is_name_based)))
@@ -3007,13 +3067,13 @@ class CRUDTests(unittest.TestCase):
                          'delete should keep the number of sprocs same')
 
     def test_scipt_logging_execute_stored_procedure(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
-        collection_definition = {   'id': 'sample collection' }
+        collection_definition = {   'id': 'sample collection ' + str(uuid.uuid4()) }
 
-        created_collection = client.CreateCollection(self.GetDatabaseLink(created_db), collection_definition)
+        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db), collection_definition)
         
         sproc = {
             'id': 'storedProcedure',
@@ -3042,7 +3102,7 @@ class CRUDTests(unittest.TestCase):
         result = client.ExecuteStoredProcedure(self.GetStoredProcedureLink(created_db, created_collection, created_sproc), None, options)
 
         self.assertEqual(result, 'Success!')
-        self.assertEqual('The value of x is 1.', client.last_response_headers.get(HttpHeaders.ScriptLogResults))
+        self.assertEqual(urllib.quote('The value of x is 1.'), client.last_response_headers.get(HttpHeaders.ScriptLogResults))
 
         options = { 'enableScriptLogging': False }
         result = client.ExecuteStoredProcedure(self.GetStoredProcedureLink(created_db, created_collection, created_sproc), None, options)
@@ -3050,35 +3110,35 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(result, 'Success!')
         self.assertFalse(HttpHeaders.ScriptLogResults in client.last_response_headers)
         
-        client.DeleteCollection(self.GetDocumentCollectionLink(created_db, created_collection))
+        client.DeleteContainer(self.GetDocumentCollectionLink(created_db, created_collection))
         
 
     def test_collection_indexing_policy_self_link(self):
-        self._test_collection_indexing_policy(False);
+        self._test_collection_indexing_policy(False)
 
     def test_collection_indexing_policy_name_based(self):
-        self._test_collection_indexing_policy(True);
+        self._test_collection_indexing_policy(True)
 
     def _test_collection_indexing_policy(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create collection
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
-            { 'id': "sample collection" })
+            { 'id': 'sample collection ' + str(uuid.uuid4()) })
         self.assertEqual(collection['indexingPolicy']['indexingMode'],
                          documents.IndexingMode.Consistent,
                          'default indexing mode should be consistent')
         lazy_collection_definition = {
-            'id': 'lazy collection',
+            'id': 'lazy collection ' + str(uuid.uuid4()),
             'indexingPolicy': {
                 'indexingMode': documents.IndexingMode.Lazy
             }
         }
-        coll = client.DeleteCollection(self.GetDocumentCollectionLink(db, collection, is_name_based))
-        lazy_collection = client.CreateCollection(
+        client.DeleteContainer(self.GetDocumentCollectionLink(db, collection, is_name_based))
+        lazy_collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
             lazy_collection_definition)
         self.assertEqual(lazy_collection['indexingPolicy']['indexingMode'],
@@ -3086,13 +3146,13 @@ class CRUDTests(unittest.TestCase):
                          'indexing mode should be lazy')
 
         consistent_collection_definition = {
-            'id': 'lazy collection',
+            'id': 'lazy collection ' + str(uuid.uuid4()),
             'indexingPolicy': {
                 'indexingMode': documents.IndexingMode.Consistent
             }
         }
-        coll = client.DeleteCollection(self.GetDocumentCollectionLink(db, lazy_collection, is_name_based))
-        consistent_collection = client.CreateCollection(
+        client.DeleteContainer(self.GetDocumentCollectionLink(db, lazy_collection, is_name_based))
+        consistent_collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based), consistent_collection_definition)
         self.assertEqual(collection['indexingPolicy']['indexingMode'],
                          documents.IndexingMode.Consistent,
@@ -3121,8 +3181,8 @@ class CRUDTests(unittest.TestCase):
                 ]
             }
         }
-        client.DeleteCollection(self.GetDocumentCollectionLink(db, consistent_collection, is_name_based))
-        collectio_with_indexing_policy = client.CreateCollection(self.GetDatabaseLink(db, is_name_based), collection_definition)
+        client.DeleteContainer(self.GetDocumentCollectionLink(db, consistent_collection, is_name_based))
+        collectio_with_indexing_policy = client.CreateContainer(self.GetDatabaseLink(db, is_name_based), collection_definition)
         self.assertEqual(1,
                          len(collectio_with_indexing_policy['indexingPolicy']['includedPaths']),
                          'Unexpected includedPaths length')
@@ -3131,22 +3191,22 @@ class CRUDTests(unittest.TestCase):
                          'Unexpected excluded path count')
 
     def test_create_default_indexing_policy_self_link(self):
-        self._test_create_default_indexing_policy(False);
+        self._test_create_default_indexing_policy(False)
 
     def test_create_default_indexing_policy_name_based(self):
-        self._test_create_default_indexing_policy(True);
+        self._test_create_default_indexing_policy(True)
         
     def _test_create_default_indexing_policy(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
         # no indexing policy specified
-        collection = client.CreateCollection(self.GetDatabaseLink(db, is_name_based), {'id': 'TestCreateDefaultPolicy01'})
-        self._check_default_indexing_policy_paths(collection['indexingPolicy']);
+        collection = client.CreateContainer(self.GetDatabaseLink(db, is_name_based), {'id': 'TestCreateDefaultPolicy01'})
+        self._check_default_indexing_policy_paths(collection['indexingPolicy'])
 
         # partial policy specified
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
             {
                 'id': 'TestCreateDefaultPolicy02',
@@ -3157,7 +3217,7 @@ class CRUDTests(unittest.TestCase):
         self._check_default_indexing_policy_paths(collection['indexingPolicy'])
 
         # default policy
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
             {
                 'id': 'TestCreateDefaultPolicy03',
@@ -3166,7 +3226,7 @@ class CRUDTests(unittest.TestCase):
         self._check_default_indexing_policy_paths(collection['indexingPolicy'])
 
         # missing indexes
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
             {
                 'id': 'TestCreateDefaultPolicy04',
@@ -3181,7 +3241,7 @@ class CRUDTests(unittest.TestCase):
         self._check_default_indexing_policy_paths(collection['indexingPolicy'])
 
         # missing precision
-        collection = client.CreateCollection(
+        collection = client.CreateContainer(
             self.GetDatabaseLink(db, is_name_based),
             {
                 'id': 'TestCreateDefaultPolicy05',
@@ -3219,7 +3279,7 @@ class CRUDTests(unittest.TestCase):
 
         root_included_path = __get_first([included_path for included_path in indexing_policy['includedPaths']
                               if included_path['path'] == '/*'])
-        self.assert_(root_included_path);
+        self.assert_(root_included_path)
 
         # There should be one HashIndex of String type and one RangeIndex of Number type in the root included path.
         hash_index = __get_first([index for index in root_included_path['indexes'] if index['kind'] == 'Hash'])
@@ -3234,36 +3294,34 @@ class CRUDTests(unittest.TestCase):
         connection_policy = documents.ConnectionPolicy()
         # making timeout 1 ms to make sure it will throw
         connection_policy.RequestTimeout = 1
-        client = document_client.DocumentClient(CRUDTests.host,
+        with self.assertRaises(Exception):
+            # client does a getDatabaseAccount on initialization, which will time out
+            cosmos_client.CosmosClient(CRUDTests.host,
                                                 {'masterKey': CRUDTests.masterKey},
                                                 connection_policy)
-        # create database
-        with self.assertRaises(Exception):
-            # Will time out.
-            client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
     def test_query_iterable_functionality(self):
         def __CreateResources(client):
             """Creates resources for this test.
 
             :Parameters:
-                - `client`: document_client.DocumentClient
+                - `client`: cosmos_client.CosmosClient
 
             :Returns:
                 dict
 
             """
             db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
-            collection = client.CreateCollection(
+            collection = client.CreateContainer(
                 db['_self'],
-                { 'id': 'sample collection' })
-            doc1 = client.CreateDocument(
+                { 'id': 'sample collection ' + str(uuid.uuid4()) })
+            doc1 = client.CreateItem(
                 collection['_self'],
                 { 'id': 'doc1', 'prop1': 'value1'})
-            doc2 = client.CreateDocument(
+            doc2 = client.CreateItem(
                 collection['_self'],
                 { 'id': 'doc2', 'prop1': 'value2'})
-            doc3 = client.CreateDocument(
+            doc3 = client.CreateItem(
                 collection['_self'],
                 { 'id': 'doc3', 'prop1': 'value3'})
             resources = {
@@ -3275,10 +3333,10 @@ class CRUDTests(unittest.TestCase):
             return resources
 
         # Validate QueryIterable by converting it to a list.
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         resources = __CreateResources(client)
-        results = client.ReadDocuments(resources['coll']['_self'],
+        results = client.ReadItems(resources['coll']['_self'],
                                        {'maxItemCount':2})
         docs = list(iter(results))
         self.assertEqual(3,
@@ -3309,7 +3367,7 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(counter, 3)
 
         # Get query results page by page.
-        results = client.ReadDocuments(resources['coll']['_self'],
+        results = client.ReadItems(resources['coll']['_self'],
                                        {'maxItemCount':2})
         first_block = results.fetch_next_block()
         self.assertEqual(2,
@@ -3325,10 +3383,10 @@ class CRUDTests(unittest.TestCase):
                          'Then its empty.')
 
     def test_trigger_functionality_self_link(self):
-        self._test_trigger_functionality(False);
+        self._test_trigger_functionality(False)
 
     def test_trigger_functionality_name_based(self):
-        self._test_trigger_functionality(True);
+        self._test_trigger_functionality(True)
         
     def _test_trigger_functionality(self, is_name_based):
         triggers_in_collection1 = [
@@ -3402,7 +3460,7 @@ class CRUDTests(unittest.TestCase):
             """Creates triggers.
 
             :Parameters:
-                - `client`: document_client.DocumentClient
+                - `client`: cosmos_client.CosmosClient
                 - `collection`: dict
 
             """
@@ -3415,17 +3473,17 @@ class CRUDTests(unittest.TestCase):
                         trigger_i[property],
                         'property {property} should match'.format(property=property))
 
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create collections
-        collection1 = client.CreateCollection(
-            self.GetDatabaseLink(db, is_name_based), { 'id': 'sample collection 1' })
-        collection2 = client.CreateCollection(
-            self.GetDatabaseLink(db, is_name_based), { 'id': 'sample collection 2' })
-        collection3 = client.CreateCollection(
-            self.GetDatabaseLink(db, is_name_based), { 'id': 'sample collection 3' })
+        collection1 = client.CreateContainer(
+            self.GetDatabaseLink(db, is_name_based), { 'id': 'sample collection 1 ' + str(uuid.uuid4()) })
+        collection2 = client.CreateContainer(
+            self.GetDatabaseLink(db, is_name_based), { 'id': 'sample collection 2 ' + str(uuid.uuid4()) })
+        collection3 = client.CreateContainer(
+            self.GetDatabaseLink(db, is_name_based), { 'id': 'sample collection 3 ' + str(uuid.uuid4()) })
         # create triggers
         __CreateTriggers(client, db, collection1, triggers_in_collection1, is_name_based)
         __CreateTriggers(client, db, collection2, triggers_in_collection2, is_name_based)
@@ -3433,34 +3491,34 @@ class CRUDTests(unittest.TestCase):
         # create document
         triggers_1 = list(client.ReadTriggers(self.GetDocumentCollectionLink(db, collection1, is_name_based)))
         self.assertEqual(len(triggers_1), 3)
-        document_1_1 = client.CreateDocument(self.GetDocumentCollectionLink(db, collection1, is_name_based),
+        document_1_1 = client.CreateItem(self.GetDocumentCollectionLink(db, collection1, is_name_based),
                                              { 'id': 'doc1',
                                                'key': 'value' },
                                              { 'preTriggerInclude': 't1' })
         self.assertEqual(document_1_1['id'],
                          'DOC1t1',
                          'id should be capitalized')
-        document_1_2 = client.CreateDocument(
+        document_1_2 = client.CreateItem(
             self.GetDocumentCollectionLink(db, collection1, is_name_based),
             { 'id': 'testing post trigger' },
             { 'postTriggerInclude': 'response1',
               'preTriggerInclude': 't1' })
         self.assertEqual(document_1_2['id'], 'TESTING POST TRIGGERt1')
-        document_1_3 = client.CreateDocument(self.GetDocumentCollectionLink(db, collection1, is_name_based),
+        document_1_3 = client.CreateItem(self.GetDocumentCollectionLink(db, collection1, is_name_based),
                                              { 'id': 'responseheaders' },
                                              { 'preTriggerInclude': 't1' })
         self.assertEqual(document_1_3['id'], "RESPONSEHEADERSt1")
 
         triggers_2 = list(client.ReadTriggers(self.GetDocumentCollectionLink(db, collection2, is_name_based)))
         self.assertEqual(len(triggers_2), 2)
-        document_2_1 = client.CreateDocument(self.GetDocumentCollectionLink(db, collection2, is_name_based),
+        document_2_1 = client.CreateItem(self.GetDocumentCollectionLink(db, collection2, is_name_based),
                                              { 'id': 'doc2',
                                                'key2': 'value2' },
                                              { 'preTriggerInclude': 't2' })
         self.assertEqual(document_2_1['id'],
                          'doc2',
                          'id shouldn\'t change')
-        document_2_2 = client.CreateDocument(self.GetDocumentCollectionLink(db, collection2, is_name_based),
+        document_2_2 = client.CreateItem(self.GetDocumentCollectionLink(db, collection2, is_name_based),
                                              { 'id': 'Doc3',
                                                'prop': 'empty' },
                                              { 'preTriggerInclude': 't3' })
@@ -3469,24 +3527,24 @@ class CRUDTests(unittest.TestCase):
         triggers_3 = list(client.ReadTriggers(self.GetDocumentCollectionLink(db, collection3, is_name_based)))
         self.assertEqual(len(triggers_3), 1)
         with self.assertRaises(Exception):
-            client.CreateDocument(self.GetDocumentCollectionLink(db, collection3, is_name_based),
+            client.CreateItem(self.GetDocumentCollectionLink(db, collection3, is_name_based),
                                   { 'id': 'Docoptype' },
                                   { 'postTriggerInclude': 'triggerOpType' })
 
     def test_stored_procedure_functionality_self_link(self):
-        self._test_stored_procedure_functionality(False);
+        self._test_stored_procedure_functionality(False)
 
     def test_stored_procedure_functionality_name_based(self):
-        self._test_stored_procedure_functionality(True);
+        self._test_stored_procedure_functionality(True)
         
     def _test_stored_procedure_functionality(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                { 'masterKey': CRUDTests.masterKey })
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                { 'masterKey': CRUDTests.masterKey }, CRUDTests.connectionPolicy)
         # create database
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # create collection
-        collection = client.CreateCollection(
-            self.GetDatabaseLink(db, is_name_based), { 'id': 'sample collection' })
+        collection = client.CreateContainer(
+            self.GetDatabaseLink(db, is_name_based), { 'id': 'sample collection ' + str(uuid.uuid4()) })
         sproc1 = {
             'id': 'storedProcedure1',
             'body': (
@@ -3544,7 +3602,7 @@ class CRUDTests(unittest.TestCase):
             self.assertEqual(expected_offer_type, offer.get('offerType'))
 
     def test_offer_read_and_query(self):
-        client = document_client.DocumentClient(CRUDTests.host, { 'masterKey': CRUDTests.masterKey })
+        client = cosmos_client.CosmosClient(CRUDTests.host, { 'masterKey': CRUDTests.masterKey }, CRUDTests.connectionPolicy)
         # Create database.
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
@@ -3552,7 +3610,7 @@ class CRUDTests(unittest.TestCase):
         initial_count = len(offers)
 
         # Create collection.
-        collection = client.CreateCollection(db['_self'], { 'id': 'sample collection' })
+        collection = client.CreateContainer(db['_self'], { 'id': 'sample collection ' + str(uuid.uuid4()) })
         offers = list(client.ReadOffers())
         self.assertEqual(initial_count+1, len(offers))
 
@@ -3590,7 +3648,7 @@ class CRUDTests(unittest.TestCase):
         # Expects an exception when reading offer with bad offer link.
         self.__AssertHTTPFailureWithStatus(StatusCodes.BAD_REQUEST, client.ReadOffer, expected_offer.get('_self')[:-1] + 'x')
         # Now delete the collection.
-        client.DeleteCollection(collection.get('_self'))
+        client.DeleteContainer(collection.get('_self'))
         # Reading fails.
         self.__AssertHTTPFailureWithStatus(StatusCodes.NOT_FOUND, client.ReadOffer, expected_offer.get('_self'))
         # Read feed now returns 0 results.
@@ -3598,18 +3656,18 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(initial_count, len(offers))
 
     def test_offer_replace(self):
-        client = document_client.DocumentClient(CRUDTests.host, { 'masterKey': CRUDTests.masterKey })
+        client = cosmos_client.CosmosClient(CRUDTests.host, { 'masterKey': CRUDTests.masterKey }, CRUDTests.connectionPolicy)
         # Create database.
         db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
         # Create collection.
-        collection = client.CreateCollection(db['_self'], { 'id': 'sample collection' })
+        collection = client.CreateContainer(db['_self'], { 'id': 'sample collection ' + str(uuid.uuid4()) })
         offers = self.GetCollectionOffers(client, collection['_rid'])
         self.assertEqual(1, len(offers))
         expected_offer = offers[0]
         self.__ValidateOfferResponseBody(expected_offer, collection.get('_self'), None)
         # Replace the offer.
         offer_to_replace = dict(expected_offer)
-        offer_to_replace['content']['offerThroughput'] += 100;
+        offer_to_replace['content']['offerThroughput'] += 100
         replaced_offer = client.ReplaceOffer(offer_to_replace['_self'], offer_to_replace)
         self.__ValidateOfferResponseBody(replaced_offer, collection.get('_self'), None)
         # Check if the replaced offer is what we expect.
@@ -3636,19 +3694,18 @@ class CRUDTests(unittest.TestCase):
             StatusCodes.BAD_REQUEST, client.ReplaceOffer, offer_to_replace_null_ids['_self'], offer_to_replace_null_ids)
 
     def test_collection_with_offer_type(self):
-        client = document_client.DocumentClient(CRUDTests.host,
-                                                {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
         # create database
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
-        collections = list(client.ReadCollections(created_db['_self']))
+        list(client.ReadContainers(created_db['_self']))
+        
         # create a collection
-        before_create_collections_count = len(collections)
-
         offers = list(client.ReadOffers())
         before_offers_count = len(offers)
         
-        collection_definition = { 'id': 'sample collection' }
-        collection = client.CreateCollection(created_db['_self'],
+        collection_definition = { 'id': 'sample collection ' + str(uuid.uuid4()) }
+        collection = client.CreateContainer(created_db['_self'],
                                              collection_definition,
                                              {
                                                  'offerType': 'S2'
@@ -3666,9 +3723,9 @@ class CRUDTests(unittest.TestCase):
 
     def test_database_account_functionality(self):
         # Validate database account functionality.
-        client = document_client.DocumentClient(CRUDTests.host,
+        client = cosmos_client.CosmosClient(CRUDTests.host,
                                                 { 'masterKey':
-                                                  CRUDTests.masterKey })
+                                                  CRUDTests.masterKey }, CRUDTests.connectionPolicy)
         database_account = client.GetDatabaseAccount()
         self.assertEqual(database_account.DatabasesLink, '/dbs/')
         self.assertEqual(database_account.MediaLink, '/media/')
@@ -3690,32 +3747,32 @@ class CRUDTests(unittest.TestCase):
             != None)
 
     def test_index_progress_headers_self_link(self):
-        self._test_index_progress_headers(False);
+        self._test_index_progress_headers(False)
 
     def test_index_progress_headers_name_based(self):
-        self._test_index_progress_headers(True);
+        self._test_index_progress_headers(True)
         
     def _test_index_progress_headers(self, is_name_based):
-        client = document_client.DocumentClient(CRUDTests.host, { 'masterKey': CRUDTests.masterKey })
+        client = cosmos_client.CosmosClient(CRUDTests.host, { 'masterKey': CRUDTests.masterKey }, CRUDTests.connectionPolicy)
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
-        consistent_coll = client.CreateCollection(self.GetDatabaseLink(created_db, is_name_based), { 'id': 'consistent_coll' })
-        client.ReadCollection(self.GetDocumentCollectionLink(created_db, consistent_coll, is_name_based))
+        consistent_coll = client.CreateContainer(self.GetDatabaseLink(created_db, is_name_based), { 'id': 'consistent_coll ' + str(uuid.uuid4()) })
+        client.ReadContainer(self.GetDocumentCollectionLink(created_db, consistent_coll, is_name_based))
         self.assertFalse(HttpHeaders.LazyIndexingProgress in client.last_response_headers)
         self.assertTrue(HttpHeaders.IndexTransformationProgress in client.last_response_headers)
-        lazy_coll = client.CreateCollection(self.GetDatabaseLink(created_db, is_name_based),
+        lazy_coll = client.CreateContainer(self.GetDatabaseLink(created_db, is_name_based),
             {
-                'id': 'lazy_coll',
+                'id': 'lazy_coll ' + str(uuid.uuid4()),
                 'indexingPolicy': { 'indexingMode' : documents.IndexingMode.Lazy }
             })
-        client.ReadCollection(self.GetDocumentCollectionLink(created_db, lazy_coll, is_name_based))
+        client.ReadContainer(self.GetDocumentCollectionLink(created_db, lazy_coll, is_name_based))
         self.assertTrue(HttpHeaders.LazyIndexingProgress in client.last_response_headers)
         self.assertTrue(HttpHeaders.IndexTransformationProgress in client.last_response_headers)
-        none_coll = client.CreateCollection(self.GetDatabaseLink(created_db, is_name_based),
+        none_coll = client.CreateContainer(self.GetDatabaseLink(created_db, is_name_based),
             {
-                'id': 'none_coll',
+                'id': 'none_coll ' + str(uuid.uuid4()),
                 'indexingPolicy': { 'indexingMode': documents.IndexingMode.NoIndex, 'automatic': False }
             })
-        client.ReadCollection(self.GetDocumentCollectionLink(created_db, none_coll, is_name_based))
+        client.ReadContainer(self.GetDocumentCollectionLink(created_db, none_coll, is_name_based))
         self.assertFalse(HttpHeaders.LazyIndexingProgress in client.last_response_headers)
         self.assertTrue(HttpHeaders.IndexTransformationProgress in client.last_response_headers)
 
@@ -3726,24 +3783,12 @@ class CRUDTests(unittest.TestCase):
     #     connection_policy = documents.ConnectionPolicy()
     #     connection_policy.SSLConfiguration = documents.SSLConfiguration()
     #     connection_policy.SSLConfiguration.SSLCaCerts = './cacert.pem'
-    #     client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, connection_policy)
-    #     # Read databases after creation.
-    #     databases = list(client.ReadDatabases())
-
-
-    # To run this test, please specify your own proxy server.
-    #
-    # def test_proxy_connection(self):
-    #     connection_policy = documents.ConnectionPolicy()
-    #     connection_policy.ProxyConfiguration = documents.ProxyConfiguration()
-    #     connection_policy.ProxyConfiguration.Host = '127.0.0.1'
-    #     connection_policy.ProxyConfiguration.Port = 8088
-    #     client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, connection_policy)
+    #     client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, connection_policy)
     #     # Read databases after creation.
     #     databases = list(client.ReadDatabases())
 
     def test_id_validation(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         # Id shouldn't end with space.
         database_definition = { 'id': 'id_with_space ' }
@@ -3789,29 +3834,30 @@ class CRUDTests(unittest.TestCase):
         client.DeleteDatabase(db['_self'])
 
     def test_id_case_validation(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         # create database
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
 
+        uuid_string = str(uuid.uuid4())
         # pascalCase
-        collection_definition1 = { 'id': 'sampleCollection' }
+        collection_definition1 = { 'id': 'sampleCollection ' + uuid_string }
 
         # CamelCase
-        collection_definition2 = { 'id': 'SampleCollection' }
+        collection_definition2 = { 'id': 'SampleCollection ' + uuid_string }
 
         # Verify that no collections exist
-        collections = list(client.ReadCollections(self.GetDatabaseLink(created_db, True)))
+        collections = list(client.ReadContainers(self.GetDatabaseLink(created_db, True)))
         self.assertEqual(len(collections), 0)
         
         # create 2 collections with different casing of IDs
-        created_collection1 = client.CreateCollection(self.GetDatabaseLink(created_db, True),
+        created_collection1 = client.CreateContainer(self.GetDatabaseLink(created_db, True),
                                                      collection_definition1)
 
-        created_collection2 = client.CreateCollection(self.GetDatabaseLink(created_db, True),
+        created_collection2 = client.CreateContainer(self.GetDatabaseLink(created_db, True),
                                                      collection_definition2)
 
-        collections = list(client.ReadCollections(self.GetDatabaseLink(created_db, True)))
+        collections = list(client.ReadContainers(self.GetDatabaseLink(created_db, True)))
         
         # verify if a total of 2 collections got created
         self.assertEqual(len(collections), 2)
@@ -3821,7 +3867,7 @@ class CRUDTests(unittest.TestCase):
         self.assertEqual(collection_definition2['id'], created_collection2['id'])
 
     def test_id_unicode_validation(self):
-        client = document_client.DocumentClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey})
+        client = cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, CRUDTests.connectionPolicy)
 
         # create database
         created_db = client.CreateDatabase({ 'id': CRUDTests.testDbName })
@@ -3833,10 +3879,10 @@ class CRUDTests(unittest.TestCase):
         collection_definition2 = { 'id': "!@$%^&*()-~`'_[]{}|;:,.<>" } 
 
         # verify that collections are created with specified IDs
-        created_collection1 = client.CreateCollection(self.GetDatabaseLink(created_db, True),
+        created_collection1 = client.CreateContainer(self.GetDatabaseLink(created_db, True),
                                                      collection_definition1)
 
-        created_collection2 = client.CreateCollection(self.GetDatabaseLink(created_db, True),
+        created_collection2 = client.CreateContainer(self.GetDatabaseLink(created_db, True),
                                                      collection_definition2)
         
         self.assertEqual(collection_definition1['id'], created_collection1['id'])

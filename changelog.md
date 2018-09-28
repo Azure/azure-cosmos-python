@@ -1,3 +1,21 @@
+## Changes in 3.0.0 : ##
+- Multi-region write support added
+- Naming changes
+  - DocumentClient to CosmosClient
+  - Collection to Container
+  - Document to Item
+  - Package name updated to “azure-cosmos”
+  - Namespace updated to “azure.cosmos”
+
+## Changes in 2.3.3 : ##
+
+- Added support for proxy
+- Added support for reading change feed
+- Added support for collection quota headers
+- Bugfix for large session tokens issue
+- Bugfix for ReadMedia API
+- Bugfix in partition key range cache
+
 ## Changes in 2.3.2 : ##
 
 - Added support for default retries on connection issues.

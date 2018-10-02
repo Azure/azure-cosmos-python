@@ -21,6 +21,8 @@ import samples.Shared.config as cfg
 #    2.1 - Basic Create
 #    2.2 - Create collection with custom IndexPolicy
 #    2.3 - Create collection with offer throughput set
+#    2.4 - Create collection with unique keys
+#    2.5 - Create collection with partition key
 #
 # 3. Manage Collection Offer Throughput
 #    3.1 - Get Collection performance tier
@@ -142,6 +144,22 @@ class CollectionManagement:
             unique_key_paths = collection['uniqueKeyPolicy']['uniqueKeys'][0]['paths']
             print('Collection with id \'{0}\' created'.format(collection['id']))
             print('Unique Key Paths - \'{0}\', \'{1}\''.format(unique_key_paths[0], unique_key_paths[1]))
+            
+        except errors.HTTPFailure as e:
+            if e.status_code == 409:
+               print('A collection with id \'{0}\' already exists'.format(collection['id']))
+            else: 
+                raise errors.HTTPFailure(e.status_code)
+
+        print("\n2.5 Create Collection - With Partition key")
+
+        try:
+            coll = {"id": "collection_partition_key", 'partitionKey': {'paths': ['/field1'], 'kind': 'Hash'}}
+            collection_options = { 'offerThroughput': 400 }
+            collection = client.CreateContainer(database_link, coll, collection_options )
+            partition_key = collection['partitionKey']
+            print('Collection with id \'{0}\' created'.format(collection['id']))
+            print('Partition Key - \'{0}\', \'{1}\''.format(partition_key['paths'][0], partition_key['kind']))
             
         except errors.HTTPFailure as e:
             if e.status_code == 409:

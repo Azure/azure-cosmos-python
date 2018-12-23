@@ -223,32 +223,26 @@ def GetResourceIdOrFullNameFromLink(resource_link):
         The resource id or full name from the resource link.
     :rtype: str
     """
+    resource = resource_link.strip('/')
+
     # For named based, the resource link is the full name
     if IsNameBased(resource_link):
-        return TrimBeginningAndEndingSlashes(resource_link)
-    
-    # Padding the resource link with leading and trailing slashes if not already
-    if resource_link[-1] != '/':
-        resource_link = resource_link + '/'
-
-    if resource_link[0] != '/':
-        resource_link = '/' + resource_link
+        return resource_link
 
     # The path will be in the form of 
-    # /[resourceType]/[resourceId]/ .... /[resourceType]/[resourceId]/ or
-    # /[resourceType]/[resourceId]/ .... /[resourceType]/
+    # [resourceType]/[resourceId]/ .... /[resourceType]/[resourceId] or
+    # [resourceType]/[resourceId]/ .... /[resourceType]
     # The result of split will be in the form of
-    # ["", [resourceType], [resourceId] ... ,[resourceType], [resourceId], ""]
-    # In the first case, to extract the resourceId it will the element
-    # before last ( at length -2 ) and the the type will before it
-    # ( at length -3 )
-    # In the second case, to extract the resource type it will the element
-    # before last ( at length -2 )
-    path_parts = resource_link.split("/")
+    # [[resourceType], [resourceId], ..., [resourceType], [resourceId]]
+    # In the first case, to extract the resourceId it will the last element
+    # ( at position -1 ) and the the type will before it ( at position -2 )
+    # In the second case, to extract the resource type it will the last 
+    # element ( at position -2 )
+    path_parts = resource_link.split('/')
     if len(path_parts) % 2 == 0:
         # request in form
-        # /[resourceType]/[resourceId]/ .... /[resourceType]/[resourceId]/.
-        return str(path_parts[-2])
+        # [resourceType]/[resourceId]/ .... /[resourceType]/[resourceId]
+        return str(path_parts[-1])
     return None
 
 
@@ -301,7 +295,7 @@ def GetPathFromLink(resource_link, resource_type=''):
         Path from resource link with resource type appended (if provided).
     :rtype: str
     """
-    resource_link = TrimBeginningAndEndingSlashes(resource_link)
+    resource_link = resource_link.strip('/')
         
     if IsNameBased(resource_link):
         # Replace special characters in string using the %xx escape. For example, space(' ') would be replaced by %20
@@ -326,12 +320,8 @@ def IsNameBased(link):
     if not link:
         return False
 
-    # trimming the leading "/"
-    if link.startswith('/') and len(link) > 1:
-        link = link[1:]
-
-    # Splitting the link(separated by "/") into parts 
-    parts = link.split('/')
+    # trimming the leading "/" and splitting the link(separated by "/") into parts 
+    parts = link.lstrip('/').split('/')
 
     # First part should be "dbs" 
     if len(parts) == 0 or not parts[0] or not parts[0].lower() == 'dbs':
@@ -373,11 +363,8 @@ def IsDatabaseLink(link):
     if not link:
         return False
 
-    # trimming the leading and trailing "/" from the input string
-    link = TrimBeginningAndEndingSlashes(link)
-
     # Splitting the link(separated by "/") into parts 
-    parts = link.split('/')
+    parts = link.strip('/').split('/')
 
     if len(parts) != 2:
     	return False
@@ -405,11 +392,8 @@ def IsItemContainerLink(link):
     if not link:
         return False
 
-    # trimming the leading and trailing "/" from the input string
-    link = TrimBeginningAndEndingSlashes(link)
-
     # Splitting the link(separated by "/") into parts 
-    parts = link.split('/')
+    parts = link.strip('/').split('/')
 
     if len(parts) != 4:
     	return False
@@ -454,7 +438,7 @@ def GetItemContainerInfo(self_link, alt_content_path, id_from_response):
     :rtype: tuple
     """ 
 
-    self_link = TrimBeginningAndEndingSlashes(self_link) + '/'
+    self_link = self_link.strip('/') + '/'
 
     index = IndexOfNth(self_link, '/', 4)
 
@@ -487,7 +471,7 @@ def GetItemContainerLink(link):
     :rtype: str
 
     """
-    link = TrimBeginningAndEndingSlashes(link) + '/'
+    link = link.strip('/') + '/'
 
     index = IndexOfNth(link, '/', 4)
     
@@ -543,24 +527,6 @@ def IsValidBase64String(string_to_validate):
             raise e
     return True
 
-def TrimBeginningAndEndingSlashes(path):
-    """Trims beginning and ending slashes
-
-    :param str path:
-
-    :return:
-        Path with beginning and ending slashes trimmed.
-    :rtype: str
-    """
-    if path.startswith('/'):
-        # Returns substring starting from index 1 to end of the string
-        path = path[1:]
-
-    if path.endswith('/'):
-        # Returns substring starting from beginning to last but one char in the string
-        path = path[:-1]
-
-    return path
 
 # Parses the paths into a list of token each representing a property
 def ParsePaths(paths):

@@ -223,7 +223,7 @@ def GetResourceIdOrFullNameFromLink(resource_link):
         The resource id or full name from the resource link.
     :rtype: str
     """
-    resource = resource_link.strip('/')
+    resource_link = resource_link.strip('/')
 
     # For named based, the resource link is the full name
     if IsNameBased(resource_link):

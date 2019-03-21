@@ -153,7 +153,7 @@ class CosmosClient:
             properties=properties
         )
 
-    def list_databases(
+    def list_database_properties(
         self,
         disable_ru_per_minute_usage=None,
         enable_cross_partition_query=None,

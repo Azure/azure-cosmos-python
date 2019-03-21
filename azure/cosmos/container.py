@@ -116,7 +116,7 @@ class Container:
         )
         return Item(data=result)
 
-    def list_items(
+    def list_item_properties(
         self,
         enable_cross_partition_query=None,
         max_item_count=None,

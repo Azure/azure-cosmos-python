@@ -37,7 +37,7 @@ class User:
         # type: (str) -> str
         return u"{}/permissions/{}".format(self.user_link, id)
 
-    def list_permissions(self, max_item_count=None):
+    def list_permission_properties(self, max_item_count=None):
         # type: (int) -> QueryIterable
         """ List all permission for the user.
 

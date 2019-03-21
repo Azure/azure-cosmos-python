@@ -244,7 +244,7 @@ class Database(object):
             properties=container_properties,
         )
 
-    def list_containers(
+    def list_container_properties(
         self,
         max_item_count=None,
         session_token=None,
@@ -389,7 +389,7 @@ class Database(object):
         )
         return user_link
 
-    def list_users(self, max_item_count=None):
+    def list_user_properties(self, max_item_count=None):
         # type: (int) -> QueryIterable
         """ List all users in the container.
 

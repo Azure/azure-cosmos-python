@@ -19,6 +19,9 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
+class Empty(object):
+    """Represents empty value for partitionKey when it's missing.
+    """
 
 class PartitionKey(dict):
     """ Key used to partition a container into logical partitions.

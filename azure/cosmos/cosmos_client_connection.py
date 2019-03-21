@@ -152,6 +152,7 @@ class CosmosClientConnection(object):
 
         database_account = self._global_endpoint_manager._GetDatabaseAccount()
         self._global_endpoint_manager.force_refresh(database_account)
+        self.is_system_key = False
 
     @property
     def Session(self):
@@ -2436,7 +2437,8 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options)
+                                  options,
+                                  is_system_key=self.is_system_key)
         # Create will use WriteEndpoint since it uses POST operation
 
         request = request_object._RequestObject(type, documents._OperationType.Create)
@@ -2476,7 +2478,8 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options)
+                                  options,
+                                  is_system_key=self.is_system_key)
 
         headers[http_constants.HttpHeaders.IsUpsert] = True
 
@@ -2517,7 +2520,8 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options)
+                                  options,
+                                  is_system_key=self.is_system_key)
         # Replace will use WriteEndpoint since it uses PUT operation
         request = request_object._RequestObject(type, documents._OperationType.Replace)
         result, self.last_response_headers = self.__Put(path,
@@ -2908,7 +2912,7 @@ class CosmosClientConnection(object):
             return documents.Undefined
          
         return partitionKey
-    
+
     def _UpdateSessionIfRequired(self, request_headers, response_result, response_headers):    
         """
         Updates session if necessary.

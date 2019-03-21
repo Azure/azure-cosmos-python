@@ -31,6 +31,7 @@ import binascii
 
 from . import auth
 from . import documents
+from . import partition_key
 from . import http_constants
 from . import constants
 from . import runtime_constants
@@ -46,7 +47,8 @@ def GetHeaders(cosmos_client_connection,
                resource_id,
                resource_type,
                options,
-               partition_key_range_id = None):
+               partition_key_range_id = None,
+               is_system_key=False):
     """Gets HTTP request headers.
 
     :param cosmos_client_connection.CosmosClient cosmos_client:
@@ -141,9 +143,17 @@ def GetHeaders(cosmos_client_connection,
         headers[http_constants.HttpHeaders.OfferThroughput] = options['offerThroughput']
 
     if 'partitionKey' in options:
-        # if partitionKey value is Undefined, serialize it as {} to be consistent with other SDKs
+        # if partitionKey value is Undefined and systemKey is False in partition key definition,
+        # serialize it as {} to be consistent with other SDKs. If systemKey is True, serialize it
+        # as [] which corresponds to Empty partition key
         if options.get('partitionKey') is documents.Undefined:
-            headers[http_constants.HttpHeaders.PartitionKey] = [{}]
+            if is_system_key:
+                headers[http_constants.HttpHeaders.PartitionKey] = []
+            else:
+                headers[http_constants.HttpHeaders.PartitionKey] = [{}]
+        # else if partitionKey value is Empty, serialize it as []
+        elif options.get('partitionKey') is partition_key.Empty:
+            headers[http_constants.HttpHeaders.PartitionKey] = []
         # else serialize using json dumps method which apart from regular values will serialize None into null
         else:
             headers[http_constants.HttpHeaders.PartitionKey] = json.dumps([options['partitionKey']])

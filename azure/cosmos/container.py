@@ -61,6 +61,8 @@ class Container:
         database_link = CosmosClientConnection._get_database_link(database)
         self.container_link = u"{}/colls/{}".format(database_link, self.id)
         self.scripts = Scripts(self.client_connection, self.container_link)
+        self.client_connection.is_system_key = (self.properties['partitionKey']['systemKey']
+                                                if 'systemKey' in self.properties['partitionKey'] else False)
 
     def _get_document_link(self, item_or_link):
         # type: (Union[Dict[str, Any], str, Item]) -> str

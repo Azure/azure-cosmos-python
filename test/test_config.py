@@ -41,7 +41,7 @@ class _test_config(object):
     host = os.getenv('ACCOUNT_HOST', 'https://localhost:443')
 
     connectionPolicy = documents.ConnectionPolicy()
-    connectionPolicy.DisableSSLVerification = True
+    connectionPolicy.DisableSSLVerification = True 
 
     global_host = '[YOUR_GLOBAL_ENDPOINT_HERE]'
     write_location_host = '[YOUR_WRITE_ENDPOINT_HERE]'

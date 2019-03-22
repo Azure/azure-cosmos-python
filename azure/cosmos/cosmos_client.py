@@ -69,7 +69,6 @@ class CosmosClient:
     def create_database(
         self,
         id,
-        disable_ru_per_minute_usage=None,
         session_token=None,
         initial_headers=None,
         access_condition=None,
@@ -81,7 +80,6 @@ class CosmosClient:
         """Create a new database with the given ID (name).
 
         :param id: ID (name) of the database to create.
-        :param disable_ru_per_minute_usage: Enable/disable Request Units(RUs)/minute capacity to serve the request if regular provisioned RUs/second is exhausted.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
@@ -101,8 +99,6 @@ class CosmosClient:
 
         if not request_options:
             request_options = {} # type: Dict[str, Any]
-        if disable_ru_per_minute_usage is not None:
-            request_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:
@@ -120,7 +116,6 @@ class CosmosClient:
     def get_database(
         self,
         database,
-        disable_ru_per_minute_usage=None,
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
@@ -131,7 +126,6 @@ class CosmosClient:
         Retrieve an existing database with the ID (name) `id`.
 
         :param id: ID of the new :class:`Database`.
-        :param disable_ru_per_minute_usage: Enable/disable Request Units(RUs)/minute capacity to serve the request if regular provisioned RUs/second is exhausted.
         :param session_token: Token for use with Session consistency.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :raise `HTTPFailure`: If the given database couldn't be retrieved.
@@ -139,8 +133,6 @@ class CosmosClient:
         database_link = CosmosClientConnection._get_database_link(database)
         if not request_options:
             request_options = {} # type: Dict[str, Any]
-        if disable_ru_per_minute_usage is not None:
-            request_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:
@@ -159,7 +151,6 @@ class CosmosClient:
 
     def list_database_properties(
         self,
-        disable_ru_per_minute_usage=None,
         enable_cross_partition_query=None,
         max_item_count=None,
         session_token=None,
@@ -171,15 +162,12 @@ class CosmosClient:
         """
         List the databases in a Cosmos DB SQL database account.
 
-        :param disable_ru_per_minute_usage: Enable/disable Request Units(RUs)/minute capacity to serve the request if regular provisioned RUs/second is exhausted.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
-        if disable_ru_per_minute_usage is not None:
-            feed_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if enable_cross_partition_query is not None:
             feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if max_item_count is not None:
@@ -199,7 +187,6 @@ class CosmosClient:
         self,
         query=None,
         parameters=None,
-        disable_ru_per_minute_usage=None,
         enable_cross_partition_query=None,
         max_item_count=None,
         session_token=None,
@@ -210,8 +197,6 @@ class CosmosClient:
         # type: (str, str, bool, bool, int, str, Dict[str, Any], bool) -> QueryIterable
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
-        if disable_ru_per_minute_usage is not None:
-            feed_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if enable_cross_partition_query is not None:
             feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if max_item_count is not None:
@@ -241,7 +226,6 @@ class CosmosClient:
     def delete_database(
         self,
         database,
-        disable_ru_per_minute_usage=None,
         session_token=None,
         initial_headers=None,
         access_condition=None,
@@ -253,7 +237,6 @@ class CosmosClient:
         Delete the database with the given ID (name).
 
         :param database: The ID (name) or :class:`Database` instance of the database to delete.
-        :param disable_ru_per_minute_usage: Enable/disable Request Units(RUs)/minute capacity to serve the request if regular provisioned RUs/second is exhausted.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
@@ -262,8 +245,6 @@ class CosmosClient:
 
         if not request_options:
             request_options = {} # type: Dict[str, Any]
-        if disable_ru_per_minute_usage is not None:
-            request_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:

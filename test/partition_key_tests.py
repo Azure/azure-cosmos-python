@@ -149,11 +149,33 @@ class PartitionKeyTests(unittest.TestCase):
         items = list(created_container.query_items("SELECT * from c", partition_key=partition_key.Empty))
         self.assertEquals(len(items), 3)
 
+        document_created_by_sproc_id = 'testDoc'
+        sproc = {
+            'id': 'storedProcedure' + str(uuid.uuid4()),
+            'body': (
+                'function () {' +
+                '   var client = getContext().getCollection();' +
+                '   var doc = client.createDocument(client.getSelfLink(), { id: \'' + document_created_by_sproc_id + '\'}, {}, function(err, docCreated, options) { ' +
+                '   if(err) throw new Error(\'Error while creating document: \' + err.message);' +
+                '   else {' +
+                '   getContext().getResponse().setBody(1);' +
+                '        }' +
+                '   });}')
+        }
+
+        created_sproc = created_container.scripts.create_stored_procedure(body=sproc)
+
+        # Partiton Key value same as what is specified in the stored procedure body
+        result = created_container.scripts.execute_stored_procedure(id=created_sproc['id'], partition_key=partition_key.Empty)
+        self.assertEqual(result, 1)
+
+        # 3 previous items + 1 created from the sproc
         items = list(created_container.list_items())
-        self.assertEquals(len(items), 3)
+        self.assertEquals(len(items), 4)
 
         created_container.delete_item(upserted_item['id'], partition_key=partition_key.Empty)
         created_container.delete_item(replaced_item['id'], partition_key=partition_key.Empty)
+        created_container.delete_item(document_created_by_sproc_id, partition_key=partition_key.Empty)
         created_container.delete_item(self.created_document['id'], partition_key=partition_key.Empty)
 
         items = list(created_container.list_items())

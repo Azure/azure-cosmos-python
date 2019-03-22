@@ -152,7 +152,6 @@ class CosmosClientConnection(object):
 
         database_account = self._global_endpoint_manager._GetDatabaseAccount()
         self._global_endpoint_manager.force_refresh(database_account)
-        self.is_system_key = False
 
     @property
     def Session(self):
@@ -985,7 +984,7 @@ class CosmosClientConnection(object):
                                     options), self.last_response_headers
         return query_iterable.QueryIterable(self, query, options, fetch_fn)
 
-    def CreateItem(self, database_or_Container_link, document, options=None):
+    def CreateItem(self, database_or_Container_link, document, options=None, is_system_key=False):
         """Creates a document in a collection.
 
         :param str database_or_Container_link:
@@ -1021,9 +1020,10 @@ class CosmosClientConnection(object):
                            'docs',
                            collection_id,
                            None,
-                           options)
+                           options,
+                           is_system_key)
 
-    def UpsertItem(self, database_or_Container_link, document, options=None):
+    def UpsertItem(self, database_or_Container_link, document, options=None, is_system_key=False):
         """Upserts a document in a collection.
 
         :param str database_or_Container_link:
@@ -1059,7 +1059,8 @@ class CosmosClientConnection(object):
                            'docs',
                            collection_id,
                            None,
-                           options)
+                           options,
+                           is_system_key)
 
     PartitionResolverErrorMessage = "Couldn't find any partition resolvers for the database link provided. Ensure that the link you used when registering the partition resolvers matches the link provided or you need to register both types of database link(self link as well as ID based link)."
 
@@ -1618,7 +1619,7 @@ class CosmosClientConnection(object):
                                    None,
                                    options)
 
-    def ReplaceItem(self, document_link, new_document, options=None):
+    def ReplaceItem(self, document_link, new_document, options=None, is_system_key=False):
         """Replaces a document and returns it.
 
         :param str document_link:
@@ -1653,7 +1654,8 @@ class CosmosClientConnection(object):
                             'docs',
                             document_id,
                             None,
-                            options)
+                            options,
+                            is_system_key)
 
     def DeleteItem(self, document_link, options=None):
         """Deletes a document.
@@ -2410,7 +2412,7 @@ class CosmosClientConnection(object):
         self._useMultipleWriteLocations = self.connection_policy.UseMultipleWriteLocations and database_account._EnableMultipleWritableLocations
         return database_account
 
-    def Create(self, body, path, type, id, initial_headers, options=None):
+    def Create(self, body, path, type, id, initial_headers, options=None, is_system_key=False):
         """Creates a Azure Cosmos resource and returns it.
 
         :param dict body:
@@ -2438,7 +2440,7 @@ class CosmosClientConnection(object):
                                   id,
                                   type,
                                   options,
-                                  is_system_key=self.is_system_key)
+                                  is_system_key=is_system_key)
         # Create will use WriteEndpoint since it uses POST operation
 
         request = request_object._RequestObject(type, documents._OperationType.Create)
@@ -2451,7 +2453,7 @@ class CosmosClientConnection(object):
         self._UpdateSessionIfRequired(headers, result, self.last_response_headers)
         return result
 
-    def Upsert(self, body, path, type, id, initial_headers, options=None):
+    def Upsert(self, body, path, type, id, initial_headers, options=None, is_system_key=False):
         """Upserts a Azure Cosmos resource and returns it.
         
         :param dict body:
@@ -2479,7 +2481,7 @@ class CosmosClientConnection(object):
                                   id,
                                   type,
                                   options,
-                                  is_system_key=self.is_system_key)
+                                  is_system_key=is_system_key)
 
         headers[http_constants.HttpHeaders.IsUpsert] = True
 
@@ -2493,7 +2495,7 @@ class CosmosClientConnection(object):
         self._UpdateSessionIfRequired(headers, result, self.last_response_headers)
         return result
 
-    def Replace(self, resource, path, type, id, initial_headers, options=None):
+    def Replace(self, resource, path, type, id, initial_headers, options=None, is_system_key=False):
         """Replaces a Azure Cosmos resource and returns it.
 
         :param dict resource:
@@ -2521,7 +2523,7 @@ class CosmosClientConnection(object):
                                   id,
                                   type,
                                   options,
-                                  is_system_key=self.is_system_key)
+                                  is_system_key=is_system_key)
         # Replace will use WriteEndpoint since it uses PUT operation
         request = request_object._RequestObject(type, documents._OperationType.Replace)
         result, self.last_response_headers = self.__Put(path,

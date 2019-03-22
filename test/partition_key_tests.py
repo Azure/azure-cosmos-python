@@ -123,7 +123,7 @@ class PartitionKeyTests(unittest.TestCase):
         created_container = self.created_db.get_container(self.created_collection_id)
 
         # systemKey:True must be set while reading non partitioned collection with v 2018-12-31 SDK
-        self.assertTrue(created_container.client_connection.is_system_key)
+        self.assertTrue(created_container.is_system_key)
 
         # Pass partitionKey.Empty as partition key to access documents from a single partition collection with v 2018-12-31 SDK
         read_item = created_container.get_item(self.created_document['id'], partition_key=partition_key.Empty)
@@ -156,3 +156,4 @@ class PartitionKeyTests(unittest.TestCase):
 
         items = list(created_container.list_items())
         self.assertEquals(len(items), 0)
+

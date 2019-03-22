@@ -61,8 +61,8 @@ class Container:
         database_link = CosmosClientConnection._get_database_link(database)
         self.container_link = u"{}/colls/{}".format(database_link, self.id)
         self.scripts = Scripts(self.client_connection, self.container_link)
-        self.client_connection.is_system_key = (self.properties['partitionKey']['systemKey']
-                                                if 'systemKey' in self.properties['partitionKey'] else False)
+        self.is_system_key = (self.properties['partitionKey']['systemKey']
+                              if 'systemKey' in self.properties['partitionKey'] else False)
 
     def _get_document_link(self, item_or_link):
         # type: (Union[Dict[str, Any], str, Item]) -> str
@@ -283,7 +283,10 @@ class Container:
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
         data = self.client_connection.ReplaceItem(
-            document_link=item_link, new_document=body, options=request_options
+            document_link=item_link,
+            new_document=body,
+            options=request_options,
+            is_system_key=self.is_system_key
         )
         return Item(data=data)
 
@@ -318,7 +321,9 @@ class Container:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
         result = self.client_connection.UpsertItem(
-            database_or_Container_link=self.container_link, document=body
+            database_or_Container_link=self.container_link,
+            document=body,
+            is_system_key=self.is_system_key
         )
         return Item(data=result)
 
@@ -371,6 +376,7 @@ class Container:
             database_or_Container_link=self.container_link,
             document=body,
             options=request_options,
+            is_system_key=self.is_system_key
         )
         return Item(data=result)
 

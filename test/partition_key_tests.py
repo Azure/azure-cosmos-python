@@ -32,6 +32,7 @@ import azure.cosmos.partition_key as partition_key
 import azure.cosmos.cosmos_client as cosmos_client
 import test.test_config as test_config
 
+
 @pytest.mark.usefixtures("teardown")
 class PartitionKeyTests(unittest.TestCase):
     """Tests to verify if non partitoned collections are properly accessed on migration with version 2018-12-31.
@@ -42,6 +43,7 @@ class PartitionKeyTests(unittest.TestCase):
     connectionPolicy = test_config._test_config.connectionPolicy
     client = cosmos_client.CosmosClient(host, {'masterKey': masterKey}, "Session", connectionPolicy)
     created_db = test_config._test_config.create_database_if_not_exist(client)
+    created_collection = test_config._test_config.create_multi_partition_collection_with_custom_pk_if_not_exist(client)
 
     @classmethod
     def tearDownClass(cls):
@@ -156,4 +158,10 @@ class PartitionKeyTests(unittest.TestCase):
 
         items = list(created_container.list_items())
         self.assertEquals(len(items), 0)
+
+    def test_multi_partition_collection_read_document_with_no_pk(self):
+        document_definition = {'id': str(uuid.uuid4())}
+        self.created_collection.create_item(body=document_definition)
+        read_item = self.created_collection.get_item(id=document_definition['id'], partition_key=partition_key.Empty)
+        self.assertEquals(read_item['id'], document_definition['id'])
 

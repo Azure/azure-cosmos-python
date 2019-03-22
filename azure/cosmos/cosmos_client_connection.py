@@ -816,7 +816,7 @@ class CosmosClientConnection(object):
                                    None,
                                    options)
 
-    def ReadItems(self, collection_link, feed_options=None):
+    def ReadItems(self, collection_link, feed_options=None, is_system_key=False):
         """Reads all documents in a collection.
 
         :param str collection_link:
@@ -832,9 +832,9 @@ class CosmosClientConnection(object):
         if feed_options is None:
             feed_options = {}
 
-        return self.QueryItems(collection_link, None, feed_options)
+        return self.QueryItems(collection_link, None, feed_options, is_system_key)
 
-    def QueryItems(self, database_or_Container_link, query, options=None, partition_key=None):
+    def QueryItems(self, database_or_Container_link, query, options=None, partition_key=None, is_system_key=False):
         """Queries documents in a collection.
 
         :param str database_or_Container_link:
@@ -869,7 +869,8 @@ class CosmosClientConnection(object):
                                         lambda r: r['Documents'],
                                         lambda _, b: b,
                                         query,
-                                        options), self.last_response_headers
+                                        options,
+                                        is_system_key=is_system_key), self.last_response_headers
             return query_iterable.QueryIterable(self, query, options, fetch_fn, database_or_Container_link)
 
     def QueryItemsChangeFeed(self, collection_link, options=None):
@@ -1093,7 +1094,7 @@ class CosmosClientConnection(object):
         collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
         return collection_id, document, path
     
-    def ReadItem(self, document_link, options=None):
+    def ReadItem(self, document_link, options=None, is_system_key=False):
         """Reads a document.
 
         :param str document_link:
@@ -1116,7 +1117,8 @@ class CosmosClientConnection(object):
                          'docs',
                          document_id,
                          None,
-                         options)
+                         options,
+                         is_system_key)
 
     def ReadTriggers(self, collection_link, options=None):
         """Reads all triggers in a collection.
@@ -1657,7 +1659,7 @@ class CosmosClientConnection(object):
                             options,
                             is_system_key)
 
-    def DeleteItem(self, document_link, options=None):
+    def DeleteItem(self, document_link, options=None, is_system_key=False):
         """Deletes a document.
 
         :param str document_link:
@@ -1680,7 +1682,8 @@ class CosmosClientConnection(object):
                                    'docs',
                                    document_id,
                                    None,
-                                   options)
+                                   options,
+                                   is_system_key)
 
     def CreateAttachment(self, document_link, attachment, options=None):
         """Creates an attachment in a document.
@@ -2154,7 +2157,7 @@ class CosmosClientConnection(object):
                                    None,
                                    options)
 
-    def ExecuteStoredProcedure(self, sproc_link, params, options=None):
+    def ExecuteStoredProcedure(self, sproc_link, params, options=None, is_system_key=False):
         """Executes a store procedure.
 
         :param str sproc_link:
@@ -2190,7 +2193,8 @@ class CosmosClientConnection(object):
                                   path,
                                   sproc_id,
                                   'sprocs',
-                                  options)
+                                  options,
+                                  is_system_key=is_system_key)
 
         # ExecuteStoredProcedure will use WriteEndpoint since it uses POST operation
         request = request_object._RequestObject('sprocs', documents._OperationType.ExecuteJavaScript)
@@ -2535,7 +2539,7 @@ class CosmosClientConnection(object):
         self._UpdateSessionIfRequired(headers, result, self.last_response_headers)
         return result
 
-    def Read(self, path, type, id, initial_headers, options=None):
+    def Read(self, path, type, id, initial_headers, options=None, is_system_key=False):
         """Reads a Azure Cosmos resource and returns it.
 
         :param str path:
@@ -2561,7 +2565,8 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options)
+                                  options,
+                                  is_system_key=is_system_key)
         # Read will use ReadEndpoint since it uses GET operation
         request = request_object._RequestObject(type, documents._OperationType.Read)
         result, self.last_response_headers = self.__Get(path,
@@ -2569,7 +2574,7 @@ class CosmosClientConnection(object):
                                                         headers)
         return result
 
-    def DeleteResource(self, path, type, id, initial_headers, options=None):
+    def DeleteResource(self, path, type, id, initial_headers, options=None, is_system_key=False):
         """Deletes a Azure Cosmos resource and returns it.
 
         :param str path:
@@ -2595,7 +2600,8 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options)
+                                  options,
+                                  is_system_key=is_system_key)
         # Delete will use WriteEndpoint since it uses DELETE operation
         request = request_object._RequestObject(type, documents._OperationType.Delete)
         result, self.last_response_headers = self.__Delete(path,
@@ -2739,7 +2745,8 @@ class CosmosClientConnection(object):
                     create_fn,
                     query,
                     options=None,
-                    partition_key_range_id=None):
+                    partition_key_range_id=None,
+                    is_system_key=False):
         """Query for more than one Azure Cosmos resources.
 
         :param str path:
@@ -2786,7 +2793,8 @@ class CosmosClientConnection(object):
                                       id,
                                       type,
                                       options,
-                                      partition_key_range_id)
+                                      partition_key_range_id,
+                                      is_system_key=is_system_key)
             result, self.last_response_headers = self.__Get(path,
                                                             request,
                                                             headers)
@@ -2812,7 +2820,8 @@ class CosmosClientConnection(object):
                                       id,
                                       type,
                                       options,
-                                      partition_key_range_id)
+                                      partition_key_range_id,
+                                      is_system_key=is_system_key)
             result, self.last_response_headers = self.__Post(path,
                                                              request,
                                                              query,
@@ -2901,7 +2910,7 @@ class CosmosClientConnection(object):
         for part in partition_key_parts:
             # At any point if we don't find the value of a sub-property in the document, we return as Undefined
             if part not in partitionKey:
-                return documents.Undefined
+                return documents._Undefined
             else:
                 partitionKey = partitionKey.get(part)
                 matchCount += 1
@@ -2911,7 +2920,7 @@ class CosmosClientConnection(object):
 
         # Match the count of hops we did to get the partitionKey with the length of partition key parts and validate that it's not a dict at that level
         if ((matchCount != expected_matchCount) or isinstance(partitionKey, dict)):
-            return documents.Undefined
+            return documents._Undefined
          
         return partitionKey
 

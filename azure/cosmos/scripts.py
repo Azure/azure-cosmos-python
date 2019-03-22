@@ -33,10 +33,11 @@ class ScriptType:
 
 class Scripts:
 
-    def __init__(self, client_connection, container_link):
+    def __init__(self, client_connection, container_link, is_system_key):
         # type: (CosmosClientConnection, Union[Container, str], str, Dict[str, Any]) -> None
         self.client_connection = client_connection
         self.container_link = container_link
+        self.is_system_key = is_system_key
 
     def _get_resource_link(self, id, type):
         return u"{}/{}/{}".format(self.container_link, type, id)
@@ -154,7 +155,8 @@ class Scripts:
         return self.client_connection.ExecuteStoredProcedure(
             sproc_link=self._get_resource_link(id, ScriptType.StoredProcedure),
             params=params,
-            options=request_options
+            options=request_options,
+            is_system_key=self.is_system_key
         )
 
     def list_triggers(self, max_item_count=None):

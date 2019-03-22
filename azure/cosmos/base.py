@@ -143,17 +143,15 @@ def GetHeaders(cosmos_client_connection,
         headers[http_constants.HttpHeaders.OfferThroughput] = options['offerThroughput']
 
     if 'partitionKey' in options:
-        # if partitionKey value is Undefined and systemKey is False in partition key definition,
+        # if partitionKey value is Undefined or Empty, and systemKey is False in partition key definition,
         # serialize it as {} to be consistent with other SDKs. If systemKey is True, serialize it
-        # as [] which corresponds to Empty partition key
-        if options.get('partitionKey') is documents.Undefined:
+        # as [], which is the equivalent to be sent for migrated collections
+        if (options.get('partitionKey') is documents._Undefined or
+                options.get('partitionKey') is partition_key.Empty):
             if is_system_key:
                 headers[http_constants.HttpHeaders.PartitionKey] = []
             else:
                 headers[http_constants.HttpHeaders.PartitionKey] = [{}]
-        # else if partitionKey value is Empty, serialize it as []
-        elif options.get('partitionKey') is partition_key.Empty:
-            headers[http_constants.HttpHeaders.PartitionKey] = []
         # else serialize using json dumps method which apart from regular values will serialize None into null
         else:
             headers[http_constants.HttpHeaders.PartitionKey] = json.dumps([options['partitionKey']])

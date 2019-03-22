@@ -60,9 +60,9 @@ class Container:
         self.properties = properties
         database_link = CosmosClientConnection._get_database_link(database)
         self.container_link = u"{}/colls/{}".format(database_link, self.id)
-        self.scripts = Scripts(self.client_connection, self.container_link)
         self.is_system_key = (self.properties['partitionKey']['systemKey']
                               if 'systemKey' in self.properties['partitionKey'] else False)
+        self.scripts = Scripts(self.client_connection, self.container_link, self.is_system_key)
 
     def _get_document_link(self, item_or_link):
         # type: (Union[Dict[str, Any], str, Item]) -> str
@@ -114,7 +114,7 @@ class Container:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
         result = self.client_connection.ReadItem(
-            document_link=doc_link, options=request_options
+            document_link=doc_link, options=request_options, is_system_key=self.is_system_key
         )
         return Item(data=result)
 
@@ -147,7 +147,7 @@ class Container:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
         items = self.client_connection.ReadItems(
-            collection_link=self.container_link, feed_options=request_options
+            collection_link=self.container_link, feed_options=request_options, is_system_key=self.is_system_key
         )
         return items
 
@@ -250,6 +250,7 @@ class Container:
             else dict(query=query, parameters=parameters),
             options=request_options,
             partition_key=partition_key,
+            is_system_key=self.is_system_key
         )
         return items
 
@@ -414,7 +415,7 @@ class Container:
 
         document_link = self._get_document_link(item)
         self.client_connection.DeleteItem(
-            document_link=document_link, options=request_options or None
+            document_link=document_link, options=request_options, is_system_key=self.is_system_key
         )
 
     def read_offer(self):

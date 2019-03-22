@@ -95,7 +95,8 @@ class Database(object):
         access_condition=None,
         populate_query_metrics=None,
         offer_throughput=None,
-        unique_key_policy=None
+        unique_key_policy=None,
+        request_options=None
     ):
         # type: (str, PartitionKey, Dict[str, Any], int, str, Dict[str, Any], AccessCondition, bool, int, Dict[str, Any]) -> Container
         """
@@ -143,7 +144,8 @@ class Database(object):
         if unique_key_policy:
             definition["uniqueKeyPolicy"] = unique_key_policy
 
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:
@@ -170,6 +172,7 @@ class Database(object):
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        request_options=None
     ):
         # type: (ContainerId, str, Dict[str, Any], AccessCondition, bool) -> None
         """ Delete the container
@@ -179,7 +182,8 @@ class Database(object):
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:
@@ -199,7 +203,8 @@ class Database(object):
         initial_headers=None,
         populate_query_metrics=None,
         populate_partition_key_range_statistics=None,
-        populate_quota_info=None
+        populate_quota_info=None,
+        request_options=None
     ):
         # type: (ContainerId, str, Dict[str, Any], bool) -> Container
         """ Get the specified `Container`, or a container with specified ID (name).
@@ -221,7 +226,8 @@ class Database(object):
             :name: get_container
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:
@@ -250,6 +256,7 @@ class Database(object):
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
+        feed_options=None
     ):
         # type: (int, str, Dict[str, Any], bool) -> QueryIterable
         """ List the containers in the database.
@@ -267,19 +274,20 @@ class Database(object):
             :name: list_containers
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
         if session_token:
-            request_options["sessionToken"] = session_token
+            feed_options["sessionToken"] = session_token
         if initial_headers:
-            request_options["initialHeaders"] = initial_headers
+            feed_options["initialHeaders"] = initial_headers
         if populate_query_metrics is not None:
-            request_options["populateQueryMetrics"] = populate_query_metrics
+            feed_options["populateQueryMetrics"] = populate_query_metrics
 
         return self.client_connection.ReadContainers(
             database_link=self.database_link,
-            options=request_options
+            options=feed_options
         )
 
     def query_containers(
@@ -290,6 +298,7 @@ class Database(object):
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
+        feed_options=None
     ):
         # type: (str, str, int, str, Dict[str, Any], bool) -> QueryIterable
         """List properties for containers in the current database
@@ -299,20 +308,21 @@ class Database(object):
         :param populate_query_metrics: Enable returning query metrics in response headers.
 
     """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if session_token:
-            request_options["sessionToken"] = session_token
+            feed_options["sessionToken"] = session_token
         if initial_headers:
-            request_options["initialHeaders"] = initial_headers
+            feed_options["initialHeaders"] = initial_headers
         if populate_query_metrics is not None:
-            request_options["populateQueryMetrics"] = populate_query_metrics
+            feed_options["populateQueryMetrics"] = populate_query_metrics
 
         return self.client_connection.QueryContainers(
                     database_link=self.database_link,
                     query=query
                     if parameters is None
                     else dict(query=query, parameters=parameters),
-                    options=request_options,
+                    options=feed_options,
                 )
 
     def replace_container(
@@ -326,6 +336,7 @@ class Database(object):
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        request_options=None
     ):
         # type: (Union[str, Container], PartitionKey, Dict[str, Any], int, Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Container
         """ Reset the properties of the container. Property changes are persisted immediately.
@@ -347,7 +358,8 @@ class Database(object):
         """
         container_id = getattr(container, "id", container)
 
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:
@@ -389,23 +401,34 @@ class Database(object):
         )
         return user_link
 
-    def list_user_properties(self, max_item_count=None):
+    def list_user_properties(
+            self,
+            max_item_count=None,
+            feed_options=None
+    ):
         # type: (int) -> QueryIterable
         """ List all users in the container.
 
         :param max_item_count: Max number of users to be returned in the enumeration operation.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.ReadUsers(
             database_link=self.database_link,
-            options=request_options
+            options=feed_options
         )
 
-    def query_users(self, query, parameters=None, max_item_count=None):
+    def query_users(
+            self,
+            query,
+            parameters=None,
+            max_item_count=None,
+            feed_options=None
+    ):
         # type: (str, List, int) -> QueryIterable
         """Return all users matching the given `query`.
 
@@ -415,19 +438,24 @@ class Database(object):
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.QueryUsers(
             database_link=self.database_link,
             query=query
             if parameters is None
             else dict(query=query, parameters=parameters),
-            options=request_options,
+            options=feed_options,
         )
 
-    def get_user(self, id):
+    def get_user(
+            self,
+            id,
+            request_options=None
+    ):
         # type: (str) -> User
         """
         Get the user identified by `id`.
@@ -436,8 +464,12 @@ class Database(object):
         :returns: The user as a dict, if present in the container.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         user = self.client_connection.ReadUser(
-            user_link=self._get_user_link(id_or_user=id)
+            user_link=self._get_user_link(id_or_user=id),
+            options=request_options
         )
         return User(
             client_connection=self.client_connection,
@@ -446,7 +478,11 @@ class Database(object):
             properties=user
         )
 
-    def create_user(self, body):
+    def create_user(
+            self,
+            body,
+            request_options=None
+    ):
         # type: (Dict[str, Any]) -> User
         """ Create a user in the container.
 
@@ -466,9 +502,13 @@ class Database(object):
             :name: create_user
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         user = self.client_connection.CreateUser(
             database_link=self.database_link,
-            user=body
+            user=body,
+            options=request_options
         )
 
         return User(
@@ -478,7 +518,11 @@ class Database(object):
             properties=user
         )
 
-    def upsert_user(self, body):
+    def upsert_user(
+            self,
+            body,
+            request_options=None
+    ):
         # type: (Dict[str, Any]) -> User
         """ Insert or update the specified user.
 
@@ -487,10 +531,13 @@ class Database(object):
 
         If the user already exists in the container, it is replaced. If it does not, it is inserted.
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
 
         user = self.client_connection.UpsertUser(
             database_link=self.database_link,
-            user=body
+            user=body,
+            options=request_options
         )
 
         return User(
@@ -500,7 +547,12 @@ class Database(object):
             properties=user
         )
 
-    def replace_user(self, id, body):
+    def replace_user(
+            self,
+            id,
+            body,
+            request_options=None
+    ):
         # type: (str, Dict[str, Any]) -> User
         """ Replaces the specified user if it exists in the container.
 
@@ -509,9 +561,13 @@ class Database(object):
         :raises `HTTPFailure`:
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         user = self.client_connection.ReplaceUser(
             user_link=self._get_user_link(id),
-            user=body
+            user=body,
+            options=request_options
         )
 
         return User(
@@ -521,7 +577,11 @@ class Database(object):
             properties=user
         )
 
-    def delete_user(self, id):
+    def delete_user(
+            self,
+            id,
+            request_options=None
+    ):
         # type: (str) -> None
         """ Delete the specified user from the container.
 
@@ -529,13 +589,21 @@ class Database(object):
         :raises `HTTPFailure`: The user wasn't deleted successfully. If the user does not exist in the container, a `404` error is returned.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeleteUser(
-            user_link=self._get_user_link(id),
+            user_link=self._get_user_link(id), options=request_options
         )
 
-    def read_offer(self):
+    def read_offer(
+            self,
+            feed_options=None
+    ):
         # type: () -> Offer
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
+
         link = self.properties['_self']
         query_spec = {
                         'query': 'SELECT * FROM root r WHERE r.resource=@link',
@@ -543,7 +611,7 @@ class Database(object):
                             {'name': '@link', 'value': link}
                         ]
                      }
-        offers = list(self.client_connection.QueryOffers(query_spec))
+        offers = list(self.client_connection.QueryOffers(query_spec, options=feed_options))
         if (len(offers) <= 0):
             raise HTTPFailure(StatusCodes.NOT_FOUND, "Could not find Offer for database " + self.database_link)
         data = offers[0]
@@ -551,7 +619,10 @@ class Database(object):
             offer_throughput=offers[0]['content']['offerThroughput'],
             properties=offers[0])
 
-    def replace_throughput(self, throughput):
+    def replace_throughput(
+            self,
+            throughput
+    ):
         # type: (int) -> Offer
         link = self.properties['_self']
         query_spec = {

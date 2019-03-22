@@ -74,7 +74,8 @@ class CosmosClient:
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
-        offer_throughput=None
+        offer_throughput=None,
+        request_options=None
     ):
         # type: (str, str, bool, str, AccessCondition, bool, bool) -> Database
         """Create a new database with the given ID (name).
@@ -98,7 +99,8 @@ class CosmosClient:
 
         """
 
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if disable_ru_per_minute_usage is not None:
             request_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if session_token:
@@ -122,6 +124,7 @@ class CosmosClient:
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
+        request_options=None
     ):
         # type: (DatabaseId, bool, str, Dict[str, Any], bool) -> Database
         """
@@ -134,7 +137,8 @@ class CosmosClient:
         :raise `HTTPFailure`: If the given database couldn't be retrieved.
         """
         database_link = CosmosClientConnection._get_database_link(database)
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if disable_ru_per_minute_usage is not None:
             request_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if session_token:
@@ -161,6 +165,7 @@ class CosmosClient:
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
+        feed_options=None
     ):
         # type: (bool, bool, int, str, Dict[str, Any], bool) -> QueryIterable
         """
@@ -171,22 +176,23 @@ class CosmosClient:
         :param session_token: Token for use with Session consistency.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if disable_ru_per_minute_usage is not None:
-            request_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
+            feed_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if enable_cross_partition_query is not None:
-            request_options["enableCrossPartitionQuery"] = enable_cross_partition_query
+            feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
         if session_token:
-            request_options["sessionToken"] = session_token
+            feed_options["sessionToken"] = session_token
         if initial_headers:
-            request_options["initialHeaders"] = initial_headers
+            feed_options["initialHeaders"] = initial_headers
         if populate_query_metrics is not None:
-            request_options["populateQueryMetrics"] = populate_query_metrics
+            feed_options["populateQueryMetrics"] = populate_query_metrics
 
         return self.client_connection.ReadDatabases(
-                options=request_options
+                options=feed_options
             )
 
     def query_databases(
@@ -199,21 +205,23 @@ class CosmosClient:
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
+        feed_options=None
     ):
         # type: (str, str, bool, bool, int, str, Dict[str, Any], bool) -> QueryIterable
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if disable_ru_per_minute_usage is not None:
-            request_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
+            feed_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if enable_cross_partition_query is not None:
-            request_options["enableCrossPartitionQuery"] = enable_cross_partition_query
+            feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
         if session_token:
-            request_options["sessionToken"] = session_token
+            feed_options["sessionToken"] = session_token
         if initial_headers:
-            request_options["initialHeaders"] = initial_headers
+            feed_options["initialHeaders"] = initial_headers
         if populate_query_metrics is not None:
-            request_options["populateQueryMetrics"] = populate_query_metrics
+            feed_options["populateQueryMetrics"] = populate_query_metrics
 
         if query:
             # This is currently eagerly evaluated in order to capture the headers
@@ -225,10 +233,10 @@ class CosmosClient:
                 query=query
                 if parameters is None
                 else dict(query=query, parameters=parameters),
-                options=request_options
+                options=feed_options
             )
         else:
-            return self.client_connection.ReadDatabases(options=request_options)
+            return self.client_connection.ReadDatabases(options=feed_options)
 
     def delete_database(
         self,
@@ -238,6 +246,7 @@ class CosmosClient:
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        request_options=None
     ):
         # type: (DatabaseId, bool, str, Dict[str, Any], AccessCondition, bool) -> None
         """
@@ -251,7 +260,8 @@ class CosmosClient:
         :raise HTTPFailure: If the database couldn't be deleted.
         """
 
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if disable_ru_per_minute_usage is not None:
             request_options["disableRUPerMinuteUsage"] = disable_ru_per_minute_usage
         if session_token:

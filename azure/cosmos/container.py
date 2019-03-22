@@ -78,6 +78,7 @@ class Container:
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
+        request_options=None
     ):
         # type: (str, str, str, Dict[str, Any], bool) -> Item
         """
@@ -100,7 +101,8 @@ class Container:
         """
         doc_link = self._get_document_link(id)
 
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if partition_key:
             request_options["partitionKey"] = partition_key
         if session_token:
@@ -121,6 +123,7 @@ class Container:
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
+        feed_options=None
     ):
         # type: (bool, int, str, Dict[str, Any], bool) -> QueryIterable
         """ List all items in the container.
@@ -130,20 +133,21 @@ class Container:
         :param session_token: Token for use with Session consistency.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if enable_cross_partition_query is not None:
-            request_options["enableCrossPartitionQuery"] = enable_cross_partition_query
+            feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
         if session_token:
-            request_options["sessionToken"] = session_token
+            feed_options["sessionToken"] = session_token
         if initial_headers:
-            request_options["initialHeaders"] = initial_headers
+            feed_options["initialHeaders"] = initial_headers
         if populate_query_metrics is not None:
-            request_options["populateQueryMetrics"] = populate_query_metrics
+            feed_options["populateQueryMetrics"] = populate_query_metrics
 
         items = self.client_connection.ReadItems(
-            collection_link=self.container_link, feed_options=request_options
+            collection_link=self.container_link, feed_options=feed_options
         )
         return items
 
@@ -152,7 +156,8 @@ class Container:
             partition_key_range_id=None,
             is_start_from_beginning=False,
             continuation=None,
-            max_item_count=None
+            max_item_count=None,
+            feed_options=None
     ):
         """ Get a sorted list of items that were changed, in the order in which they were modified.
 
@@ -162,19 +167,20 @@ class Container:
         By default it's start from current (false).
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if partition_key_range_id is not None:
-            request_options["partitionKeyRangeId"] = partition_key_range_id
+            feed_options["partitionKeyRangeId"] = partition_key_range_id
         if is_start_from_beginning is not None:
-            request_options["isStartFromBeginning"] = is_start_from_beginning
+            feed_options["isStartFromBeginning"] = is_start_from_beginning
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
         if continuation is not None:
-            request_options["continuation"] = continuation
+            feed_options["continuation"] = continuation
 
 
         items = self.client_connection.QueryItemsChangeFeed(
-            self.container_link, options=request_options
+            self.container_link, options=feed_options
         )
         return items
 
@@ -188,7 +194,8 @@ class Container:
         session_token=None,
         initial_headers=None,
         enable_scan_in_query=None,
-        populate_query_metrics=None
+        populate_query_metrics=None,
+        feed_options=None
     ):
         # type: (str, List, str, bool, int, str, Dict[str, Any], bool, bool) -> QueryIterable
         """Return all results matching the given `query`.
@@ -223,28 +230,29 @@ class Container:
             :name: query_items_param
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if enable_cross_partition_query is not None:
-            request_options["enableCrossPartitionQuery"] = enable_cross_partition_query
+            feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
         if session_token:
-            request_options["sessionToken"] = session_token
+            feed_options["sessionToken"] = session_token
         if initial_headers:
-            request_options["initialHeaders"] = initial_headers
+            feed_options["initialHeaders"] = initial_headers
         if populate_query_metrics is not None:
-            request_options["populateQueryMetrics"] = populate_query_metrics
+            feed_options["populateQueryMetrics"] = populate_query_metrics
         if partition_key is not None:
-            request_options["partitionKey"] = partition_key
+            feed_options["partitionKey"] = partition_key
         if enable_scan_in_query is not None:
-            request_options["enableScanInQuery"] = enable_scan_in_query
+            feed_options["enableScanInQuery"] = enable_scan_in_query
 
         items = self.client_connection.QueryItems(
             database_or_Container_link=self.container_link,
             query=query
             if parameters is None
             else dict(query=query, parameters=parameters),
-            options=request_options,
+            options=feed_options,
             partition_key=partition_key,
         )
         return items
@@ -257,6 +265,7 @@ class Container:
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        request_options=None
     ):
         # type: (Union[Item, str], Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Item
         """ Replaces the specified item if it exists in the container.
@@ -268,7 +277,8 @@ class Container:
         :raises `HTTPFailure`:
         """
         item_link = self._get_document_link(item)
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         request_options["disableIdGeneration"] = True
         if session_token:
             request_options["sessionToken"] = session_token
@@ -290,6 +300,7 @@ class Container:
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        request_options=None
     ):
         # type: (Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Item
         """ Insert or update the specified item.
@@ -302,7 +313,8 @@ class Container:
 
         If the item already exists in the container, it is replaced. If it does not, it is inserted.
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         request_options["disableIdGeneration"] = True
         if session_token:
             request_options["sessionToken"] = session_token
@@ -326,7 +338,8 @@ class Container:
         populate_query_metrics=None,
         pre_trigger_include=None,
         post_trigger_include=None,
-        indexing_directive=None
+        indexing_directive=None,
+        request_options=None
     ):
         # type: (Dict[str, Any], str, Dict[str, Any], AccessCondition, bool, Any, Any) -> Item
         """ Create an item in the container.
@@ -344,7 +357,8 @@ class Container:
         To update or replace an existing item, use the :func:`Container.upsert_item` method.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
 
         request_options["disableAutomaticIdGeneration"] = True
         if session_token:
@@ -376,6 +390,7 @@ class Container:
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        request_options=None
     ):
         # type: (Union[Item, Dict[str, Any], str], str, str, Dict[str, Any], AccessCondition, bool) -> None
         """ Delete the specified item from the container.
@@ -388,7 +403,8 @@ class Container:
         :raises `HTTPFailure`: The item wasn't deleted successfully. If the item does not exist in the container, a `404` error is returned.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if partition_key:
             request_options["partitionKey"] = partition_key
         if session_token:
@@ -405,8 +421,14 @@ class Container:
             document_link=document_link, options=request_options or None
         )
 
-    def read_offer(self):
+    def read_offer(
+            self,
+            request_options=None
+    ):
         # type: () -> Offer
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         link = self.properties['_self']
         query_spec = {
                         'query': 'SELECT * FROM root r WHERE r.resource=@link',
@@ -449,7 +471,8 @@ class Container:
 
     def list_conflicts(
             self,
-            max_item_count=None
+            max_item_count=None,
+            feed_options=None
     ):
         # type: (int) -> Dict[str, Any]
         """ List all conflicts in the container.
@@ -457,13 +480,14 @@ class Container:
         :param max_item_count: Max number of items to be returned in the enumeration operation.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.ReadConflicts(
             collection_link=self.container_link,
-            feed_options=request_options
+            feed_options=feed_options
         )
 
     def query_conflicts(
@@ -472,9 +496,10 @@ class Container:
             parameters=None,
             enable_cross_partition_query=None,
             partition_key=None,
-            max_item_count=None
+            max_item_count=None,
+            feed_options=None
     ):
-        # type: (str, List, bool, bool int) -> QueryIterable
+        # type: (str, List, bool, bool, int) -> QueryIterable
         """Return all conflicts matching the given `query`.
 
         :param query: The Azure Cosmos DB SQL query to execute.
@@ -485,26 +510,28 @@ class Container:
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
         if enable_cross_partition_query is not None:
-            request_options["enableCrossPartitionQuery"] = enable_cross_partition_query
+            feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if partition_key is not None:
-            request_options["partitionKey"] = partition_key
+            feed_options["partitionKey"] = partition_key
 
         return self.client_connection.QueryConflicts(
             collection_link=self.container_link,
             query=query
             if parameters is None
             else dict(query=query, parameters=parameters),
-            options=request_options,
+            options=feed_options,
         )
 
     def get_conflict(
             self,
             id,
-            partition_key
+            partition_key,
+            request_options=None
     ):
         # type: (str, str) -> Dict[str, Any]
         """
@@ -515,7 +542,8 @@ class Container:
         :returns: The conflict as a dict, if present in the container.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if partition_key:
             request_options["partitionKey"] = partition_key
 
@@ -524,7 +552,12 @@ class Container:
             options=request_options
         )
 
-    def delete_conflcit(self, id, partition_key):
+    def delete_conflcit(
+            self,
+            id,
+            partition_key,
+            request_options=None
+    ):
         # type: (str, str) -> None
         """ Delete the specified conflict from the container.
 
@@ -533,7 +566,8 @@ class Container:
         :raises `HTTPFailure`: The conflict wasn't deleted successfully. If the conflict does not exist in the container, a `404` error is returned.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if partition_key:
             request_options["partitionKey"] = partition_key
 

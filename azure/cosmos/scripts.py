@@ -41,23 +41,34 @@ class Scripts:
     def _get_resource_link(self, id, type):
         return u"{}/{}/{}".format(self.container_link, type, id)
 
-    def list_stored_procedures(self, max_item_count=None):
+    def list_stored_procedures(
+            self,
+            max_item_count=None,
+            feed_options=None
+    ):
         # type: (int) -> QueryIterable
         """ List all stored procedures in the container.
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.ReadStoredProcedures(
             collection_link=self.container_link,
-            options=request_options
+            options=feed_options
         )
 
-    def query_stored_procedures(self, query, parameters=None, max_item_count=None):
+    def query_stored_procedures(
+            self,
+            query,
+            parameters=None,
+            max_item_count=None,
+            feed_options=None
+    ):
         # type: (str, List, int) -> QueryIterable
         """Return all stored procedures matching the given `query`.
 
@@ -67,19 +78,24 @@ class Scripts:
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.QueryStoredProcedures(
             collection_link=self.container_link,
             query=query
             if parameters is None
             else dict(query=query, parameters=parameters),
-            options=request_options,
+            options=feed_options,
         )
 
-    def get_stored_procedure(self, id):
+    def get_stored_procedure(
+            self,
+            id,
+            request_options=None
+    ):
         # type: (str) -> Dict[str, Any]
         """
         Get the stored procedure identified by `id`.
@@ -88,11 +104,18 @@ class Scripts:
         :returns: The stored procedure as a dict, if present in the container.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.ReadStoredProcedure(
             sproc_link=self._get_resource_link(id, ScriptType.StoredProcedure)
         )
 
-    def create_stored_procedure(self, body):
+    def create_stored_procedure(
+            self,
+            body,
+            request_options=None
+    ):
         # type: (Dict[str, Any]) -> Dict[str, Any]
         """ Create a stored procedure in the container.
 
@@ -102,12 +125,20 @@ class Scripts:
         To replace an existing sproc, use the :func:`Container.scripts.replace_stored_procedure` method.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.CreateStoredProcedure(
             collection_link=self.container_link,
             sproc=body
         )
 
-    def replace_stored_procedure(self, id, body):
+    def replace_stored_procedure(
+            self,
+            id,
+            body,
+            request_options=None
+    ):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified stored procedure if it exists in the container.
 
@@ -116,12 +147,19 @@ class Scripts:
         :raises `HTTPFailure`:
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.ReplaceStoredProcedure(
             sproc_link=self._get_resource_link(id, ScriptType.StoredProcedure),
             sproc=body
         )
 
-    def delete_stored_procedure(self, id):
+    def delete_stored_procedure(
+            self,
+            id,
+            request_options=None
+    ):
         # type: (str) -> None
         """ Delete the specified stored procedure from the container.
 
@@ -129,12 +167,21 @@ class Scripts:
         :raises `HTTPFailure`: The sproc wasn't deleted successfully. If the sproc does not exist in the container, a `404` error is returned.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeleteStoredProcedure(
             sproc_link=self._get_resource_link(id, ScriptType.StoredProcedure)
         )
 
-    def execute_stored_procedure(self, id, partition_key=None, enable_script_logging=None, params=None):
+    def execute_stored_procedure(
+            self,
+            id,
+            partition_key=None,
+            enable_script_logging=None,
+            params=None,
+            request_options = None
+    ):
         # type: (str, str, list[Any]) -> Any
         """ execute the specified stored procedure.
 
@@ -145,7 +192,8 @@ class Scripts:
 
         """
 
-        request_options = {}  # type: Dict[str, Any]
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
         if partition_key is not None:
             request_options["partitionKey"] = partition_key
         if enable_script_logging is not None:
@@ -157,23 +205,34 @@ class Scripts:
             options=request_options
         )
 
-    def list_triggers(self, max_item_count=None):
+    def list_triggers(
+            self,
+            max_item_count=None,
+            feed_options=None
+    ):
         # type: (int) -> QueryIterable
         """ List all triggers in the container.
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.ReadTriggers(
             collection_link=self.container_link,
-            options=request_options
+            options=feed_options
         )
 
-    def query_triggers(self, query, parameters=None, max_item_count=None):
+    def query_triggers(
+            self,
+            query,
+            parameters=None,
+            max_item_count=None,
+            feed_options=None
+    ):
         # type: (str, List, int) -> QueryIterable
         """Return all triggers matching the given `query`.
 
@@ -183,19 +242,24 @@ class Scripts:
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.QueryTriggers(
             collection_link=self.container_link,
             query=query
             if parameters is None
             else dict(query=query, parameters=parameters),
-            options=request_options,
+            options=feed_options,
         )
 
-    def get_trigger(self, id):
+    def get_trigger(
+            self,
+            id,
+            request_options=None
+    ):
         # type: (str) -> Dict[str, Any]
         """
         Get the trigger identified by `id`.
@@ -204,11 +268,18 @@ class Scripts:
         :returns: The trigger as a dict, if present in the container.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.ReadTrigger(
             trigger_link=self._get_resource_link(id, ScriptType.Trigger)
         )
 
-    def create_trigger(self, body):
+    def create_trigger(
+            self,
+            body,
+            request_options=None
+    ):
         # type: (Dict[str, Any]) -> Dict[str, Any]
         """ Create a trigger in the container.
 
@@ -218,12 +289,20 @@ class Scripts:
         To replace an existing trigger, use the :func:`Container.scripts.replace_trigger` method.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.CreateTrigger(
             collection_link=self.container_link,
             trigger=body
         )
 
-    def replace_trigger(self, id, body):
+    def replace_trigger(
+            self,
+            id,
+            body,
+            request_options=None
+    ):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified tigger if it exists in the container.
         :param id: Id of the trigger to be replaced.
@@ -231,12 +310,19 @@ class Scripts:
         :raises `HTTPFailure`:
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.ReplaceTrigger(
             trigger_link=self._get_resource_link(id, ScriptType.Trigger),
             trigger=body
         )
 
-    def delete_trigger(self, id):
+    def delete_trigger(
+            self,
+            id,
+            request_options=None
+    ):
         # type: (str) -> None
         """ Delete the specified trigger from the container.
 
@@ -244,29 +330,42 @@ class Scripts:
         :raises `HTTPFailure`: The trigger wasn't deleted successfully. If the trigger does not exist in the container, a `404` error is returned.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeleteTrigger(
             trigger_link=self._get_resource_link(id, ScriptType.Trigger)
         )
 
 
-    def list_user_defined_functions(self, max_item_count=None):
+    def list_user_defined_functions(
+            self,
+            max_item_count=None,
+            feed_options=None
+    ):
         # type: (int) -> QueryIterable
         """ List all user defined functions in the container.
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.ReadUserDefinedFunctions(
             collection_link=self.container_link,
-            options=request_options
+            options=feed_options
         )
 
-    def query_user_defined_functions(self, query, parameters=None, max_item_count=None):
+    def query_user_defined_functions(
+            self,
+            query,
+            parameters=None,
+            max_item_count=None,
+            feed_options=None
+    ):
         # type: (str, List, int) -> QueryIterable
         """Return all user defined functions matching the given `query`.
 
@@ -276,19 +375,24 @@ class Scripts:
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
-        request_options = {}  # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            request_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.QueryUserDefinedFunctions(
             collection_link=self.container_link,
             query=query
             if parameters is None
             else dict(query=query, parameters=parameters),
-            options=request_options,
+            options=feed_options,
         )
 
-    def get_user_defined_function(self, id):
+    def get_user_defined_function(
+            self,
+            id,
+            request_options=None
+    ):
         # type: (str) -> Dict[str, Any]
         """
         Get the stored procedure identified by `id`.
@@ -297,11 +401,18 @@ class Scripts:
         :returns: The stored procedure as a dict, if present in the container.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.ReadUserDefinedFunction(
             udf_link=self._get_resource_link(id, ScriptType.UserDefinedFunction)
         )
 
-    def create_user_defined_function(self, body):
+    def create_user_defined_function(
+            self,
+            body,
+            request_options=None
+    ):
         # type: (Dict[str, Any]) -> Dict[str, Any]
         """ Create a user defined function in the container.
 
@@ -311,12 +422,20 @@ class Scripts:
         To replace an existing udf, use the :func:`Container.scripts.replace_user_defined_function` method.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.CreateUserDefinedFunction(
             collection_link=self.container_link,
             udf=body
         )
 
-    def replace_user_defined_function(self, id, body):
+    def replace_user_defined_function(
+            self,
+            id,
+            body,
+            request_options=None
+    ):
         # type: (str, Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified user defined function if it exists in the container.
 
@@ -325,12 +444,19 @@ class Scripts:
         :raises `HTTPFailure`:
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
+
         return self.client_connection.ReplaceUserDefinedFunction(
             udf_link=self._get_resource_link(id, ScriptType.UserDefinedFunction),
             udf=body
         )
 
-    def delete_user_defined_function(self, id):
+    def delete_user_defined_function(
+            self,
+            id,
+            request_options=None
+    ):
         # type: (str) -> None
         """ Delete the specified user defined function from the container.
 
@@ -338,6 +464,8 @@ class Scripts:
         :raises `HTTPFailure`: The udf wasn't deleted successfully. If the udf does not exist in the container, a `404` error is returned.
 
         """
+        if not request_options:
+            request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeleteUserDefinedFunction(
             udf_link=self._get_resource_link(id, ScriptType.UserDefinedFunction)

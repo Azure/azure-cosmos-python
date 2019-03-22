@@ -24,7 +24,6 @@
 
 import six
 from .cosmos_client_connection import CosmosClientConnection
-from .item import Item
 from .errors import HTTPFailure
 from .http_constants import StatusCodes
 from .offer import Offer
@@ -63,10 +62,10 @@ class Container:
         self.scripts = Scripts(self.client_connection, self.container_link)
 
     def _get_document_link(self, item_or_link):
-        # type: (Union[Dict[str, Any], str, Item]) -> str
+        # type: (Union[Dict[str, Any], str]) -> str
         if isinstance(item_or_link, six.string_types):
             return u"{}/docs/{}".format(self.container_link, item_or_link)
-        return cast("str", cast("Item", item_or_link)["_self"])
+        return item_or_link["_self"]
 
     def _get_conflict_link(self, id):
         # type: (str) -> str
@@ -111,10 +110,9 @@ class Container:
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
-        result = self.client_connection.ReadItem(
+        return self.client_connection.ReadItem(
             document_link=doc_link, options=request_options
         )
-        return Item(data=result)
 
     def list_item_properties(
         self,
@@ -280,10 +278,10 @@ class Container:
             request_options["accessCondition"] = access_condition
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
-        data = self.client_connection.ReplaceItem(
+
+        return self.client_connection.ReplaceItem(
             document_link=item_link, new_document=body, options=request_options
         )
-        return Item(data=data)
 
     def upsert_item(
         self,
@@ -315,10 +313,9 @@ class Container:
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
-        result = self.client_connection.UpsertItem(
+        return self.client_connection.UpsertItem(
             database_or_Container_link=self.container_link, document=body
         )
-        return Item(data=result)
 
     def create_item(
         self,
@@ -365,12 +362,11 @@ class Container:
         if indexing_directive:
             request_options["indexingDirective"] = indexing_directive
 
-        result = self.client_connection.CreateItem(
+        return self.client_connection.CreateItem(
             database_or_Container_link=self.container_link,
             document=body,
             options=request_options,
         )
-        return Item(data=result)
 
     def delete_item(
         self,

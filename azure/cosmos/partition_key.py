@@ -20,13 +20,18 @@
 #SOFTWARE.
 
 
-class NonePk(object):
-    """Represents none value for partitionKey when it's missing in migrated containers.
+class NonePartitionKeyValue(object):
+    """Represents none value for partitionKey when it's missing in a containers.
     """
 
 
-class Undefined(object):
-    """Represents undefined value for partitionKey when it's missing.
+class _Empty(object):
+    """Represents empty value for partitionKey when it's missing in an item belonging to a migrated container.
+    """
+
+
+class _Undefined(object):
+    """Represents undefined value for partitionKey when it's missing in an item belonging to a multi-partition container.
     """
 
 

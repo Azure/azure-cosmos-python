@@ -37,7 +37,7 @@ from . import global_endpoint_manager
 from .routing import routing_map_provider as routing_map_provider
 from . import session
 from . import utils
-import partition_key
+from .partition_key import _Undefined, _Empty
 
 class CosmosClientConnection(object):
     """Represents a document client.
@@ -2913,12 +2913,6 @@ class CosmosClientConnection(object):
 
         return partitionKey
 
-    def _ReturnUndefinedOrNonePartitionKey(self, is_system_key):
-        if is_system_key:
-            return partition_key.NonePk
-        else:
-            return partition_key.Undefined
-
     def _UpdateSessionIfRequired(self, request_headers, response_result, response_headers):    
         """
         Updates session if necessary.
@@ -2962,3 +2956,11 @@ class CosmosClientConnection(object):
         else:
             database_id = cast("Dict[str, str]", database_or_id)["id"]
         return "dbs/{}".format(database_id)
+
+    @staticmethod
+    def _ReturnUndefinedOrNonePartitionKey(is_system_key):
+        if is_system_key:
+            return _Empty
+        else:
+            return _Undefined
+

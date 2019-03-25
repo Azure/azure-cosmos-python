@@ -30,7 +30,7 @@ from .http_constants import StatusCodes
 from .offer import Offer
 from .scripts import Scripts
 from .query_iterable import QueryIterable
-
+from .partition_key import NonePartitionKeyValue
 from typing import (
     Any,
     List,
@@ -60,7 +60,9 @@ class Container:
         self.properties = properties
         database_link = CosmosClientConnection._get_database_link(database)
         self.container_link = u"{}/colls/{}".format(database_link, self.id)
-        self.scripts = Scripts(self.client_connection, self.container_link)
+        self.is_system_key = (self.properties['partitionKey']['systemKey']
+                              if 'systemKey' in self.properties['partitionKey'] else False)
+        self.scripts = Scripts(self.client_connection, self.container_link, self.is_system_key)
 
     def _get_document_link(self, item_or_link):
         # type: (Union[Dict[str, Any], str, Item]) -> str
@@ -103,7 +105,8 @@ class Container:
 
         request_options = {}  # type: Dict[str, Any]
         if partition_key:
-            request_options["partitionKey"] = partition_key
+            request_options["partitionKey"] = (CosmosClientConnection._ReturnUndefinedOrNonePartitionKey(self.is_system_key)
+                                               if partition_key == NonePartitionKeyValue else partition_key)
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:
@@ -237,7 +240,8 @@ class Container:
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
         if partition_key is not None:
-            request_options["partitionKey"] = partition_key
+            request_options["partitionKey"] = (CosmosClientConnection._ReturnUndefinedOrNonePartitionKey(self.is_system_key)
+                                               if partition_key == NonePartitionKeyValue else partition_key)
         if enable_scan_in_query is not None:
             request_options["enableScanInQuery"] = enable_scan_in_query
 
@@ -397,7 +401,8 @@ class Container:
         """
         request_options = {}  # type: Dict[str, Any]
         if partition_key:
-            request_options["partitionKey"] = partition_key
+            request_options["partitionKey"] = (CosmosClientConnection._ReturnUndefinedOrNonePartitionKey(self.is_system_key)
+                                               if partition_key == NonePartitionKeyValue else partition_key)
         if session_token:
             request_options["sessionToken"] = session_token
         if initial_headers:
@@ -498,7 +503,8 @@ class Container:
         if enable_cross_partition_query is not None:
             request_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if partition_key is not None:
-            request_options["partitionKey"] = partition_key
+            request_options["partitionKey"] = (CosmosClientConnection._ReturnUndefinedOrNonePartitionKey(self.is_system_key)
+                                               if partition_key == NonePartitionKeyValue else partition_key)
 
         return self.client_connection.QueryConflicts(
             collection_link=self.container_link,
@@ -524,7 +530,8 @@ class Container:
         """
         request_options = {}  # type: Dict[str, Any]
         if partition_key:
-            request_options["partitionKey"] = partition_key
+            request_options["partitionKey"] = (CosmosClientConnection._ReturnUndefinedOrNonePartitionKey(self.is_system_key)
+                                               if partition_key == NonePartitionKeyValue else partition_key)
 
         return self.client_connection.ReadConflict(
             conflict_link=self._get_conflict_link(id),
@@ -542,7 +549,8 @@ class Container:
         """
         request_options = {}  # type: Dict[str, Any]
         if partition_key:
-            request_options["partitionKey"] = partition_key
+            request_options["partitionKey"] = (CosmosClientConnection._ReturnUndefinedOrNonePartitionKey(self.is_system_key)
+                                               if partition_key == NonePartitionKeyValue else partition_key)
 
         self.client_connection.DeleteConflict(
             conflict_link=self._get_conflict_link(id),

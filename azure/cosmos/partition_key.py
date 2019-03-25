@@ -19,9 +19,16 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-class Empty(object):
-    """Represents empty value for partitionKey when it's missing.
+
+class NonePk(object):
+    """Represents none value for partitionKey when it's missing in migrated containers.
     """
+
+
+class Undefined(object):
+    """Represents undefined value for partitionKey when it's missing.
+    """
+
 
 class PartitionKey(dict):
     """ Key used to partition a container into logical partitions.

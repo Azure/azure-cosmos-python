@@ -47,8 +47,7 @@ def GetHeaders(cosmos_client_connection,
                resource_id,
                resource_type,
                options,
-               partition_key_range_id = None,
-               is_system_key=False):
+               partition_key_range_id = None):
     """Gets HTTP request headers.
 
     :param cosmos_client_connection.CosmosClient cosmos_client:
@@ -143,15 +142,12 @@ def GetHeaders(cosmos_client_connection,
         headers[http_constants.HttpHeaders.OfferThroughput] = options['offerThroughput']
 
     if 'partitionKey' in options:
-        # if partitionKey value is Undefined or Empty, and systemKey is False in partition key definition,
-        # serialize it as {} to be consistent with other SDKs. If systemKey is True, serialize it
-        # as [], which is the equivalent to be sent for migrated collections
-        if (options.get('partitionKey') is documents._Undefined or
-                options.get('partitionKey') is partition_key.Empty):
-            if is_system_key:
-                headers[http_constants.HttpHeaders.PartitionKey] = []
-            else:
-                headers[http_constants.HttpHeaders.PartitionKey] = [{}]
+        # if partitionKey value is Undefined, serialize it as [{}] to be consistent with other SDKs.
+        if options.get('partitionKey') is partition_key.Undefined:
+            headers[http_constants.HttpHeaders.PartitionKey] = [{}]
+        # If partitionKey value is None, serialize it as [], which is the equivalent to be sent for migrated collections
+        elif options.get('partitionKey') is partition_key.NonePk:
+            headers[http_constants.HttpHeaders.PartitionKey] = []
         # else serialize using json dumps method which apart from regular values will serialize None into null
         else:
             headers[http_constants.HttpHeaders.PartitionKey] = json.dumps([options['partitionKey']])

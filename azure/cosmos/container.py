@@ -60,9 +60,7 @@ class Container:
         self.properties = properties
         database_link = CosmosClientConnection._get_database_link(database)
         self.container_link = u"{}/colls/{}".format(database_link, self.id)
-        self.is_system_key = (self.properties['partitionKey']['systemKey']
-                              if 'systemKey' in self.properties['partitionKey'] else False)
-        self.scripts = Scripts(self.client_connection, self.container_link, self.is_system_key)
+        self.scripts = Scripts(self.client_connection, self.container_link)
 
     def _get_document_link(self, item_or_link):
         # type: (Union[Dict[str, Any], str, Item]) -> str
@@ -114,7 +112,7 @@ class Container:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
         result = self.client_connection.ReadItem(
-            document_link=doc_link, options=request_options, is_system_key=self.is_system_key
+            document_link=doc_link, options=request_options
         )
         return Item(data=result)
 
@@ -147,7 +145,7 @@ class Container:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
         items = self.client_connection.ReadItems(
-            collection_link=self.container_link, feed_options=request_options, is_system_key=self.is_system_key
+            collection_link=self.container_link, feed_options=request_options
         )
         return items
 
@@ -249,8 +247,7 @@ class Container:
             if parameters is None
             else dict(query=query, parameters=parameters),
             options=request_options,
-            partition_key=partition_key,
-            is_system_key=self.is_system_key
+            partition_key=partition_key
         )
         return items
 
@@ -286,8 +283,7 @@ class Container:
         data = self.client_connection.ReplaceItem(
             document_link=item_link,
             new_document=body,
-            options=request_options,
-            is_system_key=self.is_system_key
+            options=request_options
         )
         return Item(data=data)
 
@@ -323,8 +319,7 @@ class Container:
 
         result = self.client_connection.UpsertItem(
             database_or_Container_link=self.container_link,
-            document=body,
-            is_system_key=self.is_system_key
+            document=body
         )
         return Item(data=result)
 
@@ -376,8 +371,7 @@ class Container:
         result = self.client_connection.CreateItem(
             database_or_Container_link=self.container_link,
             document=body,
-            options=request_options,
-            is_system_key=self.is_system_key
+            options=request_options
         )
         return Item(data=result)
 
@@ -415,7 +409,7 @@ class Container:
 
         document_link = self._get_document_link(item)
         self.client_connection.DeleteItem(
-            document_link=document_link, options=request_options, is_system_key=self.is_system_key
+            document_link=document_link, options=request_options
         )
 
     def read_offer(self):

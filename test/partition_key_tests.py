@@ -124,18 +124,15 @@ class PartitionKeyTests(unittest.TestCase):
     def test_non_partitioned_collection_operations(self):
         created_container = self.created_db.get_container(self.created_collection_id)
 
-        # systemKey:True must be set while reading non partitioned collection with v 2018-12-31 SDK
-        self.assertTrue(created_container.is_system_key)
-
         # Pass partitionKey.Empty as partition key to access documents from a single partition collection with v 2018-12-31 SDK
-        read_item = created_container.get_item(self.created_document['id'], partition_key=partition_key.Empty)
+        read_item = created_container.get_item(self.created_document['id'], partition_key=partition_key.NonePk)
         self.assertEquals(read_item['id'], self.created_document['id'])
 
         document_definition = {'id': str(uuid.uuid4())}
         created_item = created_container.create_item(body=document_definition)
         self.assertEquals(created_item['id'], document_definition['id'])
 
-        read_item = created_container.get_item(created_item['id'], partition_key=partition_key.Empty)
+        read_item = created_container.get_item(created_item['id'], partition_key=partition_key.NonePk)
         self.assertEquals(read_item['id'], created_item['id'])
 
         document_definition_for_replace = {'id': str(uuid.uuid4())}
@@ -146,7 +143,7 @@ class PartitionKeyTests(unittest.TestCase):
         self.assertEquals(upserted_item['id'], document_definition['id'])
 
         # one document was created during setup, one with create (which was replaced) and one with upsert
-        items = list(created_container.query_items("SELECT * from c", partition_key=partition_key.Empty))
+        items = list(created_container.query_items("SELECT * from c", partition_key=partition_key.NonePk))
         self.assertEquals(len(items), 3)
 
         document_created_by_sproc_id = 'testDoc'
@@ -166,17 +163,17 @@ class PartitionKeyTests(unittest.TestCase):
         created_sproc = created_container.scripts.create_stored_procedure(body=sproc)
 
         # Partiton Key value same as what is specified in the stored procedure body
-        result = created_container.scripts.execute_stored_procedure(id=created_sproc['id'], partition_key=partition_key.Empty)
+        result = created_container.scripts.execute_stored_procedure(id=created_sproc['id'], partition_key=partition_key.NonePk)
         self.assertEqual(result, 1)
 
         # 3 previous items + 1 created from the sproc
         items = list(created_container.list_items())
         self.assertEquals(len(items), 4)
 
-        created_container.delete_item(upserted_item['id'], partition_key=partition_key.Empty)
-        created_container.delete_item(replaced_item['id'], partition_key=partition_key.Empty)
-        created_container.delete_item(document_created_by_sproc_id, partition_key=partition_key.Empty)
-        created_container.delete_item(self.created_document['id'], partition_key=partition_key.Empty)
+        created_container.delete_item(upserted_item['id'], partition_key=partition_key.NonePk)
+        created_container.delete_item(replaced_item['id'], partition_key=partition_key.NonePk)
+        created_container.delete_item(document_created_by_sproc_id, partition_key=partition_key.NonePk)
+        created_container.delete_item(self.created_document['id'], partition_key=partition_key.NonePk)
 
         items = list(created_container.list_items())
         self.assertEquals(len(items), 0)
@@ -184,6 +181,6 @@ class PartitionKeyTests(unittest.TestCase):
     def test_multi_partition_collection_read_document_with_no_pk(self):
         document_definition = {'id': str(uuid.uuid4())}
         self.created_collection.create_item(body=document_definition)
-        read_item = self.created_collection.get_item(id=document_definition['id'], partition_key=partition_key.Empty)
+        read_item = self.created_collection.get_item(id=document_definition['id'], partition_key=partition_key.Undefined)
         self.assertEquals(read_item['id'], document_definition['id'])
 

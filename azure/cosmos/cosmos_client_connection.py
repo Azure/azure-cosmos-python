@@ -37,6 +37,7 @@ from . import global_endpoint_manager
 from .routing import routing_map_provider as routing_map_provider
 from . import session
 from . import utils
+import partition_key
 
 class CosmosClientConnection(object):
     """Represents a document client.
@@ -816,7 +817,7 @@ class CosmosClientConnection(object):
                                    None,
                                    options)
 
-    def ReadItems(self, collection_link, feed_options=None, is_system_key=False):
+    def ReadItems(self, collection_link, feed_options=None):
         """Reads all documents in a collection.
 
         :param str collection_link:
@@ -832,9 +833,9 @@ class CosmosClientConnection(object):
         if feed_options is None:
             feed_options = {}
 
-        return self.QueryItems(collection_link, None, feed_options, is_system_key)
+        return self.QueryItems(collection_link, None, feed_options)
 
-    def QueryItems(self, database_or_Container_link, query, options=None, partition_key=None, is_system_key=False):
+    def QueryItems(self, database_or_Container_link, query, options=None, partition_key=None):
         """Queries documents in a collection.
 
         :param str database_or_Container_link:
@@ -869,8 +870,7 @@ class CosmosClientConnection(object):
                                         lambda r: r['Documents'],
                                         lambda _, b: b,
                                         query,
-                                        options,
-                                        is_system_key=is_system_key), self.last_response_headers
+                                        options), self.last_response_headers
             return query_iterable.QueryIterable(self, query, options, fetch_fn, database_or_Container_link)
 
     def QueryItemsChangeFeed(self, collection_link, options=None):
@@ -985,7 +985,7 @@ class CosmosClientConnection(object):
                                     options), self.last_response_headers
         return query_iterable.QueryIterable(self, query, options, fetch_fn)
 
-    def CreateItem(self, database_or_Container_link, document, options=None, is_system_key=False):
+    def CreateItem(self, database_or_Container_link, document, options=None):
         """Creates a document in a collection.
 
         :param str database_or_Container_link:
@@ -1021,10 +1021,9 @@ class CosmosClientConnection(object):
                            'docs',
                            collection_id,
                            None,
-                           options,
-                           is_system_key)
+                           options)
 
-    def UpsertItem(self, database_or_Container_link, document, options=None, is_system_key=False):
+    def UpsertItem(self, database_or_Container_link, document, options=None):
         """Upserts a document in a collection.
 
         :param str database_or_Container_link:
@@ -1060,8 +1059,7 @@ class CosmosClientConnection(object):
                            'docs',
                            collection_id,
                            None,
-                           options,
-                           is_system_key)
+                           options)
 
     PartitionResolverErrorMessage = "Couldn't find any partition resolvers for the database link provided. Ensure that the link you used when registering the partition resolvers matches the link provided or you need to register both types of database link(self link as well as ID based link)."
 
@@ -1094,7 +1092,7 @@ class CosmosClientConnection(object):
         collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
         return collection_id, document, path
     
-    def ReadItem(self, document_link, options=None, is_system_key=False):
+    def ReadItem(self, document_link, options=None):
         """Reads a document.
 
         :param str document_link:
@@ -1117,8 +1115,7 @@ class CosmosClientConnection(object):
                          'docs',
                          document_id,
                          None,
-                         options,
-                         is_system_key)
+                         options)
 
     def ReadTriggers(self, collection_link, options=None):
         """Reads all triggers in a collection.
@@ -1621,7 +1618,7 @@ class CosmosClientConnection(object):
                                    None,
                                    options)
 
-    def ReplaceItem(self, document_link, new_document, options=None, is_system_key=False):
+    def ReplaceItem(self, document_link, new_document, options=None):
         """Replaces a document and returns it.
 
         :param str document_link:
@@ -1656,10 +1653,9 @@ class CosmosClientConnection(object):
                             'docs',
                             document_id,
                             None,
-                            options,
-                            is_system_key)
+                            options)
 
-    def DeleteItem(self, document_link, options=None, is_system_key=False):
+    def DeleteItem(self, document_link, options=None):
         """Deletes a document.
 
         :param str document_link:
@@ -1682,8 +1678,7 @@ class CosmosClientConnection(object):
                                    'docs',
                                    document_id,
                                    None,
-                                   options,
-                                   is_system_key)
+                                   options)
 
     def CreateAttachment(self, document_link, attachment, options=None):
         """Creates an attachment in a document.
@@ -2157,7 +2152,7 @@ class CosmosClientConnection(object):
                                    None,
                                    options)
 
-    def ExecuteStoredProcedure(self, sproc_link, params, options=None, is_system_key=False):
+    def ExecuteStoredProcedure(self, sproc_link, params, options=None):
         """Executes a store procedure.
 
         :param str sproc_link:
@@ -2193,8 +2188,7 @@ class CosmosClientConnection(object):
                                   path,
                                   sproc_id,
                                   'sprocs',
-                                  options,
-                                  is_system_key=is_system_key)
+                                  options)
 
         # ExecuteStoredProcedure will use WriteEndpoint since it uses POST operation
         request = request_object._RequestObject('sprocs', documents._OperationType.ExecuteJavaScript)
@@ -2416,7 +2410,7 @@ class CosmosClientConnection(object):
         self._useMultipleWriteLocations = self.connection_policy.UseMultipleWriteLocations and database_account._EnableMultipleWritableLocations
         return database_account
 
-    def Create(self, body, path, type, id, initial_headers, options=None, is_system_key=False):
+    def Create(self, body, path, type, id, initial_headers, options=None):
         """Creates a Azure Cosmos resource and returns it.
 
         :param dict body:
@@ -2443,8 +2437,7 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options,
-                                  is_system_key=is_system_key)
+                                  options)
         # Create will use WriteEndpoint since it uses POST operation
 
         request = request_object._RequestObject(type, documents._OperationType.Create)
@@ -2457,7 +2450,7 @@ class CosmosClientConnection(object):
         self._UpdateSessionIfRequired(headers, result, self.last_response_headers)
         return result
 
-    def Upsert(self, body, path, type, id, initial_headers, options=None, is_system_key=False):
+    def Upsert(self, body, path, type, id, initial_headers, options=None):
         """Upserts a Azure Cosmos resource and returns it.
         
         :param dict body:
@@ -2484,8 +2477,7 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options,
-                                  is_system_key=is_system_key)
+                                  options)
 
         headers[http_constants.HttpHeaders.IsUpsert] = True
 
@@ -2499,7 +2491,7 @@ class CosmosClientConnection(object):
         self._UpdateSessionIfRequired(headers, result, self.last_response_headers)
         return result
 
-    def Replace(self, resource, path, type, id, initial_headers, options=None, is_system_key=False):
+    def Replace(self, resource, path, type, id, initial_headers, options=None):
         """Replaces a Azure Cosmos resource and returns it.
 
         :param dict resource:
@@ -2526,8 +2518,7 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options,
-                                  is_system_key=is_system_key)
+                                  options)
         # Replace will use WriteEndpoint since it uses PUT operation
         request = request_object._RequestObject(type, documents._OperationType.Replace)
         result, self.last_response_headers = self.__Put(path,
@@ -2539,7 +2530,7 @@ class CosmosClientConnection(object):
         self._UpdateSessionIfRequired(headers, result, self.last_response_headers)
         return result
 
-    def Read(self, path, type, id, initial_headers, options=None, is_system_key=False):
+    def Read(self, path, type, id, initial_headers, options=None):
         """Reads a Azure Cosmos resource and returns it.
 
         :param str path:
@@ -2565,8 +2556,7 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options,
-                                  is_system_key=is_system_key)
+                                  options)
         # Read will use ReadEndpoint since it uses GET operation
         request = request_object._RequestObject(type, documents._OperationType.Read)
         result, self.last_response_headers = self.__Get(path,
@@ -2574,7 +2564,7 @@ class CosmosClientConnection(object):
                                                         headers)
         return result
 
-    def DeleteResource(self, path, type, id, initial_headers, options=None, is_system_key=False):
+    def DeleteResource(self, path, type, id, initial_headers, options=None):
         """Deletes a Azure Cosmos resource and returns it.
 
         :param str path:
@@ -2600,8 +2590,7 @@ class CosmosClientConnection(object):
                                   path,
                                   id,
                                   type,
-                                  options,
-                                  is_system_key=is_system_key)
+                                  options)
         # Delete will use WriteEndpoint since it uses DELETE operation
         request = request_object._RequestObject(type, documents._OperationType.Delete)
         result, self.last_response_headers = self.__Delete(path,
@@ -2745,8 +2734,7 @@ class CosmosClientConnection(object):
                     create_fn,
                     query,
                     options=None,
-                    partition_key_range_id=None,
-                    is_system_key=False):
+                    partition_key_range_id=None):
         """Query for more than one Azure Cosmos resources.
 
         :param str path:
@@ -2793,8 +2781,7 @@ class CosmosClientConnection(object):
                                       id,
                                       type,
                                       options,
-                                      partition_key_range_id,
-                                      is_system_key=is_system_key)
+                                      partition_key_range_id)
             result, self.last_response_headers = self.__Get(path,
                                                             request,
                                                             headers)
@@ -2820,8 +2807,7 @@ class CosmosClientConnection(object):
                                       id,
                                       type,
                                       options,
-                                      partition_key_range_id,
-                                      is_system_key=is_system_key)
+                                      partition_key_range_id)
             result, self.last_response_headers = self.__Post(path,
                                                              request,
                                                              query,
@@ -2897,12 +2883,15 @@ class CosmosClientConnection(object):
 
         # Parses the paths into a list of token each representing a property
         partition_key_parts = base.ParsePaths(partitionKeyDefinition.get('paths'))
+        # Check if the partitionKey is system generated or not
+        is_system_key = (partitionKeyDefinition['systemKey']
+                         if 'systemKey' in partitionKeyDefinition else False)
 
         # Navigates the document to retrieve the partitionKey specified in the paths
-        return self._RetrievePartitionKey(partition_key_parts, document)
+        return self._RetrievePartitionKey(partition_key_parts, document, is_system_key)
 
     # Navigates the document to retrieve the partitionKey specified in the partition key parts
-    def _RetrievePartitionKey(self, partition_key_parts, document):
+    def _RetrievePartitionKey(self, partition_key_parts, document, is_system_key):
         expected_matchCount = len(partition_key_parts)
         matchCount = 0
         partitionKey = document
@@ -2910,7 +2899,7 @@ class CosmosClientConnection(object):
         for part in partition_key_parts:
             # At any point if we don't find the value of a sub-property in the document, we return as Undefined
             if part not in partitionKey:
-                return documents._Undefined
+                return self._ReturnUndefinedOrNonePartitionKey(is_system_key)
             else:
                 partitionKey = partitionKey.get(part)
                 matchCount += 1
@@ -2920,9 +2909,15 @@ class CosmosClientConnection(object):
 
         # Match the count of hops we did to get the partitionKey with the length of partition key parts and validate that it's not a dict at that level
         if ((matchCount != expected_matchCount) or isinstance(partitionKey, dict)):
-            return documents._Undefined
-         
+            return self._ReturnUndefinedOrNonePartitionKey(is_system_key)
+
         return partitionKey
+
+    def _ReturnUndefinedOrNonePartitionKey(self, is_system_key):
+        if is_system_key:
+            return partition_key.NonePk
+        else:
+            return partition_key.Undefined
 
     def _UpdateSessionIfRequired(self, request_headers, response_result, response_headers):    
         """
@@ -2947,7 +2942,7 @@ class CosmosClientConnection(object):
         if http_constants.HttpHeaders.ConsistencyLevel in request_headers:
             if documents.ConsistencyLevel.Session == request_headers[http_constants.HttpHeaders.ConsistencyLevel]:
                 is_session_consistency = True
-              
+
         if is_session_consistency:
             # update session
             self.session.update_session(response_result, response_headers)

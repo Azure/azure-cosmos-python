@@ -121,11 +121,11 @@ class CosmosClient:
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (DatabaseId, bool, str, Dict[str, Any], bool) -> Database
+        # type: (Union[str, Database, Dict[str, Any]], bool, str, Dict[str, Any], bool) -> Database
         """
         Retrieve an existing database with the ID (name) `id`.
 
-        :param id: ID of the new :class:`Database`.
+        :param database: The ID (name), dict representing the properties or :class:`Database` instance of the database to read.
         :param session_token: Token for use with Session consistency.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :raise `HTTPFailure`: If the given database couldn't be retrieved.
@@ -232,11 +232,11 @@ class CosmosClient:
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (DatabaseId, bool, str, Dict[str, Any], AccessCondition, bool) -> None
+        # type: (Union[str, Database, Dict[str, Any]], bool, str, Dict[str, Any], AccessCondition, bool) -> None
         """
         Delete the database with the given ID (name).
 
-        :param database: The ID (name) or :class:`Database` instance of the database to delete.
+        :param database: The ID (name), dict representing the properties or :class:`Database` instance of the database to delete.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.

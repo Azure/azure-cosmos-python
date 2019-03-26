@@ -122,6 +122,7 @@ class Database(object):
         :param indexing_policy: The indexing policy to apply to the container.
         :param default_ttl: Default time to live (TTL) for items in the container. If unspecified, items do not expire.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param offer_throughput: The provisioned throughput for this offer.
@@ -192,6 +193,7 @@ class Database(object):
 
         :param container: The ID (name) of the container to delete. You can either pass in the ID of the container to delete, a :class:`Container` instance or a dict representing the properties of the container.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         """
@@ -224,6 +226,7 @@ class Database(object):
 
         :param container: The ID (name) of the container, a :class:`Container` instance, or a dict representing the properties of the container to be retrieved.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param populate_partition_key_range_statistics: Enable returning partition key range statistics in response headers.
         :param populate_quota_info: Enable returning collection storage quota information in response headers.
@@ -276,6 +279,7 @@ class Database(object):
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
 
         .. literalinclude:: ../../examples/examples.py
@@ -318,6 +322,7 @@ class Database(object):
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
 
     """
@@ -359,6 +364,7 @@ class Database(object):
         :param container: The ID (name), dict representing the properties or :class:`Container` instance of the container to be replaced.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
 
         .. literalinclude:: ../../examples/examples.py

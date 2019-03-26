@@ -24,7 +24,7 @@
 
 from .cosmos_client_connection import CosmosClientConnection
 from .database import Database
-from .documents import ConnectionPolicy
+from .documents import ConnectionPolicy, DatabaseAccount
 from .query_iterable import QueryIterable
 from typing import (
     Any,
@@ -39,7 +39,7 @@ class CosmosClient:
     """
 
     def __init__(self, url, auth, consistency_level="Session", connection_policy=None):
-        # type: (str, Dict[str, str],, str, ConnectionPolicy) -> None
+        # type: (str, Dict[str, str], str, ConnectionPolicy) -> None
         """ Instantiate a new CosmosClient.
 
         :param url: The URL of the Cosmos DB account.
@@ -76,16 +76,18 @@ class CosmosClient:
         offer_throughput=None,
         request_options=None
     ):
-        # type: (str, str, bool, str, AccessCondition, bool, bool) -> Database
+        # type: (str, str, Dict[str, Any], Dict[str, str], bool, int, Dict[str, Any]) -> Database
         """Create a new database with the given ID (name).
 
         :param id: ID (name) of the database to create.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param offer_throughput: The provisioned throughput for this offer.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: A :class:`Database` instance representing the new database.
-        :raises `HTTPFailure`: If `fail_if_exists` is set to True and a database with the given ID already exists.
+        :raises `HTTPFailure`: If database with the given ID already exists.
 
         .. literalinclude:: ../../examples/examples.py
             :start-after: [START create_database]
@@ -127,7 +129,10 @@ class CosmosClient:
 
         :param database: The ID (name), dict representing the properties or :class:`Database` instance of the database to read.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param request_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`Database` instance representing the new database.
         :raise `HTTPFailure`: If the given database couldn't be retrieved.
         """
         database_link = CosmosClientConnection._get_database_link(database)
@@ -151,7 +156,6 @@ class CosmosClient:
 
     def list_database_properties(
         self,
-        enable_cross_partition_query=None,
         max_item_count=None,
         session_token=None,
         initial_headers=None,
@@ -164,12 +168,13 @@ class CosmosClient:
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of databases.
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
-        if enable_cross_partition_query is not None:
-            feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if max_item_count is not None:
             feed_options["maxItemCount"] = max_item_count
         if session_token:
@@ -195,6 +200,20 @@ class CosmosClient:
         feed_options=None
     ):
         # type: (str, str, bool, bool, int, str, Dict[str, Any], bool) -> QueryIterable
+
+        """
+        Query the databases in a Cosmos DB SQL database account.
+
+        :param query: The Azure Cosmos DB SQL query to execute.
+        :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
+        :param enable_cross_partition_query: Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
+        :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
+        :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of databases.
+        """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
         if enable_cross_partition_query is not None:
@@ -238,8 +257,11 @@ class CosmosClient:
 
         :param database: The ID (name), dict representing the properties or :class:`Database` instance of the database to delete.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param request_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`Database` instance representing the new database.
         :raise HTTPFailure: If the database couldn't be deleted.
         """
 
@@ -261,5 +283,6 @@ class CosmosClient:
         # type: () -> DatabaseAccount
         """
         Retrieve the database account information.
+        :returns: A :class:`DatabaseAccount` instance representing the Cosmos DB Database Account.
         """
         return self.client_connection.GetDatabaseAccount()

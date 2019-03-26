@@ -2899,7 +2899,7 @@ class CosmosClientConnection(object):
         for part in partition_key_parts:
             # At any point if we don't find the value of a sub-property in the document, we return as Undefined
             if part not in partitionKey:
-                return self._ReturnUndefinedOrNonePartitionKey(is_system_key)
+                return self._ReturnUndefinedOrEmptyPartitionKey(is_system_key)
             else:
                 partitionKey = partitionKey.get(part)
                 matchCount += 1
@@ -2909,7 +2909,7 @@ class CosmosClientConnection(object):
 
         # Match the count of hops we did to get the partitionKey with the length of partition key parts and validate that it's not a dict at that level
         if ((matchCount != expected_matchCount) or isinstance(partitionKey, dict)):
-            return self._ReturnUndefinedOrNonePartitionKey(is_system_key)
+            return self._ReturnUndefinedOrEmptyPartitionKey(is_system_key)
 
         return partitionKey
 
@@ -2958,7 +2958,7 @@ class CosmosClientConnection(object):
         return "dbs/{}".format(database_id)
 
     @staticmethod
-    def _ReturnUndefinedOrNonePartitionKey(is_system_key):
+    def _ReturnUndefinedOrEmptyPartitionKey(is_system_key):
         if is_system_key:
             return _Empty
         else:

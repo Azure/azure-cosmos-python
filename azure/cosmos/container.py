@@ -67,24 +67,26 @@ class Container:
             return u"{}/docs/{}".format(self.container_link, item_or_link)
         return item_or_link["_self"]
 
-    def _get_conflict_link(self, id):
-        # type: (str) -> str
-        return u"{}/conflicts/{}".format(self.container_link, id)
+    def _get_conflict_link(self, conflict_or_link):
+        # type: (Union[Dict[str, Any], str]) -> str
+        if isinstance(conflict_or_link, six.string_types):
+            return u"{}/conflicts/{}".format(self.container_link, conflict_or_link)
+        return conflict_or_link["_self"]
 
     def get_item(
         self,
-        id,
+        item,
         partition_key,
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (str, str, str, Dict[str, Any], bool) -> Item
+        # type: (Union[str, Dict[str, Any]], str, str, Dict[str, Any], bool) -> Item
         """
         Get the item identified by `id`.
 
-        :param id: ID of item to retrieve.
+        :param item: The ID (name) or dict representing item to retrieve.
         :param partition_key: Partition key for the item to retrieve.
         :param session_token: Token for use with Session consistency.
         :param populate_query_metrics: Enable returning query metrics in response headers.
@@ -99,7 +101,7 @@ class Container:
             :name: update_item
 
         """
-        doc_link = self._get_document_link(id)
+        doc_link = self._get_document_link(item)
 
         if not request_options:
             request_options = {} # type: Dict[str, Any]
@@ -267,9 +269,9 @@ class Container:
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (Union[Item, str], Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Item
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Item
         """ Replaces the specified item if it exists in the container.
-        :param item: An Item object or link of the item to be replaced.
+        :param item: The ID (name) or dict representing item to be replaced.
         :param body: A dict-like object representing the item to replace.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
@@ -392,10 +394,10 @@ class Container:
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (Union[Item, Dict[str, Any], str], str, str, Dict[str, Any], AccessCondition, bool) -> None
+        # type: (Union[Dict[str, Any], str], str, str, Dict[str, Any], AccessCondition, bool) -> None
         """ Delete the specified item from the container.
 
-        :param item: The :class:`Item` to delete from the container.
+        :param item: The ID (name) or dict representing item to be deleted.
         :param partition_key: Specifies the partition key value for the item.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
@@ -529,15 +531,15 @@ class Container:
 
     def get_conflict(
             self,
-            id,
+            conflict,
             partition_key,
             request_options=None
     ):
-        # type: (str, str) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], str, Dict[str, Any]) -> Dict[str, Any]
         """
         Get the conflict identified by `id`.
 
-        :param id: ID of the conflict to be retrieved.
+        :param conflict: The ID (name) or dict representing the conflict to retrieve.
         :param partition_key: Partition key for the conflict to retrieve.
         :returns: The conflict as a dict, if present in the container.
 
@@ -548,20 +550,20 @@ class Container:
             request_options["partitionKey"] = partition_key
 
         return self.client_connection.ReadConflict(
-            conflict_link=self._get_conflict_link(id),
+            conflict_link=self._get_conflict_link(conflict),
             options=request_options
         )
 
     def delete_conflcit(
             self,
-            id,
+            conflict,
             partition_key,
             request_options=None
     ):
-        # type: (str, str) -> None
+        # type: (Union[str, Dict[str, Any]], str, Dict[str, Any]) -> None
         """ Delete the specified conflict from the container.
 
-        :param id: Id of the conflict to delete from the container.
+        :param conflict: The ID (name) or dict representing the conflict to be deleted.
         :param partition_key: Partition key for the conflict to delete.
         :raises `HTTPFailure`: The conflict wasn't deleted successfully. If the conflict does not exist in the container, a `404` error is returned.
 
@@ -572,7 +574,7 @@ class Container:
             request_options["partitionKey"] = partition_key
 
         self.client_connection.DeleteConflict(
-            conflict_link=self._get_conflict_link(id),
+            conflict_link=self._get_conflict_link(conflict),
             options=request_options
         )
 

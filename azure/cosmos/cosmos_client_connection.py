@@ -2946,9 +2946,5 @@ class CosmosClientConnection(object):
             return cast("Database", database_or_id).database_link
         except AttributeError:
             pass
-
-        if isinstance(database_or_id, six.string_types):
-            database_id = database_or_id
-        else:
-            database_id = cast("Dict[str, str]", database_or_id)["id"]
+        database_id = cast("Dict[str, str]", database_or_id)["id"]
         return "dbs/{}".format(database_id)

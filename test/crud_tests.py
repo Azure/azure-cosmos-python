@@ -412,7 +412,7 @@ class CRUDTests(unittest.TestCase):
 
         # read document
         read_document = created_collection.get_item(
-            id=created_document.get('id'),
+            item=created_document.get('id'),
             partition_key=created_document.get('id')
         )
 
@@ -584,7 +584,7 @@ class CRUDTests(unittest.TestCase):
         created_sproc = created_collection.scripts.create_stored_procedure(body=sproc)
 
         # Partiton Key value same as what is specified in the stored procedure body
-        result = created_collection.scripts.execute_stored_procedure(id=created_sproc['id'], partition_key=2)
+        result = created_collection.scripts.execute_stored_procedure(sproc=created_sproc['id'], partition_key=2)
         self.assertEqual(result, 1)
 
         # Partiton Key value different than what is specified in the stored procedure body will cause a bad request(400) error
@@ -814,7 +814,7 @@ class CRUDTests(unittest.TestCase):
                          'document id should stay the same')
         # read document
         one_document_from_read = created_collection.get_item(
-            id=replaced_document['id'],
+            item=replaced_document['id'],
             partition_key=replaced_document['id']
         )
         self.assertEqual(replaced_document['id'],
@@ -1365,7 +1365,7 @@ class CRUDTests(unittest.TestCase):
                          'Expected 2 Documents to be succesfully read')
         # 4. Success-- Use Col1 Permission to Read Col1Doc1
         success_doc = success_coll1.get_item(
-            id=entities['doc1']['id'],
+            item=entities['doc1']['id'],
             partition_key=entities['doc1']['id']
         )
         self.assertTrue(success_doc != None, 'error reading document')
@@ -1492,7 +1492,7 @@ class CRUDTests(unittest.TestCase):
         # replace udf
         change_udf = udf.copy()
         udf['body'] = 'function() {var x = 20;}'
-        replaced_udf = collection.scripts.replace_user_defined_function(id=udf['id'], body=udf)
+        replaced_udf = collection.scripts.replace_user_defined_function(udf=udf['id'], body=udf)
         for property in udf_definition:
             self.assertEqual(
                 replaced_udf[property],
@@ -1547,7 +1547,7 @@ class CRUDTests(unittest.TestCase):
         # replace sproc
         change_sproc = sproc.copy()
         sproc['body'] = 'function() {var x = 20;}'
-        replaced_sproc = collection.scripts.replace_stored_procedure(id=change_sproc['id'], body=sproc)
+        replaced_sproc = collection.scripts.replace_stored_procedure(sproc=change_sproc['id'], body=sproc)
         for property in sproc_definition:
             if property != 'serverScript':
                 self.assertEqual(
@@ -1591,7 +1591,7 @@ class CRUDTests(unittest.TestCase):
         created_sproc = created_collection.scripts.create_stored_procedure(body=sproc)
 
         result = created_collection.scripts.execute_stored_procedure(
-            id=created_sproc['id'],
+            sproc=created_sproc['id'],
             partition_key=1
         )
 
@@ -1599,7 +1599,7 @@ class CRUDTests(unittest.TestCase):
         self.assertFalse(HttpHeaders.ScriptLogResults in created_collection.scripts.client_connection.last_response_headers)
 
         result = created_collection.scripts.execute_stored_procedure(
-            id=created_sproc['id'],
+            sproc=created_sproc['id'],
             enable_script_logging=True,
             partition_key=1
         )
@@ -1609,7 +1609,7 @@ class CRUDTests(unittest.TestCase):
                          created_collection.scripts.client_connection.last_response_headers.get(HttpHeaders.ScriptLogResults))
 
         result = created_collection.scripts.execute_stored_procedure(
-            id=created_sproc['id'],
+            sproc=created_sproc['id'],
             enable_script_logging=False,
             partition_key=1
         )
@@ -2030,7 +2030,7 @@ class CRUDTests(unittest.TestCase):
 
         retrieved_sproc = collection.scripts.create_stored_procedure(body=sproc1)
         result = collection.scripts.execute_stored_procedure(
-            id=retrieved_sproc['id'],
+            sproc=retrieved_sproc['id'],
             partition_key=1
         )
         self.assertEqual(result, 999)
@@ -2045,7 +2045,7 @@ class CRUDTests(unittest.TestCase):
         }
         retrieved_sproc2 = collection.scripts.create_stored_procedure(body=sproc2)
         result = collection.scripts.execute_stored_procedure(
-            id=retrieved_sproc2['id'],
+            sproc=retrieved_sproc2['id'],
             partition_key=1
         )
         self.assertEqual(int(result), 123456789)
@@ -2059,7 +2059,7 @@ class CRUDTests(unittest.TestCase):
         }
         retrieved_sproc3 = collection.scripts.create_stored_procedure(body=sproc3)
         result = collection.scripts.execute_stored_procedure(
-            id=retrieved_sproc3['id'],
+            sproc=retrieved_sproc3['id'],
             params={'temp': 'so'},
             partition_key=1
         )

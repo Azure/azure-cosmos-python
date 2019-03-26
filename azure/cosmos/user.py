@@ -22,6 +22,15 @@
 """Create, read, update and delete permissions in the Azure Cosmos DB SQL API service.
 """
 
+import six
+from typing import (
+    Any,
+    List,
+    Dict,
+    Union,
+    cast
+)
+
 from .permission import Permission
 
 class User:
@@ -33,14 +42,20 @@ class User:
         self.user_link = u"{}/users/{}".format(database_link, id)
         self.properties = properties
 
-    def _get_permission_link(self, id):
-        # type: (str) -> str
-        return u"{}/permissions/{}".format(self.user_link, id)
+    def _get_permission_link(self, permission_or_id):
+        # type: (Union[Permission, str, Dict[str, Any]]) -> str
+        if isinstance(permission_or_id, six.string_types):
+            return u"{}/permissions/{}".format(self.user_link, permission_or_id)
+        try:
+            return cast("Permission", permission_or_id).user_link
+        except AttributeError:
+            pass
+        return u"{}/permissions/{}".format(self.user_link, cast("Dict[str, str]", permission_or_id)["id"])
 
     def list_permission_properties(
             self,
             max_item_count=None,
-            list_options=None
+            feed_options=None
     ):
         # type: (int) -> QueryIterable
         """ List all permission for the user.
@@ -48,14 +63,14 @@ class User:
         :param max_item_count: Max number of permissions to be returned in the enumeration operation.
 
         """
-        if not list_options:
-            list_options = {} # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            list_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.ReadPermissions(
             user_link=self.user_link,
-            options=list_options
+            options=feed_options
         )
 
     def query_permissions(
@@ -63,7 +78,7 @@ class User:
             query,
             parameters=None,
             max_item_count=None,
-            list_options=None
+            feed_options=None
     ):
         # type: (str, List, int) -> QueryIterable
         """Return all permissions matching the given `query`.
@@ -74,29 +89,29 @@ class User:
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
-        if not list_options:
-            list_options = {} # type: Dict[str, Any]
+        if not feed_options:
+            feed_options = {} # type: Dict[str, Any]
         if max_item_count is not None:
-            list_options["maxItemCount"] = max_item_count
+            feed_options["maxItemCount"] = max_item_count
 
         return self.client_connection.QueryPermissions(
             user_link=self.user_link,
             query=query
             if parameters is None
             else dict(query=query, parameters=parameters),
-            options=list_options,
+            options=feed_options,
         )
 
     def get_permission(
             self,
-            id,
+            permission,
             request_options=None
     ):
         # type: (str) -> Permission
         """
         Get the permission identified by `id`.
 
-        :param id: ID of the permission to be retrieved.
+        :param permission: The ID (name), dict representing the properties or :class:`Permission` instance of the permission to be retrieved.
         :returns: The permission as a dict, if present in the container.
 
         """
@@ -104,7 +119,8 @@ class User:
             request_options = {} # type: Dict[str, Any]
 
         permission = self.client_connection.ReadPermission(
-            permission_link=self._get_permission_link(id)
+            permission_link=self._get_permission_link(permission),
+            options=request_options
         )
 
         return Permission(
@@ -134,7 +150,8 @@ class User:
 
         permission = self.client_connection.CreatePermission(
             user_link=self.user_link,
-            permission=body
+            permission=body,
+            options=request_options
         )
 
         return Permission(
@@ -164,7 +181,8 @@ class User:
 
         permission = self.client_connection.UpsertPermission(
             user_link=self.user_link,
-            permission=body
+            permission=body,
+            options=request_options
         )
 
         return Permission(
@@ -177,14 +195,14 @@ class User:
 
     def replace_permission(
             self,
-            id,
+            permission,
             body,
             request_options=None
     ):
         # type: (str, Dict[str, Any]) -> Permission
         """ Replaces the specified permission if it exists for the user.
 
-        :param id: Id of the permission to be replaced.
+        :param permission: The ID (name), dict representing the properties or :class:`Permission` instance of the permission to be replaced.
         :param body: A dict-like object representing the permission to replace.
         :raises `HTTPFailure`:
 
@@ -193,8 +211,9 @@ class User:
             request_options = {} # type: Dict[str, Any]
 
         permission = self.client_connection.ReplacePermission(
-            permission_link=self._get_permission_link(id),
-            permission=body
+            permission_link=self._get_permission_link(permission),
+            permission=body,
+            options=request_options
         )
 
         return Permission(
@@ -207,13 +226,13 @@ class User:
 
     def delete_permission(
             self,
-            id,
+            permission,
             request_options=None
     ):
         # type: (str) -> None
         """ Delete the specified permission from the user.
 
-        :param id: Id of the permission to delete from the container.
+        :param permission: The ID (name), dict representing the properties or :class:`Permission` instance of the permission to be replaced.
         :raises `HTTPFailure`: The permission wasn't deleted successfully. If the permission does not exist for the user, a `404` error is returned.
 
         """
@@ -222,6 +241,7 @@ class User:
             request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeletePermission(
-            permission_link=self._get_permission_link(id)
+            permission_link=self._get_permission_link(permission),
+            options=request_options
         )
 

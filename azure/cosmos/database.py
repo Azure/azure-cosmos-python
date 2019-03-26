@@ -73,16 +73,29 @@ class Database(object):
         self.properties = properties
         self.database_link = CosmosClientConnection._get_database_link(id)
 
-    def _get_container_link(self, container_or_id):
-        # type: (ContainerId) -> str
+    def _get_container_id(self, container_or_id):
+        # type: (Union[str, Container, Dict[str, Any]]) -> str
         if isinstance(container_or_id, six.string_types):
-            return u"{}/colls/{}".format(self.database_link, container_or_id)
+            return container_or_id
         try:
-            return cast("Container", container_or_id).container_link
+            return cast("Container", container_or_id).properties['id']
         except AttributeError:
             pass
-        container_id = cast("Dict[str, str]", container_or_id)["id"]
-        return u"{}/colls/{}".format(self.database_link, container_id)
+        return cast("Dict[str, str]", container_or_id)["id"]
+
+    def _get_container_link(self, container_or_id):
+        # type: (Union[str, Container, Dict[str, Any]]) -> str
+        return u"{}/colls/{}".format(self.database_link, self._get_container_id(container_or_id))
+
+    def _get_user_link(self, user_or_id):
+        # type: (Union[User, str, Dict[str, Any]]) -> str
+        if isinstance(user_or_id, six.string_types):
+            return u"{}/users/{}".format(self.database_link, user_or_id)
+        try:
+            return cast("User", user_or_id).user_link
+        except AttributeError:
+            pass
+        return u"{}/users/{}".format(self.database_link, cast("Dict[str, str]", user_or_id)["id"])
 
     def create_container(
         self,
@@ -174,10 +187,10 @@ class Database(object):
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (ContainerId, str, Dict[str, Any], AccessCondition, bool) -> None
+        # type: (Union[str, Container, Dict[str, Any]], str, Dict[str, Any], AccessCondition, bool) -> None
         """ Delete the container
 
-        :param container: The ID (name) of the container to delete. You can either pass in the ID of the container to delete, or :class:`Container` instance.
+        :param container: The ID (name) of the container to delete. You can either pass in the ID of the container to delete, a :class:`Container` instance or a dict representing the properties of the container.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
@@ -206,10 +219,10 @@ class Database(object):
         populate_quota_info=None,
         request_options=None
     ):
-        # type: (ContainerId, str, Dict[str, Any], bool) -> Container
+        # type: (Union[str, Container, Dict[str, Any]], str, Dict[str, Any], bool) -> Container
         """ Get the specified `Container`, or a container with specified ID (name).
 
-        :param container: The ID (name) of the container, or a :class:`Container` instance.
+        :param container: The ID (name) of the container, a :class:`Container` instance, or a dict representing the properties of the container to be retrieved.
         :param session_token: Token for use with Session consistency.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param populate_partition_key_range_statistics: Enable returning partition key range statistics in response headers.
@@ -338,11 +351,12 @@ class Database(object):
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (Union[str, Container], PartitionKey, Dict[str, Any], int, Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Container
+        # type: (Union[str, Container, Dict[str, Any]], PartitionKey, Dict[str, Any], int, Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Container
         """ Reset the properties of the container. Property changes are persisted immediately.
 
         Any properties not specified will be reset to their default values.
 
+        :param container: The ID (name), dict representing the properties or :class:`Container` instance of the container to be replaced.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
@@ -356,8 +370,6 @@ class Database(object):
             :name: reset_container_properties
 
         """
-        container_id = getattr(container, "id", container)
-
         if not request_options:
             request_options = {} # type: Dict[str, Any]
         if session_token:
@@ -369,6 +381,8 @@ class Database(object):
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
+        container_id = self._get_container_id(container)
+        container_link = self._get_container_link(container_id)
         parameters = {
             key: value
             for key, value in {
@@ -380,9 +394,9 @@ class Database(object):
             }.items()
             if value is not None
         }
-        collection_link = u"{}/colls/{}".format(self.database_link, container_id)
+
         container_properties = self.client_connection.ReplaceContainer(
-            collection_link, collection=parameters, options=request_options
+            container_link, collection=parameters, options=request_options
         )
 
         return Container(
@@ -391,15 +405,6 @@ class Database(object):
             container_properties["id"],
             properties=container_properties,
         )
-
-    def _get_user_link(self, id_or_user):
-        # type: (Union[User, str]) -> str
-        user_link = getattr(
-            id_or_user,
-            "user_link",
-            u"{}/users/{}".format(self.database_link, id_or_user),
-        )
-        return user_link
 
     def list_user_properties(
             self,
@@ -453,14 +458,14 @@ class Database(object):
 
     def get_user(
             self,
-            id,
+            user,
             request_options=None
     ):
-        # type: (str) -> User
+        # type: (Union[str, User, Dict[str, Any]]) -> User
         """
         Get the user identified by `id`.
 
-        :param id: ID of the user to be retrieved.
+        :param user: The ID (name), dict representing the properties or :class:`User` instance of the user to be retrieved.
         :returns: The user as a dict, if present in the container.
 
         """
@@ -468,7 +473,7 @@ class Database(object):
             request_options = {} # type: Dict[str, Any]
 
         user = self.client_connection.ReadUser(
-            user_link=self._get_user_link(id_or_user=id),
+            user_link=self._get_user_link(user_or_id=user),
             options=request_options
         )
         return User(
@@ -549,14 +554,14 @@ class Database(object):
 
     def replace_user(
             self,
-            id,
+            user,
             body,
             request_options=None
     ):
-        # type: (str, Dict[str, Any]) -> User
+        # type: (Union[str, User, Dict[str, Any]], Dict[str, Any]) -> User
         """ Replaces the specified user if it exists in the container.
 
-        :param id: Id of the user to be replaced.
+        :param user: The ID (name), dict representing the properties or :class:`User` instance of the user to be replaced.
         :param body: A dict-like object representing the user to replace.
         :raises `HTTPFailure`:
 
@@ -565,7 +570,7 @@ class Database(object):
             request_options = {} # type: Dict[str, Any]
 
         user = self.client_connection.ReplaceUser(
-            user_link=self._get_user_link(id),
+            user_link=self._get_user_link(user),
             user=body,
             options=request_options
         )
@@ -579,13 +584,13 @@ class Database(object):
 
     def delete_user(
             self,
-            id,
+            user,
             request_options=None
     ):
-        # type: (str) -> None
+        # type: (Union[str, User, Dict[str, Any]]) -> None
         """ Delete the specified user from the container.
 
-        :param id: Id of the user to delete from the container.
+        :param user: The ID (name), dict representing the properties or :class:`User` instance of the user to be deleted.
         :raises `HTTPFailure`: The user wasn't deleted successfully. If the user does not exist in the container, a `404` error is returned.
 
         """
@@ -593,7 +598,7 @@ class Database(object):
             request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeleteUser(
-            user_link=self._get_user_link(id), options=request_options
+            user_link=self._get_user_link(user), options=request_options
         )
 
     def read_offer(

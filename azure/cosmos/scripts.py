@@ -22,6 +22,7 @@
 """Create, read, update and delete and execute scripts in the Azure Cosmos DB SQL API service.
 """
 
+import six
 from azure.cosmos.cosmos_client_connection import CosmosClientConnection
 
 
@@ -38,8 +39,11 @@ class Scripts:
         self.client_connection = client_connection
         self.container_link = container_link
 
-    def _get_resource_link(self, id, type):
-        return u"{}/{}/{}".format(self.container_link, type, id)
+    def _get_resource_link(self, script_or_id, type):
+        # type: (Union[Dict[str, Any], str]) -> str
+        if isinstance(script_or_id, six.string_types):
+            return u"{}/{}/{}".format(self.container_link, type, script_or_id)
+        return script_or_id["_self"]
 
     def list_stored_procedures(
             self,
@@ -93,14 +97,14 @@ class Scripts:
 
     def get_stored_procedure(
             self,
-            id,
+            sproc,
             request_options=None
     ):
-        # type: (str) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]]) -> Dict[str, Any]
         """
         Get the stored procedure identified by `id`.
 
-        :param id: ID of the stored procedure to be retrieved.
+        :param sproc: The ID (name) or dict representing stored procedure to retrieve.
         :returns: The stored procedure as a dict, if present in the container.
 
         """
@@ -108,7 +112,8 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         return self.client_connection.ReadStoredProcedure(
-            sproc_link=self._get_resource_link(id, ScriptType.StoredProcedure)
+            sproc_link=self._get_resource_link(sproc, ScriptType.StoredProcedure),
+            options=request_options
         )
 
     def create_stored_procedure(
@@ -130,19 +135,20 @@ class Scripts:
 
         return self.client_connection.CreateStoredProcedure(
             collection_link=self.container_link,
-            sproc=body
+            sproc=body,
+            options=request_options
         )
 
     def replace_stored_procedure(
             self,
-            id,
+            sproc,
             body,
             request_options=None
     ):
-        # type: (str, Dict[str, Any]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified stored procedure if it exists in the container.
 
-        :param id: Id of the sproc to be replaced.
+        :param sproc: The ID (name) or dict representing stored procedure to be replaced.
         :param body: A dict-like object representing the sproc to replace.
         :raises `HTTPFailure`:
 
@@ -151,19 +157,20 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         return self.client_connection.ReplaceStoredProcedure(
-            sproc_link=self._get_resource_link(id, ScriptType.StoredProcedure),
-            sproc=body
+            sproc_link=self._get_resource_link(sproc, ScriptType.StoredProcedure),
+            sproc=body,
+            options=request_options
         )
 
     def delete_stored_procedure(
             self,
-            id,
+            sproc,
             request_options=None
     ):
-        # type: (str) -> None
+        # type: (Union[str, Dict[str, Any]]) -> None
         """ Delete the specified stored procedure from the container.
 
-        :param id: Id of the stored procedure to delete from the container.
+        :param sproc: The ID (name) or dict representing stored procedure to be deleted.
         :raises `HTTPFailure`: The sproc wasn't deleted successfully. If the sproc does not exist in the container, a `404` error is returned.
 
         """
@@ -171,21 +178,22 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeleteStoredProcedure(
-            sproc_link=self._get_resource_link(id, ScriptType.StoredProcedure)
+            sproc_link=self._get_resource_link(sproc, ScriptType.StoredProcedure),
+            options=request_options
         )
 
     def execute_stored_procedure(
             self,
-            id,
+            sproc,
             partition_key=None,
             enable_script_logging=None,
             params=None,
             request_options = None
     ):
-        # type: (str, str, list[Any]) -> Any
+        # type: (Union[str, Dict[str, Any]], str, list[Any]) -> Any
         """ execute the specified stored procedure.
 
-        :param id: Id of the stored procedure to be executed.
+        :param sproc: The ID (name) or dict representing stored procedure to be executed.
         :param partition_key: Specifies the partition key to indicate which partition the sproc should execute on.
 
         :raises `HTTPFailure`
@@ -200,7 +208,7 @@ class Scripts:
             request_options["enableScriptLogging"] = enable_script_logging
 
         return self.client_connection.ExecuteStoredProcedure(
-            sproc_link=self._get_resource_link(id, ScriptType.StoredProcedure),
+            sproc_link=self._get_resource_link(sproc, ScriptType.StoredProcedure),
             params=params,
             options=request_options
         )
@@ -257,14 +265,14 @@ class Scripts:
 
     def get_trigger(
             self,
-            id,
+            trigger,
             request_options=None
     ):
-        # type: (str) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]]) -> Dict[str, Any]
         """
         Get the trigger identified by `id`.
 
-        :param id: ID of the trigger to be retrieved.
+        :param trigger: The ID (name) or dict representing trigger to retrieve.
         :returns: The trigger as a dict, if present in the container.
 
         """
@@ -272,7 +280,8 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         return self.client_connection.ReadTrigger(
-            trigger_link=self._get_resource_link(id, ScriptType.Trigger)
+            trigger_link=self._get_resource_link(trigger, ScriptType.Trigger),
+            options=request_options
         )
 
     def create_trigger(
@@ -294,18 +303,20 @@ class Scripts:
 
         return self.client_connection.CreateTrigger(
             collection_link=self.container_link,
-            trigger=body
+            trigger=body,
+            options=request_options
         )
 
     def replace_trigger(
             self,
-            id,
+            trigger,
             body,
             request_options=None
     ):
-        # type: (str, Dict[str, Any]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified tigger if it exists in the container.
-        :param id: Id of the trigger to be replaced.
+
+        :param trigger: The ID (name) or dict representing trigger to be replaced.
         :param body: A dict-like object representing the trigger to replace.
         :raises `HTTPFailure`:
 
@@ -314,19 +325,20 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         return self.client_connection.ReplaceTrigger(
-            trigger_link=self._get_resource_link(id, ScriptType.Trigger),
-            trigger=body
+            trigger_link=self._get_resource_link(trigger, ScriptType.Trigger),
+            trigger=body,
+            options=request_options
         )
 
     def delete_trigger(
             self,
-            id,
+            trigger,
             request_options=None
     ):
-        # type: (str) -> None
+        # type: (Union[str, Dict[str, Any]]) -> None
         """ Delete the specified trigger from the container.
 
-        :param id: Id of the trigger to delete from the container.
+        :param trigger: The ID (name) or dict representing trigger to be deleted.
         :raises `HTTPFailure`: The trigger wasn't deleted successfully. If the trigger does not exist in the container, a `404` error is returned.
 
         """
@@ -334,7 +346,8 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeleteTrigger(
-            trigger_link=self._get_resource_link(id, ScriptType.Trigger)
+            trigger_link=self._get_resource_link(trigger, ScriptType.Trigger),
+            options=request_options
         )
 
 
@@ -356,7 +369,7 @@ class Scripts:
 
         return self.client_connection.ReadUserDefinedFunctions(
             collection_link=self.container_link,
-            options=feed_options
+            options=feed_options,
         )
 
     def query_user_defined_functions(
@@ -390,14 +403,14 @@ class Scripts:
 
     def get_user_defined_function(
             self,
-            id,
+            udf,
             request_options=None
     ):
-        # type: (str) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]]) -> Dict[str, Any]
         """
         Get the stored procedure identified by `id`.
 
-        :param id: ID of the user defined function to be retrieved.
+        :param udf: The ID (name) or dict representing udf to retrieve.
         :returns: The stored procedure as a dict, if present in the container.
 
         """
@@ -405,7 +418,8 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         return self.client_connection.ReadUserDefinedFunction(
-            udf_link=self._get_resource_link(id, ScriptType.UserDefinedFunction)
+            udf_link=self._get_resource_link(udf, ScriptType.UserDefinedFunction),
+            options=request_options
         )
 
     def create_user_defined_function(
@@ -427,19 +441,20 @@ class Scripts:
 
         return self.client_connection.CreateUserDefinedFunction(
             collection_link=self.container_link,
-            udf=body
+            udf=body,
+            options=request_options
         )
 
     def replace_user_defined_function(
             self,
-            id,
+            udf,
             body,
             request_options=None
     ):
-        # type: (str, Dict[str, Any]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified user defined function if it exists in the container.
 
-        :param id: Id of the udf to be replaced.
+        :param udf: The ID (name) or dict representing udf to be replaced.
         :param body: A dict-like object representing the udf to replace.
         :raises `HTTPFailure`:
 
@@ -448,19 +463,20 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         return self.client_connection.ReplaceUserDefinedFunction(
-            udf_link=self._get_resource_link(id, ScriptType.UserDefinedFunction),
-            udf=body
+            udf_link=self._get_resource_link(udf, ScriptType.UserDefinedFunction),
+            udf=body,
+            options=request_options
         )
 
     def delete_user_defined_function(
             self,
-            id,
+            udf,
             request_options=None
     ):
-        # type: (str) -> None
+        # type: (Union[str, Dict[str, Any]]) -> None
         """ Delete the specified user defined function from the container.
 
-        :param id: Id of the udf to delete from the container.
+        :param udf: The ID (name) or dict representing udf to be deleted.
         :raises `HTTPFailure`: The udf wasn't deleted successfully. If the udf does not exist in the container, a `404` error is returned.
 
         """
@@ -468,5 +484,6 @@ class Scripts:
             request_options = {} # type: Dict[str, Any]
 
         self.client_connection.DeleteUserDefinedFunction(
-            udf_link=self._get_resource_link(id, ScriptType.UserDefinedFunction)
+            udf_link=self._get_resource_link(udf, ScriptType.UserDefinedFunction),
+            options=request_options
         )

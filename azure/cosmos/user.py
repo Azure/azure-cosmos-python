@@ -47,7 +47,7 @@ class User:
         if isinstance(permission_or_id, six.string_types):
             return u"{}/permissions/{}".format(self.user_link, permission_or_id)
         try:
-            return cast("Permission", permission_or_id).user_link
+            return cast("Permission", permission_or_id).permission_link
         except AttributeError:
             pass
         return u"{}/permissions/{}".format(self.user_link, cast("Dict[str, str]", permission_or_id)["id"])

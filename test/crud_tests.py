@@ -2272,6 +2272,121 @@ class CRUDTests(unittest.TestCase):
         created_db.client_connection.DeleteContainer(created_collection1.properties['_self'])
         created_db.client_connection.DeleteContainer(created_collection2.properties['_self'])
 
+    def test_get_resource_with_dictionary_and_object(self):
+        created_db = self.databaseForTest
+
+        # read database with id
+        read_db = self.client.get_database(created_db.id)
+        self.assertEquals(read_db.id, created_db.id)
+
+        # read database with instance
+        read_db = self.client.get_database(created_db)
+        self.assertEquals(read_db.id, created_db.id)
+
+        # read database with properties
+        read_db = self.client.get_database(created_db.properties)
+        self.assertEquals(read_db.id, created_db.id)
+
+        created_container = self.configs.create_multi_partition_collection_if_not_exist(self.client)
+
+        # read container with id
+        read_container = created_db.get_container(created_container.id)
+        self.assertEquals(read_container.id, created_container.id)
+
+        # read container with instance
+        read_container = created_db.get_container(created_container)
+        self.assertEquals(read_container.id, created_container.id)
+
+        # read container with properties
+        read_container = created_db.get_container(created_container.properties)
+        self.assertEquals(read_container.id, created_container.id)
+
+        created_item = created_container.create_item({'id':'1' + str(uuid.uuid4())})
+
+        # read item with id
+        read_item = created_container.get_item(item=created_item['id'], partition_key=created_item['id'])
+        self.assertEquals(read_item['id'], created_item['id'])
+
+        # read item with properties
+        read_item = created_container.get_item(item=created_item, partition_key=created_item['id'])
+        self.assertEquals(read_item['id'], created_item['id'])
+
+        created_sproc = created_container.scripts.create_stored_procedure({
+            'id': 'storedProcedure' + str(uuid.uuid4()),
+            'body': 'function () { }'
+        })
+
+        # read sproc with id
+        read_sproc = created_container.scripts.get_stored_procedure(created_sproc['id'])
+        self.assertEquals(read_sproc['id'], created_sproc['id'])
+
+        # read sproc with properties
+        read_sproc = created_container.scripts.get_stored_procedure(created_sproc)
+        self.assertEquals(read_sproc['id'], created_sproc['id'])
+
+        created_trigger = created_container.scripts.create_trigger({
+            'id': 'sample trigger' + str(uuid.uuid4()),
+            'serverScript': 'function() {var x = 10;}',
+            'triggerType': documents.TriggerType.Pre,
+            'triggerOperation': documents.TriggerOperation.All
+        })
+
+        # read trigger with id
+        read_trigger = created_container.scripts.get_trigger(created_trigger['id'])
+        self.assertEquals(read_trigger['id'], created_trigger['id'])
+
+        # read trigger with properties
+        read_trigger = created_container.scripts.get_trigger(created_trigger)
+        self.assertEquals(read_trigger['id'], created_trigger['id'])
+
+        created_udf = created_container.scripts.create_user_defined_function({
+            'id': 'sample udf' + str(uuid.uuid4()),
+            'body': 'function() {var x = 10;}'
+        })
+
+        # read udf with id
+        read_udf = created_container.scripts.get_user_defined_function(created_udf['id'])
+        self.assertEquals(created_udf['id'], read_udf['id'])
+
+        # read udf with properties
+        read_udf = created_container.scripts.get_user_defined_function(created_udf)
+        self.assertEquals(created_udf['id'], read_udf['id'])
+
+        created_user = created_db.create_user({
+            'id': 'user' + str(uuid.uuid4())
+        })
+
+        # read user with id
+        read_user = created_db.get_user(created_user.id)
+        self.assertEquals(read_user.id, created_user.id)
+
+        # read user with instance
+        read_user = created_db.get_user(created_user)
+        self.assertEquals(read_user.id, created_user.id)
+
+        # read user with properties
+        read_user = created_db.get_user(created_user.properties)
+        self.assertEquals(read_user.id, created_user.id)
+
+        created_permission = created_user.create_permission({
+            'id': 'all permission' + str(uuid.uuid4()),
+            'permissionMode': documents.PermissionMode.All,
+            'resource': created_container.container_link,
+            'resourcePartitionKey': [1]
+        })
+
+        # read permission with id
+        read_permission = created_user.get_permission(created_permission.id)
+        self.assertEquals(read_permission.id, created_permission.id)
+
+        # read permission with instance
+        read_permission = created_user.get_permission(created_permission)
+        self.assertEquals(read_permission.id, created_permission.id)
+
+        # read permission with properties
+        read_permission = created_user.get_permission(created_permission.properties)
+        self.assertEquals(read_permission.id, created_permission.id)
+
     def _MockExecuteFunction(self, function, *args, **kwargs):
         self.last_headers.append(args[5]['headers'][HttpHeaders.PartitionKey]
                                     if HttpHeaders.PartitionKey in args[5]['headers'] else '')

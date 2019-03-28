@@ -149,7 +149,7 @@ class Scripts:
 
         request_options = {}  # type: Dict[str, Any]
         if partition_key is not None:
-            request_options["partitionKey"] = (CosmosClientConnection._ReturnUndefinedOrEmptyPartitionKey(self.is_system_key)
+            request_options["partitionKey"] = (CosmosClientConnection._return_undefined_or_empty_partition_key(self.is_system_key)
                                                if partition_key == NonePartitionKeyValue else partition_key)
         if enable_script_logging is not None:
             request_options["enableScriptLogging"] = enable_script_logging

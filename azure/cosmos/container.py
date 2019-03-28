@@ -553,6 +553,6 @@ class Container:
 
     def _set_partition_key(self, partition_key):
         if partition_key == NonePartitionKeyValue:
-            return CosmosClientConnection._ReturnUndefinedOrEmptyPartitionKey(self.is_system_key)
+            return CosmosClientConnection._return_undefined_or_empty_partition_key(self.is_system_key)
         else:
          return partition_key

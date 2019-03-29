@@ -184,4 +184,5 @@ class PartitionKeyTests(unittest.TestCase):
         read_item = self.created_collection.get_item(item=document_definition['id'], partition_key=partition_key.NonePartitionKeyValue)
         self.assertEquals(read_item['id'], document_definition['id'])
         self.created_collection.delete_item(item=document_definition['id'], partition_key=partition_key.NonePartitionKeyValue)
+        
 

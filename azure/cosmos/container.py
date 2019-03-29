@@ -38,6 +38,7 @@ from typing import (
     cast
 )
 
+
 class Container:
     """ An Azure Cosmos DB container.
 
@@ -52,12 +53,11 @@ class Container:
 
     """
 
-    def __init__(self, client_connection, database, id, properties=None):
-        # type: (CosmosClientConnection, Union[Database, str], str, Dict[str, Any]) -> None
+    def __init__(self, client_connection, database_link, id, properties=None):
+        # type: (CosmosClientConnection, str, str, Dict[str, Any]) -> None
         self.client_connection = client_connection
         self.id = id
         self.properties = properties
-        database_link = CosmosClientConnection._get_database_link(database)
         self.container_link = u"{}/colls/{}".format(database_link, self.id)
         self.is_system_key = (self.properties['partitionKey']['systemKey']
                               if 'systemKey' in self.properties['partitionKey'] else False)
@@ -82,16 +82,20 @@ class Container:
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
+        post_trigger_include=None,
         request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]], str, str, Dict[str, Any], bool) -> Item
+        # type: (Union[str, Dict[str, Any]], Any, str, Dict[str, str], bool, str, Dict[str, Any]) -> Dict[str, str]
         """
         Get the item identified by `id`.
 
         :param item: The ID (name) or dict representing item to retrieve.
         :param partition_key: Partition key for the item to retrieve.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param post_trigger_include: trigger id to be used as post operation trigger.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: :class:`Item`, if present in the container.
 
         .. literalinclude:: ../../examples/examples.py
@@ -115,6 +119,8 @@ class Container:
             request_options["initialHeaders"] = initial_headers
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
+        if post_trigger_include:
+            request_options["postTriggerInclude"] = post_trigger_include
 
         return self.client_connection.ReadItem(
             document_link=doc_link, options=request_options
@@ -122,25 +128,23 @@ class Container:
 
     def list_item_properties(
         self,
-        enable_cross_partition_query=None,
         max_item_count=None,
         session_token=None,
         initial_headers=None,
         populate_query_metrics=None,
         feed_options=None
     ):
-        # type: (bool, int, str, Dict[str, Any], bool) -> QueryIterable
+        # type: (int, str, Dict[str, str], bool, Dict[str, Any]) -> QueryIterable
         """ List all items in the container.
 
-        :param enable_cross_partition_query: Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param feed_options: Dictionary of additional properties to be used for the request.
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
-        if enable_cross_partition_query is not None:
-            feed_options["enableCrossPartitionQuery"] = enable_cross_partition_query
         if max_item_count is not None:
             feed_options["maxItemCount"] = max_item_count
         if session_token:
@@ -169,7 +173,9 @@ class Container:
         This is used to process the change feed in parallel across multiple consumers.
         :param is_start_from_beginning: Get whether change feed should start from beginning (true) or from current (false).
         By default it's start from current (false).
+        :param continuation: e_tag value to be used as continuation for reading change feed.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -182,11 +188,9 @@ class Container:
         if continuation is not None:
             feed_options["continuation"] = continuation
 
-
-        items = self.client_connection.QueryItemsChangeFeed(
+        return self.client_connection.QueryItemsChangeFeed(
             self.container_link, options=feed_options
         )
-        return items
 
     def query_items(
         self,
@@ -201,16 +205,20 @@ class Container:
         populate_query_metrics=None,
         feed_options=None
     ):
-        # type: (str, List, str, bool, int, str, Dict[str, Any], bool, bool) -> QueryIterable
+        # type: (str, List, Any, bool, int, str, Dict[str, str], bool, bool, Dict[str, Any]) -> QueryIterable
         """Return all results matching the given `query`.
 
         :param query: The Azure Cosmos DB SQL query to execute.
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param partition_key: Specifies the partition key value for the item.
-        :param enable_cross_partition_query: Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
+        :param enable_cross_partition_query: Allows sending of more than one request to execute the query in the Azure Cosmos DB service.
+        More than one request is necessary if the query is not scoped to single partition key value.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
+        :param enable_scan_in_query: Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param feed_options: Dictionary of additional properties to be used for the request.
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         You can use any value for the container name in the FROM clause, but typically the container name is used.
@@ -269,15 +277,21 @@ class Container:
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        pre_trigger_include=None,
+        post_trigger_include=None,
         request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]], Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Item
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any], str, Dict[str, str], Dict[str, str], bool, str, str, Dict[str, Any]) -> Dict[str, str]
         """ Replaces the specified item if it exists in the container.
         :param item: The ID (name) or dict representing item to be replaced.
         :param body: A dict-like object representing the item to replace.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param pre_trigger_include: trigger id to be used as pre operation trigger.
+        :param post_trigger_include: trigger id to be used as post operation trigger.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
         """
         item_link = self._get_document_link(item)
@@ -292,6 +306,10 @@ class Container:
             request_options["accessCondition"] = access_condition
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
+        if pre_trigger_include:
+            request_options["preTriggerInclude"] = pre_trigger_include
+        if post_trigger_include:
+            request_options["postTriggerInclude"] = post_trigger_include
 
         return self.client_connection.ReplaceItem(
             document_link=item_link,
@@ -306,15 +324,21 @@ class Container:
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        pre_trigger_include=None,
+        post_trigger_include=None,
         request_options=None
     ):
-        # type: (Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Item
+        # type: (Dict[str, Any], str, Dict[str, str], Dict[str, str], bool, str, str, Dict[str, Any]) -> Dict[str, str]
         """ Insert or update the specified item.
 
         :param body: A dict-like object representing the item to update or insert.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param pre_trigger_include: trigger id to be used as pre operation trigger.
+        :param post_trigger_include: trigger id to be used as post operation trigger.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         If the item already exists in the container, it is replaced. If it does not, it is inserted.
@@ -330,6 +354,10 @@ class Container:
             request_options["accessCondition"] = access_condition
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
+        if pre_trigger_include:
+            request_options["preTriggerInclude"] = pre_trigger_include
+        if post_trigger_include:
+            request_options["postTriggerInclude"] = post_trigger_include
 
         return self.client_connection.UpsertItem(
             database_or_Container_link=self.container_link,
@@ -348,16 +376,18 @@ class Container:
         indexing_directive=None,
         request_options=None
     ):
-        # type: (Dict[str, Any], str, Dict[str, Any], AccessCondition, bool, Any, Any) -> Item
+        # type: (Dict[str, Any], str, Dict[str, str], Dict[str, str], bool, str, str, Any, Dict[str, Any]) -> Dict[str, str]
         """ Create an item in the container.
 
         :param body: A dict-like object representing the item to create.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param pre_trigger_include: trigger id to be used as pre operation trigger.
         :param post_trigger_include: trigger id to be used as post operation trigger.
         :param indexing_directive: Indicate whether the document should be omitted from indexing.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: The :class:`Item` inserted into the container.
         :raises `HTTPFailure`:
 
@@ -397,16 +427,22 @@ class Container:
         initial_headers=None,
         access_condition=None,
         populate_query_metrics=None,
+        pre_trigger_include=None,
+        post_trigger_include=None,
         request_options=None
     ):
-        # type: (Union[Dict[str, Any], str], str, str, Dict[str, Any], AccessCondition, bool) -> None
+        # type: (Union[Dict[str, Any], str], Any, str, Dict[str, str], Dict[str, str], bool, str, str, Dict[str, Any]) -> None
         """ Delete the specified item from the container.
 
         :param item: The ID (name) or dict representing item to be deleted.
         :param partition_key: Specifies the partition key value for the item.
         :param session_token: Token for use with Session consistency.
+        :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param pre_trigger_include: trigger id to be used as pre operation trigger.
+        :param post_trigger_include: trigger id to be used as post operation trigger.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`: The item wasn't deleted successfully. If the item does not exist in the container, a `404` error is returned.
 
         """
@@ -422,19 +458,18 @@ class Container:
             request_options["accessCondition"] = access_condition
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
+        if pre_trigger_include:
+            request_options["preTriggerInclude"] = pre_trigger_include
+        if post_trigger_include:
+            request_options["postTriggerInclude"] = post_trigger_include
 
         document_link = self._get_document_link(item)
         self.client_connection.DeleteItem(
             document_link=document_link, options=request_options
         )
 
-    def read_offer(
-            self,
-            request_options=None
-    ):
+    def read_offer(self):
         # type: () -> Offer
-        if not request_options:
-            request_options = {} # type: Dict[str, Any]
 
         link = self.properties['_self']
         query_spec = {
@@ -444,9 +479,9 @@ class Container:
                         ]
                      }
         offers = list(self.client_connection.QueryOffers(query_spec))
-        if (len(offers) <= 0):
+        if len(offers) <= 0:
             raise HTTPFailure(StatusCodes.NOT_FOUND, "Could not find Offer for container " + self.container_link)
-        data = offers[0]
+
         return Offer(
             offer_throughput=offers[0]['content']['offerThroughput'],
             properties=offers[0])
@@ -456,6 +491,9 @@ class Container:
             throughput
     ):
         # type: (int) -> Offer
+        """
+        :param throughput: The throughput to be set (an integer)
+        """
         link = self.properties['_self']
         query_spec = {
                         'query': 'SELECT * FROM root r WHERE r.resource=@link',
@@ -464,7 +502,7 @@ class Container:
                         ]
                      }
         offers = list(self.client_connection.QueryOffers(query_spec))
-        if (len(offers) <= 0):
+        if len(offers) <= 0:
             raise HTTPFailure(StatusCodes.NOT_FOUND, "Could not find Offer for container " + self.container_link)
         new_offer = offers[0].copy()
         new_offer['content']['offerThroughput'] = throughput
@@ -481,11 +519,11 @@ class Container:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (int) -> Dict[str, Any]
+        # type: (int, Dict[str, Any]) -> QueryIterable
         """ List all conflicts in the container.
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
-
+        :param feed_options: Dictionary of additional properties to be used for the request.
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -506,14 +544,16 @@ class Container:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (str, List, bool, bool, int) -> QueryIterable
+        # type: (str, List, bool, Any, int, Dict[str, Any]) -> QueryIterable
         """Return all conflicts matching the given `query`.
 
         :param query: The Azure Cosmos DB SQL query to execute.
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param partition_key: Specifies the partition key value for the item.
-        :param enable_cross_partition_query: Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
+        :param enable_cross_partition_query: Allows sending of more than one request to execute the query in the Azure Cosmos DB service.
+        More than one request is necessary if the query is not scoped to single partition key value.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
@@ -540,12 +580,13 @@ class Container:
             partition_key,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]], str, Dict[str, Any]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Any, Dict[str, Any]) -> Dict[str, str]
         """
         Get the conflict identified by `id`.
 
         :param conflict: The ID (name) or dict representing the conflict to retrieve.
         :param partition_key: Partition key for the conflict to retrieve.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: The conflict as a dict, if present in the container.
 
         """
@@ -559,17 +600,18 @@ class Container:
             options=request_options
         )
 
-    def delete_conflcit(
+    def delete_conflict(
             self,
             conflict,
             partition_key,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]], str, Dict[str, Any]) -> None
+        # type: (Union[str, Dict[str, Any]], Any, Dict[str, Any]) -> None
         """ Delete the specified conflict from the container.
 
         :param conflict: The ID (name) or dict representing the conflict to be deleted.
         :param partition_key: Partition key for the conflict to delete.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`: The conflict wasn't deleted successfully. If the conflict does not exist in the container, a `404` error is returned.
 
         """

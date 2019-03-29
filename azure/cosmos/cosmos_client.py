@@ -22,13 +22,16 @@
 """Create, read, and delete databases in the Azure Cosmos DB SQL API service.
 """
 
+import six
 from .cosmos_client_connection import CosmosClientConnection
 from .database import Database
 from .documents import ConnectionPolicy, DatabaseAccount
 from .query_iterable import QueryIterable
 from typing import (
     Any,
-    Dict
+    Dict,
+    Union,
+    cast
 )
 
 
@@ -66,6 +69,18 @@ class CosmosClient:
             connection_policy=connection_policy,
         )
 
+    @staticmethod
+    def _get_database_link(database_or_id):
+        # type: (str) -> str
+        if isinstance(database_or_id, six.string_types):
+            return "dbs/{}".format(database_or_id)
+        try:
+            return cast("Database", database_or_id).database_link
+        except AttributeError:
+            pass
+        database_id = cast("Dict[str, str]", database_or_id)["id"]
+        return "dbs/{}".format(database_id)
+
     def create_database(
         self,
         id,
@@ -76,7 +91,7 @@ class CosmosClient:
         offer_throughput=None,
         request_options=None
     ):
-        # type: (str, str, Dict[str, Any], Dict[str, str], bool, int, Dict[str, Any]) -> Database
+        # type: (str, str, Dict[str, str], Dict[str, str], bool, int, Dict[str, Any]) -> Database
         """Create a new database with the given ID (name).
 
         :param id: ID (name) of the database to create.
@@ -123,7 +138,7 @@ class CosmosClient:
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (Union[str, Database, Dict[str, Any]], bool, str, Dict[str, Any], bool) -> Database
+        # type: (Union[str, Database, Dict[str, Any]], str, Dict[str, str], bool, Dict[str, Any]) -> Database
         """
         Retrieve an existing database with the ID (name) `id`.
 
@@ -135,7 +150,7 @@ class CosmosClient:
         :returns: A :class:`Database` instance representing the new database.
         :raise `HTTPFailure`: If the given database couldn't be retrieved.
         """
-        database_link = CosmosClientConnection._get_database_link(database)
+        database_link = self._get_database_link(database)
         if not request_options:
             request_options = {} # type: Dict[str, Any]
         if session_token:
@@ -162,7 +177,7 @@ class CosmosClient:
         populate_query_metrics=None,
         feed_options=None
     ):
-        # type: (bool, bool, int, str, Dict[str, Any], bool) -> QueryIterable
+        # type: (int, str, Dict[str, str], bool, Dict[str, Any]) -> QueryIterable
         """
         List the databases in a Cosmos DB SQL database account.
 
@@ -185,8 +200,8 @@ class CosmosClient:
             feed_options["populateQueryMetrics"] = populate_query_metrics
 
         return self.client_connection.ReadDatabases(
-                options=feed_options
-            )
+            options=feed_options
+        )
 
     def query_databases(
         self,
@@ -199,7 +214,7 @@ class CosmosClient:
         populate_query_metrics=None,
         feed_options=None
     ):
-        # type: (str, str, bool, bool, int, str, Dict[str, Any], bool) -> QueryIterable
+        # type: (str, List[str], bool, int, str, Dict[str,str], bool, Dict[str, Any]) -> QueryIterable
 
         """
         Query the databases in a Cosmos DB SQL database account.
@@ -251,7 +266,7 @@ class CosmosClient:
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (Union[str, Database, Dict[str, Any]], bool, str, Dict[str, Any], AccessCondition, bool) -> None
+        # type: (Union[str, Database, Dict[str, Any]], str, Dict[str, str], Dict[str, str], bool, Dict[str, Any]) -> None
         """
         Delete the database with the given ID (name).
 
@@ -276,7 +291,7 @@ class CosmosClient:
         if populate_query_metrics is not None:
             request_options["populateQueryMetrics"] = populate_query_metrics
 
-        database_link = CosmosClientConnection._get_database_link(database)
+        database_link = self._get_database_link(database)
         self.client_connection.DeleteDatabase(database_link, options=request_options)
 
     def get_database_account(self):

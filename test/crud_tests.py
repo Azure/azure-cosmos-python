@@ -682,7 +682,7 @@ class CRUDTests(unittest.TestCase):
         # delete conflict here will return resource not found(404) since there is no conflict here
         self.__AssertHTTPFailureWithStatus(
             StatusCodes.NOT_FOUND,
-            created_collection.delete_conflcit,
+            created_collection.delete_conflict,
             conflict_definition['id'],
             conflict_definition['id']
         )

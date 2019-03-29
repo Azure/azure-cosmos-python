@@ -30,6 +30,7 @@ from .http_constants import StatusCodes
 from .errors import HTTPFailure
 from .user import User
 from .query_iterable import QueryIterable
+from .partition_key import  PartitionKey
 
 from typing import (
     Any,
@@ -38,6 +39,7 @@ from typing import (
     Union,
     cast
 )
+
 
 class Database(object):
     """ Represents an Azure Cosmos DB SQL API database.
@@ -71,9 +73,10 @@ class Database(object):
         self.client_connection = client_connection
         self.id = id
         self.properties = properties
-        self.database_link = CosmosClientConnection._get_database_link(id)
+        self.database_link = u"dbs/{}".format(self.id)
 
-    def _get_container_id(self, container_or_id):
+    @staticmethod
+    def _get_container_id(container_or_id):
         # type: (Union[str, Container, Dict[str, Any]]) -> str
         if isinstance(container_or_id, six.string_types):
             return container_or_id
@@ -109,9 +112,10 @@ class Database(object):
         populate_query_metrics=None,
         offer_throughput=None,
         unique_key_policy=None,
+        conflict_resolution_policy=None,
         request_options=None
     ):
-        # type: (str, PartitionKey, Dict[str, Any], int, str, Dict[str, Any], AccessCondition, bool, int, Dict[str, Any]) -> Container
+        # type: (str, PartitionKey, Dict[str, Any], int, str, Dict[str, str], Dict[str, str], bool, int, Dict[str, Any], Dict[str, Any], Dict[str, Any]) -> Container
         """
         Create a new container with the given ID (name).
 
@@ -127,6 +131,8 @@ class Database(object):
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param offer_throughput: The provisioned throughput for this offer.
         :param unique_key_policy: The unique key policy to apply to the container.
+        :param conflict_resolution_policy: The conflict resolution policy to apply to the container.
+        :param request_options: Dictionary of additional properties to be used for the request.
 
         :raise HTTPFailure: The container creation failed.
 
@@ -157,6 +163,8 @@ class Database(object):
             definition["defaultTtl"] = default_ttl
         if unique_key_policy:
             definition["uniqueKeyPolicy"] = unique_key_policy
+        if conflict_resolution_policy:
+            definition["conflictResolutionPolicy"] = conflict_resolution_policy
 
         if not request_options:
             request_options = {} # type: Dict[str, Any]
@@ -177,7 +185,7 @@ class Database(object):
             options=request_options,
         )
         print(request_options)
-        return Container(self.client_connection, self, data["id"], properties=data)
+        return Container(self.client_connection, self.database_link, data["id"], properties=data)
 
     def delete_container(
         self,
@@ -188,7 +196,7 @@ class Database(object):
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (Union[str, Container, Dict[str, Any]], str, Dict[str, Any], AccessCondition, bool) -> None
+        # type: (Union[str, Container, Dict[str, Any]], str, Dict[str, str], Dict[str, str], bool, Dict[str, Any]) -> None
         """ Delete the container
 
         :param container: The ID (name) of the container to delete. You can either pass in the ID of the container to delete, a :class:`Container` instance or a dict representing the properties of the container.
@@ -196,6 +204,7 @@ class Database(object):
         :param initial_headers: Initial headers to be sent as part of the request.
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param request_options: Dictionary of additional properties to be used for the request.
         """
         if not request_options:
             request_options = {} # type: Dict[str, Any]
@@ -221,7 +230,7 @@ class Database(object):
         populate_quota_info=None,
         request_options=None
     ):
-        # type: (Union[str, Container, Dict[str, Any]], str, Dict[str, Any], bool) -> Container
+        # type: (Union[str, Container, Dict[str, Any]], str, Dict[str, str], bool, bool, bool, Dict[str, Any]) -> Container
         """ Get the specified `Container`, or a container with specified ID (name).
 
         :param container: The ID (name) of the container, a :class:`Container` instance, or a dict representing the properties of the container to be retrieved.
@@ -230,6 +239,7 @@ class Database(object):
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param populate_partition_key_range_statistics: Enable returning partition key range statistics in response headers.
         :param populate_quota_info: Enable returning collection storage quota information in response headers.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raise `HTTPFailure`: Raised if the container couldn't be retrieved. This includes if the container does not exist.
         :returns: :class:`Container`, if present in the container.
 
@@ -261,7 +271,7 @@ class Database(object):
         )
         return Container(
             self.client_connection,
-            self,
+            self.database_link,
             container_properties["id"],
             properties=container_properties,
         )
@@ -274,13 +284,14 @@ class Database(object):
         populate_query_metrics=None,
         feed_options=None
     ):
-        # type: (int, str, Dict[str, Any], bool) -> QueryIterable
+        # type: (int, str, Dict[str, str], bool, Dict[str, Any]) -> QueryIterable
         """ List the containers in the database.
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param feed_options: Dictionary of additional properties to be used for the request.
 
         .. literalinclude:: ../../examples/examples.py
             :start-after: [START list_containers]
@@ -317,17 +328,21 @@ class Database(object):
         populate_query_metrics=None,
         feed_options=None
     ):
-        # type: (str, str, int, str, Dict[str, Any], bool) -> QueryIterable
+        # type: (str, List, int, str, Dict[str, str], bool, Dict[str, Any]) -> QueryIterable
         """List properties for containers in the current database
 
+        :param query: The Azure Cosmos DB SQL query to execute.
+        :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
-
-    """
+        :param feed_options: Dictionary of additional properties to be used for the request.
+        """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
+        if max_item_count is not None:
+            feed_options["maxItemCount"] = max_item_count
         if session_token:
             feed_options["sessionToken"] = session_token
         if initial_headers:
@@ -356,16 +371,21 @@ class Database(object):
         populate_query_metrics=None,
         request_options=None
     ):
-        # type: (Union[str, Container, Dict[str, Any]], PartitionKey, Dict[str, Any], int, Dict[str, Any], str, Dict[str, Any], AccessCondition, bool) -> Container
+        # type: (Union[str, Container, Dict[str, Any]], PartitionKey, Dict[str, Any], int, Dict[str, Any], str, Dict[str, str], Dict[str, str], bool, Dict[str, Any]) -> Container
         """ Reset the properties of the container. Property changes are persisted immediately.
 
         Any properties not specified will be reset to their default values.
 
         :param container: The ID (name), dict representing the properties or :class:`Container` instance of the container to be replaced.
+        :param partition_key: The partition key to use for the container.
+        :param indexing_policy: The indexing policy to apply to the container.
+        :param default_ttl: Default time to live (TTL) for items in the container. If unspecified, items do not expire.
+        :param conflict_resolution_policy: The conflict resolution policy to apply to the container.
         :param session_token: Token for use with Session consistency.
         :param access_condition: Conditions Associated with the request.
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
+        :param request_options: Dictionary of additional properties to be used for the request.
 
         .. literalinclude:: ../../examples/examples.py
             :start-after: [START reset_container_properties]
@@ -407,7 +427,7 @@ class Database(object):
 
         return Container(
             self.client_connection,
-            self,
+            self.database_link,
             container_properties["id"],
             properties=container_properties,
         )
@@ -417,11 +437,11 @@ class Database(object):
             max_item_count=None,
             feed_options=None
     ):
-        # type: (int) -> QueryIterable
+        # type: (int, Dict[str, Any]) -> QueryIterable
         """ List all users in the container.
 
         :param max_item_count: Max number of users to be returned in the enumeration operation.
-
+        :param feed_options: Dictionary of additional properties to be used for the request.
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -440,14 +460,14 @@ class Database(object):
             max_item_count=None,
             feed_options=None
     ):
-        # type: (str, List, int) -> QueryIterable
+        # type: (str, List, int, Dict[str, Any]) -> QueryIterable
         """Return all users matching the given `query`.
 
         :param query: The Azure Cosmos DB SQL query to execute.
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of users to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
         :returns: An `Iterator` containing each result returned by the query, if any.
-
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -467,11 +487,12 @@ class Database(object):
             user,
             request_options=None
     ):
-        # type: (Union[str, User, Dict[str, Any]]) -> User
+        # type: (Union[str, User, Dict[str, Any]], Dict[str, Any]) -> User
         """
         Get the user identified by `id`.
 
         :param user: The ID (name), dict representing the properties or :class:`User` instance of the user to be retrieved.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: The user as a dict, if present in the container.
 
         """
@@ -494,11 +515,12 @@ class Database(object):
             body,
             request_options=None
     ):
-        # type: (Dict[str, Any]) -> User
+        # type: (Dict[str, Any], Dict[str, Any]) -> User
         """ Create a user in the container.
 
         :param body: A dict-like object with an `id` key and value representing the user to be created.
         The user ID must be unique within the database, and consist of no more than 255 characters.
+        :param request_options: Dictionary of additional properties to be used for the request.
 
         :raises `HTTPFailure`:
 
@@ -534,10 +556,11 @@ class Database(object):
             body,
             request_options=None
     ):
-        # type: (Dict[str, Any]) -> User
+        # type: (Dict[str, Any], Dict[str, Any]) -> User
         """ Insert or update the specified user.
 
         :param body: A dict-like object representing the user to update or insert.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         If the user already exists in the container, it is replaced. If it does not, it is inserted.
@@ -564,11 +587,12 @@ class Database(object):
             body,
             request_options=None
     ):
-        # type: (Union[str, User, Dict[str, Any]], Dict[str, Any]) -> User
+        # type: (Union[str, User, Dict[str, Any]], Dict[str, Any], Dict[str, Any]) -> User
         """ Replaces the specified user if it exists in the container.
 
         :param user: The ID (name), dict representing the properties or :class:`User` instance of the user to be replaced.
         :param body: A dict-like object representing the user to replace.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         """
@@ -593,10 +617,11 @@ class Database(object):
             user,
             request_options=None
     ):
-        # type: (Union[str, User, Dict[str, Any]]) -> None
+        # type: (Union[str, User, Dict[str, Any]], Dict[str, Any]) -> None
         """ Delete the specified user from the container.
 
         :param user: The ID (name), dict representing the properties or :class:`User` instance of the user to be deleted.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`: The user wasn't deleted successfully. If the user does not exist in the container, a `404` error is returned.
 
         """
@@ -607,14 +632,8 @@ class Database(object):
             user_link=self._get_user_link(user), options=request_options
         )
 
-    def read_offer(
-            self,
-            feed_options=None
-    ):
+    def read_offer(self):
         # type: () -> Offer
-        if not feed_options:
-            feed_options = {} # type: Dict[str, Any]
-
         link = self.properties['_self']
         query_spec = {
                         'query': 'SELECT * FROM root r WHERE r.resource=@link',
@@ -622,10 +641,9 @@ class Database(object):
                             {'name': '@link', 'value': link}
                         ]
                      }
-        offers = list(self.client_connection.QueryOffers(query_spec, options=feed_options))
-        if (len(offers) <= 0):
+        offers = list(self.client_connection.QueryOffers(query_spec))
+        if len(offers) <= 0:
             raise HTTPFailure(StatusCodes.NOT_FOUND, "Could not find Offer for database " + self.database_link)
-        data = offers[0]
         return Offer(
             offer_throughput=offers[0]['content']['offerThroughput'],
             properties=offers[0])
@@ -635,6 +653,9 @@ class Database(object):
             throughput
     ):
         # type: (int) -> Offer
+        """
+        :param throughput: The throughput to be set (an integer)
+        """
         link = self.properties['_self']
         query_spec = {
                         'query': 'SELECT * FROM root r WHERE r.resource=@link',

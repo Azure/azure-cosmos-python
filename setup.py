@@ -4,7 +4,7 @@ from distutils.core import setup
 import setuptools
 
 setup(name='azure-cosmos',
-      version='4.0.0',
+      version='4.0.0a1',
       description='Azure Cosmos Python SDK',
       author="Microsoft",
       author_email="askdocdb@microsoft.com",

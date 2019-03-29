@@ -25,6 +25,13 @@
 import six
 from azure.cosmos.cosmos_client_connection import CosmosClientConnection
 from .partition_key import NonePartitionKeyValue
+from.query_iterable import QueryIterable
+from typing import (
+    Any,
+    List,
+    Dict,
+    Union,
+)
 
 
 class ScriptType:
@@ -36,13 +43,13 @@ class ScriptType:
 class Scripts:
 
     def __init__(self, client_connection, container_link, is_system_key):
-        # type: (CosmosClientConnection, Union[Container, str], str, Dict[str, Any]) -> None
+        # type: (CosmosClientConnection, str, bool) -> None
         self.client_connection = client_connection
         self.container_link = container_link
         self.is_system_key = is_system_key
 
     def _get_resource_link(self, script_or_id, type):
-        # type: (Union[Dict[str, Any], str]) -> str
+        # type: (Union[Dict[str, Any], str], str) -> str
         if isinstance(script_or_id, six.string_types):
             return u"{}/{}/{}".format(self.container_link, type, script_or_id)
         return script_or_id["_self"]
@@ -52,10 +59,11 @@ class Scripts:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (int) -> QueryIterable
+        # type: (int, Dict[str, Any]) -> QueryIterable
         """ List all stored procedures in the container.
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
 
         """
         if not feed_options:
@@ -75,12 +83,13 @@ class Scripts:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (str, List, int) -> QueryIterable
+        # type: (str, List, int, Dict[str, Any]) -> QueryIterable
         """Return all stored procedures matching the given `query`.
 
         :param query: The Azure Cosmos DB SQL query to execute.
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
@@ -102,11 +111,12 @@ class Scripts:
             sproc,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
         """
         Get the stored procedure identified by `id`.
 
         :param sproc: The ID (name) or dict representing stored procedure to retrieve.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: The stored procedure as a dict, if present in the container.
 
         """
@@ -123,10 +133,11 @@ class Scripts:
             body,
             request_options=None
     ):
-        # type: (Dict[str, Any]) -> Dict[str, Any]
+        # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
         """ Create a stored procedure in the container.
 
         :param body: A dict-like object representing the sproc to create.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         To replace an existing sproc, use the :func:`Container.scripts.replace_stored_procedure` method.
@@ -147,11 +158,12 @@ class Scripts:
             body,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified stored procedure if it exists in the container.
 
         :param sproc: The ID (name) or dict representing stored procedure to be replaced.
         :param body: A dict-like object representing the sproc to replace.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         """
@@ -169,10 +181,11 @@ class Scripts:
             sproc,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]]) -> None
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> None
         """ Delete the specified stored procedure from the container.
 
         :param sproc: The ID (name) or dict representing stored procedure to be deleted.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`: The sproc wasn't deleted successfully. If the sproc does not exist in the container, a `404` error is returned.
 
         """
@@ -188,16 +201,18 @@ class Scripts:
             self,
             sproc,
             partition_key=None,
-            enable_script_logging=None,
             params=None,
+            enable_script_logging=None,
             request_options = None
     ):
-        # type: (Union[str, Dict[str, Any]], str, list[Any]) -> Any
+        # type: (Union[str, Dict[str, Any]], str, List[Any], bool, Dict[str, Any]) -> Any
         """ execute the specified stored procedure.
 
         :param sproc: The ID (name) or dict representing stored procedure to be executed.
+        :param params: List of parameters to be passed to the stored procedure to be executed.
+        :param enable_script_logging: Enables or disables script logging for the current request.
         :param partition_key: Specifies the partition key to indicate which partition the sproc should execute on.
-
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`
 
         """
@@ -221,10 +236,11 @@ class Scripts:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (int) -> QueryIterable
+        # type: (int, Dict[str, Any]) -> QueryIterable
         """ List all triggers in the container.
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
 
         """
         if not feed_options:
@@ -244,12 +260,13 @@ class Scripts:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (str, List, int) -> QueryIterable
+        # type: (str, List, int, Dict[str, Any]) -> QueryIterable
         """Return all triggers matching the given `query`.
 
         :param query: The Azure Cosmos DB SQL query to execute.
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
@@ -271,11 +288,12 @@ class Scripts:
             trigger,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
         """
         Get the trigger identified by `id`.
 
         :param trigger: The ID (name) or dict representing trigger to retrieve.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: The trigger as a dict, if present in the container.
 
         """
@@ -292,10 +310,11 @@ class Scripts:
             body,
             request_options=None
     ):
-        # type: (Dict[str, Any]) -> Dict[str, Any]
+        # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
         """ Create a trigger in the container.
 
         :param body: A dict-like object representing the trigger to create.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         To replace an existing trigger, use the :func:`Container.scripts.replace_trigger` method.
@@ -316,11 +335,12 @@ class Scripts:
             body,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified tigger if it exists in the container.
 
         :param trigger: The ID (name) or dict representing trigger to be replaced.
         :param body: A dict-like object representing the trigger to replace.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         """
@@ -338,10 +358,11 @@ class Scripts:
             trigger,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]]) -> None
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> None
         """ Delete the specified trigger from the container.
 
         :param trigger: The ID (name) or dict representing trigger to be deleted.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`: The trigger wasn't deleted successfully. If the trigger does not exist in the container, a `404` error is returned.
 
         """
@@ -359,10 +380,11 @@ class Scripts:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (int) -> QueryIterable
+        # type: (int, Dict[str, Any]) -> QueryIterable
         """ List all user defined functions in the container.
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
 
         """
         if not feed_options:
@@ -382,12 +404,13 @@ class Scripts:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (str, List, int) -> QueryIterable
+        # type: (str, List, int, Dict[str, Any]) -> QueryIterable
         """Return all user defined functions matching the given `query`.
 
         :param query: The Azure Cosmos DB SQL query to execute.
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
         :returns: An `Iterator` containing each result returned by the query, if any.
 
         """
@@ -409,11 +432,12 @@ class Scripts:
             udf,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
         """
         Get the stored procedure identified by `id`.
 
         :param udf: The ID (name) or dict representing udf to retrieve.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: The stored procedure as a dict, if present in the container.
 
         """
@@ -430,10 +454,11 @@ class Scripts:
             body,
             request_options=None
     ):
-        # type: (Dict[str, Any]) -> Dict[str, Any]
+        # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
         """ Create a user defined function in the container.
 
         :param body: A dict-like object representing the udf to create.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         To replace an existing udf, use the :func:`Container.scripts.replace_user_defined_function` method.
@@ -454,11 +479,12 @@ class Scripts:
             body,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> Dict[str, Any]
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
         """ Replaces the specified user defined function if it exists in the container.
 
         :param udf: The ID (name) or dict representing udf to be replaced.
         :param body: A dict-like object representing the udf to replace.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         """
@@ -476,10 +502,11 @@ class Scripts:
             udf,
             request_options=None
     ):
-        # type: (Union[str, Dict[str, Any]]) -> None
+        # type: (Union[str, Dict[str, Any]], Dict[str, Any]) -> None
         """ Delete the specified user defined function from the container.
 
         :param udf: The ID (name) or dict representing udf to be deleted.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`: The udf wasn't deleted successfully. If the udf does not exist in the container, a `404` error is returned.
 
         """

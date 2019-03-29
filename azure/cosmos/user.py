@@ -23,6 +23,7 @@
 """
 
 import six
+from .cosmos_client_connection import CosmosClientConnection
 from typing import (
     Any,
     List,
@@ -32,6 +33,7 @@ from typing import (
 )
 
 from .permission import Permission
+
 
 class User:
 
@@ -57,10 +59,11 @@ class User:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (int) -> QueryIterable
+        # type: (int, Dict[str, Any]) -> QueryIterable
         """ List all permission for the user.
 
         :param max_item_count: Max number of permissions to be returned in the enumeration operation.
+        :param feed_options: Dictionary of additional properties to be used for the request.
 
         """
         if not feed_options:
@@ -80,13 +83,13 @@ class User:
             max_item_count=None,
             feed_options=None
     ):
-        # type: (str, List, int) -> QueryIterable
+        # type: (str, List, int, Dict[str, Any]) -> QueryIterable
         """Return all permissions matching the given `query`.
 
         :param query: The Azure Cosmos DB SQL query to execute.
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of permissions to be returned in the enumeration operation.
-        :returns: An `Iterator` containing each result returned by the query, if any.
+        :param feed_options: Dictionary of additional properties to be used for the request.
 
         """
         if not feed_options:
@@ -107,11 +110,12 @@ class User:
             permission,
             request_options=None
     ):
-        # type: (str) -> Permission
+        # type: (str, Dict[str, Any]) -> Permission
         """
         Get the permission identified by `id`.
 
         :param permission: The ID (name), dict representing the properties or :class:`Permission` instance of the permission to be retrieved.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :returns: The permission as a dict, if present in the container.
 
         """
@@ -136,10 +140,11 @@ class User:
             body,
             request_options=None
     ):
-        # type: (Dict[str, Any]) -> Permission
+        # type: (Dict[str, Any], Dict[str, Any]) -> Permission
         """ Create a permission for the user.
 
         :param body: A dict-like object representing the permission to create.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         To update or replace an existing permision, use the :func:`User.upsert_permission` method.
@@ -167,10 +172,11 @@ class User:
             body,
             request_options=None
     ):
-        # type: (Dict[str, Any]) -> Permission
+        # type: (Dict[str, Any], Dict[str, Any]) -> Permission
         """ Insert or update the specified permission.
 
         :param body: A dict-like object representing the permission to update or insert.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         If the permission already exists in the container, it is replaced. If it does not, it is inserted.
@@ -199,11 +205,12 @@ class User:
             body,
             request_options=None
     ):
-        # type: (str, Dict[str, Any]) -> Permission
+        # type: (str, Dict[str, Any], Dict[str, Any]) -> Permission
         """ Replaces the specified permission if it exists for the user.
 
         :param permission: The ID (name), dict representing the properties or :class:`Permission` instance of the permission to be replaced.
         :param body: A dict-like object representing the permission to replace.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`:
 
         """
@@ -229,10 +236,11 @@ class User:
             permission,
             request_options=None
     ):
-        # type: (str) -> None
+        # type: (str, Dict[str, Any]) -> None
         """ Delete the specified permission from the user.
 
         :param permission: The ID (name), dict representing the properties or :class:`Permission` instance of the permission to be replaced.
+        :param request_options: Dictionary of additional properties to be used for the request.
         :raises `HTTPFailure`: The permission wasn't deleted successfully. If the permission does not exist for the user, a `404` error is returned.
 
         """

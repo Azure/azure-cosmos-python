@@ -52,6 +52,7 @@ class CosmosClient:
             create the client, and auth['resourceTokens'] is the alternative
             authorization key.
         :param consistency_level: Consistency level to use for the session.
+        :param connection_policy: Connection policy to use for the session.
 
         .. literalinclude:: ../../examples/examples.py
             :start-after: [START create_client]
@@ -147,8 +148,9 @@ class CosmosClient:
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: A :class:`Database` instance representing the new database.
+        :returns: A :class:`Database` instance representing the retrieved database.
         :raise `HTTPFailure`: If the given database couldn't be retrieved.
+
         """
         database_link = self._get_database_link(database)
         if not request_options:
@@ -186,7 +188,8 @@ class CosmosClient:
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: A :class:`QueryIterable` instance representing an iterable of databases.
+        :returns: A :class:`QueryIterable` instance representing an iterable of database properties (dicts).
+
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -227,7 +230,8 @@ class CosmosClient:
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: A :class:`QueryIterable` instance representing an iterable of databases.
+        :returns: A :class:`QueryIterable` instance representing an iterable of database poperties (dicts).
+
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -276,10 +280,9 @@ class CosmosClient:
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: A :class:`Database` instance representing the new database.
         :raise HTTPFailure: If the database couldn't be deleted.
-        """
 
+        """
         if not request_options:
             request_options = {} # type: Dict[str, Any]
         if session_token:
@@ -298,6 +301,8 @@ class CosmosClient:
         # type: () -> DatabaseAccount
         """
         Retrieve the database account information.
+
         :returns: A :class:`DatabaseAccount` instance representing the Cosmos DB Database Account.
+
         """
         return self.client_connection.GetDatabaseAccount()

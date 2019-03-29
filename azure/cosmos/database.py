@@ -133,7 +133,7 @@ class Database(object):
         :param unique_key_policy: The unique key policy to apply to the container.
         :param conflict_resolution_policy: The conflict resolution policy to apply to the container.
         :param request_options: Dictionary of additional properties to be used for the request.
-
+        :returns: A :class:`Container` instance representing the new container.
         :raise HTTPFailure: The container creation failed.
 
 
@@ -205,6 +205,8 @@ class Database(object):
         :param access_condition: Conditions Associated with the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param request_options: Dictionary of additional properties to be used for the request.
+        :raise HTTPFailure: If the container couldn't be deleted.
+
         """
         if not request_options:
             request_options = {} # type: Dict[str, Any]
@@ -241,7 +243,7 @@ class Database(object):
         :param populate_quota_info: Enable returning collection storage quota information in response headers.
         :param request_options: Dictionary of additional properties to be used for the request.
         :raise `HTTPFailure`: Raised if the container couldn't be retrieved. This includes if the container does not exist.
-        :returns: :class:`Container`, if present in the container.
+        :returns: :class:`Container` instance representing the retrieved container.
 
         .. literalinclude:: ../../examples/examples.py
             :start-after: [START get_container]
@@ -292,6 +294,7 @@ class Database(object):
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of container properties (dicts).
 
         .. literalinclude:: ../../examples/examples.py
             :start-after: [START list_containers]
@@ -338,6 +341,8 @@ class Database(object):
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of container properties (dicts).
+
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -386,6 +391,8 @@ class Database(object):
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param request_options: Dictionary of additional properties to be used for the request.
+        :raise `HTTPFailure`: Raised if the container couldn't be replaced. This includes if the container with given id does not exist.
+        :returns: :class:`Container` instance representing the container after replace completed.
 
         .. literalinclude:: ../../examples/examples.py
             :start-after: [START reset_container_properties]
@@ -442,6 +449,8 @@ class Database(object):
 
         :param max_item_count: Max number of users to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of user properties (dicts).
+
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -467,7 +476,8 @@ class Database(object):
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of users to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: An `Iterator` containing each result returned by the query, if any.
+        :returns: A :class:`QueryIterable` instance representing an iterable of user properties (dicts).
+
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -493,7 +503,8 @@ class Database(object):
 
         :param user: The ID (name), dict representing the properties or :class:`User` instance of the user to be retrieved.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: The user as a dict, if present in the container.
+        :returns: A :class:`User` instance representing the retrieved user.
+        :raise `HTTPFailure`: If the given user couldn't be retrieved.
 
         """
         if not request_options:
@@ -521,8 +532,8 @@ class Database(object):
         :param body: A dict-like object with an `id` key and value representing the user to be created.
         The user ID must be unique within the database, and consist of no more than 255 characters.
         :param request_options: Dictionary of additional properties to be used for the request.
-
-        :raises `HTTPFailure`:
+        :returns: A :class:`User` instance representing the new user.
+        :raise `HTTPFailure`: If the given user couldn't be created.
 
         To update or replace an existing user, use the :func:`Container.upsert_user` method.
 
@@ -561,9 +572,11 @@ class Database(object):
 
         :param body: A dict-like object representing the user to update or insert.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A :class:`User` instance representing the upserted user.
+        :raise `HTTPFailure`: If the given user could not be upserted.
 
         If the user already exists in the container, it is replaced. If it does not, it is inserted.
+
         """
         if not request_options:
             request_options = {} # type: Dict[str, Any]
@@ -593,7 +606,8 @@ class Database(object):
         :param user: The ID (name), dict representing the properties or :class:`User` instance of the user to be replaced.
         :param body: A dict-like object representing the user to replace.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A :class:`User` instance representing the user after replace went through.
+        :raise `HTTPFailure`: If the replace failed or the user with given id does not exist.
 
         """
         if not request_options:
@@ -634,6 +648,12 @@ class Database(object):
 
     def read_offer(self):
         # type: () -> Offer
+        """ Read the Offer object for this database.
+
+        :returns: Offer for the database.
+        :raise HTTPFailure: If no offer exists for the database or if the offer could not be retrieved.
+
+        """
         link = self.properties['_self']
         query_spec = {
                         'query': 'SELECT * FROM root r WHERE r.resource=@link',
@@ -653,9 +673,14 @@ class Database(object):
             throughput
     ):
         # type: (int) -> Offer
+        """ Replace the database level throughput.
+
+        :param throughput: The throughput to be set (an integer).
+        :returns: Offer for the database, updated with new throughput.
+        :raise HTTPFailure: If no offer exists for the database or if the offer could not be updated.
+
         """
-        :param throughput: The throughput to be set (an integer)
-        """
+
         link = self.properties['_self']
         query_spec = {
                         'query': 'SELECT * FROM root r WHERE r.resource=@link',

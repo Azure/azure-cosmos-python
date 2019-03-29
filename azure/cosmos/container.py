@@ -42,7 +42,7 @@ from typing import (
 class Container:
     """ An Azure Cosmos DB container.
 
-    A container in an Azure Cosmos DB SQL API database is a collection of documents, each of which represented as an :class:`Item`.
+    A container in an Azure Cosmos DB SQL API database is a collection of documents, each of which represented as an Item.
 
     :ivar str id: ID (name) of the container
     :ivar str session_token: The session token for the container.
@@ -96,7 +96,8 @@ class Container:
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param post_trigger_include: trigger id to be used as post operation trigger.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: :class:`Item`, if present in the container.
+        :returns: Dict representing the item to be retrieved.
+        :raise `HTTPFailure`: If the given item couldn't be retrieved.
 
         .. literalinclude:: ../../examples/examples.py
             :start-after: [START update_item]
@@ -142,6 +143,7 @@ class Container:
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of items (dicts).
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -176,6 +178,8 @@ class Container:
         :param continuation: e_tag value to be used as continuation for reading change feed.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of items (dicts).
+
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -219,7 +223,7 @@ class Container:
         :param enable_scan_in_query: Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: An `Iterator` containing each result returned by the query, if any.
+        :returns: A :class:`QueryIterable` instance representing an iterable of items (dicts).
 
         You can use any value for the container name in the FROM clause, but typically the container name is used.
         In the examples below, the container name is "products," and is aliased as "p" for easier referencing
@@ -283,6 +287,7 @@ class Container:
     ):
         # type: (Union[str, Dict[str, Any]], Dict[str, Any], str, Dict[str, str], Dict[str, str], bool, str, str, Dict[str, Any]) -> Dict[str, str]
         """ Replaces the specified item if it exists in the container.
+
         :param item: The ID (name) or dict representing item to be replaced.
         :param body: A dict-like object representing the item to replace.
         :param session_token: Token for use with Session consistency.
@@ -292,7 +297,9 @@ class Container:
         :param pre_trigger_include: trigger id to be used as pre operation trigger.
         :param post_trigger_include: trigger id to be used as post operation trigger.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the item after replace went through.
+        :raise `HTTPFailure`: If the replace failed or the item with given id does not exist.
+
         """
         item_link = self._get_document_link(item)
         if not request_options:
@@ -339,9 +346,11 @@ class Container:
         :param pre_trigger_include: trigger id to be used as pre operation trigger.
         :param post_trigger_include: trigger id to be used as post operation trigger.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the upserted item.
+        :raise `HTTPFailure`: If the given item could not be upserted.
 
         If the item already exists in the container, it is replaced. If it does not, it is inserted.
+
         """
         if not request_options:
             request_options = {} # type: Dict[str, Any]
@@ -388,8 +397,8 @@ class Container:
         :param post_trigger_include: trigger id to be used as post operation trigger.
         :param indexing_directive: Indicate whether the document should be omitted from indexing.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: The :class:`Item` inserted into the container.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the new item.
+        :raises `HTTPFailure`: If item with the given ID already exists.
 
         To update or replace an existing item, use the :func:`Container.upsert_item` method.
 
@@ -470,6 +479,12 @@ class Container:
 
     def read_offer(self):
         # type: () -> Offer
+        """ Read the Offer object for this container.
+
+        :returns: Offer for the container.
+        :raise HTTPFailure: If no offer exists for the container or if the offer could not be retrieved.
+
+        """
 
         link = self.properties['_self']
         query_spec = {
@@ -491,8 +506,12 @@ class Container:
             throughput
     ):
         # type: (int) -> Offer
-        """
-        :param throughput: The throughput to be set (an integer)
+        """ Replace the container's throughput
+
+        :param throughput: The throughput to be set (an integer).
+        :returns: Offer for the container, updated with new throughput.
+        :raise HTTPFailure: If no offer exists for the container or if the offer could not be updated.
+
         """
         link = self.properties['_self']
         query_spec = {
@@ -524,6 +543,8 @@ class Container:
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of conflicts (dicts).
+
         """
         if not feed_options:
             feed_options = {} # type: Dict[str, Any]
@@ -554,7 +575,7 @@ class Container:
         More than one request is necessary if the query is not scoped to single partition key value.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: An `Iterator` containing each result returned by the query, if any.
+        :returns: A :class:`QueryIterable` instance representing an iterable of conflicts (dicts).
 
         """
         if not feed_options:
@@ -581,13 +602,13 @@ class Container:
             request_options=None
     ):
         # type: (Union[str, Dict[str, Any]], Any, Dict[str, Any]) -> Dict[str, str]
-        """
-        Get the conflict identified by `id`.
+        """ Get the conflict identified by `id`.
 
         :param conflict: The ID (name) or dict representing the conflict to retrieve.
         :param partition_key: Partition key for the conflict to retrieve.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: The conflict as a dict, if present in the container.
+        :returns: A dict representing the retrieved conflict.
+        :raise `HTTPFailure`: If the given conflict couldn't be retrieved.
 
         """
         if not request_options:

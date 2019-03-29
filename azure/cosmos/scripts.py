@@ -64,6 +64,7 @@ class Scripts:
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of stored procedures (dicts).
 
         """
         if not feed_options:
@@ -90,7 +91,7 @@ class Scripts:
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: An `Iterator` containing each result returned by the query, if any.
+        :returns: A :class:`QueryIterable` instance representing an iterable of stored procedures (dicts).
 
         """
         if not feed_options:
@@ -117,7 +118,8 @@ class Scripts:
 
         :param sproc: The ID (name) or dict representing stored procedure to retrieve.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: The stored procedure as a dict, if present in the container.
+        :returns: A dict representing the retrieved stored procedure.
+        :raise `HTTPFailure`: If the given stored procedure couldn't be retrieved.
 
         """
         if not request_options:
@@ -138,7 +140,8 @@ class Scripts:
 
         :param body: A dict-like object representing the sproc to create.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the new stored procedure.
+        :raise `HTTPFailure`: If the given stored procedure couldn't be created.
 
         To replace an existing sproc, use the :func:`Container.scripts.replace_stored_procedure` method.
 
@@ -164,7 +167,8 @@ class Scripts:
         :param sproc: The ID (name) or dict representing stored procedure to be replaced.
         :param body: A dict-like object representing the sproc to replace.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the stored procedure after replace went through.
+        :raise `HTTPFailure`: If the replace failed or the stored procedure with given id does not exist.
 
         """
         if not request_options:
@@ -213,7 +217,8 @@ class Scripts:
         :param enable_script_logging: Enables or disables script logging for the current request.
         :param partition_key: Specifies the partition key to indicate which partition the sproc should execute on.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`
+        :returns: result of the executed stored procedure for the given parameters.
+        :raise `HTTPFailure`: If the stored procedure execution failed or if the stored procedure with given id does not exists in the container.
 
         """
 
@@ -241,6 +246,7 @@ class Scripts:
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of triggers (dicts).
 
         """
         if not feed_options:
@@ -267,7 +273,7 @@ class Scripts:
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: An `Iterator` containing each result returned by the query, if any.
+        :returns: A :class:`QueryIterable` instance representing an iterable of triggers (dicts).
 
         """
         if not feed_options:
@@ -294,7 +300,8 @@ class Scripts:
 
         :param trigger: The ID (name) or dict representing trigger to retrieve.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: The trigger as a dict, if present in the container.
+        :returns: A dict representing the retrieved trigger.
+        :raise `HTTPFailure`: If the given trigger couldn't be retrieved.
 
         """
         if not request_options:
@@ -315,7 +322,8 @@ class Scripts:
 
         :param body: A dict-like object representing the trigger to create.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the new trigger.
+        :raise `HTTPFailure`: If the given trigger couldn't be created.
 
         To replace an existing trigger, use the :func:`Container.scripts.replace_trigger` method.
 
@@ -341,7 +349,8 @@ class Scripts:
         :param trigger: The ID (name) or dict representing trigger to be replaced.
         :param body: A dict-like object representing the trigger to replace.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the trigger after replace went through.
+        :raise `HTTPFailure`: If the replace failed or the trigger with given id does not exist.
 
         """
         if not request_options:
@@ -385,6 +394,7 @@ class Scripts:
 
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of user defined functions (dicts).
 
         """
         if not feed_options:
@@ -411,7 +421,7 @@ class Scripts:
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: An `Iterator` containing each result returned by the query, if any.
+        :returns: A :class:`QueryIterable` instance representing an iterable of user defined functions (dicts).
 
         """
         if not feed_options:
@@ -438,7 +448,8 @@ class Scripts:
 
         :param udf: The ID (name) or dict representing udf to retrieve.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: The stored procedure as a dict, if present in the container.
+        :returns: A dict representing the retrieved user defined function.
+        :raise `HTTPFailure`: If the given user defined function couldn't be retrieved.
 
         """
         if not request_options:
@@ -459,7 +470,8 @@ class Scripts:
 
         :param body: A dict-like object representing the udf to create.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the new user defined function.
+        :raise `HTTPFailure`: If the given user defined function couldn't be created.
 
         To replace an existing udf, use the :func:`Container.scripts.replace_user_defined_function` method.
 
@@ -485,7 +497,8 @@ class Scripts:
         :param udf: The ID (name) or dict representing udf to be replaced.
         :param body: A dict-like object representing the udf to replace.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the user defined function after replace went through.
+        :raise `HTTPFailure`: If the replace failed or the user defined function with given id does not exist.
 
         """
         if not request_options:

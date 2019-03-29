@@ -64,6 +64,7 @@ class User:
 
         :param max_item_count: Max number of permissions to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of permissions (dicts).
 
         """
         if not feed_options:
@@ -90,6 +91,7 @@ class User:
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param max_item_count: Max number of permissions to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
+        :returns: A :class:`QueryIterable` instance representing an iterable of permissions (dicts).
 
         """
         if not feed_options:
@@ -116,7 +118,8 @@ class User:
 
         :param permission: The ID (name), dict representing the properties or :class:`Permission` instance of the permission to be retrieved.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :returns: The permission as a dict, if present in the container.
+        :returns: A dict representing the retrieved permission.
+        :raise `HTTPFailure`: If the given permission couldn't be retrieved.
 
         """
         if not request_options:
@@ -145,7 +148,8 @@ class User:
 
         :param body: A dict-like object representing the permission to create.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the new permission.
+        :raise `HTTPFailure`: If the given permission couldn't be created.
 
         To update or replace an existing permision, use the :func:`User.upsert_permission` method.
 
@@ -177,7 +181,8 @@ class User:
 
         :param body: A dict-like object representing the permission to update or insert.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the upserted permission.
+        :raise `HTTPFailure`: If the given permission could not be upserted.
 
         If the permission already exists in the container, it is replaced. If it does not, it is inserted.
         """
@@ -211,7 +216,8 @@ class User:
         :param permission: The ID (name), dict representing the properties or :class:`Permission` instance of the permission to be replaced.
         :param body: A dict-like object representing the permission to replace.
         :param request_options: Dictionary of additional properties to be used for the request.
-        :raises `HTTPFailure`:
+        :returns: A dict representing the permission after replace went through.
+        :raise `HTTPFailure`: If the replace failed or the permission with given id does not exist.
 
         """
         if not request_options:

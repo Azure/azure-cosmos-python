@@ -31,7 +31,6 @@ from typing import (
     Union,
     cast
 )
-
 from .permission import Permission
 
 

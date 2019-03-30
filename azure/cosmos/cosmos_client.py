@@ -230,7 +230,7 @@ class CosmosClient:
         :param initial_headers: Initial headers to be sent as part of the request.
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param feed_options: Dictionary of additional properties to be used for the request.
-        :returns: A :class:`QueryIterable` instance representing an iterable of database poperties (dicts).
+        :returns: A :class:`QueryIterable` instance representing an iterable of database properties (dicts).
 
         """
         if not feed_options:

@@ -1766,6 +1766,71 @@ class CRUDTests(unittest.TestCase):
         self._check_default_indexing_policy_paths(collection.properties['indexingPolicy'])
         db.delete_container(container=collection)
 
+    def test_create_indexing_policy_with_composite_and_spatial_indexes(self):
+        # create database
+        db = self.databaseForTest
+
+        indexing_policy = {
+            "spatialIndexes": [
+                {
+                    "path": "/path0/*",
+                    "types": [
+                        "Point",
+                        "LineString",
+                        "Polygon"
+                    ]
+                },
+                {
+                    "path": "/path1/*",
+                    "types": [
+                        "LineString",
+                        "Polygon",
+                        "MultiPolygon"
+                    ]
+                }
+            ],
+            "compositeIndexes": [
+                [
+                    {
+                        "path": "/path1",
+                        "order": "ascending"
+                    },
+                    {
+                        "path": "/path2",
+                        "order": "descending"
+                    },
+                    {
+                        "path": "/path3",
+                        "order": "ascending"
+                    }
+                ],
+                [
+                    {
+                        "path": "/path4",
+                        "order": "ascending"
+                    },
+                    {
+                        "path": "/path5",
+                        "order": "descending"
+                    },
+                    {
+                        "path": "/path6",
+                        "order": "ascending"
+                    }
+                ]
+            ]
+        }
+
+        created_container = db.create_container(
+            id='composite_index_spatial_index' + str(uuid.uuid4()),
+            indexing_policy=indexing_policy,
+            partition_key=PartitionKey(path='/id', kind='Hash')
+        )
+        read_indexing_policy = created_container.properties['indexingPolicy']
+        self.assertListEqual(indexing_policy['spatialIndexes'], read_indexing_policy['spatialIndexes'])
+        self.assertListEqual(indexing_policy['compositeIndexes'], read_indexing_policy['compositeIndexes'])
+        db.delete_container(container=created_container)
+
     def _check_default_indexing_policy_paths(self, indexing_policy):
         def __get_first(array):
             if array:

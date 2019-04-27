@@ -52,65 +52,65 @@ class MultiOrderbyTests(unittest.TestCase):
     MEDIUM_STRING_FIELD = "mediumStringField"
     LONG_STRING_FIELD = "longStringField"
     PARTITION_KEY = "pk"
-    documents = []
+    items = []
     host = test_config._test_config.host
     masterKey = test_config._test_config.masterKey
     connectionPolicy = test_config._test_config.connectionPolicy
     client = cosmos_client.CosmosClient(host, {'masterKey': masterKey}, "Session", connectionPolicy)
     database = test_config._test_config.create_database_if_not_exist(client)
 
-    def generate_multi_orderby_document(self):
-        document = {}
-        document['id'] = str(uuid.uuid4())
-        document[self.NUMBER_FIELD] = random.randint(0, 5)
-        document[self.NUMBER_FIELD_2] = random.randint(0, 5)
-        document[self.BOOL_FIELD] = random.randint(0, 2) % 2 == 0
-        document[self.STRING_FIELD] = str(random.randint(0, 5))
-        document[self.STRING_FIELD_2] = str(random.randint(0, 5))
-        document[self.NULL_FIELD] = None
-        document[self.OBJECT_FIELD] = ""
-        document[self.ARRAY_FIELD] = []
-        document[self.SHORT_STRING_FIELD] = "a" + str(random.randint(0, 100))
-        document[self.MEDIUM_STRING_FIELD] = "a" + str(random.randint(0, 128) + 100)
-        document[self.LONG_STRING_FIELD] = "a" + str(random.randint(0, 255) + 128)
-        document[self.PARTITION_KEY] = random.randint(0, 5)
-        return document
+    def generate_multi_orderby_item(self):
+        item = {}
+        item['id'] = str(uuid.uuid4())
+        item[self.NUMBER_FIELD] = random.randint(0, 5)
+        item[self.NUMBER_FIELD_2] = random.randint(0, 5)
+        item[self.BOOL_FIELD] = random.randint(0, 2) % 2 == 0
+        item[self.STRING_FIELD] = str(random.randint(0, 5))
+        item[self.STRING_FIELD_2] = str(random.randint(0, 5))
+        item[self.NULL_FIELD] = None
+        item[self.OBJECT_FIELD] = ""
+        item[self.ARRAY_FIELD] = []
+        item[self.SHORT_STRING_FIELD] = "a" + str(random.randint(0, 100))
+        item[self.MEDIUM_STRING_FIELD] = "a" + str(random.randint(0, 128) + 100)
+        item[self.LONG_STRING_FIELD] = "a" + str(random.randint(0, 255) + 128)
+        item[self.PARTITION_KEY] = random.randint(0, 5)
+        return item
 
-    def create_random_documents(self, container, number_of_documents, number_of_duplicates):
+    def create_random_items(self, container, number_of_items, number_of_duplicates):
         # type: (CosmosContainer, int, int) -> None
 
-        for i in range(0, number_of_documents):
-            multi_orderby_document = self.generate_multi_orderby_document()
+        for i in range(0, number_of_items):
+            multi_orderby_item = self.generate_multi_orderby_item()
             for j in range(0, number_of_duplicates):
-                # Add the document itself for exact duplicates
-                clone = multi_orderby_document.copy()
+                # Add the item itself for exact duplicates
+                clone = multi_orderby_item.copy()
                 clone['id'] = str(uuid.uuid4())
-                self.documents.append(clone)
+                self.items.append(clone)
 
                 # Permute all the fields so that there are duplicates with tie breaks
-                number_clone = multi_orderby_document.copy()
+                number_clone = multi_orderby_item.copy()
                 number_clone[self.NUMBER_FIELD] = random.randint(0, 5)
                 number_clone['id'] = str(uuid.uuid4())
-                self.documents.append(number_clone)
+                self.items.append(number_clone)
 
-                string_clone = multi_orderby_document.copy()
+                string_clone = multi_orderby_item.copy()
                 string_clone[self.STRING_FIELD] = str(random.randint(0, 5))
                 string_clone['id'] = str(uuid.uuid4())
-                self.documents.append(string_clone)
+                self.items.append(string_clone)
 
-                bool_clone = multi_orderby_document.copy()
+                bool_clone = multi_orderby_item.copy()
                 bool_clone[self.BOOL_FIELD] = random.randint(0, 2) % 2 == 0
                 bool_clone['id'] = str(uuid.uuid4())
-                self.documents.append(bool_clone)
+                self.items.append(bool_clone)
 
                 # Also fuzz what partition it goes to
-                partition_clone = multi_orderby_document.copy()
+                partition_clone = multi_orderby_item.copy()
                 partition_clone[self.PARTITION_KEY] = random.randint(0, 5)
                 partition_clone['id'] = str(uuid.uuid4())
-                self.documents.append(partition_clone)
+                self.items.append(partition_clone)
 
-        for document in self.documents:
-            container.create_item(body=document)
+        for item in self.items:
+            container.create_item(body=item)
 
     def test_multi_orderby_queries(self):
         indexingPolicy = {
@@ -203,9 +203,9 @@ class MultiOrderbyTests(unittest.TestCase):
             request_options=options
         )
 
-        number_of_documents = 4
-        number_of_duplicates = 5
-        self.create_random_documents(created_container, number_of_documents, number_of_duplicates)
+        number_of_items = 4
+        number_of_items = 5
+        self.create_random_items(created_container, number_of_items, number_of_items)
 
         bool_vals = [True, False]
         composite_indexes = indexingPolicy['compositeIndexes']
@@ -249,17 +249,17 @@ class MultiOrderbyTests(unittest.TestCase):
                                 "FROM root " + where_string + " " + \
                                 "ORDER BY " + orderby_item_builder
 
-                        expected_ordered_list = self.top(self.sort(self.filter(self.documents, has_filter), composite_index, invert), has_top, top_count)
+                        expected_ordered_list = self.top(self.sort(self.filter(self.items, has_filter), composite_index, invert), has_top, top_count)
 
                         result_ordered_list = list(created_container.query_items(query=query, enable_cross_partition_query=True))
 
                         self.validate_results(expected_ordered_list, result_ordered_list, composite_index)
 
-    def top(self, documents, has_top, top_count):
-        return documents[0:top_count] if has_top else documents
+    def top(self, items, has_top, top_count):
+        return items[0:top_count] if has_top else items
 
-    def sort(self, documents, composite_index, invert):
-        current_docs = documents
+    def sort(self, items, composite_index, invert):
+        current_docs = items
         for composite_path in reversed(composite_index):
             order = composite_path['order']
             if invert:
@@ -269,8 +269,8 @@ class MultiOrderbyTests(unittest.TestCase):
                 current_docs = sorted(current_docs, key=lambda x: x[path], reverse=True if order == "descending" else False)
         return current_docs
 
-    def filter(self, documents, has_filter):
-        return [x for x in documents if x[self.NUMBER_FIELD] % 2 == 0] if has_filter else documents
+    def filter(self, items, has_filter):
+        return [x for x in items if x[self.NUMBER_FIELD] % 2 == 0] if has_filter else items
 
     def validate_results(self, expected_ordered_list, result_ordered_list, composite_index):
         self.assertEqual(len(expected_ordered_list), len(result_ordered_list))

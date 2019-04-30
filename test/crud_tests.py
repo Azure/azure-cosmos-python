@@ -3204,8 +3204,8 @@ class CRUDTests(unittest.TestCase):
 
     def test_client_request_timeout(self):
         connection_policy = documents.ConnectionPolicy()
-        # making timeout 1 ms to make sure it will throw
-        connection_policy.RequestTimeout = 1
+        # making timeout 0 ms to make sure it will throw
+        connection_policy.RequestTimeout = 0
         with self.assertRaises(Exception):
             # client does a getDatabaseAccount on initialization, which will time out
             cosmos_client.CosmosClient(CRUDTests.host,

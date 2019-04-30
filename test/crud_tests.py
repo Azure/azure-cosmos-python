@@ -1851,7 +1851,7 @@ class CRUDTests(unittest.TestCase):
     def test_client_request_timeout(self):
         connection_policy = documents.ConnectionPolicy()
         # making timeout 1 ms to make sure it will throw
-        connection_policy.RequestTimeout = 1
+        connection_policy.RequestTimeout = 0
         with self.assertRaises(Exception):
             # client does a getDatabaseAccount on initialization, which will time out
             cosmos_client.CosmosClient(CRUDTests.host, {'masterKey': CRUDTests.masterKey}, "Session", connection_policy)
@@ -1867,7 +1867,7 @@ class CRUDTests(unittest.TestCase):
                 dict
 
             """
-            collection = self.configs.create_multi_partition_collection_if_not_exist(self.client)
+            collection = self.configs.create_multi_partition_collection_with_custom_pk_if_not_exist(self.client)
             doc1 = collection.create_item(body={'id': 'doc1', 'prop1': 'value1'})
             doc2 = collection.create_item(body={'id': 'doc2', 'prop1': 'value2'})
             doc3 = collection.create_item(body={'id': 'doc3', 'prop1': 'value3'})

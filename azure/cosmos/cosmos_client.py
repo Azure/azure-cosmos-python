@@ -80,21 +80,29 @@ class CosmosClient(object):
         :param documents.ConsistencyLevel consistency_level:
             The default consistency policy for client operations.
 
+        if url_connection and auth are not provided,
+            COSMOS_ENDPOINT and COSMOS_KEY environment variables will be used.
         """
-        self.url_connection = url_connection
 
-        self.master_key = None
-        self.resource_tokens = None
-        if auth != None:
-            self.master_key = auth.get('masterKey')
-            self.resource_tokens = auth.get('resourceTokens')
+        if url_connection and auth:
+            self.url_connection = url_connection
 
-            if auth.get('permissionFeed'):
-                self.resource_tokens = {}
-                for permission_feed in auth['permissionFeed']:
-                    resource_parts = permission_feed['resource'].split('/')
-                    id = resource_parts[-1]
-                    self.resource_tokens[id] = permission_feed['_token']
+            self.master_key = None
+            self.resource_tokens = None
+            if auth is not None:
+                self.master_key = auth.get('masterKey')
+                self.resource_tokens = auth.get('resourceTokens')
+
+                if auth.get('permissionFeed'):
+                    self.resource_tokens = {}
+                    for permission_feed in auth['permissionFeed']:
+                        resource_parts = permission_feed['resource'].split('/')
+                        id = resource_parts[-1]
+                        self.resource_tokens[id] = permission_feed['_token']
+        else:
+            import os
+            self.url_connection = os.environ["COSMOS_ENDPOINT"]
+            self.master_key = os.environ["COSMOS_KEY"]
 
         self.connection_policy = (connection_policy or
                                   documents.ConnectionPolicy())

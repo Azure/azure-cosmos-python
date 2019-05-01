@@ -60,14 +60,13 @@ class EnvTest(unittest.TestCase):
         os.environ["COSMOS_KEY"] = cls.masterKey
         cls.client = cosmos_client.CosmosClient(None, None, cls.connectionPolicy)
         cls.created_db = test_config._test_config.create_database_if_not_exist(cls.client)
-        cls.created_collection = EnvTest.create_collection(cls.client, cls.created_db)
+        cls.created_collection = test_config._test_config.create_single_partition_collection_if_not_exist(cls.client)
         cls.collection_link = cls.GetDocumentCollectionLink(cls.created_db, cls.created_collection)
 
     @classmethod
     def tearDownClass(cls):
         del os.environ['COSMOS_ENDPOINT']
         del os.environ['COSMOS_KEY']
-        cls.client.DeleteContainer(cls.collection_link)
 
     def test_insert(self):
         # create a document using the document definition
@@ -80,24 +79,6 @@ class EnvTest(unittest.TestCase):
                  }
 
         self.client.CreateItem(self.collection_link, d)
-
-
-    @classmethod
-    def create_collection(self, client, created_db):
-        collection_definition = {  
-           'id': 'env_tests collection ' + str(uuid.uuid4()),
-           'partitionKey':{  
-              'paths':[  
-                 '/id'
-              ]
-           }
-        }
-
-        created_collection = client.CreateContainer(self.GetDatabaseLink(created_db),
-                                                    collection_definition,
-                                                    {})
-
-        return created_collection
 
     @classmethod
     def GetDatabaseLink(cls, database, is_name_based=True):

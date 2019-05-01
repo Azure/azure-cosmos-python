@@ -37,7 +37,7 @@ import os
 
 @pytest.mark.usefixtures("teardown")
 class EnvTest(unittest.TestCase):
-    """Orderby Tests.
+    """Env Tests.
     """
     
     host = test_config._test_config.host
@@ -85,7 +85,7 @@ class EnvTest(unittest.TestCase):
     @classmethod
     def create_collection(self, client, created_db):
         collection_definition = {  
-           'id': 'orderby_tests collection ' + str(uuid.uuid4()),
+           'id': 'env_tests collection ' + str(uuid.uuid4()),
            'partitionKey':{  
               'paths':[  
                  '/id'

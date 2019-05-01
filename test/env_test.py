@@ -58,7 +58,7 @@ class EnvTest(unittest.TestCase):
 
         os.environ["COSMOS_ENDPOINT"] = cls.host
         os.environ["COSMOS_KEY"] = cls.masterKey
-        cls.client = cosmos_client.CosmosClient(cls.connectionPolicy)
+        cls.client = cosmos_client.CosmosClient(None, None, cls.connectionPolicy)
         cls.created_db = test_config._test_config.create_database_if_not_exist(cls.client)
         cls.created_collection = EnvTest.create_collection(cls.client, cls.created_db)
         cls.collection_link = cls.GetDocumentCollectionLink(cls.created_db, cls.created_collection)

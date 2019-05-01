@@ -85,7 +85,7 @@ class CosmosClient(object):
             COSMOS_ENDPOINT and COSMOS_KEY environment variables will be used.
         """
 
-        self.url_connection = url_connection or os.environ['COSMOS_ENDPOINT']
+        self.url_connection = url_connection or os.environ.get('COSMOS_ENDPOINT')
 
         self.master_key = None
         self.resource_tokens = None
@@ -100,7 +100,7 @@ class CosmosClient(object):
                     id = resource_parts[-1]
                     self.resource_tokens[id] = permission_feed['_token']
         else:
-            self.master_key = os.environ['COSMOS_KEY']
+            self.master_key = os.environ.get('COSMOS_KEY')
 
         self.connection_policy = (connection_policy or
                                   documents.ConnectionPolicy())

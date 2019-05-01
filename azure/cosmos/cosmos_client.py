@@ -37,6 +37,7 @@ import azure.cosmos.global_endpoint_manager as global_endpoint_manager
 import azure.cosmos.routing.routing_map_provider as routing_map_provider
 import azure.cosmos.session as session
 import azure.cosmos.utils as utils
+import os
 
 class CosmosClient(object):
     """Represents a document client.
@@ -84,24 +85,21 @@ class CosmosClient(object):
             COSMOS_ENDPOINT and COSMOS_KEY environment variables will be used.
         """
 
-        if url_connection and auth:
-            self.url_connection = url_connection
+        self.url_connection = url_connection or os.environ["COSMOS_ENDPOINT"]
 
-            self.master_key = None
-            self.resource_tokens = None
-            if auth is not None:
-                self.master_key = auth.get('masterKey')
-                self.resource_tokens = auth.get('resourceTokens')
+        self.master_key = None
+        self.resource_tokens = None
+        if auth is not None:
+            self.master_key = auth.get('masterKey')
+            self.resource_tokens = auth.get('resourceTokens')
 
-                if auth.get('permissionFeed'):
-                    self.resource_tokens = {}
-                    for permission_feed in auth['permissionFeed']:
-                        resource_parts = permission_feed['resource'].split('/')
-                        id = resource_parts[-1]
-                        self.resource_tokens[id] = permission_feed['_token']
+            if auth.get('permissionFeed'):
+                self.resource_tokens = {}
+                for permission_feed in auth['permissionFeed']:
+                    resource_parts = permission_feed['resource'].split('/')
+                    id = resource_parts[-1]
+                    self.resource_tokens[id] = permission_feed['_token']
         else:
-            import os
-            self.url_connection = os.environ["COSMOS_ENDPOINT"]
             self.master_key = os.environ["COSMOS_KEY"]
 
         self.connection_policy = (connection_policy or

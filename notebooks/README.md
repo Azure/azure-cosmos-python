@@ -4,8 +4,9 @@ As you probably know, [Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-
 
 Cosmos DB includes support for multiple Software Development Kits for programming languages such as Python. Multiple resources already exist that help to learn to use the Python SDK: 
 
+* This repository
 * [Cosmos DB reference guide for the Python SDK](https://docs.microsoft.com/en-us/python/api/azure-cosmos/?view=azure-python)
-* [Cosmos DB samples with the Python SDK](https://github.com/Azure/azure-cosmos-python/blob/master/test/crud_tests.py)
+* [Cosmos DB CRUD tests with the Python SDK](https://github.com/Azure/azure-cosmos-python/blob/master/test/crud_tests.py)
 
 As opposed to documentation or code samples, Jupyter Notebooks offer a very interesting combination of rich text for explanations and pieces of code that can be executed independently from each other, which makes it ideal to learn a new technology.
 

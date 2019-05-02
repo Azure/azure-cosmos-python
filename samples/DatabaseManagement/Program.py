@@ -42,7 +42,7 @@ class IDisposable:
 
     def __exit__(self, exception_type, exception_val, trace):
         # extra cleanup in here
-        self = None
+        self.obj = None
 
 class DatabaseManagement:
     @staticmethod

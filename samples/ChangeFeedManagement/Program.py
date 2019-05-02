@@ -98,11 +98,11 @@ def run_sample():
                 if e.status_code == 409:
                     pass
                 else:
-                    raise errors.HTTPFailure(e.status_code)
+                    raise
 
             # setup collection for this sample
 
-            collection_definition = {   'id': CONTAINER_ID, 
+            collection_definition = {   'id': COLLECTION_ID,
                                     'partitionKey': 
                                     {   
                                         'paths': ['/address/state'],
@@ -127,7 +127,7 @@ def run_sample():
             ChangeFeedManagement.ReadFeedForTime(client, time)
 
         except errors.HTTPFailure as e:
-            print('\nrun_sample has caught an error. {0}'.format(e.message))
+            print('\nrun_sample has caught an error. {0}'.format(e))
         
         finally:
             print("\nrun_sample done")
@@ -137,4 +137,4 @@ if __name__ == '__main__':
         run_sample()
 
     except Exception as e:
-            print("Top level Error: args:{0}, message:N/A".format(e.args))
+        print("Top level Error: args:{0}, message:N/A".format(e.args))

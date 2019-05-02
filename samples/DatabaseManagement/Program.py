@@ -73,7 +73,7 @@ class DatabaseManagement:
             if e.status_code == 409:
                print('A database with id \'{0}\' already exists'.format(id))
             else: 
-                raise errors.HTTPFailure(e.status_code)               
+                raise
     
     @staticmethod
     def read_database(client, id):
@@ -93,7 +93,7 @@ class DatabaseManagement:
             if e.status_code == 404:
                print('A database with id \'{0}\' does not exist'.format(id))
             else: 
-                raise errors.HTTPFailure(e.status_code)    
+                raise
 
     @staticmethod
     def list_databases(client):
@@ -123,7 +123,7 @@ class DatabaseManagement:
             if e.status_code == 404:
                print('A database with id \'{0}\' does not exist'.format(id))
             else: 
-                raise errors.HTTPFailure(e.status_code)
+                raise
 
 def run_sample():     
     with IDisposable(cosmos_client.CosmosClient(HOST, {'masterKey': MASTER_KEY} )) as client:
@@ -144,7 +144,7 @@ def run_sample():
             DatabaseManagement.delete_database(client, DATABASE_ID)
 
         except errors.HTTPFailure as e:
-            print('\nrun_sample has caught an error. {0}'.format(e.message))
+            print('\nrun_sample has caught an error. {0}'.format(e))
         
         finally:
             print("\nrun_sample done")
@@ -154,4 +154,4 @@ if __name__ == '__main__':
         run_sample()
 
     except Exception as e:
-            print("Top level Error: args:{0}, message:{1}".format(e.args,e.message))
+        print("Top level Error: args:{0}, message:{1}".format(e.args,e))

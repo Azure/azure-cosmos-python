@@ -1,3 +1,7 @@
+## Changes in 4.0.0a2 : ##
+
+- Added support for Hash V2 in partition keys.
+
 ## Changes in 4.0.0a1 : ##
 
 - Alpha release for new object model.

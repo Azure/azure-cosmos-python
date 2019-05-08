@@ -61,7 +61,7 @@ class IDisposable(cosmos_client.CosmosClient):
 
     def __exit__(self, exception_type, exception_val, trace):
         # extra cleanup in here
-        self = None
+        self.obj = None
 
 class CollectionManagement:
     @staticmethod
@@ -98,7 +98,7 @@ class CollectionManagement:
             if e.status_code == 409:
                print('A collection with id \'{0}\' already exists'.format(id))
             else: 
-                raise errors.HTTPFailure(e.status_code)               
+                raise
 
         print("\n2.2 Create Collection - With custom index policy")
         
@@ -120,7 +120,7 @@ class CollectionManagement:
             if e.status_code == 409:
                print('A collection with id \'{0}\' already exists'.format(collection['id']))
             else: 
-                raise errors.HTTPFailure(e.status_code) 
+                raise
 
         print("\n2.3 Create Collection - With custom offer throughput")
 
@@ -134,7 +134,7 @@ class CollectionManagement:
             if e.status_code == 409:
                print('A collection with id \'{0}\' already exists'.format(collection['id']))
             else: 
-                raise errors.HTTPFailure(e.status_code)
+                raise
 
         print("\n2.4 Create Collection - With Unique keys")
 
@@ -150,7 +150,7 @@ class CollectionManagement:
             if e.status_code == 409:
                print('A collection with id \'{0}\' already exists'.format(collection['id']))
             else: 
-                raise errors.HTTPFailure(e.status_code)
+                raise
 
         print("\n2.5 Create Collection - With Partition key")
         
@@ -173,7 +173,7 @@ class CollectionManagement:
             if e.status_code == 409:
                print('A collection with id \'{0}\' already exists'.format(collection['id']))
             else: 
-                raise errors.HTTPFailure(e.status_code)
+                raise
 
         print("\n2.6 Create Collection - With Partition key V2")
 
@@ -197,7 +197,7 @@ class CollectionManagement:
             if e.status_code == 409:
                 print('A collection with id \'{0}\' already exists'.format(collection['id']))
             else:
-                raise errors.HTTPFailure(e.status_code)
+                raise
 
     @staticmethod
     def manage_offer_throughput(client, id):
@@ -222,7 +222,7 @@ class CollectionManagement:
             if e.status_code == 404:
                 print('A collection with id \'{0}\' does not exist'.format(id))
             else: 
-                raise errors.HTTPFailure(e.status_code)
+                raise
 
         print("\n3.2 Change Offer Throughput of Collection")
                            
@@ -254,7 +254,7 @@ class CollectionManagement:
             if e.status_code == 404:
                print('A collection with id \'{0}\' does not exist'.format(id))
             else: 
-                raise errors.HTTPFailure(e.status_code)    
+                raise
     
     @staticmethod
     def list_Containers(client):
@@ -284,7 +284,7 @@ class CollectionManagement:
             if e.status_code == 404:
                print('A collection with id \'{0}\' does not exist'.format(id))
             else: 
-                raise errors.HTTPFailure(e.status_code)   
+                raise
 
 def run_sample():
 
@@ -298,7 +298,7 @@ def run_sample():
                 if e.status_code == 409:
                    pass
                 else: 
-                    raise errors.HTTPFailure(e.status_code)
+                    raise
             
             # query for a collection            
             CollectionManagement.find_Container(client, COLLECTION_ID)
@@ -329,7 +329,7 @@ def run_sample():
                     raise errors.HTTPFailure(e.status_code)
 
         except errors.HTTPFailure as e:
-            print('\nrun_sample has caught an error. {0}'.format(e.message))
+            print('\nrun_sample has caught an error. {0}'.format(e))
         
         finally:
             print("\nrun_sample done")
@@ -339,4 +339,4 @@ if __name__ == '__main__':
         run_sample()
 
     except Exception as e:
-            print("Top level Error: args:{0}, message:{1}".format(e.args,e.message))
+        print("Top level Error: args:{0}, message:{1}".format(e.args,e))

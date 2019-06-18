@@ -54,14 +54,6 @@ class CosmosClient:
         :param consistency_level: Consistency level to use for the session.
         :param connection_policy: Connection policy to use for the session.
 
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START create_client]
-            :end-before: [END create_client]
-            :language: python
-            :dedent: 0
-            :caption: Create a new instance of the Cosmos DB client:
-            :name: create_client
-
         """
         self.client_connection = CosmosClientConnection(
             url,
@@ -104,14 +96,6 @@ class CosmosClient:
         :param request_options: Dictionary of additional properties to be used for the request.
         :returns: A :class:`Database` instance representing the new database.
         :raises `HTTPFailure`: If database with the given ID already exists.
-
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START create_database]
-            :end-before: [END create_database]
-            :language: python
-            :dedent: 0
-            :caption: Create a database in the Cosmos DB account:
-            :name: create_database
 
         """
 

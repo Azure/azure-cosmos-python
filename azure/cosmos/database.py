@@ -136,23 +136,6 @@ class Database(object):
         :returns: A :class:`Container` instance representing the new container.
         :raise HTTPFailure: The container creation failed.
 
-
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START create_container]
-            :end-before: [END create_container]
-            :language: python
-            :dedent: 0
-            :caption: Create a container with default settings:
-            :name: create_container
-
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START create_container_with_settings]
-            :end-before: [END create_container_with_settings]
-            :language: python
-            :dedent: 0
-            :caption: Create a container with specific settings; in this case, a custom partition key:
-            :name: create_container_with_settings
-
         """
         definition = dict(id=id)  # type: Dict[str, Any]
         if partition_key:
@@ -245,14 +228,6 @@ class Database(object):
         :raise `HTTPFailure`: Raised if the container couldn't be retrieved. This includes if the container does not exist.
         :returns: :class:`Container` instance representing the retrieved container.
 
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START get_container]
-            :end-before: [END get_container]
-            :language: python
-            :dedent: 0
-            :caption: Get an existing container, handling a failure if encountered:
-            :name: get_container
-
         """
         if not request_options:
             request_options = {} # type: Dict[str, Any]
@@ -295,14 +270,6 @@ class Database(object):
         :param populate_query_metrics: Enable returning query metrics in response headers.
         :param feed_options: Dictionary of additional properties to be used for the request.
         :returns: A :class:`QueryIterable` instance representing an iterable of container properties (dicts).
-
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START list_containers]
-            :end-before: [END list_containers]
-            :language: python
-            :dedent: 0
-            :caption: List all containers in the database:
-            :name: list_containers
 
         """
         if not feed_options:
@@ -393,14 +360,6 @@ class Database(object):
         :param request_options: Dictionary of additional properties to be used for the request.
         :raise `HTTPFailure`: Raised if the container couldn't be replaced. This includes if the container with given id does not exist.
         :returns: :class:`Container` instance representing the container after replace completed.
-
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START reset_container_properties]
-            :end-before: [END reset_container_properties]
-            :language: python
-            :dedent: 0
-            :caption: Reset the TTL property on a container, and display the updated properties:
-            :name: reset_container_properties
 
         """
         if not request_options:
@@ -530,20 +489,12 @@ class Database(object):
         """ Create a user in the container.
 
         :param body: A dict-like object with an `id` key and value representing the user to be created.
-        The user ID must be unique within the database, and consist of no more than 255 characters.
+                The user ID must be unique within the database, and consist of no more than 255 characters.
         :param request_options: Dictionary of additional properties to be used for the request.
         :returns: A :class:`User` instance representing the new user.
         :raise `HTTPFailure`: If the given user couldn't be created.
 
         To update or replace an existing user, use the :func:`Container.upsert_user` method.
-
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START create_user]
-            :end-before: [END create_user]
-            :language: python
-            :dedent: 0
-            :caption: Create a database user:
-            :name: create_user
 
         """
         if not request_options:

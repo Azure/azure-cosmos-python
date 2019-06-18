@@ -99,14 +99,6 @@ class Container:
         :returns: Dict representing the item to be retrieved.
         :raise `HTTPFailure`: If the given item couldn't be retrieved.
 
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START update_item]
-            :end-before: [END update_item]
-            :language: python
-            :dedent: 0
-            :caption: Get an item from the database and update one of its properties:
-            :name: update_item
-
         """
         doc_link = self._get_document_link(item)
 
@@ -172,9 +164,9 @@ class Container:
         """ Get a sorted list of items that were changed, in the order in which they were modified.
 
         :param partition_key_range_id: ChangeFeed requests can be executed against specific partition key ranges.
-        This is used to process the change feed in parallel across multiple consumers.
+                This is used to process the change feed in parallel across multiple consumers.
         :param is_start_from_beginning: Get whether change feed should start from beginning (true) or from current (false).
-        By default it's start from current (false).
+                By default it's start from current (false).
         :param continuation: e_tag value to be used as continuation for reading change feed.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
@@ -216,7 +208,7 @@ class Container:
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param partition_key: Specifies the partition key value for the item.
         :param enable_cross_partition_query: Allows sending of more than one request to execute the query in the Azure Cosmos DB service.
-        More than one request is necessary if the query is not scoped to single partition key value.
+                More than one request is necessary if the query is not scoped to single partition key value.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param session_token: Token for use with Session consistency.
         :param initial_headers: Initial headers to be sent as part of the request.
@@ -228,22 +220,6 @@ class Container:
         You can use any value for the container name in the FROM clause, but typically the container name is used.
         In the examples below, the container name is "products," and is aliased as "p" for easier referencing
         in the WHERE clause.
-
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START query_items]
-            :end-before: [END query_items]
-            :language: python
-            :dedent: 0
-            :caption: Get all products that have not been discontinued:
-            :name: query_items
-
-        .. literalinclude:: ../../examples/examples.py
-            :start-after: [START query_items_param]
-            :end-before: [END query_items_param]
-            :language: python
-            :dedent: 0
-            :caption: Parameterized query to get all products that have been discontinued:
-            :name: query_items_param
 
         """
         if not feed_options:
@@ -572,7 +548,7 @@ class Container:
         :param parameters: Optional array of parameters to the query. Ignored if no query is provided.
         :param partition_key: Specifies the partition key value for the item.
         :param enable_cross_partition_query: Allows sending of more than one request to execute the query in the Azure Cosmos DB service.
-        More than one request is necessary if the query is not scoped to single partition key value.
+                More than one request is necessary if the query is not scoped to single partition key value.
         :param max_item_count: Max number of items to be returned in the enumeration operation.
         :param feed_options: Dictionary of additional properties to be used for the request.
         :returns: A :class:`QueryIterable` instance representing an iterable of conflicts (dicts).

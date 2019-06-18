@@ -52,5 +52,5 @@ Most of the test cases create containers in your Cosmos account. Containers are 
     Install Sphinx: http://sphinx-doc.org/install.html
 
     $ cd doc
-    $ sphinx-apidoc -f -e -o api ..\azure\cosmos
+    $ sphinx-apidoc -f -e -o api ..\azure
     $ make.bat html

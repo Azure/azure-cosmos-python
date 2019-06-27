@@ -25,6 +25,9 @@
 import requests
 
 import six
+import logging
+import logging.config
+import json
 import azure.cosmos.base as base
 import azure.cosmos.documents as documents
 import azure.cosmos.constants as constants
@@ -38,7 +41,6 @@ import azure.cosmos.routing.routing_map_provider as routing_map_provider
 import azure.cosmos.session as session
 import azure.cosmos.utils as utils
 import os
-
 class CosmosClient(object):
     """Represents a document client.
 
@@ -84,6 +86,8 @@ class CosmosClient(object):
         if url_connection and auth are not provided,
             COSMOS_ENDPOINT and COSMOS_KEY environment variables will be used.
         """
+        self.__setup_logging()
+        self.logger = logging.getLogger(__name__)
 
         self.url_connection = url_connection or os.environ.get('COSMOS_ENDPOINT')
 
@@ -158,6 +162,22 @@ class CosmosClient(object):
 
         database_account = self._global_endpoint_manager._GetDatabaseAccount()
         self._global_endpoint_manager.force_refresh(database_account)
+
+    @staticmethod
+    def __setup_logging():
+        """Setup logging configuration
+
+        """
+        log_config_file_path = os.getenv(constants._Constants.LogConfigurationFilePath, None)
+        if not log_config_file_path:
+            dir_path = os.path.dirname(os.path.abspath(__file__))
+            log_config_file_path = os.path.join(dir_path, constants._Constants.DefaultLogConfigurationFilePath)
+        if os.path.exists(log_config_file_path):
+            with open(log_config_file_path, 'rt') as f:
+                config = json.load(f)
+            logging.config.dictConfig(config)
+        else:
+            logging.basicConfig(level=logging.DEBUG)
 
     @property
     def Session(self):

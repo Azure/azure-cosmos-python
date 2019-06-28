@@ -27,14 +27,14 @@
     },
     "loggers": {
         "azure.cosmos": {
-            "level": "WARN",
+            "level": "DEBUG",
             "handlers": ["console_handler", "file_handler"],
             "propagate": false
         }
     },
 
     "root": {
-        "level": "WARN",
+        "level": "DEBUG",
         "handlers": ["console_handler", "file_handler"]
     }
 }

@@ -88,6 +88,7 @@ class CosmosClient(object):
         """
         self.__setup_logging()
         self.logger = logging.getLogger(__name__)
+        self.logger.info("Client initialized. HOST: %s, AUTH: %s, CONSISTENCY LEVEL: %s" % (url_connection, auth, consistency_level))
 
         self.url_connection = url_connection or os.environ.get('COSMOS_ENDPOINT')
 
@@ -251,6 +252,7 @@ class CosmosClient(object):
         :rtype: dict
 
         """
+        self.logger.debug("Creating a Database. id: [%s]" % (database['id']))
         if options is None:
             options = {}
 
@@ -271,6 +273,7 @@ class CosmosClient(object):
         :rtype: dict
 
         """
+        self.logger.debug("Reading a Database. database_link: [%s]" % (database_link))
         if options is None:
             options = {}
 
@@ -290,6 +293,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Databases")
         if options is None:
             options = {}
 
@@ -307,6 +311,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying Databases. query: [%s]" % (query))
         if options is None:
             options = {}
 
@@ -333,6 +338,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Containers. database_link: [%s]" % (database_link))
         if options is None:
             options = {}
 
@@ -352,6 +358,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying Containers. database_link: [%s], query [%s]" % (database_link, query))
         if options is None:
             options = {}
 
@@ -381,6 +388,7 @@ class CosmosClient(object):
         :rtype: dict
 
         """
+        self.logger.debug("Creating a Container. database_link: [%s], container id: [%s]" % (database_link, collection['id']))
         if options is None:
             options = {}
 
@@ -410,6 +418,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Replacing a Container. id: [%s]" % (collection['id']))
         if options is None:
             options = {}
 
@@ -437,6 +446,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading a Container. container_link: [%s]", (collection_link));
         if options is None:
             options = {}
 

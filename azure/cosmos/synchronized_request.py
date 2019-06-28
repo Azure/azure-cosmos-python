@@ -23,7 +23,9 @@
 """
 
 import json
-
+import logging
+import logging.config
+import datetime
 from six.moves.urllib.parse import urlparse, urlencode
 import six
 
@@ -31,6 +33,8 @@ import azure.cosmos.documents as documents
 import azure.cosmos.errors as errors
 import azure.cosmos.http_constants as http_constants
 import azure.cosmos.retry_utility as retry_utility
+
+logger = logging.getLogger(__name__)
 
 def _IsReadableStream(obj):
     """Checks whether obj is a file-like readable stream.
@@ -120,7 +124,8 @@ def _Request(global_endpoint_manager, request, connection_policy, requests_sessi
     # We are disabling the SSL verification for local emulator(localhost/127.0.0.1) or if the user
     # has explicitly specified to disable SSL verification.
     is_ssl_enabled = (parse_result.hostname != 'localhost' and parse_result.hostname != '127.0.0.1' and not connection_policy.DisableSSLVerification)
-    
+
+    start_time = datetime.datetime.now()
     if connection_policy.SSLConfiguration:
         ca_certs = connection_policy.SSLConfiguration.SSLCaCerts
         cert_files = (connection_policy.SSLConfiguration.SSLCertFile, connection_policy.SSLConfiguration.SSLKeyFile)
@@ -142,7 +147,8 @@ def _Request(global_endpoint_manager, request, connection_policy, requests_sessi
                                     stream = is_media_stream,
                                     # If SSL is disabled, verify = false
                                     verify = is_ssl_enabled)
-
+    end_time = datetime.datetime.now()
+    logger.debug("request latency: %s ms" % str((end_time - start_time).microseconds/1000))
     headers = dict(response.headers)
 
     # In case of media stream response, return the response to the user and the user

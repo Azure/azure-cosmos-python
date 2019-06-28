@@ -402,11 +402,11 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def ReplaceContainer(self, collection_link, collection, options=None):
+    def ReplaceContainer(self, container_link, collection, options=None):
         """Replaces a collection and return it.
 
-        :param str collection_link:
-            The link to the collection entity.
+        :param str container_link:
+            The link to the container entity.
         :param dict collection: 
             The collection to be used.
         :param dict options:
@@ -418,13 +418,13 @@ class CosmosClient(object):
             dict
 
         """
-        self.logger.debug("Replacing a Container. id: [%s]" % (collection['id']))
+        self.logger.debug("Replacing a Container. container_link [%s], id: [%s]" % (container_link, collection['id']))
         if options is None:
             options = {}
 
         CosmosClient.__ValidateResource(collection)
-        path = base.GetPathFromLink(collection_link)
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link)
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         return self.Replace(collection,
                             path,
                             'colls',
@@ -432,11 +432,11 @@ class CosmosClient(object):
                             None,
                             options)
 
-    def ReadContainer(self, collection_link, options=None):
+    def ReadContainer(self, container_link, options=None):
         """Reads a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict options:
             The request options for the request.
 
@@ -446,12 +446,12 @@ class CosmosClient(object):
             dict
 
         """
-        self.logger.debug("Reading a Container. container_link: [%s]", (collection_link));
+        self.logger.debug("Reading a Container. container_link: [%s]" % (container_link))
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(collection_link)
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link)
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         return self.Read(path,
                          'colls',
                          collection_id,
@@ -474,6 +474,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Creating a User. database_link [%s], user id [%s]" % (database_link, user['id']))
         if options is None:
             options = {}
 
@@ -499,6 +500,7 @@ class CosmosClient(object):
             The upserted User.
         :rtype: dict
         """
+        self.logger.debug("Upserting a User. database_link [%s], user id [%s]" % (database_link, user['id']))
         if options is None:
             options = {}
 
@@ -531,6 +533,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading a User. user_link [%s]" % user_link)
         if options is None:
             options = {}
 
@@ -551,6 +554,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Users. database_link [%s]" % database_link)
         if options is None:
             options = {}
 
@@ -571,6 +575,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying Users. database_link [%s], query [%s]" % (database_link, query))
         if options is None:
             options = {}
 
@@ -600,6 +605,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a Database. database_link: [%s]" % database_link)
         if options is None:
             options = {}
 
@@ -627,6 +633,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Creating a Permission. user_link [%s], permission id [%s]" % (user_link, permission['id']))
         if options is None:
             options = {}
 
@@ -654,6 +661,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Upserting a Permission. user_link [%s], permission id [%s]", user_link, permission['id'])
         if options is None:
             options = {}
 
@@ -686,6 +694,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading a Permission. permission_link [%s]" % permission_link)
         if options is None:
             options = {}
 
@@ -711,6 +720,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Permissions. user_link [%s]" % user_link)
         if options is None:
             options = {}
 
@@ -731,6 +741,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying Permissions. user_link [%s], query [%s]" % (user_link, query))
         if options is None:
             options = {}
 
@@ -761,6 +772,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Replacing a User. user_link [%s], user id [%s]" % (user_link, user['id']))
         if options is None:
             options = {}
 
@@ -788,6 +800,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a User. user_link [%s]" % user_link)
         if options is None:
             options = {}
 
@@ -814,6 +827,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Replacing a Permission. permission_link [%s], permission id [%s]" % (permission_link, permission['id']))
         if options is None:
             options = {}
 
@@ -841,6 +855,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a Permission. permission_link [%s]" % permission_link)
         if options is None:
             options = {}
 
@@ -852,29 +867,30 @@ class CosmosClient(object):
                                    None,
                                    options)
 
-    def ReadItems(self, collection_link, feed_options=None):
-        """Reads all documents in a collection.
+    def ReadItems(self, container_link, feed_options=None):
+        """Reads all items in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict feed_options:
 
         :return:
-            Query Iterable of Documents.
+            Query Iterable of Items.
         :rtype:
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Items. container_link: [%s]" % container_link)
         if feed_options is None:
             feed_options = {}
 
-        return self.QueryItems(collection_link, None, feed_options)
+        return self.QueryItems(container_link, None, feed_options)
 
-    def QueryItems(self, database_or_Container_link, query, options=None, partition_key=None):
-        """Queries documents in a collection.
+    def QueryItems(self, container_link, query, options=None, partition_key=None):
+        """Queries items in a collection.
 
-        :param str database_or_Container_link:
-            The link to the database when using partitioning, otherwise link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param (str or dict) query:
         :param dict options:
             The request options for the request.
@@ -882,22 +898,23 @@ class CosmosClient(object):
             Partition key for the query(default value None)
 
         :return:
-            Query Iterable of Documents.
+            Query Iterable of Items.
         :rtype:
             query_iterable.QueryIterable
 
         """
-        database_or_Container_link = base.TrimBeginningAndEndingSlashes(database_or_Container_link)
+        self.logger.debug("Querying Items. container_link: [%s], query [%s]" % (container_link, query))
+        container_link = base.TrimBeginningAndEndingSlashes(container_link)
 
         if options is None:
             options = {}
 
-        if(base.IsDatabaseLink(database_or_Container_link)):
+        if(base.IsDatabaseLink(container_link)):
             # Python doesn't have a good way of specifying an overloaded constructor, and this is how it's generally overloaded constructors are specified(by calling a @classmethod) and returning the 'self' instance
-            return query_iterable.QueryIterable.PartitioningQueryIterable(self, query, options, database_or_Container_link, partition_key)
+            return query_iterable.QueryIterable.PartitioningQueryIterable(self, query, options, container_link, partition_key)
         else:    
-            path = base.GetPathFromLink(database_or_Container_link, 'docs')
-            collection_id = base.GetResourceIdOrFullNameFromLink(database_or_Container_link)
+            path = base.GetPathFromLink(container_link, 'docs')
+            collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
             def fetch_fn(options):
                 return self.__QueryFeed(path,
                                         'docs',
@@ -906,35 +923,35 @@ class CosmosClient(object):
                                         lambda _, b: b,
                                         query,
                                         options), self.last_response_headers
-            return query_iterable.QueryIterable(self, query, options, fetch_fn, database_or_Container_link)
+            return query_iterable.QueryIterable(self, query, options, fetch_fn, container_link)
 
-    def QueryItemsChangeFeed(self, collection_link, options=None):
-        """Queries documents change feed in a collection.
+    def QueryItemsChangeFeed(self, container_link, options=None):
+        """Queries items change feed in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict options:
             The request options for the request.
             options may also specify partition key range id.
 
         :return:
-            Query Iterable of Documents.
+            Query Iterable of Items.
         :rtype:
             query_iterable.QueryIterable
 
         """
-
+        self.logger.debug("Querying items change feed. container_link: [%s]" % container_link)
         partition_key_range_id = None
         if options is not None and 'partitionKeyRangeId' in options:
             partition_key_range_id = options['partitionKeyRangeId']
 
-        return self._QueryChangeFeed(collection_link, "Documents" , options, partition_key_range_id)
+        return self._QueryChangeFeed(container_link, "Documents" , options, partition_key_range_id)
         
-    def _QueryChangeFeed(self, collection_link, resource_type, options=None, partition_key_range_id=None):
+    def _QueryChangeFeed(self, container_link, resource_type, options=None, partition_key_range_id=None):
         """Queries change feed of a resource in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param str resource_type:
             The type of the resource.
         :param dict options:
@@ -943,7 +960,7 @@ class CosmosClient(object):
             Specifies partition key range id.
 
         :return:
-            Query Iterable of Documents.
+            Query Iterable of Items.
         :rtype:
             query_iterable.QueryIterable
 
@@ -959,8 +976,8 @@ class CosmosClient(object):
             raise NotImplementedError(resource_type + " change feed query is not supported.")
 
         resource_key = resource_key_map[resource_type]
-        path = base.GetPathFromLink(collection_link, resource_key)
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, resource_key)
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         def fetch_fn(options):
             return self.__QueryFeed(path,
                                     resource_key,
@@ -970,13 +987,13 @@ class CosmosClient(object):
                                     None,
                                     options,
                                     partition_key_range_id), self.last_response_headers
-        return query_iterable.QueryIterable(self, None, options, fetch_fn, collection_link)
+        return query_iterable.QueryIterable(self, None, options, fetch_fn, container_link)
 
-    def _ReadPartitionKeyRanges(self, collection_link, feed_options=None):
+    def _ReadPartitionKeyRanges(self, container_link, feed_options=None):
         """Reads Partition Key Ranges.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict feed_options:
 
         :return:
@@ -988,13 +1005,13 @@ class CosmosClient(object):
         if feed_options is None:
             feed_options = {}
 
-        return self._QueryPartitionKeyRanges(collection_link, None, feed_options)
+        return self._QueryPartitionKeyRanges(container_link, None, feed_options)
 
-    def _QueryPartitionKeyRanges(self, collection_link, query, options=None):
+    def _QueryPartitionKeyRanges(self, container_link, query, options=None):
         """Queries Partition Key Ranges in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param (str or dict) query:
         :param dict options:
             The request options for the request.
@@ -1008,8 +1025,8 @@ class CosmosClient(object):
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(collection_link, 'pkranges')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'pkranges')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         def fetch_fn(options):
             return self.__QueryFeed(path,
                                     'pkranges',
@@ -1020,13 +1037,13 @@ class CosmosClient(object):
                                     options), self.last_response_headers
         return query_iterable.QueryIterable(self, query, options, fetch_fn)
 
-    def CreateItem(self, database_or_Container_link, document, options=None):
-        """Creates a document in a collection.
+    def CreateItem(self, container_link, item, options=None):
+        """Creates a item in a collection.
 
-        :param str database_or_Container_link:
-            The link to the database when using partitioning, otherwise link to the document collection.
-        :param dict document:
-            The Azure Cosmos document to create.
+        :param str container_link:
+            The link to the container.
+        :param dict item:
+            The Azure Cosmos item to create.
         :param dict options:
             The request options for the request.
         :param bool options['disableAutomaticIdGeneration']:
@@ -1034,7 +1051,7 @@ class CosmosClient(object):
             option is true, an error will be returned.
 
         :return:
-            The created Document.
+            The created item.
         :rtype:
             dict
 
@@ -1043,28 +1060,29 @@ class CosmosClient(object):
         # This means that if you use a mutable default argument and mutate it, you will and have mutated that object for all future calls to the function as well.
         # So, using a non-mutable deafult in this case(None) and assigning an empty dict(mutable) inside the method
         # For more details on this gotcha, please refer http://docs.python-guide.org/en/latest/writing/gotchas/
+        self.logger.debug("Creating an item. container_link: [%s]" % container_link)
         if options is None:
             options = {}
         
         # We check the link to be document collection link since it can be database link in case of client side partitioning
-        if(base.IsItemContainerLink(database_or_Container_link)):
-            options = self._AddPartitionKey(database_or_Container_link, document, options)
+        if(base.IsItemContainerLink(container_link)):
+            options = self._AddPartitionKey(container_link, item, options)
 
-        collection_id, document, path = self._GetContainerIdWithPathForItem(database_or_Container_link, document, options)
-        return self.Create(document,
+        collection_id, item, path = self._GetContainerIdWithPathForItem(container_link, item, options)
+        return self.Create(item,
                            path,
                            'docs',
                            collection_id,
                            None,
                            options)
 
-    def UpsertItem(self, database_or_Container_link, document, options=None):
-        """Upserts a document in a collection.
+    def UpsertItem(self, container_link, item, options=None):
+        """Upserts a item in a collection.
 
-        :param str database_or_Container_link:
-            The link to the database when using partitioning, otherwise link to the document collection.
-        :param dict document:
-            The Azure Cosmos document to upsert.
+        :param str container_link:
+            The link the container.
+        :param dict item:
+            The Azure Cosmos item to upsert.
         :param dict options:
             The request options for the request.
         :param bool options['disableAutomaticIdGeneration']:
@@ -1072,7 +1090,7 @@ class CosmosClient(object):
             option is true, an error will be returned.
 
         :return:
-            The upserted Document.
+            The upserted Item.
         :rtype:
             dict
 
@@ -1081,15 +1099,16 @@ class CosmosClient(object):
         # This means that if you use a mutable default argument and mutate it, you will and have mutated that object for all future calls to the function as well.
         # So, using a non-mutable deafult in this case(None) and assigning an empty dict(mutable) inside the method
         # For more details on this gotcha, please refer http://docs.python-guide.org/en/latest/writing/gotchas/
+        self.logger.debug("Upserting an item. container_link: [%s]" % container_link)
         if options is None:
             options = {}
 
         # We check the link to be document collection link since it can be database link in case of client side partitioning
-        if(base.IsItemContainerLink(database_or_Container_link)):
-            options = self._AddPartitionKey(database_or_Container_link, document, options)
+        if(base.IsItemContainerLink(container_link)):
+            options = self._AddPartitionKey(container_link, item, options)
 
-        collection_id, document, path = self._GetContainerIdWithPathForItem(database_or_Container_link, document, options)
-        return self.Upsert(document,
+        collection_id, item, path = self._GetContainerIdWithPathForItem(container_link, item, options)
+        return self.Upsert(item,
                            path,
                            'docs',
                            collection_id,
@@ -1099,10 +1118,10 @@ class CosmosClient(object):
     PartitionResolverErrorMessage = "Couldn't find any partition resolvers for the database link provided. Ensure that the link you used when registering the partition resolvers matches the link provided or you need to register both types of database link(self link as well as ID based link)."
 
     # Gets the collection id and path for the document
-    def _GetContainerIdWithPathForItem(self, database_or_Container_link, document, options):
+    def _GetContainerIdWithPathForItem(self, container_link, document, options):
         
-        if not database_or_Container_link:
-            raise ValueError("database_or_Container_link is None or empty.")
+        if not container_link:
+            raise ValueError("container_link is None or empty.")
 
         if document is None:
             raise ValueError("document is None.")
@@ -1113,50 +1132,51 @@ class CosmosClient(object):
             not options.get('disableAutomaticIdGeneration')):
             document['id'] = base.GenerateGuidId()
         
-        collection_link = database_or_Container_link
+        container_link = container_link
 
-        if(base.IsDatabaseLink(database_or_Container_link)):
-            partition_resolver = self.GetPartitionResolver(database_or_Container_link)
+        if(base.IsDatabaseLink(container_link)):
+            partition_resolver = self.GetPartitionResolver(container_link)
         
             if(partition_resolver != None):
-                collection_link = partition_resolver.ResolveForCreate(document)
+                container_link = partition_resolver.ResolveForCreate(document)
             else:
                 raise ValueError(CosmosClient.PartitionResolverErrorMessage)
         
-        path = base.GetPathFromLink(collection_link, 'docs')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'docs')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         return collection_id, document, path
     
-    def ReadItem(self, document_link, options=None):
-        """Reads a document.
+    def ReadItem(self, item_link, options=None):
+        """Reads a item.
 
-        :param str document_link:
-            The link to the document.
+        :param str item_link:
+            The link to the item.
         :param dict options:
             The request options for the request.
 
         :return:
-            The read Document.
+            The read Item.
         :rtype:
             dict
 
         """
+        self.logger.debug("Reading an item. item_link: [%s]" % item_link)
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(document_link)
-        document_id = base.GetResourceIdOrFullNameFromLink(document_link)
+        path = base.GetPathFromLink(item_link)
+        document_id = base.GetResourceIdOrFullNameFromLink(item_link)
         return self.Read(path,
                          'docs',
                          document_id,
                          None,
                          options)
 
-    def ReadTriggers(self, collection_link, options=None):
+    def ReadTriggers(self, container_link, options=None):
         """Reads all triggers in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict options:
             The request options for the request.
 
@@ -1166,16 +1186,17 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Triggers. collectionLink [%s]" % container_link)
         if options is None:
             options = {}
 
-        return self.QueryTriggers(collection_link, None, options)
+        return self.QueryTriggers(container_link, None, options)
 
-    def QueryTriggers(self, collection_link, query, options=None):
+    def QueryTriggers(self, container_link, query, options=None):
         """Queries triggers in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param (str or dict) query:
         :param dict options:
             The request options for the request.
@@ -1186,11 +1207,12 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying Triggers. container_link [%s], query [%s]" % (container_link, query))
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(collection_link, 'triggers')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'triggers')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         def fetch_fn(options):
             return self.__QueryFeed(path,
                                     'triggers',
@@ -1201,11 +1223,11 @@ class CosmosClient(object):
                                     options), self.last_response_headers
         return query_iterable.QueryIterable(self, query, options, fetch_fn)
 
-    def CreateTrigger(self, collection_link, trigger, options=None):
+    def CreateTrigger(self, container_link, trigger, options=None):
         """Creates a trigger in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict trigger:
         :param dict options:
             The request options for the request.
@@ -1216,10 +1238,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Creating a Trigger. container_link [%s], trigger id [%s]" % (container_link, trigger['id']))
         if options is None:
             options = {}
 
-        collection_id, path, trigger = self._GetContainerIdWithPathForTrigger(collection_link, trigger)
+        collection_id, path, trigger = self._GetContainerIdWithPathForTrigger(container_link, trigger)
         return self.Create(trigger,
                            path,
                            'triggers',
@@ -1227,11 +1250,11 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def UpsertTrigger(self, collection_link, trigger, options=None):
+    def UpsertTrigger(self, container_link, trigger, options=None):
         """Upserts a trigger in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict trigger:
         :param dict options:
             The request options for the request.
@@ -1242,10 +1265,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Upserting a Trigger. container_link [%s], trigger id [%s]" % (container_link, trigger['id']))
         if options is None:
             options = {}
 
-        collection_id, path, trigger = self._GetContainerIdWithPathForTrigger(collection_link, trigger)
+        collection_id, path, trigger = self._GetContainerIdWithPathForTrigger(container_link, trigger)
         return self.Upsert(trigger,
                            path,
                            'triggers',
@@ -1253,7 +1277,7 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def _GetContainerIdWithPathForTrigger(self, collection_link, trigger):
+    def _GetContainerIdWithPathForTrigger(self, container_link, trigger):
         CosmosClient.__ValidateResource(trigger)
         trigger = trigger.copy()
         if  trigger.get('serverScript'):
@@ -1261,8 +1285,8 @@ class CosmosClient(object):
         elif trigger.get('body'):
             trigger['body'] = str(trigger['body'])
         
-        path = base.GetPathFromLink(collection_link, 'triggers')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'triggers')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         return collection_id, path, trigger
     
 
@@ -1280,6 +1304,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading a Trigger. trigger_link [%s]" % trigger_link)
         if options is None:
             options = {}
 
@@ -1287,11 +1312,11 @@ class CosmosClient(object):
         trigger_id = base.GetResourceIdOrFullNameFromLink(trigger_link)
         return self.Read(path, 'triggers', trigger_id, None, options)
 
-    def ReadUserDefinedFunctions(self, collection_link, options=None):
+    def ReadUserDefinedFunctions(self, container_link, options=None):
         """Reads all user defined functions in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict options:
             The request options for the request.
 
@@ -1301,16 +1326,17 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading UserDefinedFunctions. container_link [%s]" % container_link)
         if options is None:
             options = {}
 
-        return self.QueryUserDefinedFunctions(collection_link, None, options)
+        return self.QueryUserDefinedFunctions(container_link, None, options)
 
-    def QueryUserDefinedFunctions(self, collection_link, query, options=None):
+    def QueryUserDefinedFunctions(self, container_link, query, options=None):
         """Queries user defined functions in a collection.
 
-        :param str collection_link:
-            The link to the collection.
+        :param str container_link:
+            The link to the container.
         :param (str or dict) query:
         :param dict options:
             The request options for the request.
@@ -1321,11 +1347,12 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying UserDefinedFunctions. container_link [%s], query [%s]" % (container_link, query))
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(collection_link, 'udfs')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'udfs')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         def fetch_fn(options):
             return self.__QueryFeed(path,
                                     'udfs',
@@ -1336,11 +1363,11 @@ class CosmosClient(object):
                                     options), self.last_response_headers
         return query_iterable.QueryIterable(self, query, options, fetch_fn)
 
-    def CreateUserDefinedFunction(self, collection_link, udf, options=None):
+    def CreateUserDefinedFunction(self, container_link, udf, options=None):
         """Creates a user defined function in a collection.
 
-        :param str collection_link:
-            The link to the collection.
+        :param str container_link:
+            The link to the container.
         :param str udf:
         :param dict options:
             The request options for the request.
@@ -1351,10 +1378,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Creating a UserDefinedFunction. container_link [%s], udf id [%s]" % (container_link, udf['id']))
         if options is None:
             options = {}
 
-        collection_id, path, udf = self._GetContainerIdWithPathForUDF(collection_link, udf)
+        collection_id, path, udf = self._GetContainerIdWithPathForUDF(container_link, udf)
         return self.Create(udf,
                            path,
                            'udfs',
@@ -1362,11 +1390,11 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def UpsertUserDefinedFunction(self, collection_link, udf, options=None):
+    def UpsertUserDefinedFunction(self, container_link, udf, options=None):
         """Upserts a user defined function in a collection.
 
-        :param str collection_link:
-            The link to the collection.
+        :param str container_link:
+            The link to the container.
         :param str udf:
         :param dict options:
             The request options for the request.
@@ -1377,10 +1405,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Upserting a UserDefinedFunction. container_link [%s], udf id [%s]" % (container_link, udf['id']))
         if options is None:
             options = {}
 
-        collection_id, path, udf = self._GetContainerIdWithPathForUDF(collection_link, udf)
+        collection_id, path, udf = self._GetContainerIdWithPathForUDF(container_link, udf)
         return self.Upsert(udf,
                            path,
                            'udfs',
@@ -1388,7 +1417,7 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def _GetContainerIdWithPathForUDF(self, collection_link, udf):
+    def _GetContainerIdWithPathForUDF(self, container_link, udf):
         CosmosClient.__ValidateResource(udf)
         udf = udf.copy()
         if udf.get('serverScript'):
@@ -1396,8 +1425,8 @@ class CosmosClient(object):
         elif udf.get('body'):
             udf['body'] = str(udf['body'])
         
-        path = base.GetPathFromLink(collection_link, 'udfs')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'udfs')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         return collection_id, path, udf
     
 
@@ -1415,6 +1444,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading a UserDefinedFunction. udf_link [%s]" % udf_link)
         if options is None:
             options = {}
 
@@ -1422,11 +1452,11 @@ class CosmosClient(object):
         udf_id = base.GetResourceIdOrFullNameFromLink(udf_link)
         return self.Read(path, 'udfs', udf_id, None, options)
 
-    def ReadStoredProcedures(self, collection_link, options=None):
+    def ReadStoredProcedures(self, container_link, options=None):
         """Reads all store procedures in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict options:
             The request options for the request.
 
@@ -1436,16 +1466,17 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading StoredProcedures. container_link [%s]" % container_link)
         if options is None:
             options = {}
 
-        return self.QueryStoredProcedures(collection_link, None, options)
+        return self.QueryStoredProcedures(container_link, None, options)
 
-    def QueryStoredProcedures(self, collection_link, query, options=None):
+    def QueryStoredProcedures(self, container_link, query, options=None):
         """Queries stored procedures in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param (str or dict) query:
         :param dict options:
             The request options for the request.
@@ -1456,11 +1487,12 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying StoredProcedures. container_link [%s], query [%s]" % (container_link, query))
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(collection_link, 'sprocs')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'sprocs')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         def fetch_fn(options):
             return self.__QueryFeed(path,
                                     'sprocs',
@@ -1471,11 +1503,11 @@ class CosmosClient(object):
                                     options), self.last_response_headers
         return query_iterable.QueryIterable(self, query, options, fetch_fn)
 
-    def CreateStoredProcedure(self, collection_link, sproc, options=None):
+    def CreateStoredProcedure(self, container_link, sproc, options=None):
         """Creates a stored procedure in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param str sproc:
         :param dict options:
             The request options for the request.
@@ -1486,10 +1518,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Creating a StoredProcedure. container_link: [%s], storedProcedure id [%s]" % (container_link, sproc['id']))
         if options is None:
             options = {}
 
-        collection_id, path, sproc = self._GetContainerIdWithPathForSproc(collection_link, sproc)
+        collection_id, path, sproc = self._GetContainerIdWithPathForSproc(container_link, sproc)
         return self.Create(sproc,
                            path,
                            'sprocs',
@@ -1497,11 +1530,11 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def UpsertStoredProcedure(self, collection_link, sproc, options=None):
+    def UpsertStoredProcedure(self, container_link, sproc, options=None):
         """Upserts a stored procedure in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param str sproc:
         :param dict options:
             The request options for the request.
@@ -1512,10 +1545,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Upserting a StoredProcedure. container_link: [%s], storedProcedure id [%s]" % (container_link, sproc['id']))
         if options is None:
             options = {}
 
-        collection_id, path, sproc = self._GetContainerIdWithPathForSproc(collection_link, sproc)
+        collection_id, path, sproc = self._GetContainerIdWithPathForSproc(container_link, sproc)
         return self.Upsert(sproc,
                            path,
                            'sprocs',
@@ -1523,15 +1557,15 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def _GetContainerIdWithPathForSproc(self, collection_link, sproc):
+    def _GetContainerIdWithPathForSproc(self, container_link, sproc):
         CosmosClient.__ValidateResource(sproc)
         sproc = sproc.copy()
         if sproc.get('serverScript'):
             sproc['body'] = str(sproc.pop('serverScript', ''))
         elif sproc.get('body'):
             sproc['body'] = str(sproc['body'])
-        path = base.GetPathFromLink(collection_link, 'sprocs')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'sprocs')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         return collection_id, path, sproc
     
 
@@ -1549,6 +1583,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading a StoredProcedure. sproc_link [%s]" % sproc_link)
         if options is None:
             options = {}
 
@@ -1556,11 +1591,11 @@ class CosmosClient(object):
         sproc_id = base.GetResourceIdOrFullNameFromLink(sproc_link)
         return self.Read(path, 'sprocs', sproc_id, None, options)
 
-    def ReadConflicts(self, collection_link, feed_options=None):
+    def ReadConflicts(self, container_link, feed_options=None):
         """Reads conflicts.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict feed_options:
 
         :return:
@@ -1569,16 +1604,17 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Conflicts. container_link [%s]" % container_link)
         if feed_options is None:
             feed_options = {}
 
-        return self.QueryConflicts(collection_link, None, feed_options)
+        return self.QueryConflicts(container_link, None, feed_options)
 
-    def QueryConflicts(self, collection_link, query, options=None):
+    def QueryConflicts(self, container_link, query, options=None):
         """Queries conflicts in a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param (str or dict) query:
         :param dict options:
             The request options for the request.
@@ -1589,11 +1625,12 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying Conflicts. container_link [%s], query [%s]" % (container_link, query))
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(collection_link, 'conflicts')
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link, 'conflicts')
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         def fetch_fn(options):
             return self.__QueryFeed(path,
                                     'conflicts',
@@ -1617,6 +1654,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading a Conflict. conflict_link [%s]" % conflict_link)
         if options is None:
             options = {}
 
@@ -1628,11 +1666,11 @@ class CosmosClient(object):
                          None,
                          options)
 
-    def DeleteContainer(self, collection_link, options=None):
+    def DeleteContainer(self, container_link, options=None):
         """Deletes a collection.
 
-        :param str collection_link:
-            The link to the document collection.
+        :param str container_link:
+            The link to the container.
         :param dict options:
             The request options for the request.
 
@@ -1642,35 +1680,37 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a Collection. container_link: [%s]" % container_link)
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(collection_link)
-        collection_id = base.GetResourceIdOrFullNameFromLink(collection_link)
+        path = base.GetPathFromLink(container_link)
+        collection_id = base.GetResourceIdOrFullNameFromLink(container_link)
         return self.DeleteResource(path,
                                    'colls',
                                    collection_id,
                                    None,
                                    options)
 
-    def ReplaceItem(self, document_link, new_document, options=None):
-        """Replaces a document and returns it.
+    def ReplaceItem(self, item_link, new_item, options=None):
+        """Replaces a item and returns it.
 
-        :param str document_link:
-            The link to the document.
-        :param dict new_document:
+        :param str item_link:
+            The link to the item.
+        :param dict new_item:
         :param dict options:
             The request options for the request.
 
         :return:
-            The new Document.
+            The new Item.
         :rtype:
             dict
 
         """
-        CosmosClient.__ValidateResource(new_document)
-        path = base.GetPathFromLink(document_link)
-        document_id = base.GetResourceIdOrFullNameFromLink(document_link)
+        self.logger.debug("Replacing an item. item_link: [%s], item id: [%s]" % (item_link, new_item['id']))
+        CosmosClient.__ValidateResource(new_item)
+        path = base.GetPathFromLink(item_link)
+        document_id = base.GetResourceIdOrFullNameFromLink(item_link)
         
         # Python's default arguments are evaluated once when the function is defined, not each time the function is called (like it is in say, Ruby). 
         # This means that if you use a mutable default argument and mutate it, you will and have mutated that object for all future calls to the function as well.
@@ -1680,46 +1720,47 @@ class CosmosClient(object):
             options = {}
 
         # Extract the document collection link and add the partition key to options
-        collection_link = base.GetItemContainerLink(document_link)
-        options = self._AddPartitionKey(collection_link, new_document, options)
+        container_link = base.GetItemContainerLink(item_link)
+        options = self._AddPartitionKey(container_link, new_item, options)
         
-        return self.Replace(new_document,
+        return self.Replace(new_item,
                             path,
                             'docs',
                             document_id,
                             None,
                             options)
 
-    def DeleteItem(self, document_link, options=None):
-        """Deletes a document.
+    def DeleteItem(self, item_link, options=None):
+        """Deletes a item.
 
-        :param str document_link:
-            The link to the document.
+        :param str item_link:
+            The link to the item.
         :param dict options:
             The request options for the request.
 
         :return:
-            The deleted Document.
+            The deleted Item.
         :rtype:
             dict
 
         """
+        self.logger.debug("Deleting an item. item_link: [%s]", item_link)
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(document_link)
-        document_id = base.GetResourceIdOrFullNameFromLink(document_link)
+        path = base.GetPathFromLink(item_link)
+        document_id = base.GetResourceIdOrFullNameFromLink(item_link)
         return self.DeleteResource(path,
                                    'docs',
                                    document_id,
                                    None,
                                    options)
 
-    def CreateAttachment(self, document_link, attachment, options=None):
-        """Creates an attachment in a document.
+    def CreateAttachment(self, item_link, attachment, options=None):
+        """Creates an attachment in a item.
 
-        :param str document_link:
-            The link to the document.
+        :param str item_link:
+            The link to the item.
         :param dict attachment:
             The Azure Cosmos attachment to create.
         :param dict options:
@@ -1731,10 +1772,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Creating a Attachment. item_link [%s], attachment id [%s]" % (item_link, attachment['id']))
         if options is None:
             options = {}
 
-        document_id, path = self._GetItemIdWithPathForAttachment(attachment, document_link)
+        document_id, path = self._GetItemIdWithPathForAttachment(attachment, item_link)
         return self.Create(attachment,
                            path,
                            'attachments',
@@ -1742,11 +1784,11 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def UpsertAttachment(self, document_link, attachment, options=None):
-        """Upserts an attachment in a document.
+    def UpsertAttachment(self, item_link, attachment, options=None):
+        """Upserts an attachment in a item.
 
-        :param str document_link:
-            The link to the document.
+        :param str item_link:
+            The link to the item.
         :param dict attachment:
             The Azure Cosmos attachment to upsert.
         :param dict options:
@@ -1758,10 +1800,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Upserting a Attachment. item_link [%s], attachment id [%s]" % (item_link, attachment['id']))
         if options is None:
             options = {}
 
-        document_id, path = self._GetItemIdWithPathForAttachment(attachment, document_link)
+        document_id, path = self._GetItemIdWithPathForAttachment(attachment, item_link)
         return self.Upsert(attachment,
                            path,
                            'attachments',
@@ -1769,20 +1812,20 @@ class CosmosClient(object):
                            None,
                            options)
 
-    def _GetItemIdWithPathForAttachment(self, attachment, document_link):
+    def _GetItemIdWithPathForAttachment(self, attachment, item_link):
         CosmosClient.__ValidateResource(attachment)
-        path = base.GetPathFromLink(document_link, 'attachments')
-        document_id = base.GetResourceIdOrFullNameFromLink(document_link)
+        path = base.GetPathFromLink(item_link, 'attachments')
+        document_id = base.GetResourceIdOrFullNameFromLink(item_link)
         return document_id, path
 
     def CreateAttachmentAndUploadMedia(self,
-                                       document_link,
+                                       item_link,
                                        readable_stream,
                                        options=None):
         """Creates an attachment and upload media.
 
-        :param str document_link:
-            The link to the document.
+        :param str item_link:
+            The link to the item.
         :param (file-like stream object) readable_stream: 
         :param dict options:
             The request options for the request.
@@ -1793,10 +1836,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Creating an Attachment and uploading media. item_link: [%s]" % item_link)
         if options is None:
             options = {}
 
-        document_id, initial_headers, path = self._GetItemIdWithPathForAttachmentMedia(document_link, options)
+        document_id, initial_headers, path = self._GetItemIdWithPathForAttachmentMedia(item_link, options)
         return self.Create(readable_stream,
                            path,
                            'attachments',
@@ -1805,13 +1849,13 @@ class CosmosClient(object):
                            options)
 
     def UpsertAttachmentAndUploadMedia(self,
-                                       document_link,
+                                       item_link,
                                        readable_stream,
                                        options=None):
         """Upserts an attachment and upload media.
 
-        :param str document_link:
-            The link to the document.
+        :param str item_link:
+            The link to the item.
         :param (file-like stream object) readable_stream:
         :param dict options:
             The request options for the request.
@@ -1822,10 +1866,11 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Upserting an Attachment and uploading media. item_link: [%s]" % item_link)
         if options is None:
             options = {}
 
-        document_id, initial_headers, path = self._GetItemIdWithPathForAttachmentMedia(document_link, options)
+        document_id, initial_headers, path = self._GetItemIdWithPathForAttachmentMedia(item_link, options)
         return self.Upsert(readable_stream,
                            path,
                            'attachments',
@@ -1833,7 +1878,7 @@ class CosmosClient(object):
                            initial_headers,
                            options)
 
-    def _GetItemIdWithPathForAttachmentMedia(self, document_link, options):
+    def _GetItemIdWithPathForAttachmentMedia(self, item_link, options):
         initial_headers = dict(self.default_headers)
         
         # Add required headers slug and content-type.
@@ -1847,8 +1892,8 @@ class CosmosClient(object):
             initial_headers[http_constants.HttpHeaders.ContentType] = (
                 runtime_constants.MediaTypes.OctetStream)
         
-        path = base.GetPathFromLink(document_link, 'attachments')
-        document_id = base.GetResourceIdOrFullNameFromLink(document_link)
+        path = base.GetPathFromLink(item_link, 'attachments')
+        document_id = base.GetResourceIdOrFullNameFromLink(item_link)
         return document_id, initial_headers, path
 
 
@@ -1866,6 +1911,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading a Attachment. attachment_link [%s]" % attachment_link)
         if options is None:
             options = {}
 
@@ -1877,11 +1923,11 @@ class CosmosClient(object):
                          None,
                          options)
 
-    def ReadAttachments(self, document_link, options=None):
-        """Reads all attachments in a document.
+    def ReadAttachments(self, item_link, options=None):
+        """Reads all attachments in a item.
 
-        :param str document_link:
-            The link to the document.
+        :param str item_link:
+            The link to the item.
         :param dict options:
             The request options for the request.
 
@@ -1891,16 +1937,17 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Attachments. item_link [%s]" % item_link)
         if options is None:
             options = {}
 
-        return self.QueryAttachments(document_link, None, options)
+        return self.QueryAttachments(item_link, None, options)
 
-    def QueryAttachments(self, document_link, query, options=None):
-        """Queries attachments in a document.
+    def QueryAttachments(self, item_link, query, options=None):
+        """Queries attachments in a item.
 
-        :param str document_link:
-            The link to the document.
+        :param str item_link:
+            The link to the item.
         :param (str or dict) query:
         :param dict options:
             The request options for the request.
@@ -1911,11 +1958,12 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying Attachments. item_link [%s], query [%s]" % (item_link, query))
         if options is None:
             options = {}
 
-        path = base.GetPathFromLink(document_link, 'attachments')
-        document_id = base.GetResourceIdOrFullNameFromLink(document_link)
+        path = base.GetPathFromLink(item_link, 'attachments')
+        document_id = base.GetResourceIdOrFullNameFromLink(item_link)
 
         def fetch_fn(options):
             return self.__QueryFeed(path,
@@ -1944,6 +1992,7 @@ class CosmosClient(object):
             str or file-like stream object
 
         """
+        self.logger.debug("Reading a Media. media_link [%s]" % media_link)
         default_headers = self.default_headers
 
         path = base.GetPathFromLink(media_link)
@@ -1979,6 +2028,7 @@ class CosmosClient(object):
             str or file-like stream object
 
         """
+        self.logger.debug("Updating a Media. media_link [%s]" % media_link)
         if options is None:
             options = {}
 
@@ -2031,6 +2081,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Replacing a Attachment. attachment_link [%s], attachment id [%s]" % (attachment_link, attachment['id']))
         if options is None:
             options = {}
 
@@ -2058,6 +2109,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a Attachment. attachment_link [%s]" % attachment_link)
         if options is None:
             options = {}
 
@@ -2084,6 +2136,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Replacing a Trigger. trigger_link [%s], trigger id [%s]" % (trigger_link, trigger['id']))
         if options is None:
             options = {}
 
@@ -2117,6 +2170,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a Trigger. trigger_link [%s]" % trigger_link)
         if options is None:
             options = {}
 
@@ -2143,6 +2197,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Replacing a UserDefinedFunction. udf_link [%s], udf id [%s]" % (udf_link, udf['id']))
         if options is None:
             options = {}
 
@@ -2176,6 +2231,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a UserDefinedFunction. udf_link [%s]" % udf_link)
         if options is None:
             options = {}
 
@@ -2203,6 +2259,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Executing a StoredProcedure. sproc_link [%s]" % sproc_link)
         if options is None:
             options = {}
 
@@ -2248,6 +2305,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Replacing a StoredProcedure. sproc_link [%s], storedProcedure id [%s]" % (sproc_link, sproc['id']))
         if options is None:
             options = {}
 
@@ -2281,6 +2339,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a StoredProcedure. sproc_link [%s]" % sproc_link)
         if options is None:
             options = {}
 
@@ -2306,6 +2365,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Deleting a Conflicts. conflict_link [%s]" % conflict_link)
         if options is None:
             options = {}
 
@@ -2330,6 +2390,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Replacing an Offer. offer_link [%s], offer id [%s]" % (offer_link, offer['id']))
         CosmosClient.__ValidateResource(offer)
         path = base.GetPathFromLink(offer_link)
         offer_id = base.GetResourceIdOrFullNameFromLink(offer_link)
@@ -2347,6 +2408,7 @@ class CosmosClient(object):
             dict
 
         """
+        self.logger.debug("Reading an Offer. offer_link [%s]", offer_link)
         path = base.GetPathFromLink(offer_link)
         offer_id = base.GetResourceIdOrFullNameFromLink(offer_link)
         return self.Read(path, 'offers', offer_id, None, {})
@@ -2363,6 +2425,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Reading Offers.")
         if options is None:
             options = {}
 
@@ -2381,6 +2444,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
+        self.logger.debug("Querying Offers. query [%s]", query)
         if options is None:
             options = {}
 
@@ -2403,6 +2467,7 @@ class CosmosClient(object):
             documents.DatabaseAccount
 
         """
+        self.logger.debug("Getting Database Account")
         if url_connection is None:
             url_connection = self.url_connection
 
@@ -2890,19 +2955,19 @@ class CosmosClient(object):
                 raise ValueError('Id ends with a space.')
 
     # Adds the partition key to options
-    def _AddPartitionKey(self, collection_link, document, options):
-        collection_link = base.TrimBeginningAndEndingSlashes(collection_link)
+    def _AddPartitionKey(self, container_link, document, options):
+        container_link = base.TrimBeginningAndEndingSlashes(container_link)
         
         #TODO: Refresh the cache if partition is extracted automatically and we get a 400.1001
 
         # If the document collection link is present in the cache, then use the cached partitionkey definition
-        if collection_link in self.partition_key_definition_cache:
-            partitionKeyDefinition = self.partition_key_definition_cache.get(collection_link)
+        if container_link in self.partition_key_definition_cache:
+            partitionKeyDefinition = self.partition_key_definition_cache.get(container_link)
         # Else read the collection from backend and add it to the cache
         else:
-            collection = self.ReadContainer(collection_link)
+            collection = self.ReadContainer(container_link)
             partitionKeyDefinition = collection.get('partitionKey')
-            self.partition_key_definition_cache[collection_link] = partitionKeyDefinition
+            self.partition_key_definition_cache[container_link] = partitionKeyDefinition
         
         # If the collection doesn't have a partition key definition, skip it as it's a legacy collection 
         if partitionKeyDefinition:

@@ -2854,6 +2854,7 @@ class CosmosClient(object):
         :raises SystemError: If the query compatibility mode is undefined.
 
         """
+        self.logger.debug('partition_key_range_id being queried [%s]' % partition_key_range_id)
         if options is None:
             options = {}
 

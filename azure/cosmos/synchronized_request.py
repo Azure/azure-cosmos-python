@@ -172,6 +172,7 @@ def _Request(global_endpoint_manager, request, connection_policy, requests_sessi
             try:
                 result = json.loads(data)
             except:
+                logger.exception('')
                 raise errors.JSONParseFailure(data)
 
     return (result, headers)

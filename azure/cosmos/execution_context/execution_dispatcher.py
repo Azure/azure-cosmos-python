@@ -23,6 +23,9 @@
 """
 
 import json
+import logging
+import logging.config
+import six
 from six.moves import xrange
 from azure.cosmos.errors import HTTPFailure
 from azure.cosmos.execution_context.base_execution_context import _QueryExecutionContextBase
@@ -50,7 +53,8 @@ class _ProxyQueryExecutionContext(_QueryExecutionContextBase):
         self._resource_link = resource_link
         self._query = query
         self._fetch_function = fetch_function
-        
+        self.logger = logging.getLogger(__name__)
+
     def next(self):
         """Returns the next query result.
         
@@ -67,6 +71,10 @@ class _ProxyQueryExecutionContext(_QueryExecutionContextBase):
                 query_execution_info = self._get_partitioned_execution_info(e)
                 self._execution_context = self._create_pipelined_execution_context(query_execution_info)
             else:
+                if six.PY2:
+                    self.logger.exception(e.message)
+                else:
+                    self.logger(e)
                 raise e
         
         return next(self._execution_context)
@@ -88,6 +96,10 @@ class _ProxyQueryExecutionContext(_QueryExecutionContextBase):
                 query_execution_info = self._get_partitioned_execution_info(e)
                 self._execution_context = self._create_pipelined_execution_context(query_execution_info)
             else:
+                if six.PY2:
+                    self.logger.exception(e.message)
+                else:
+                    self.logger(e)
                 raise e
              
         return self._execution_context.fetch_next_block()        
@@ -136,8 +148,7 @@ class _PipelineExecutionContext(_QueryExecutionContextBase):
         aggregates = query_execution_info.get_aggregates()
         if aggregates:
             self._endpoint = endpoint_component._QueryExecutionAggregateEndpointComponent(self._endpoint, aggregates)
-   
-        
+
     def next(self):
         """Returns the next query result.
         

@@ -1,3 +1,11 @@
+## Changes in 3.1.1 : ##
+
+- Bug fix in orderby queries to honor maxItemCount
+
+## Changes in 3.1.0 : ##
+
+- Added support for picking up endpoint and key from environment variables
+
 ## Changes in 3.0.2 : ##
 
 - Added Support for MultiPolygon Datatype
@@ -17,8 +25,8 @@
   - DocumentClient to CosmosClient
   - Collection to Container
   - Document to Item
-  - Package name updated to “azure-cosmos”
-  - Namespace updated to “azure.cosmos”
+  - Package name updated to "azure-cosmos"
+  - Namespace updated to "azure.cosmos"
 
 ## Changes in 2.3.3 : ##
 

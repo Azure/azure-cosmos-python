@@ -58,59 +58,9 @@ class MultiOrderbyTests(unittest.TestCase):
     client = cosmos_client.CosmosClient(host, {'masterKey': masterKey}, connectionPolicy)
     database = test_config._test_config.create_database_if_not_exist(client)
 
-    def generate_multi_orderby_document(self):
-        document = {}
-        document['id'] = str(uuid.uuid4())
-        document[self.NUMBER_FIELD] = random.randint(0, 5)
-        document[self.NUMBER_FIELD_2] = random.randint(0, 5)
-        document[self.BOOL_FIELD] = random.randint(0, 2) % 2 == 0
-        document[self.STRING_FIELD] = str(random.randint(0, 5))
-        document[self.STRING_FIELD_2] = str(random.randint(0, 5))
-        document[self.NULL_FIELD] = None
-        document[self.OBJECT_FIELD] = ""
-        document[self.ARRAY_FIELD] = []
-        document[self.SHORT_STRING_FIELD] = "a" + str(random.randint(0, 100))
-        document[self.MEDIUM_STRING_FIELD] = "a" + str(random.randint(0, 128) + 100)
-        document[self.LONG_STRING_FIELD] = "a" + str(random.randint(0, 255) + 128)
-        document[self.PARTITION_KEY] = random.randint(0, 5)
-        return document
-
-    def create_random_documents(self, container, number_of_documents, number_of_duplicates):
-        for i in range(0, number_of_documents):
-            multi_orderby_document = self.generate_multi_orderby_document()
-            for j in range(0, number_of_duplicates):
-                # Add the document itself for exact duplicates
-                clone = multi_orderby_document.copy()
-                clone['id'] = str(uuid.uuid4())
-                self.documents.append(clone)
-
-                # Permute all the fields so that there are duplicates with tie breaks
-                number_clone = multi_orderby_document.copy()
-                number_clone[self.NUMBER_FIELD] = random.randint(0, 5)
-                number_clone['id'] = str(uuid.uuid4())
-                self.documents.append(number_clone)
-
-                string_clone = multi_orderby_document.copy()
-                string_clone[self.STRING_FIELD] = str(random.randint(0, 5))
-                string_clone['id'] = str(uuid.uuid4())
-                self.documents.append(string_clone)
-
-                bool_clone = multi_orderby_document.copy()
-                bool_clone[self.BOOL_FIELD] = random.randint(0, 2) % 2 == 0
-                bool_clone['id'] = str(uuid.uuid4())
-                self.documents.append(bool_clone)
-
-                # Also fuzz what partition it goes to
-                partition_clone = multi_orderby_document.copy()
-                partition_clone[self.PARTITION_KEY] = random.randint(0, 5)
-                partition_clone['id'] = str(uuid.uuid4())
-                self.documents.append(partition_clone)
-
-        for document in self.documents:
-            self.client.CreateItem(container['_self'], document)
-
-    def test_multi_orderby_queries(self):
-        indexingPolicy = {
+    @classmethod
+    def setUpClass(cls):
+        cls.indexingPolicy = {
             "indexingMode": "consistent",
             "automatic": True,
             "includedPaths": [
@@ -200,19 +150,77 @@ class MultiOrderbyTests(unittest.TestCase):
         container_id = 'multi_orderby_container' + str(uuid.uuid4())
         container_definition = {
             'id': container_id,
-            'indexingPolicy': indexingPolicy,
+            'indexingPolicy': cls.indexingPolicy,
             'partitionKey': partitionKey
         }
         options = { 'offerThroughput': 25100 }
-        created_container = self.client.CreateContainer(self.database['_self'], container_definition, options)
+        cls.created_container = cls.client.CreateContainer(cls.database['_self'], container_definition, options)
 
         number_of_documents = 4
         number_of_duplicates = 5
-        self.create_random_documents(created_container, number_of_documents, number_of_duplicates)
+        cls.create_random_documents(cls.created_container, number_of_documents, number_of_duplicates)
 
+    @classmethod
+    def tearDownClass(cls):
+        cls.client.DeleteContainer(cls.created_container['_self'])
+
+    @classmethod
+    def generate_multi_orderby_document(self):
+        document = {}
+        document['id'] = str(uuid.uuid4())
+        document[self.NUMBER_FIELD] = random.randint(0, 5)
+        document[self.NUMBER_FIELD_2] = random.randint(0, 5)
+        document[self.BOOL_FIELD] = random.randint(0, 2) % 2 == 0
+        document[self.STRING_FIELD] = str(random.randint(0, 5))
+        document[self.STRING_FIELD_2] = str(random.randint(0, 5))
+        document[self.NULL_FIELD] = None
+        document[self.OBJECT_FIELD] = ""
+        document[self.ARRAY_FIELD] = []
+        document[self.SHORT_STRING_FIELD] = "a" + str(random.randint(0, 100))
+        document[self.MEDIUM_STRING_FIELD] = "a" + str(random.randint(0, 128) + 100)
+        document[self.LONG_STRING_FIELD] = "a" + str(random.randint(0, 255) + 128)
+        document[self.PARTITION_KEY] = random.randint(0, 5)
+        return document
+
+    @classmethod
+    def create_random_documents(cls, container, number_of_documents, number_of_duplicates):
+        for i in range(0, number_of_documents):
+            multi_orderby_document = cls.generate_multi_orderby_document()
+            for j in range(0, number_of_duplicates):
+                # Add the document itself for exact duplicates
+                clone = multi_orderby_document.copy()
+                clone['id'] = str(uuid.uuid4())
+                cls.documents.append(clone)
+
+                # Permute all the fields so that there are duplicates with tie breaks
+                number_clone = multi_orderby_document.copy()
+                number_clone[cls.NUMBER_FIELD] = random.randint(0, 5)
+                number_clone['id'] = str(uuid.uuid4())
+                cls.documents.append(number_clone)
+
+                string_clone = multi_orderby_document.copy()
+                string_clone[cls.STRING_FIELD] = str(random.randint(0, 5))
+                string_clone['id'] = str(uuid.uuid4())
+                cls.documents.append(string_clone)
+
+                bool_clone = multi_orderby_document.copy()
+                bool_clone[cls.BOOL_FIELD] = random.randint(0, 2) % 2 == 0
+                bool_clone['id'] = str(uuid.uuid4())
+                cls.documents.append(bool_clone)
+
+                # Also fuzz what partition it goes to
+                partition_clone = multi_orderby_document.copy()
+                partition_clone[cls.PARTITION_KEY] = random.randint(0, 5)
+                partition_clone['id'] = str(uuid.uuid4())
+                cls.documents.append(partition_clone)
+
+        for document in cls.documents:
+            cls.client.CreateItem(container['_self'], document)
+
+    def test_multi_orderby_queries(self):
         feed_options = { 'enableCrossPartitionQuery': True }
         bool_vals = [True, False]
-        composite_indexes = indexingPolicy['compositeIndexes']
+        composite_indexes = self.indexingPolicy['compositeIndexes']
         for composite_index in composite_indexes:
             # for every order
             for invert in bool_vals:
@@ -255,7 +263,7 @@ class MultiOrderbyTests(unittest.TestCase):
 
                         expected_ordered_list = self.top(self.sort(self.filter(self.documents, has_filter), composite_index, invert), has_top, top_count)
 
-                        result_ordered_list = list(self.client.QueryItems(created_container['_self'], query, feed_options))
+                        result_ordered_list = list(self.client.QueryItems(self.created_container['_self'], query, feed_options))
 
                         self.validate_results(expected_ordered_list, result_ordered_list, composite_index)
 

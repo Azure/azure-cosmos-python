@@ -1711,7 +1711,7 @@ class CRUDTests(unittest.TestCase):
             "SELECT * FROM root WHERE (ST_DISTANCE(root.Location, {type: 'Point', coordinates: [20.1, 20]}) < 20000) "))
         self.assertEqual(1, len(results))
         self.assertEqual('loc1', results[0]['id'])
-
+        self.client.DeleteContainer(collection['_self'])
     
     def test_attachment_crud_self_link(self):
         self._test_attachment_crud(False)
@@ -3199,8 +3199,7 @@ class CRUDTests(unittest.TestCase):
 
         root_included_path = __get_first([included_path for included_path in indexing_policy['includedPaths']
                               if included_path['path'] == '/*'])
-        self.assertEqual(0, len(root_included_path['indexes']))
-        print(root_included_path['indexes'])
+        self.assertFalse('indexes' in root_included_path)
 
     def test_client_request_timeout(self):
         connection_policy = documents.ConnectionPolicy()

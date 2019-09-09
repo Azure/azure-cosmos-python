@@ -352,6 +352,8 @@ class ConnectionPolicy(object):
         This is intended to be used only when targeting emulator endpoint to avoid failing your requests with SSL related error.
     :ivar boolean UseMultipleWriteLocations:
         Flag to enable writes on any locations (regions) for geo-replicated database accounts in the azure Cosmos service.
+    :ivar (int or requests.packages.urllib3.util.retry) ConnectionRetryConfiguration:
+        Retry Configuration to be used for urllib3 connection retries.
     """
 
     __defaultRequestTimeout = 60000  # milliseconds
@@ -371,6 +373,7 @@ class ConnectionPolicy(object):
         self.RetryOptions = retry_options.RetryOptions()
         self.DisableSSLVerification = False
         self.UseMultipleWriteLocations = False
+        self.ConnectionRetryConfiguration = None
 
 class Undefined(object):
     """Represents undefined value for partitionKey when it's mising.

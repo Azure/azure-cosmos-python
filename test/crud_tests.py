@@ -51,6 +51,8 @@ import azure.cosmos.range as partition_range
 import test.test_config as test_config
 import test.test_partition_resolver as test_partition_resolver
 import azure.cosmos.base as base
+from requests.packages.urllib3.util.retry import Retry
+from requests.exceptions import ConnectionError
 
 
 #IMPORTANT NOTES: 
@@ -3210,6 +3212,47 @@ class CRUDTests(unittest.TestCase):
             cosmos_client.CosmosClient(CRUDTests.host,
                                                 {'masterKey': CRUDTests.masterKey},
                                                 connection_policy)
+
+    def test_client_request_timeout_when_connection_retry_configuration_specified(self):
+        connection_policy = documents.ConnectionPolicy()
+        # making timeout 0 ms to make sure it will throw
+        connection_policy.RequestTimeout = 0
+        connection_policy.ConnectionRetryConfiguration = Retry(
+                                                            total=3,
+                                                            read=3,
+                                                            connect=3,
+                                                            backoff_factor=0.3,
+                                                            status_forcelist=(500, 502, 504)
+                                                        )
+        with self.assertRaises(Exception):
+            # client does a getDatabaseAccount on initialization, which will time out
+            cosmos_client.CosmosClient(CRUDTests.host,
+                                                {'masterKey': CRUDTests.masterKey},
+                                                connection_policy)
+
+    def test_client_connection_retry_configuration(self):
+        total_time_for_two_retries = self.initialize_client_with_connection_retry_config(2)
+        total_time_for_three_retries = self.initialize_client_with_connection_retry_config(3)
+        self.assertGreater(total_time_for_three_retries, total_time_for_two_retries)
+
+    def initialize_client_with_connection_retry_config(self, retries):
+        connection_policy = documents.ConnectionPolicy()
+        connection_policy.ConnectionRetryConfiguration = Retry(
+                                                            total=retries,
+                                                            read=retries,
+                                                            connect=retries,
+                                                            backoff_factor=0.3,
+                                                            status_forcelist=(500, 502, 504)
+                                                        )
+        start_time = time.time()
+        try:
+            cosmos_client.CosmosClient("https://localhost:9999",
+                                                {'masterKey': CRUDTests.masterKey},
+                                                connection_policy)
+            self.fail()
+        except ConnectionError as e:
+            end_time = time.time()
+            return end_time - start_time
 
     def test_query_iterable_functionality(self):
         def __CreateResources(client):

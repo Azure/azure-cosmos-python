@@ -23,6 +23,7 @@
 """
 
 import requests
+from requests.adapters import HTTPAdapter
 
 import six
 import azure.cosmos.base as base
@@ -140,6 +141,11 @@ class CosmosClient(object):
 
         # creating a requests session used for connection pooling and re-used by all requests
         self._requests_session = requests.Session()
+
+        if self.connection_policy.ConnectionRetryConfiguration is not None:
+            adapter = HTTPAdapter(max_retries=self.connection_policy.ConnectionRetryConfiguration)
+            self._requests_session.mount('http://', adapter)
+            self._requests_session.mount('https://', adapter)
 
         if self.connection_policy.ProxyConfiguration and self.connection_policy.ProxyConfiguration.Host:
             host = connection_policy.ProxyConfiguration.Host

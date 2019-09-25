@@ -1,4 +1,4 @@
-﻿#The MIT License (MIT)
+#The MIT License (MIT)
 #Copyright (c) 2014 Microsoft Corporation
 
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -194,7 +194,7 @@ class Test_retry_policy_tests(unittest.TestCase):
         result_docs = list(docs)
         self.assertEqual(result_docs[0]['id'], 'doc1')
         self.assertEqual(result_docs[1]['id'], 'doc2')
-        self.assertEqual(self.counter, 12)
+        self.assertEqual(self.counter, 6)
 
         self.counter = 0
         retry_utility._ExecuteFunction = self.OriginalExecuteFunction
@@ -249,6 +249,38 @@ class Test_retry_policy_tests(unittest.TestCase):
         self.assertEqual(self.counter, 4)
 
         retry_utility._ExecuteFunction = self.OriginalExecuteFunction
+
+    def test_429_on_first_page(self):
+        client = document_client.DocumentClient(Test_retry_policy_tests.host, {'masterKey': Test_retry_policy_tests.masterKey})
+
+        document_definition = { 'id': 'doc429',
+                                'name': 'sample document',
+                                'key': 'value'}
+
+        created_document = client.CreateDocument(self.created_collection['_self'], document_definition)
+
+        # Mock an overloaded server which always returns 429 Too Many
+        # Requests, by hooking the client's POST method.
+        original_post_function = client._DocumentClient__Post
+        client._DocumentClient__Post = self._MockPost429
+
+        # Test: query for the document.  Expect the mock overloaded server
+        # to raise a 429 exception.
+        try:
+            query = client.QueryDocuments(self.created_collection['_self'], "SELECT * FROM c")
+            docs = list(query) # force execution now
+            self.assertFalse(True, 'function should raise HTTPFailure.')
+
+        except errors.HTTPFailure as ex:
+            self.assertEqual(ex.status_code, StatusCodes.TOO_MANY_REQUESTS)
+
+        client._DocumentClient__Post = original_post_function
+        client.DeleteDocument(created_document['_self'])
+
+    def _MockPost429(self, url, path, body, headers):
+        raise errors.HTTPFailure(StatusCodes.TOO_MANY_REQUESTS,
+                                 "Request rate is too large",
+                                 {HttpHeaders.RetryAfterInMilliseconds: 500})
 
     def _MockExecuteFunction(self, function, *args, **kwargs):
         raise errors.HTTPFailure(StatusCodes.TOO_MANY_REQUESTS, "Request rate is too large", {HttpHeaders.RetryAfterInMilliseconds: self.retry_after_in_milliseconds})

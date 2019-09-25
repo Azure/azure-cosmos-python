@@ -32,7 +32,7 @@ class RetryOptions(object):
     :ivar int MaxWaitTimeInSeconds:
         Max wait time in seconds to wait for a request while the retries are happening. Default value 30 seconds.
     """
-    def __init__(self, max_retry_attempt_count = 9, fixed_retry_interval_in_milliseconds = None, max_wait_time_in_seconds = 30):
+    def __init__(self, max_retry_attempt_count = 17, fixed_retry_interval_in_milliseconds = None, max_wait_time_in_seconds = 60):
         self._max_retry_attempt_count = max_retry_attempt_count
         self._fixed_retry_interval_in_milliseconds = fixed_retry_interval_in_milliseconds
         self._max_wait_time_in_seconds = max_wait_time_in_seconds

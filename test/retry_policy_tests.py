@@ -194,7 +194,7 @@ class Test_retry_policy_tests(unittest.TestCase):
         result_docs = list(docs)
         self.assertEqual(result_docs[0]['id'], 'doc1')
         self.assertEqual(result_docs[1]['id'], 'doc2')
-        self.assertEqual(self.counter, 12)
+        self.assertEqual(self.counter, 18)
 
         self.counter = 0
         retry_utility._ExecuteFunction = self.OriginalExecuteFunction

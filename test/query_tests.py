@@ -166,8 +166,8 @@ class QueryTest(unittest.TestCase):
         query_options = {'enableCrossPartitionQuery': True,
                          'maxItemCount': 1}
         query_iterable = self.client.QueryItems(created_collection['_self'], query, query_options)
-        #1 call to get query plans, 1 call to get pkr, 10 calls to one partion with the documents, 1 call each to other 4 partitions
-        self.validate_query_requests_count(query_iterable, 16 * 2)
+        #1 call to get query plans, 1 call to get pkr, 11 calls to one partion with the documents, 1 call each to other 4 partitions
+        self.validate_query_requests_count(query_iterable, 17 * 2)
 
         query_options['maxItemCount'] = 100
         query_iterable = self.client.QueryItems(created_collection['_self'], query, query_options)

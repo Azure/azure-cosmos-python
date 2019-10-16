@@ -95,11 +95,11 @@ The following sections provide several code snippets covering some of the most c
 
 * [Create a database](#create-a-database)
 * [Create a container](#create-a-container)
+* [Replace throughput for a container](#replace-throughput-for-a-container)
 * [Get an existing container](#get-an-existing-container)
 * [Insert data](#insert-data)
 * [Delete data](#delete-data)
 * [Query the database](#query-the-database)
-* [Get database properties](#get-database-properties)
 * [Modify container properties](#modify-container-properties)
 
 ### Create a database
@@ -137,7 +137,7 @@ except errors.HTTPFailure as e:
 ```
 
 
-### Replace the throughput for a container
+### Replace throughput for a container
 
 A single offer object exists per container. This object contains information regarding the container's throughput.
 This example retrieves the offer object using [CosmosClient.QueryOffers][ref_cosmosclient_query_offers], and modifies the offer object and replaces the throughput for the container using [CosmosClient.ReplaceOffer][ref_cosmosclient_replace_offer].

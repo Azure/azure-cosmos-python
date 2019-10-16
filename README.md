@@ -19,7 +19,7 @@ Please see the latest version of the [Azure Cosmos DB Python SDK for SQL API][re
 ## Getting started
 
 * Azure subscription - [Create a free account][azure_sub]
-* Azure [Cosmos DB account][cosmos_account] - SQL API 
+* Azure [Cosmos DB account][cosmos_account] - SQL API
 * [Python 2.7 or 3.5.3+][python]
 
 

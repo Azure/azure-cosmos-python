@@ -14,6 +14,8 @@ Looking for source code or API reference?
 * [SDK source code][source_code]
 * [SDK reference documentation][ref_cosmos_sdk]
 
+Please see the latest version of the [Azure Cosmos DB Python SDK for SQL API][ref_v4_source]
+
 ## Getting started
 
 * Azure subscription - [Create a free account][azure_sub]
@@ -295,6 +297,7 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_cosmosclient_replace_offer]: https://docs.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python#replaceoffer-offer-link--offer-
 [ref_cosmosclient]: https://docs.microsoft.com/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python
 [ref_httpfailure]: https://docs.microsoft.com/python/api/azure-cosmos/azure.cosmos.errors.httpfailure?view=azure-python
+[ref_v4_source]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos
 [sample_database_mgmt]: https://github.com/Azure/azure-cosmos-python/tree/master/samples/DatabaseManagement
 [sample_document_mgmt]: https://github.com/Azure/azure-cosmos-python/tree/master/samples/DocumentManagement
 [source_code]: https://github.com/Azure/azure-cosmos-python

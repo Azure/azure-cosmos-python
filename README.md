@@ -104,7 +104,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a database
 
-After authenticating your [CosmosClient][ref_cosmosclient], you can work with any resource in the account. You can use [CreateDatabase][ref_cosmosclient_create_database] to create a database. 
+After authenticating your [CosmosClient][ref_cosmosclient], you can work with any resource in the account. You can use [CosmosClient.CreateDatabase][ref_cosmosclient_create_database] to create a database. 
 
 ```Python
 database_name = 'testDatabase'
@@ -116,7 +116,7 @@ except errors.HTTPFailure:
 
 ### Create a container
 
-This example creates a container with default settings. If a container with the same name already exists in the database (generating a `409 Conflict` error), the existing container is obtained instead.
+This example creates a container with 400 RU/s as the throughput, using [CosmosClient.CreateContainer][ref_cosmosclient_create_container]. If a container with the same name already exists in the database (generating a `409 Conflict` error), the existing container is obtained instead.
 
 ```Python
 import azure.cosmos.documents as documents
@@ -128,7 +128,7 @@ container_definition = {'id': 'products',
                                     }
                         }
 try:
-    container = client.CreateContainer("dbs/" + database['id'], container_definition)
+    container = client.CreateContainer("dbs/" + database['id'], container_definition, {'offerThroughput': 400})
 except errors.HTTPFailure as e:
     if e.status_code == http_constants.StatusCodes.CONFLICT:
         container = client.ReadContainer("dbs/" + database['id'] + "/colls/" + container_definition['id'])
@@ -136,9 +136,26 @@ except errors.HTTPFailure as e:
         raise e
 ```
 
+
+### Replace the throughput for a container
+
+A single offer object exists per container. This object contains information regarding the container's throughput.
+This example retrieves the offer object using [CosmosClient.QueryOffers][ref_cosmosclient_query_offers], and modifies the offer object and replaces the throughput for the container using [CosmosClient.ReplaceOffer][ref_cosmosclient_replace_offer].
+```Python
+# Get the offer for the container
+offers = list(client.QueryOffers("Select * from root r where r.offerResourceId='" + container['_rid'] + "'"))
+offer = offers[0]
+print("current throughput for " + container['id'] + ": " + str(offer['content']['offerThroughput']))
+
+# Replace the offer with a new throughput
+offer['content']['offerThroughput'] = 1000
+client.ReplaceOffer(offer['_self'], offer)
+print("new throughput for " + container['id'] + ": " + str(offer['content']['offerThroughput']))
+```
+
 ### Get an existing container
 
-Retrieve an existing container from the database:
+Retrieve an existing container from the database using [CosmosClient.ReadContainer][ref_cosmosclient_read_container]:
 
 ```Python
 database_id = 'testDatabase'
@@ -272,6 +289,10 @@ For more extensive documentation on the Cosmos DB service, see the [Azure Cosmos
 [ref_container_upsert_item]: https://docs.microsoft.com/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python#upsertitem-database-or-container-link--document--options-none-
 [ref_cosmos_sdk]: https://docs.microsoft.com/python/api/azure-cosmos/azure.cosmos.cosmos_client?view=azure-python
 [ref_cosmosclient_create_database]: https://docs.microsoft.com/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python#createdatabase-database--options-none-
+[ref_cosmosclient_create_container]: https://docs.microsoft.com/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python#createcontainer-database-link--collection--options-none-
+[ref_cosmosclient_read_container]: https://docs.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python#readcontainer-collection-link--options-none-
+[ref_cosmosclient_query_offers]: https://docs.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python#queryoffers-query--options-none-
+[ref_cosmosclient_replace_offer]: https://docs.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python#replaceoffer-offer-link--offer-
 [ref_cosmosclient]: https://docs.microsoft.com/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python
 [ref_httpfailure]: https://docs.microsoft.com/python/api/azure-cosmos/azure.cosmos.errors.httpfailure?view=azure-python
 [sample_database_mgmt]: https://github.com/Azure/azure-cosmos-python/tree/master/samples/DatabaseManagement

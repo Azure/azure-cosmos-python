@@ -1,3 +1,7 @@
+## Changes in 3.1.2 : ##
+
+- Added suport for connection retry configuration
+
 ## Changes in 3.1.1 : ##
 
 - Bug fix in orderby queries to honor maxItemCount

@@ -1,11 +1,19 @@
 ﻿#!/usr/bin/env python
 
 from distutils.core import setup
+from io import open
 import setuptools
 
+with open("README.md", encoding="utf-8") as f:
+    README = f.read()
+with open("changelog.md", encoding="utf-8") as f:
+    CHANGELOG = f.read()
+
 setup(name='azure-cosmos',
-      version='3.1.1',
+      version='3.1.2',
       description='Azure Cosmos Python SDK',
+      long_description=README + "\n\n" + CHANGELOG,
+      long_description_content_type="text/markdown",
       author="Microsoft",
       author_email="askdocdb@microsoft.com",
       maintainer="Microsoft",

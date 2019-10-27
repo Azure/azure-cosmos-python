@@ -63,9 +63,9 @@ def _RequestBodyFromData(data):
         json_dumped = json.dumps(data, separators=(',',':'))
 
         if six.PY2:
-            return json_dumped.decode('utf-8')
-        else:
             return json_dumped
+        else:
+            return json_dumped.encode('utf-8')
     return None
 
 

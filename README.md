@@ -192,6 +192,8 @@ for item in client.QueryItems("dbs/" + database_id + "/colls/" + container_id,
     client.DeleteItem("dbs/" + database_id + "/colls/" + container_id + "/docs/" + item['id'], {'partitionKey': 'Pager'})
 ```
 
+> NOTE: If you are using partitioned collection, the value of the `partitionKey` in the example code above, should be set to the value of the partition key for this particular item, NOT the name of the partition key column in your collection.
+
 ### Query the database
 
 A Cosmos DB SQL API database supports querying the items in a container with [CosmosClient.QueryItems][ref_container_query_items] using SQL-like syntax.

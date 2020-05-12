@@ -57,7 +57,7 @@ RES_GROUP=<resource-group-name>
 ACCT_NAME=<cosmos-db-account-name>
 
 export ACCOUNT_URI=$(az cosmosdb show --resource-group $RES_GROUP --name $ACCT_NAME --query documentEndpoint --output tsv)
-export ACCOUNT_KEY=$(az cosmosdb list-keys --resource-group $RES_GROUP --name $ACCT_NAME --query primaryMasterKey --output tsv)
+export ACCOUNT_KEY=$(az cosmosdb keys list --resource-group $RES_GROUP --name $ACCT_NAME --query primaryMasterKey --output tsv)
 ```
 
 ### Create client
@@ -122,18 +122,20 @@ This example creates a container with 400 RU/s as the throughput, using [CosmosC
 
 ```Python
 import azure.cosmos.documents as documents
-container_definition = {'id': 'products',
-                        'partitionKey':
-                                    {
-                                        'paths': ['/productName'],
-                                        'kind': documents.PartitionKind.Hash
-                                    }
-                        }
+container_definition = {
+    'id': 'products',
+    'partitionKey': {
+        'paths': ['/productName'],
+        'kind': documents.PartitionKind.Hash
+    }
+}
 try:
-    container = client.CreateContainer("dbs/" + database['id'], container_definition, {'offerThroughput': 400})
+    container = client.CreateContainer(
+        "dbs/" + database['id'], container_definition, {'offerThroughput': 400})
 except errors.HTTPFailure as e:
     if e.status_code == http_constants.StatusCodes.CONFLICT:
-        container = client.ReadContainer("dbs/" + database['id'] + "/colls/" + container_definition['id'])
+        container = client.ReadContainer(
+            "dbs/" + database['id'] + "/colls/" + container_definition['id'])
     else:
         raise e
 ```
@@ -145,14 +147,17 @@ A single offer object exists per container. This object contains information reg
 This example retrieves the offer object using [CosmosClient.QueryOffers][ref_cosmosclient_query_offers], and modifies the offer object and replaces the throughput for the container using [CosmosClient.ReplaceOffer][ref_cosmosclient_replace_offer].
 ```Python
 # Get the offer for the container
-offers = list(client.QueryOffers("Select * from root r where r.offerResourceId='" + container['_rid'] + "'"))
+offers = list(client.QueryOffers(
+    "Select * from root r where r.offerResourceId='" + container['_rid'] + "'"))
 offer = offers[0]
-print("current throughput for " + container['id'] + ": " + str(offer['content']['offerThroughput']))
+print("current throughput for " + container['id'] + ": " +
+      str(offer['content']['offerThroughput']))
 
 # Replace the offer with a new throughput
 offer['content']['offerThroughput'] = 1000
 client.ReplaceOffer(offer['_self'], offer)
-print("new throughput for " + container['id'] + ": " + str(offer['content']['offerThroughput']))
+print("new throughput for " + container['id'] + ": " +
+      str(offer['content']['offerThroughput']))
 ```
 
 ### Get an existing container
@@ -173,10 +178,12 @@ This example inserts several items into the container, each with a unique `id`:
 
 ```Python
 for i in range(1, 10):
-    client.UpsertItem("dbs/" + database_id + "/colls/" + container_id, {
-            'id': 'item{0}'.format(i),
-            'productName': 'Widget',
-            'productModel': 'Model {0}'.format(i)
+    client.UpsertItem(
+        "dbs/" + database_id + "/colls/" + container_id,
+        {
+             'id': 'item{0}'.format(i),
+             'productName': 'Widget',
+             'productModel': 'Model {0}'.format(i)
         }
     )
 ```
@@ -186,10 +193,14 @@ for i in range(1, 10):
 To delete items from a container, use [CosmosClient.DeleteItem][ref_container_delete_item]. The SQL API in Cosmos DB does not support the SQL `DELETE` statement.
 
 ```Python
-for item in client.QueryItems("dbs/" + database_id + "/colls/" + container_id,
-                              'SELECT * FROM products p WHERE p.productModel = "DISCONTINUED"',
-                              {'enableCrossPartitionQuery': True}):
-    client.DeleteItem("dbs/" + database_id + "/colls/" + container_id + "/docs/" + item['id'], {'partitionKey': 'Pager'})
+for item in client.QueryItems(
+    "dbs/" + database_id + "/colls/" + container_id,
+    'SELECT * FROM products p WHERE p.productModel = "DISCONTINUED"',
+    {'enableCrossPartitionQuery': True}):
+    
+    client.DeleteItem(
+        "dbs/" + database_id + "/colls/" + container_id + "/docs/" + item['id'],
+        {'partitionKey': 'Pager'})
 ```
 
 ### Query the database
@@ -204,9 +215,11 @@ container = database.get_container_client(container_name)
 
 # Enumerate the returned items
 import json
-for item in client.QueryItems("dbs/" + database_id + "/colls/" + container_id,
-                              'SELECT * FROM ' + container_id + ' r WHERE r.id="item3"',
-                              {'enableCrossPartitionQuery': True}):
+for item in client.QueryItems(
+    "dbs/" + database_id + "/colls/" + container_id,
+    'SELECT * FROM ' + container_id + ' r WHERE r.id="item3"',
+    {'enableCrossPartitionQuery': True}):
+    
     print(json.dumps(item, indent=True))
 ```
 
@@ -215,14 +228,15 @@ for item in client.QueryItems("dbs/" + database_id + "/colls/" + container_id,
 Perform parameterized queries by passing a dictionary containing the parameters and their values to [CosmosClient.QueryItems][ref_container_query_items]:
 
 ```Python
-discontinued_items = client.QueryItems("dbs/" + database_id + "/colls/" + container_id,
-                                       {
-                                            'query': 'SELECT * FROM root r WHERE r.id=@id',
-                                            'parameters': [
-                                                {'name': '@id', 'value': 'item3'}
-                                            ]
-                                       },
-                                       {'enableCrossPartitionQuery': True})
+discontinued_items = client.QueryItems(
+    "dbs/" + database_id + "/colls/" + container_id,
+    {
+        'query': 'SELECT * FROM root r WHERE r.id=@id',
+        'parameters': [
+            {'name': '@id', 'value': 'item3'}
+        ]
+    },
+    {'enableCrossPartitionQuery': True})
 for item in discontinued_items:
     print(json.dumps(item, indent=True))
 ```
@@ -236,7 +250,8 @@ Certain properties of an existing container can be modified. This example sets t
 ```Python
 container = client.ReadContainer("dbs/" + database_id + "/colls/" + container_id)
 container['defaultTtl'] = 10
-modified_container = client.ReplaceContainer("dbs/" + database_id + "/colls/" + container_id, container)
+modified_container = client.ReplaceContainer(
+    "dbs/" + database_id + "/colls/" + container_id, container)
 # Display the new TTL setting for the container
 print(json.dumps(modified_container['defaultTtl']))
 ```

@@ -1,3 +1,7 @@
+## Changes in 3.1.3 : ##
+
+- Replace pkg_resource style namespace package with native(Python3) and pkgutil(Python2) style
+
 ## Changes in 3.1.2 : ##
 
 - Added suport for connection retry configuration

@@ -10,7 +10,7 @@ with open("changelog.md", encoding="utf-8") as f:
     CHANGELOG = f.read()
 
 setup(name='azure-cosmos',
-      version='3.1.2',
+      version='3.1.3',
       description='Azure Cosmos Python SDK',
       long_description=README + "\n\n" + CHANGELOG,
       long_description_content_type="text/markdown",
@@ -34,4 +34,8 @@ setup(name='azure-cosmos',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Software Development :: Libraries :: Python Modules'
       ],
-      packages=setuptools.find_packages(exclude=['test', 'test.*']))
+      packages=setuptools.find_packages(exclude=['test', 'test.*', 'azure']),
+      extras_require={
+          ':python_version<"3.0"': ['azure-nspkg'],
+      },
+)

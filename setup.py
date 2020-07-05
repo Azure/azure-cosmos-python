@@ -34,7 +34,7 @@ setup(name='azure-cosmos',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Software Development :: Libraries :: Python Modules'
       ],
-      packages=setuptools.find_packages(exclude=['test', 'test.*', 'azure']),
+      packages=setuptools.find_packages(exclude=['test', 'test.*', 'azure', 'samples', 'samples.*', 'doc']),
       extras_require={
           ':python_version<"3.0"': ['azure-nspkg'],
       },

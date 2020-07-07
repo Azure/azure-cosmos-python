@@ -1,7 +1,6 @@
 ## Changes in 3.2.0 : ##
 
 - Replace pkg_resource style namespace package with native(Python3) and pkgutil(Python2) style.
-  If you update on Python 2, re-install azure-nspkg, or create a fresh virtual environment.
 - In releases 3.1.1 and 3.1.2, some files were added wheels incorrectly (submodules `container`, `database`, `offer`, `partition_key`, `permission`, `scripts`, `user`, `cosmos_client_connection`). These are part of the 4.x API, and have been removed.
 
 ## Changes in 3.1.2 : ##

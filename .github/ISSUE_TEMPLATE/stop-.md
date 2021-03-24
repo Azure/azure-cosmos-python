@@ -1,6 +1,6 @@
 ---
 name: Stop!
-about: This repo has moved to https://github.com/Azure/azure-sdk-for-js
+about: This repo has moved to https://github.com/Azure/azure-sdk-for-python
 title: Stop! This is not the repo you are looking for!
 labels: ""
 assignees: ""

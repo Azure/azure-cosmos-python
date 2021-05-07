@@ -68,7 +68,7 @@ class CosmosClient(object):
                  url_connection,
                  auth,
                  connection_policy=None,
-                 consistency_level=documents.ConsistencyLevel.Session):
+                 consistency_level):
         """
         :param str url_connection:
             The URL for connecting to the DB server.

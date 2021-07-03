@@ -204,7 +204,7 @@ class CosmosClient(object):
         if partition_resolver is None:
             raise ValueError("partition_resolver is None.")
 
-        self.partition_resolvers = {base.TrimBeginningAndEndingSlashes(database_link): partition_resolver}
+        self.partition_resolvers = {database_link.strip('/'): partition_resolver}
 
 
     def GetPartitionResolver(self, database_link):
@@ -221,7 +221,7 @@ class CosmosClient(object):
         if not database_link:
             raise ValueError("database_link is None or empty.")
 
-        return self.partition_resolvers.get(base.TrimBeginningAndEndingSlashes(database_link))
+        return self.partition_resolvers.get(database_link.strip('/'))
 
         
     def CreateDatabase(self, database, options=None):
@@ -863,7 +863,7 @@ class CosmosClient(object):
             query_iterable.QueryIterable
 
         """
-        database_or_Container_link = base.TrimBeginningAndEndingSlashes(database_or_Container_link)
+        database_or_Container_link = database_or_Container_link.strip('/')
 
         if options is None:
             options = {}
@@ -2867,7 +2867,7 @@ class CosmosClient(object):
 
     # Adds the partition key to options
     def _AddPartitionKey(self, collection_link, document, options):
-        collection_link = base.TrimBeginningAndEndingSlashes(collection_link)
+        collection_link = collection_link.strip('/')
         
         #TODO: Refresh the cache if partition is extracted automatically and we get a 400.1001
 

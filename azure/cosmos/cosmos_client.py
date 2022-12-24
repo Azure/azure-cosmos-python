@@ -930,7 +930,7 @@ class CosmosClient(object):
 
         resource_key_map = {'Documents' : 'docs'}
 
-        # For now, change feed only supports Documents and Partition Key Range resouce type
+        # For now, change feed only supports Documents and Partition Key Range resource type
         if resource_type not in resource_key_map:
             raise NotImplementedError(resource_type + " change feed query is not supported.")
 
